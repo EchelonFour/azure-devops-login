@@ -1,0 +1,23 @@
+name: Azure DevOps Login
+description: Uses the az tool to login provide Azure DevOps authentication in GitHub Actions
+author: EchelonFour
+
+# Add your action's branding here. This will appear on the GitHub Marketplace.
+branding:
+  icon: log-in
+  color: blue
+
+# Define your inputs here.
+inputs:
+  npmrc:
+    description: comma separated list of npmrc files to read for logging in
+    required: true
+    default: '.npmrc'
+  nuget:
+    description: comma separated list of nuget sources to read for logging in
+    required: true
+    default: 'nuget.config'
+
+runs:
+  using: node24
+  main: dist/index.js

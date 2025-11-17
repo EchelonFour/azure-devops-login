@@ -1,0 +1,51 @@
+{
+  "name": "azure-devops-login",
+  "description": "Uses the az tool to login provide Azure DevOps authentication in GitHub Actions",
+  "version": "0.0.0",
+  "author": "EchelonFour",
+  "type": "module",
+  "private": true,
+  "exports": {
+    ".": "./dist/index.js"
+  },
+  "scripts": {
+    "lint": "npx eslint .",
+    "local-action": "npx @github/local-action . src/main.ts .env",
+    "package": "npx rollup --config rollup.config.ts --configPlugin @rollup/plugin-typescript",
+    "package:watch": "npm run package -- --watch",
+    "all": "npm run format:write && npm run lint && npm run test && npm run coverage && npm run package"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@actions/core": "^1.11.1"
+  },
+  "devDependencies": {
+    "@github/local-action": "^6.0.2",
+    "@rollup/plugin-commonjs": "^28.0.9",
+    "@rollup/plugin-node-resolve": "^16.0.3",
+    "@rollup/plugin-typescript": "^12.3.0",
+    "@types/jest": "^30.0.0",
+    "@types/node": "^24.9.1",
+    "rollup": "^4.52.5",
+    "typescript": "^5.9.3"
+  },
+  "optionalDependencies": {
+    "@rollup/rollup-linux-x64-gnu": "*"
+  },
+  "devEngines": {
+    "runtime": {
+      "name": "node",
+      "onFail": "error"
+    },
+    "packageManager": {
+      "name": "pnpm",
+      "version": "~10.20.0",
+      "onFail": "download"
+    }
+  },
+  "engines": {
+    "node": ">=24.10.0",
+    "pnpm": ">=10.20.0"
+  },
+  "packageManager": "pnpm@10.20.0"
+}
