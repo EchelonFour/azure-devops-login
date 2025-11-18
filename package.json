@@ -13,6 +13,7 @@
     "lint": "eslint .",
     "local-action": "@github/local-action . src/main.ts .env",
     "package": "rollup --config rollup.config.ts --configPlugin @rollup/plugin-typescript",
+    "format": "prettier --write .",
     "all": "pnpm run lint && pnpm run test && pnpm run coverage && pnpm run package"
   },
   "license": "MIT",

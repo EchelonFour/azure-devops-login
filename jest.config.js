@@ -32,9 +32,9 @@ export default {
       'ts-jest',
       {
         tsconfig: 'tsconfig.json',
-        useESM: true
-      }
-    ]
+        useESM: true,
+      },
+    ],
   },
-  verbose: true
+  verbose: true,
 }
