@@ -30,6 +30,7 @@ jobs:
         id: checkout
         uses: actions/checkout@v5
 
+      - run: corepack enable
       - name: Setup Node.js
         id: setup-node
         uses: actions/setup-node@v6
