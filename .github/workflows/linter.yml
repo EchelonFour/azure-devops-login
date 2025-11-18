@@ -39,15 +39,16 @@ jobs:
         if: github.event_name == 'pull_request'
         run: pnpm format
 
+      - uses: reviewdog/action-setup@v1.4
+        with:
+          reviewdog_version: v0.21.0
+
       - uses: reviewdog/action-suggester@v1.24
         if: github.event_name == 'pull_request'
         with:
           tool_name: prettier
 
-      - uses: reviewdog/action-eslint@v1.34
-        with:
-          reporter: ${{ github.event_name == 'pull_request' && 'github-pr-review' || 'github-check' }}
-          eslint_flags: '.'
+      - run: pnpm lint:ci | reviewdog -f=rdjson -name="ESLint" -reporter="${{ github.event_name == 'pull_request' && 'github-pr-review' || 'github-check' }}" -filter-mode=added -level=error
 
       - uses: reviewdog/action-actionlint@v1.68
         with:

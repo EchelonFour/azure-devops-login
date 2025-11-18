@@ -43,7 +43,7 @@ jobs:
         run: pnpm install
       - name: Build dist/ Directory
         id: build
-        run: pnpm run bundle
+        run: pnpm run package
 
       # This will fail the workflow if the `dist/` directory is different than
       # expected.
