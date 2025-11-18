@@ -16,11 +16,11 @@ export const ADO_FEED_URLS = ['.pkgs.visualstudio.com', 'pkgs.dev.azure.com'] as
 export function loadExistingCredentials(): VssNugetExternalFeedEndpoints {
   const empty: VssNugetExternalFeedEndpoints = { endpointCredentials: [] }
   const existingInEnv = process.env[ENV_VAR_NAME]
-  if (!existingInEnv || typeof existingInEnv !== 'string') {
+  if (existingInEnv === undefined || typeof existingInEnv !== 'string') {
     return empty
   }
   try {
-    const parsed = JSON.parse(existingInEnv)
+    const parsed = JSON.parse(existingInEnv) as unknown
     if (typeof parsed !== 'object' || parsed == null) {
       throw new Error('existing credentials are there, but not in an expected format')
     }
@@ -34,10 +34,10 @@ export function loadExistingCredentials(): VssNugetExternalFeedEndpoints {
     ) {
       throw new Error('the existing credentials in the env object have an unknown format')
     }
-    return parsed
+    return parsed as VssNugetExternalFeedEndpoints
   } catch (error) {
     core.error('error while trying to parse the existing credentials, overriding whatever was there')
-    core.debug(`error ${error}`)
+    core.debug(`error ${error instanceof Error ? error.message : String(error)}`)
   }
   return empty
 }

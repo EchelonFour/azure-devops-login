@@ -5,7 +5,7 @@ import { ISG } from 'eslint-config-intolerable-style-guide'
 
 export default defineConfig([
   {
-    ignores: ['eslint.config.mjs', 'jest.config.mjs', 'rollup.config.ts', '**/dist'],
+    ignores: ['eslint.config.mjs', 'jest.config.js', 'rollup.config.ts', '**/dist', '**/coverage'],
   },
   ISG,
   {

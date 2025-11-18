@@ -1,3 +1,5 @@
 import { jest } from '@jest/globals'
 
-export const parseNpmrcForADOFeeds = jest.fn<typeof import('../src/npmrc-parse.js').parseNpmrcForADOFeeds>()
+import type { parseNpmrcForADOFeeds as parseNpmrcForADOFeedsType } from '../src/npmrc-parse.js'
+
+export const parseNpmrcForADOFeeds = jest.fn<typeof parseNpmrcForADOFeedsType>()

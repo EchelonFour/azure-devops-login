@@ -1,6 +1,8 @@
-import * as core from '@actions/core'
 import * as fs from 'node:fs/promises'
 import { dirname, basename, join } from 'node:path'
+
+import * as core from '@actions/core'
+
 import { parseNpmrcForADOFeeds } from './npmrc-parse.js'
 import { parseNugetForADOFeeds } from './nuget-parse.js'
 
@@ -12,13 +14,14 @@ async function readFileContents(filePath: string, parse: (content: string) => st
     const directoryFiles = await fs.readdir(directory)
     const fileName = basename(filePath).toLowerCase()
     const matchedFile = directoryFiles.find((f) => f.toLowerCase() === fileName)
-    if (!matchedFile) {
+    if (matchedFile === undefined) {
       core.debug(`File ${filePath} does not exist.`)
       return []
     }
     npmrcContent = await fs.readFile(join(directory, matchedFile), { encoding: 'utf8' })
   } catch (error) {
-    core.debug(`Error reading file ${filePath}: ${error}`)
+    const errorMessage = error instanceof Error ? error.message : String(error)
+    core.debug(`Error reading file ${filePath}: ${errorMessage}`)
     return []
   }
   const adoFeedUrls = parse(npmrcContent)
@@ -29,8 +32,8 @@ async function readFileContents(filePath: string, parse: (content: string) => st
 export async function readUrlsFromFiles(npmrcList: string[], nugetList: string[]): Promise<string[]> {
   const adoFeedUrlsPromises = Promise.all(
     npmrcList
-      .map((filePath) => readFileContents(filePath, parseNpmrcForADOFeeds))
-      .concat(nugetList.map((filePath) => readFileContents(filePath, parseNugetForADOFeeds))),
+      .map(async (filePath) => readFileContents(filePath, parseNpmrcForADOFeeds))
+      .concat(nugetList.map(async (filePath) => readFileContents(filePath, parseNugetForADOFeeds))),
   )
 
   const adoFeedUrls = await adoFeedUrlsPromises

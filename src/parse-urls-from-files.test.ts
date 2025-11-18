@@ -1,13 +1,17 @@
 import { jest } from '@jest/globals'
-import * as core from '../__fixtures__/core.js'
 import mockFs from 'mock-fs'
+
+import * as core from '../__fixtures__/core.js'
+
+import type { parseNpmrcForADOFeeds } from './npmrc-parse.js'
+import type { parseNugetForADOFeeds } from './nuget-parse.js'
 
 jest.unstable_mockModule('@actions/core', () => core)
 jest.unstable_mockModule('./npmrc-parse.js', () => ({
-  parseNpmrcForADOFeeds: jest.fn<typeof import('./npmrc-parse.js').parseNpmrcForADOFeeds>(),
+  parseNpmrcForADOFeeds: jest.fn<typeof parseNpmrcForADOFeeds>(),
 }))
 jest.unstable_mockModule('./nuget-parse.js', () => ({
-  parseNugetForADOFeeds: jest.fn<typeof import('./nuget-parse.js').parseNugetForADOFeeds>(),
+  parseNugetForADOFeeds: jest.fn<typeof parseNugetForADOFeeds>(),
 }))
 const mockParseNpmrc = jest.mocked((await import('./npmrc-parse.js')).parseNpmrcForADOFeeds)
 const mockParseNuget = jest.mocked((await import('./nuget-parse.js')).parseNugetForADOFeeds)

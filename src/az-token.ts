@@ -1,5 +1,6 @@
 import { exec } from 'node:child_process'
 import { promisify } from 'node:util'
+
 import * as core from '@actions/core'
 
 const execAsync = promisify(exec)
@@ -15,8 +16,11 @@ export async function getTokenFromAzTool(): Promise<string> {
   )
 
   try {
-    const result = JSON.parse(stdout)
-    if (!result.accessToken || typeof result.accessToken !== 'string') {
+    const result = JSON.parse(stdout) as unknown
+    if (typeof result !== 'object' || result === null) {
+      throw new Error('Az tool output is not a valid object')
+    }
+    if (!('accessToken' in result) || typeof result.accessToken !== 'string') {
       throw new Error('No access token found in az tool output')
     }
     core.setSecret(result.accessToken)
@@ -25,6 +29,7 @@ export async function getTokenFromAzTool(): Promise<string> {
     core.error(`Error acquiring token from az tool`)
     core.debug(`az tool output: ${stdout}`)
     core.debug(`az tool stderr: ${stderr}`)
-    throw new Error(`Error parsing az tool output: ${error}. ${stderr}`)
+    const errorMessage = error instanceof Error ? error.message : String(error)
+    throw new Error(`Error parsing az tool output: ${errorMessage}. ${stderr}`, { cause: error })
   }
 }

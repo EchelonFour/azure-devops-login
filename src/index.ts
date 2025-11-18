@@ -5,4 +5,6 @@
 import { run } from './main.js'
 
 /* istanbul ignore next */
-run()
+run().catch(() => {
+  console.error(`Fatal error running action`)
+})

@@ -1,4 +1,7 @@
+import type * as childProcess from 'node:child_process'
+
 import { jest } from '@jest/globals'
+
 import * as core from '../__fixtures__/core.js'
 
 jest.unstable_mockModule('@actions/core', () => core)
@@ -10,7 +13,7 @@ const { getTokenFromAzTool } = await import('./az-token.js')
 
 const mockExec = jest.mocked((await import('node:child_process')).exec)
 
-function buildMockExec(stdout: string) {
+function buildMockExec(stdout: string): void {
   mockExec.mockImplementation(((command, options, callback) => {
     if (options?.encoding !== 'utf8') {
       throw new Error('Expected encoding to be utf8')
@@ -23,7 +26,7 @@ function buildMockExec(stdout: string) {
       values: { stdout: string; stderr: string },
     ) => void
     callbackRealType(null, { stdout, stderr: '' })
-  }) as typeof import('node:child_process').exec)
+  }) as typeof childProcess.exec)
 }
 
 describe('getTokenFromAzTool', () => {

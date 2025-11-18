@@ -19,6 +19,7 @@ describe('loadExistingCredentials', () => {
   })
 
   it('should return empty credentials when env var is not set', () => {
+    // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
     delete process.env[ENV_VAR_NAME]
 
     const result = loadExistingCredentials()

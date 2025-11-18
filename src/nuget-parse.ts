@@ -1,4 +1,5 @@
 import { XMLParser } from 'fast-xml-parser'
+
 import { ADO_FEED_URLS } from './vss-credentials.js'
 
 interface NugetAddSource {
@@ -6,24 +7,25 @@ interface NugetAddSource {
 }
 
 interface NugetConfig {
-  configuration: {
-    [key: string | 'config' | 'packageSources']: {
+  configuration: Record<
+    string,
+    {
       add?: NugetAddSource | NugetAddSource[]
     }
-  }
+  >
 }
 
 export function parseNugetForADOFeeds(configContent: string): string[] {
   const parser = new XMLParser({ ignoreAttributes: false })
-  const parsed = parser.parse(configContent) as NugetConfig
+  const parsed = parser.parse(configContent) as unknown
   if (typeof parsed !== 'object' || parsed == null) {
     throw new Error('Failed to parse nuget.config content as XML object')
   }
-  if (!parsed.configuration || typeof parsed.configuration !== 'object' || parsed.configuration == null) {
+  if (!('configuration' in parsed) || typeof parsed.configuration !== 'object' || parsed.configuration == null) {
     return []
   }
 
-  const feeds = Object.values(parsed.configuration).flatMap((section) => {
+  const feeds = Object.values((parsed as NugetConfig).configuration).flatMap((section) => {
     if (!section.add) {
       return []
     }

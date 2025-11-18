@@ -1,10 +1,11 @@
 import * as core from '@actions/core'
+
 import { getTokenFromAzTool } from './az-token.js'
 import { readUrlsFromFiles } from './parse-urls-from-files.js'
 import { ENV_VAR_NAME, loadExistingCredentials } from './vss-credentials.js'
 
-function splitListInput(input: string | undefined): string[] {
-  if (!input) {
+function splitListInput(input: string | null | undefined): string[] {
+  if (input == null) {
     return []
   }
   return input
@@ -53,6 +54,8 @@ export async function run(): Promise<void> {
     }
   } catch (error) {
     // Fail the workflow run if an error occurs
-    if (error instanceof Error) core.setFailed(error.message)
+    if (error instanceof Error) {
+      core.setFailed(error.message)
+    }
   }
 }

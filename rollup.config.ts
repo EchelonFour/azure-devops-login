@@ -13,7 +13,10 @@ const config = defineConfig({
     sourcemap: true,
   },
   plugins: [
-    typescript({ exclude: ['coverage', 'dist', 'node_modules', '**/*.test.ts', '__fixtures__'] }),
+    typescript({
+      exclude: ['coverage', 'dist', 'node_modules', '**/*.test.ts', '__fixtures__'],
+      include: ['src/**/*.ts'],
+    }),
     nodeResolve({ preferBuiltins: true }),
     commonjs(),
   ],
