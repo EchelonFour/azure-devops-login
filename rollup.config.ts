@@ -1,18 +1,22 @@
 // See: https://rollupjs.org/introduction/
-
+import { defineConfig } from 'rollup'
 import commonjs from '@rollup/plugin-commonjs'
 import nodeResolve from '@rollup/plugin-node-resolve'
 import typescript from '@rollup/plugin-typescript'
 
-const config = {
+const config = defineConfig({
   input: 'src/index.ts',
   output: {
     esModule: true,
     file: 'dist/index.js',
     format: 'es',
-    sourcemap: true
+    sourcemap: true,
   },
-  plugins: [typescript(), nodeResolve({ preferBuiltins: true }), commonjs()]
-}
+  plugins: [
+    typescript({ exclude: ['coverage', 'dist', 'node_modules', '**/*.test.ts', '__fixtures__'] }),
+    nodeResolve({ preferBuiltins: true }),
+    commonjs(),
+  ],
+})
 
 export default config

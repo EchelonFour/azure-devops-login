@@ -1,0 +1,43 @@
+import * as core from '@actions/core'
+
+interface VssNugetExternalFeedEndpoint {
+  endpoint: string
+  username?: string
+  password: string
+}
+
+export interface VssNugetExternalFeedEndpoints {
+  endpointCredentials: VssNugetExternalFeedEndpoint[]
+}
+
+export const ENV_VAR_NAME = 'VSS_NUGET_EXTERNAL_FEED_ENDPOINTS' as const
+export const ADO_FEED_URLS = ['.pkgs.visualstudio.com', 'pkgs.dev.azure.com'] as const
+
+export function loadExistingCredentials(): VssNugetExternalFeedEndpoints {
+  const empty: VssNugetExternalFeedEndpoints = { endpointCredentials: [] }
+  const existingInEnv = process.env[ENV_VAR_NAME]
+  if (!existingInEnv || typeof existingInEnv !== 'string') {
+    return empty
+  }
+  try {
+    const parsed = JSON.parse(existingInEnv)
+    if (typeof parsed !== 'object' || parsed == null) {
+      throw new Error('existing credentials are there, but not in an expected format')
+    }
+    if (!('endpointCredentials' in parsed) || !Array.isArray(parsed.endpointCredentials)) {
+      throw new Error('credential env var does not have an expected endpointCredentials array')
+    }
+    if (
+      parsed.endpointCredentials.some(
+        (x: unknown) => typeof x !== 'object' || x == null || !('endpoint' in x) || typeof x.endpoint !== 'string',
+      )
+    ) {
+      throw new Error('the existing credentials in the env object have an unknown format')
+    }
+    return parsed
+  } catch (error) {
+    core.error('error while trying to parse the existing credentials, overriding whatever was there')
+    core.debug(`error ${error}`)
+  }
+  return empty
+}

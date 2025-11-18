@@ -17,6 +17,10 @@ inputs:
     description: comma separated list of nuget sources to read for logging in
     required: true
     default: 'nuget.config'
+  login-urls:
+    description: comma separated list of Azure DevOps organization URLs to login to. Setting this overrides reading from npmrc and nuget files.
+    required: false
+    default: ''
 
 runs:
   using: node24
