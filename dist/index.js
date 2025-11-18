@@ -27257,7 +27257,10 @@ async function getTokenFromAzTool() {
     });
     try {
         const result = JSON.parse(stdout);
-        if (!result.accessToken || typeof result.accessToken !== 'string') {
+        if (typeof result !== 'object' || result === null) {
+            throw new Error('Az tool output is not a valid object');
+        }
+        if (!('accessToken' in result) || typeof result.accessToken !== 'string') {
             throw new Error('No access token found in az tool output');
         }
         coreExports.setSecret(result.accessToken);
@@ -27267,7 +27270,8 @@ async function getTokenFromAzTool() {
         coreExports.error(`Error acquiring token from az tool`);
         coreExports.debug(`az tool output: ${stdout}`);
         coreExports.debug(`az tool stderr: ${stderr}`);
-        throw new Error(`Error parsing az tool output: ${error}. ${stderr}`);
+        const errorMessage = error instanceof Error ? error.message : String(error);
+        throw new Error(`Error parsing az tool output: ${errorMessage}. ${stderr}`, { cause: error });
     }
 }
 
@@ -27567,7 +27571,7 @@ const ADO_FEED_URLS = ['.pkgs.visualstudio.com', 'pkgs.dev.azure.com'];
 function loadExistingCredentials() {
     const empty = { endpointCredentials: [] };
     const existingInEnv = process.env[ENV_VAR_NAME];
-    if (!existingInEnv || typeof existingInEnv !== 'string') {
+    if (existingInEnv === undefined || typeof existingInEnv !== 'string') {
         return empty;
     }
     try {
@@ -27585,7 +27589,7 @@ function loadExistingCredentials() {
     }
     catch (error) {
         coreExports.error('error while trying to parse the existing credentials, overriding whatever was there');
-        coreExports.debug(`error ${error}`);
+        coreExports.debug(`error ${error instanceof Error ? error.message : String(error)}`);
     }
     return empty;
 }
@@ -29460,7 +29464,7 @@ function parseNugetForADOFeeds(configContent) {
     if (typeof parsed !== 'object' || parsed == null) {
         throw new Error('Failed to parse nuget.config content as XML object');
     }
-    if (!parsed.configuration || typeof parsed.configuration !== 'object' || parsed.configuration == null) {
+    if (!('configuration' in parsed) || typeof parsed.configuration !== 'object' || parsed.configuration == null) {
         return [];
     }
     const feeds = Object.values(parsed.configuration).flatMap((section) => {
@@ -29484,14 +29488,15 @@ async function readFileContents(filePath, parse) {
         const directoryFiles = await fs.readdir(directory);
         const fileName = basename$1(filePath).toLowerCase();
         const matchedFile = directoryFiles.find((f) => f.toLowerCase() === fileName);
-        if (!matchedFile) {
+        if (matchedFile === undefined) {
             coreExports.debug(`File ${filePath} does not exist.`);
             return [];
         }
         npmrcContent = await fs.readFile(join(directory, matchedFile), { encoding: 'utf8' });
     }
     catch (error) {
-        coreExports.debug(`Error reading file ${filePath}: ${error}`);
+        const errorMessage = error instanceof Error ? error.message : String(error);
+        coreExports.debug(`Error reading file ${filePath}: ${errorMessage}`);
         return [];
     }
     const adoFeedUrls = parse(npmrcContent);
@@ -29500,13 +29505,16 @@ async function readFileContents(filePath, parse) {
 }
 async function readUrlsFromFiles(npmrcList, nugetList) {
     const adoFeedUrlsPromises = Promise.all(npmrcList
-        .map((filePath) => readFileContents(filePath, parseNpmrcForADOFeeds))
-        .concat(nugetList.map((filePath) => readFileContents(filePath, parseNugetForADOFeeds))));
+        .map(async (filePath) => readFileContents(filePath, parseNpmrcForADOFeeds))
+        .concat(nugetList.map(async (filePath) => readFileContents(filePath, parseNugetForADOFeeds))));
     const adoFeedUrls = await adoFeedUrlsPromises;
     return [...new Set(adoFeedUrls.flat())];
 }
 
 function splitListInput(input) {
+    if (input == null) {
+        return [];
+    }
     return input
         .split(/,|\n/g)
         .map((s) => s.trim())
@@ -29521,7 +29529,8 @@ async function run() {
     try {
         const npmrcList = splitListInput(coreExports.getInput('npmrc'));
         const nugetList = splitListInput(coreExports.getInput('nuget'));
-        const adoFeedUrls = await readUrlsFromFiles(npmrcList, nugetList);
+        const manualList = splitListInput(coreExports.getInput('login-urls'));
+        const adoFeedUrls = manualList.length > 0 ? manualList : await readUrlsFromFiles(npmrcList, nugetList);
         const endpoints = loadExistingCredentials();
         if (adoFeedUrls.length === 0) {
             coreExports.info('No Azure DevOps feed URLs found in provided files. Skipping login and sending empty credentials.');
@@ -29550,8 +29559,9 @@ async function run() {
     }
     catch (error) {
         // Fail the workflow run if an error occurs
-        if (error instanceof Error)
+        if (error instanceof Error) {
             coreExports.setFailed(error.message);
+        }
     }
 }
 
@@ -29560,5 +29570,7 @@ async function run() {
  * main logic.
  */
 /* istanbul ignore next */
-run();
+run().catch(() => {
+    console.error(`Fatal error running action`);
+});
 //# sourceMappingURL=index.js.map
