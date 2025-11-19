@@ -2,6 +2,7 @@ import * as core from '@actions/core'
 
 import { getTokenFromAzTool } from './az-token.js'
 import { readUrlsFromFiles } from './parse-urls-from-files.js'
+import { installProviderIfNeeded } from './provider-installer.js'
 import { ENV_VAR_NAME, loadExistingCredentials } from './vss-credentials.js'
 
 function splitListInput(input: string | null | undefined): string[] {
@@ -51,6 +52,7 @@ export async function run(): Promise<void> {
     }
     if (endpoints.endpointCredentials.length > 0) {
       core.exportVariable(ENV_VAR_NAME, JSON.stringify(endpoints))
+      await installProviderIfNeeded()
     }
   } catch (error) {
     // Fail the workflow run if an error occurs
