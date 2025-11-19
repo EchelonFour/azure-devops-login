@@ -27249,10 +27249,10 @@ function requireCore () {
 
 var coreExports = requireCore();
 
-const execAsync = promisify(exec$1);
+const execAsync$1 = promisify(exec$1);
 async function getTokenFromAzTool() {
     coreExports.debug('Getting token from az tool');
-    const { stdout, stderr } = await execAsync("az account get-access-token --scope '499b84ac-1321-427f-aa17-267ca6975798/.default' -o json", {
+    const { stdout, stderr } = await execAsync$1("az account get-access-token --scope '499b84ac-1321-427f-aa17-267ca6975798/.default' -o json", {
         encoding: 'utf8',
     });
     try {
@@ -29511,6 +29511,30 @@ async function readUrlsFromFiles(npmrcList, nugetList) {
     return [...new Set(adoFeedUrls.flat())];
 }
 
+const execAsync = promisify(exec$1);
+async function installProviderIfNeeded() {
+    const installProviderInput = coreExports.getBooleanInput('install-provider');
+    if (!installProviderInput) {
+        coreExports.debug('Skipping provider installation as per input setting');
+        return;
+    }
+    const installCommand = process.platform === 'linux'
+        ? 'sh -c "$(curl -fsSL https://aka.ms/install-artifacts-credprovider.sh)"'
+        : 'iex "& { $(irm https://aka.ms/install-artifacts-credprovider.ps1) }"';
+    try {
+        const results = await execAsync(installCommand, {
+            shell: process.platform === 'linux' ? '/bin/bash' : 'powershell.exe',
+        });
+        coreExports.debug(`Provider installation stdout: ${results.stdout}`);
+        coreExports.debug(`Provider installation stderr: ${results.stderr}`);
+        coreExports.info('Azure Artifacts Credential Provider installed');
+    }
+    catch (error) {
+        coreExports.error(`Failed to install Azure Artifacts Credential Provider: ${error instanceof Error ? error.message : String(error)}`);
+        throw error;
+    }
+}
+
 function splitListInput(input) {
     if (input == null) {
         return [];
@@ -29555,6 +29579,7 @@ async function run() {
         }
         if (endpoints.endpointCredentials.length > 0) {
             coreExports.exportVariable(ENV_VAR_NAME, JSON.stringify(endpoints));
+            await installProviderIfNeeded();
         }
     }
     catch (error) {
