@@ -8,10 +8,9 @@ const config = defineConfig({
   input: 'src/index.ts',
   output: {
     esModule: true,
-    file: 'dist/index.js',
+    dir: 'dist',
     format: 'es',
     sourcemap: true,
-    inlineDynamicImports: true,
   },
   plugins: [
     typescript({

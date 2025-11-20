@@ -1,39 +1,48 @@
 import require$$0 from 'os';
-import require$$0$1 from 'crypto';
+import crypto$1 from 'crypto';
 import require$$1 from 'fs';
-import require$$1$5 from 'path';
-import require$$2 from 'http';
-import require$$3 from 'https';
+import require$$1$4 from 'path';
+import http from 'http';
+import https from 'https';
 import require$$0$4 from 'net';
 import require$$1$1 from 'tls';
 import require$$4 from 'events';
 import require$$0$3 from 'assert';
-import require$$0$2 from 'util';
-import require$$0$5 from 'stream';
-import require$$7 from 'buffer';
+import require$$0$1 from 'util';
+import require$$0$5, { Readable } from 'stream';
+import require$$0$2 from 'buffer';
 import require$$8 from 'querystring';
 import require$$14 from 'stream/web';
-import require$$0$7 from 'node:stream';
-import require$$1$2, { promisify } from 'node:util';
+import require$$0$7, { Transform } from 'node:stream';
+import require$$1$2, { inspect, promisify } from 'node:util';
 import require$$0$6 from 'node:events';
 import require$$0$8 from 'worker_threads';
-import require$$2$1 from 'perf_hooks';
+import require$$2 from 'perf_hooks';
 import require$$5 from 'util/types';
 import require$$4$1 from 'async_hooks';
 import require$$1$3 from 'console';
-import require$$1$4 from 'url';
-import require$$3$1 from 'zlib';
+import require$$5$1 from 'url';
+import require$$3 from 'zlib';
 import require$$6 from 'string_decoder';
 import require$$0$9 from 'diagnostics_channel';
-import require$$2$2 from 'child_process';
+import child_process from 'child_process';
 import require$$6$1 from 'timers';
 import { exec as exec$1 } from 'node:child_process';
+import os, { EOL as EOL$1, tmpdir } from 'node:os';
+import process$1 from 'node:process';
+import require$$1$5 from 'tty';
+import http$1 from 'node:http';
+import https$1 from 'node:https';
+import zlib from 'node:zlib';
 import * as fs from 'node:fs/promises';
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
-import { tmpdir } from 'node:os';
 import path, { dirname, basename as basename$1, join } from 'node:path';
 
 var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
+
+function getDefaultExportFromCjs (x) {
+	return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, 'default') ? x['default'] : x;
+}
 
 var core = {};
 
@@ -226,7 +235,7 @@ function requireFileCommand () {
 	fileCommand.prepareKeyValueMessage = fileCommand.issueFileCommand = void 0;
 	// We use any as a valid input type
 	/* eslint-disable @typescript-eslint/no-explicit-any */
-	const crypto = __importStar(require$$0$1);
+	const crypto = __importStar(crypto$1);
 	const fs = __importStar(require$$1);
 	const os = __importStar(require$$0);
 	const utils_1 = requireUtils$1();
@@ -378,10 +387,10 @@ function requireTunnel$1 () {
 	if (hasRequiredTunnel$1) return tunnel$1;
 	hasRequiredTunnel$1 = 1;
 	var tls = require$$1$1;
-	var http = require$$2;
-	var https = require$$3;
+	var http$1 = http;
+	var https$1 = https;
 	var events = require$$4;
-	var util = require$$0$2;
+	var util = require$$0$1;
 
 
 	tunnel$1.httpOverHttp = httpOverHttp;
@@ -392,13 +401,13 @@ function requireTunnel$1 () {
 
 	function httpOverHttp(options) {
 	  var agent = new TunnelingAgent(options);
-	  agent.request = http.request;
+	  agent.request = http$1.request;
 	  return agent;
 	}
 
 	function httpsOverHttp(options) {
 	  var agent = new TunnelingAgent(options);
-	  agent.request = http.request;
+	  agent.request = http$1.request;
 	  agent.createSocket = createSecureSocket;
 	  agent.defaultPort = 443;
 	  return agent;
@@ -406,13 +415,13 @@ function requireTunnel$1 () {
 
 	function httpOverHttps(options) {
 	  var agent = new TunnelingAgent(options);
-	  agent.request = https.request;
+	  agent.request = https$1.request;
 	  return agent;
 	}
 
 	function httpsOverHttps(options) {
 	  var agent = new TunnelingAgent(options);
-	  agent.request = https.request;
+	  agent.request = https$1.request;
 	  agent.createSocket = createSecureSocket;
 	  agent.defaultPort = 443;
 	  return agent;
@@ -423,7 +432,7 @@ function requireTunnel$1 () {
 	  var self = this;
 	  self.options = options || {};
 	  self.proxyOptions = self.options.proxy || {};
-	  self.maxSockets = self.options.maxSockets || http.Agent.defaultMaxSockets;
+	  self.maxSockets = self.options.maxSockets || http$1.Agent.defaultMaxSockets;
 	  self.requests = [];
 	  self.sockets = [];
 
@@ -962,12 +971,12 @@ function requireErrors () {
 	return errors;
 }
 
-var constants$4;
-var hasRequiredConstants$4;
+var constants$5;
+var hasRequiredConstants$5;
 
-function requireConstants$4 () {
-	if (hasRequiredConstants$4) return constants$4;
-	hasRequiredConstants$4 = 1;
+function requireConstants$5 () {
+	if (hasRequiredConstants$5) return constants$5;
+	hasRequiredConstants$5 = 1;
 
 	/** @type {Record<string, string | undefined>} */
 	const headerNameLowerCasedRecord = {};
@@ -1081,11 +1090,11 @@ function requireConstants$4 () {
 	// Note: object prototypes should not be able to be referenced. e.g. `Object#hasOwnProperty`.
 	Object.setPrototypeOf(headerNameLowerCasedRecord, null);
 
-	constants$4 = {
+	constants$5 = {
 	  wellknownHeaderNames,
 	  headerNameLowerCasedRecord
 	};
-	return constants$4;
+	return constants$5;
 }
 
 var util$6;
@@ -1097,14 +1106,14 @@ function requireUtil$6 () {
 
 	const assert = require$$0$3;
 	const { kDestroyed, kBodyUsed } = requireSymbols$4();
-	const { IncomingMessage } = require$$2;
+	const { IncomingMessage } = http;
 	const stream = require$$0$5;
 	const net = require$$0$4;
 	const { InvalidArgumentError } = requireErrors();
-	const { Blob } = require$$7;
-	const nodeUtil = require$$0$2;
+	const { Blob } = require$$0$2;
+	const nodeUtil = require$$0$1;
 	const { stringify } = require$$8;
-	const { headerNameLowerCasedRecord } = requireConstants$4();
+	const { headerNameLowerCasedRecord } = requireConstants$5();
 
 	const [nodeMajor, nodeMinor] = process.versions.node.split('.').map(v => Number(v));
 
@@ -3350,12 +3359,12 @@ function requireMain () {
 	return main.exports;
 }
 
-var constants$3;
-var hasRequiredConstants$3;
+var constants$4;
+var hasRequiredConstants$4;
 
-function requireConstants$3 () {
-	if (hasRequiredConstants$3) return constants$3;
-	hasRequiredConstants$3 = 1;
+function requireConstants$4 () {
+	if (hasRequiredConstants$4) return constants$4;
+	hasRequiredConstants$4 = 1;
 
 	const { MessageChannel, receiveMessageOnPort } = require$$0$8;
 
@@ -3481,7 +3490,7 @@ function requireConstants$3 () {
 	    return receiveMessageOnPort(channel.port2).message
 	  };
 
-	constants$3 = {
+	constants$4 = {
 	  DOMException,
 	  structuredClone,
 	  subresource,
@@ -3506,7 +3515,7 @@ function requireConstants$3 () {
 	  forbiddenMethodsSet,
 	  referrerPolicySet
 	};
-	return constants$3;
+	return constants$4;
 }
 
 var global$2;
@@ -3564,9 +3573,9 @@ function requireUtil$5 () {
 	if (hasRequiredUtil$5) return util$5;
 	hasRequiredUtil$5 = 1;
 
-	const { redirectStatusSet, referrerPolicySet: referrerPolicyTokens, badPortsSet } = requireConstants$3();
+	const { redirectStatusSet, referrerPolicySet: referrerPolicyTokens, badPortsSet } = requireConstants$4();
 	const { getGlobalOrigin } = requireGlobal$1();
-	const { performance } = require$$2$1;
+	const { performance } = require$$2;
 	const { isBlobLike, toUSVString, ReadableStreamFrom } = requireUtil$6();
 	const assert = require$$0$3;
 	const { isUint8Array } = require$$5;
@@ -4733,7 +4742,7 @@ function requireWebidl () {
 	if (hasRequiredWebidl) return webidl_1;
 	hasRequiredWebidl = 1;
 
-	const { types } = require$$0$2;
+	const { types } = require$$0$1;
 	const { hasOwn, toUSVString } = requireUtil$5();
 
 	/** @type {import('../../types/webidl').Webidl} */
@@ -5387,7 +5396,7 @@ function requireDataURL () {
 	if (hasRequiredDataURL) return dataURL;
 	hasRequiredDataURL = 1;
 	const assert = require$$0$3;
-	const { atob } = require$$7;
+	const { atob } = require$$0$2;
 	const { isomorphicDecode } = requireUtil$5();
 
 	const encoder = new TextEncoder();
@@ -6023,8 +6032,8 @@ function requireFile () {
 	if (hasRequiredFile) return file;
 	hasRequiredFile = 1;
 
-	const { Blob, File: NativeFile } = require$$7;
-	const { types } = require$$0$2;
+	const { Blob, File: NativeFile } = require$$0$2;
+	const { types } = require$$0$1;
 	const { kState } = requireSymbols$3();
 	const { isBlobLike } = requireUtil$5();
 	const { webidl } = requireWebidl();
@@ -6379,7 +6388,7 @@ function requireFormdata () {
 	const { kState } = requireSymbols$3();
 	const { File: UndiciFile, FileLike, isFileLike } = requireFile();
 	const { webidl } = requireWebidl();
-	const { Blob, File: NativeFile } = require$$7;
+	const { Blob, File: NativeFile } = require$$0$2;
 
 	/** @type {globalThis['File']} */
 	const File = NativeFile ?? UndiciFile;
@@ -6661,8 +6670,8 @@ function requireBody () {
 	const { FormData } = requireFormdata();
 	const { kState } = requireSymbols$3();
 	const { webidl } = requireWebidl();
-	const { DOMException, structuredClone } = requireConstants$3();
-	const { Blob, File: NativeFile } = require$$7;
+	const { DOMException, structuredClone } = requireConstants$4();
+	const { Blob, File: NativeFile } = require$$0$2;
 	const { kBodyUsed } = requireSymbols$4();
 	const assert = require$$0$3;
 	const { isErrored } = requireUtil$6();
@@ -8193,7 +8202,7 @@ function requireConnect () {
 	return connect;
 }
 
-var constants$2 = {};
+var constants$3 = {};
 
 var utils = {};
 
@@ -8219,11 +8228,11 @@ function requireUtils () {
 	return utils;
 }
 
-var hasRequiredConstants$2;
+var hasRequiredConstants$3;
 
-function requireConstants$2 () {
-	if (hasRequiredConstants$2) return constants$2;
-	hasRequiredConstants$2 = 1;
+function requireConstants$3 () {
+	if (hasRequiredConstants$3) return constants$3;
+	hasRequiredConstants$3 = 1;
 	(function (exports$1) {
 		Object.defineProperty(exports$1, "__esModule", { value: true });
 		exports$1.SPECIAL_HEADERS = exports$1.HEADER_STATE = exports$1.MINOR = exports$1.MAJOR = exports$1.CONNECTION_TOKEN_CHARS = exports$1.HEADER_CHARS = exports$1.TOKEN = exports$1.STRICT_TOKEN = exports$1.HEX = exports$1.URL_CHAR = exports$1.STRICT_URL_CHAR = exports$1.USERINFO_CHARS = exports$1.MARK = exports$1.ALPHANUM = exports$1.NUM = exports$1.HEX_MAP = exports$1.NUM_MAP = exports$1.ALPHA = exports$1.FINISH = exports$1.H_METHOD_MAP = exports$1.METHOD_MAP = exports$1.METHODS_RTSP = exports$1.METHODS_ICE = exports$1.METHODS_HTTP = exports$1.METHODS = exports$1.LENIENT_FLAGS = exports$1.FLAGS = exports$1.TYPE = exports$1.ERROR = void 0;
@@ -8496,8 +8505,8 @@ function requireConstants$2 () {
 		    'upgrade': HEADER_STATE.UPGRADE,
 		};
 		
-	} (constants$2));
-	return constants$2;
+	} (constants$3));
+	return constants$3;
 }
 
 var RedirectHandler_1;
@@ -8771,7 +8780,7 @@ function requireClient () {
 
 	const assert = require$$0$3;
 	const net = require$$0$4;
-	const http = require$$2;
+	const http$1 = http;
 	const { pipeline } = require$$0$5;
 	const util = requireUtil$6();
 	const timers = requireTimers();
@@ -9036,7 +9045,7 @@ function requireClient () {
 	    this[kConnector] = connect;
 	    this[kSocket] = null;
 	    this[kPipelining] = pipelining != null ? pipelining : 1;
-	    this[kMaxHeadersSize] = maxHeaderSize || http.maxHeaderSize;
+	    this[kMaxHeadersSize] = maxHeaderSize || http$1.maxHeaderSize;
 	    this[kKeepAliveDefaultTimeout] = keepAliveTimeout == null ? 4e3 : keepAliveTimeout;
 	    this[kKeepAliveMaxTimeout] = keepAliveMaxTimeout == null ? 600e3 : keepAliveMaxTimeout;
 	    this[kKeepAliveTimeoutThreshold] = keepAliveTimeoutThreshold == null ? 1e3 : keepAliveTimeoutThreshold;
@@ -9247,7 +9256,7 @@ function requireClient () {
 	  resume(client);
 	}
 
-	const constants = requireConstants$2();
+	const constants = requireConstants$3();
 	const createRedirectInterceptor = requireRedirectInterceptor();
 	const EMPTY_BUF = Buffer.alloc(0);
 
@@ -13376,12 +13385,12 @@ function requireMockUtils () {
 	  kGetNetConnect
 	} = requireMockSymbols();
 	const { buildURL, nop } = requireUtil$6();
-	const { STATUS_CODES } = require$$2;
+	const { STATUS_CODES } = http;
 	const {
 	  types: {
 	    isPromise
 	  }
-	} = require$$0$2;
+	} = require$$0$1;
 
 	function matchValue (match, value) {
 	  if (typeof match === 'string') {
@@ -13941,7 +13950,7 @@ function requireMockClient () {
 	if (hasRequiredMockClient) return mockClient;
 	hasRequiredMockClient = 1;
 
-	const { promisify } = require$$0$2;
+	const { promisify } = require$$0$1;
 	const Client = requireClient();
 	const { buildMockDispatch } = requireMockUtils();
 	const {
@@ -14008,7 +14017,7 @@ function requireMockPool () {
 	if (hasRequiredMockPool) return mockPool;
 	hasRequiredMockPool = 1;
 
-	const { promisify } = require$$0$2;
+	const { promisify } = require$$0$1;
 	const Pool = requirePool();
 	const { buildMockDispatch } = requireMockUtils();
 	const {
@@ -14340,7 +14349,7 @@ function requireProxyAgent () {
 	hasRequiredProxyAgent = 1;
 
 	const { kProxy, kClose, kDestroy, kInterceptors } = requireSymbols$4();
-	const { URL } = require$$1$4;
+	const { URL } = require$$5$1;
 	const Agent = requireAgent();
 	const Pool = requirePool();
 	const DispatcherBase = requireDispatcherBase();
@@ -14972,7 +14981,7 @@ function requireHeaders () {
 	  isValidHeaderName,
 	  isValidHeaderValue
 	} = requireUtil$5();
-	const util = require$$0$2;
+	const util = require$$0$1;
 	const { webidl } = requireWebidl();
 	const assert = require$$0$3;
 
@@ -15573,7 +15582,7 @@ function requireResponse () {
 	  redirectStatusSet,
 	  nullBodyStatus,
 	  DOMException
-	} = requireConstants$3();
+	} = requireConstants$4();
 	const { kState, kHeaders, kGuard, kRealm } = requireSymbols$3();
 	const { webidl } = requireWebidl();
 	const { FormData } = requireFormdata();
@@ -15581,7 +15590,7 @@ function requireResponse () {
 	const { URLSerializer } = requireDataURL();
 	const { kHeadersList, kConstruct } = requireSymbols$4();
 	const assert = require$$0$3;
-	const { types } = require$$0$2;
+	const { types } = require$$0$1;
 
 	const ReadableStream = globalThis.ReadableStream || require$$14.ReadableStream;
 	const textEncoder = new TextEncoder('utf-8');
@@ -16157,7 +16166,7 @@ function requireRequest () {
 	  requestCredentials,
 	  requestCache,
 	  requestDuplex
-	} = requireConstants$3();
+	} = requireConstants$4();
 	const { kEnumerableProperty } = util;
 	const { kHeaders, kSignal, kState, kGuard, kRealm } = requireSymbols$3();
 	const { webidl } = requireWebidl();
@@ -17098,7 +17107,7 @@ function requireFetch () {
 	} = requireResponse();
 	const { Headers } = requireHeaders();
 	const { Request, makeRequest } = requireRequest();
-	const zlib = require$$3$1;
+	const zlib = require$$3;
 	const {
 	  bytesMatch,
 	  makePolicyContainer,
@@ -17139,7 +17148,7 @@ function requireFetch () {
 	  requestBodyHeader,
 	  subresourceSet,
 	  DOMException
-	} = requireConstants$3();
+	} = requireConstants$4();
 	const { kHeadersList } = requireSymbols$4();
 	const EE = require$$4;
 	const { Readable, pipeline } = require$$0$5;
@@ -17148,7 +17157,7 @@ function requireFetch () {
 	const { TransformStream } = require$$14;
 	const { getGlobalDispatcher } = requireGlobal();
 	const { webidl } = requireWebidl();
-	const { STATUS_CODES } = require$$2;
+	const { STATUS_CODES } = http;
 	const GET_OR_HEAD = ['GET', 'HEAD'];
 
 	/** @type {import('buffer').resolveObjectURL} */
@@ -17875,7 +17884,7 @@ function requireFetch () {
 	    }
 	    case 'blob:': {
 	      if (!resolveObjectURL) {
-	        resolveObjectURL = require$$7.resolveObjectURL;
+	        resolveObjectURL = require$$0$2.resolveObjectURL;
 	      }
 
 	      // 1. Let blobURLEntry be request’s current URL’s blob URL entry.
@@ -19580,11 +19589,11 @@ function requireUtil$3 () {
 	} = requireSymbols$2();
 	const { ProgressEvent } = requireProgressevent();
 	const { getEncoding } = requireEncoding();
-	const { DOMException } = requireConstants$3();
+	const { DOMException } = requireConstants$4();
 	const { serializeAMimeType, parseMIMEType } = requireDataURL();
-	const { types } = require$$0$2;
+	const { types } = require$$0$1;
 	const { StringDecoder } = require$$6;
-	const { btoa } = require$$7;
+	const { btoa } = require$$0$2;
 
 	/** @type {PropertyDescriptor} */
 	const staticPropertyDescriptors = {
@@ -21384,12 +21393,12 @@ function requireCachestorage () {
 	return cachestorage;
 }
 
-var constants$1;
-var hasRequiredConstants$1;
+var constants$2;
+var hasRequiredConstants$2;
 
-function requireConstants$1 () {
-	if (hasRequiredConstants$1) return constants$1;
-	hasRequiredConstants$1 = 1;
+function requireConstants$2 () {
+	if (hasRequiredConstants$2) return constants$2;
+	hasRequiredConstants$2 = 1;
 
 	// https://wicg.github.io/cookie-store/#cookie-maximum-attribute-value-size
 	const maxAttributeValueSize = 1024;
@@ -21397,11 +21406,11 @@ function requireConstants$1 () {
 	// https://wicg.github.io/cookie-store/#cookie-maximum-name-value-pair-size
 	const maxNameValuePairSize = 4096;
 
-	constants$1 = {
+	constants$2 = {
 	  maxAttributeValueSize,
 	  maxNameValuePairSize
 	};
-	return constants$1;
+	return constants$2;
 }
 
 var util$1;
@@ -21686,14 +21695,14 @@ function requireUtil$1 () {
 	return util$1;
 }
 
-var parse;
-var hasRequiredParse;
+var parse$1;
+var hasRequiredParse$1;
 
-function requireParse () {
-	if (hasRequiredParse) return parse;
-	hasRequiredParse = 1;
+function requireParse$1 () {
+	if (hasRequiredParse$1) return parse$1;
+	hasRequiredParse$1 = 1;
 
-	const { maxNameValuePairSize, maxAttributeValueSize } = requireConstants$1();
+	const { maxNameValuePairSize, maxAttributeValueSize } = requireConstants$2();
 	const { isCTLExcludingHtab } = requireUtil$1();
 	const { collectASequenceOfCodePointsFast } = requireDataURL();
 	const assert = require$$0$3;
@@ -22004,11 +22013,11 @@ function requireParse () {
 	  return parseUnparsedAttributes(unparsedAttributes, cookieAttributeList)
 	}
 
-	parse = {
+	parse$1 = {
 	  parseSetCookie,
 	  parseUnparsedAttributes
 	};
-	return parse;
+	return parse$1;
 }
 
 var cookies;
@@ -22018,7 +22027,7 @@ function requireCookies () {
 	if (hasRequiredCookies) return cookies;
 	hasRequiredCookies = 1;
 
-	const { parseSetCookie } = requireParse();
+	const { parseSetCookie } = requireParse$1();
 	const { stringify } = requireUtil$1();
 	const { webidl } = requireWebidl();
 	const { Headers } = requireHeaders();
@@ -22202,12 +22211,12 @@ function requireCookies () {
 	return cookies;
 }
 
-var constants;
-var hasRequiredConstants;
+var constants$1;
+var hasRequiredConstants$1;
 
-function requireConstants () {
-	if (hasRequiredConstants) return constants;
-	hasRequiredConstants = 1;
+function requireConstants$1 () {
+	if (hasRequiredConstants$1) return constants$1;
+	hasRequiredConstants$1 = 1;
 
 	// This is a Globally Unique Identifier unique used
 	// to validate that the endpoint accepts websocket
@@ -22249,7 +22258,7 @@ function requireConstants () {
 
 	const emptyBuffer = Buffer.allocUnsafe(0);
 
-	constants = {
+	constants$1 = {
 	  uid,
 	  staticPropertyDescriptors,
 	  states,
@@ -22258,7 +22267,7 @@ function requireConstants () {
 	  parserStates,
 	  emptyBuffer
 	};
-	return constants;
+	return constants$1;
 }
 
 var symbols;
@@ -22600,7 +22609,7 @@ function requireUtil () {
 	hasRequiredUtil = 1;
 
 	const { kReadyState, kController, kResponse, kBinaryType, kWebSocketURL } = requireSymbols();
-	const { states, opcodes } = requireConstants();
+	const { states, opcodes } = requireConstants$1();
 	const { MessageEvent, ErrorEvent } = requireEvents();
 
 	/* globals Blob */
@@ -22808,7 +22817,7 @@ function requireConnection () {
 	hasRequiredConnection = 1;
 
 	const diagnosticsChannel = require$$0$9;
-	const { uid, states } = requireConstants();
+	const { uid, states } = requireConstants$1();
 	const {
 	  kReadyState,
 	  kSentClose,
@@ -23106,7 +23115,7 @@ function requireFrame () {
 	if (hasRequiredFrame) return frame;
 	hasRequiredFrame = 1;
 
-	const { maxUnsigned16Bit } = requireConstants();
+	const { maxUnsigned16Bit } = requireConstants$1();
 
 	/** @type {import('crypto')} */
 	let crypto;
@@ -23189,7 +23198,7 @@ function requireReceiver () {
 
 	const { Writable } = require$$0$5;
 	const diagnosticsChannel = require$$0$9;
-	const { parserStates, opcodes, states, emptyBuffer } = requireConstants();
+	const { parserStates, opcodes, states, emptyBuffer } = requireConstants$1();
 	const { kReadyState, kSentClose, kResponse, kReceivedClose } = requireSymbols();
 	const { isValidStatusCode, failWebsocketConnection, websocketMessageReceived } = requireUtil();
 	const { WebsocketFrameSend } = requireFrame();
@@ -23540,10 +23549,10 @@ function requireWebsocket () {
 	hasRequiredWebsocket = 1;
 
 	const { webidl } = requireWebidl();
-	const { DOMException } = requireConstants$3();
+	const { DOMException } = requireConstants$4();
 	const { URLSerializer } = requireDataURL();
 	const { getGlobalOrigin } = requireGlobal$1();
-	const { staticPropertyDescriptors, states, opcodes, emptyBuffer } = requireConstants();
+	const { staticPropertyDescriptors, states, opcodes, emptyBuffer } = requireConstants$1();
 	const {
 	  kWebSocketURL,
 	  kReadyState,
@@ -23559,7 +23568,7 @@ function requireWebsocket () {
 	const { ByteParser } = requireReceiver();
 	const { kEnumerableProperty, isBlobLike } = requireUtil$6();
 	const { getGlobalDispatcher } = requireGlobal();
-	const { types } = require$$0$2;
+	const { types } = require$$0$1;
 
 	let experimentalWarned = false;
 
@@ -24392,8 +24401,8 @@ function requireLib () {
 	};
 	Object.defineProperty(lib, "__esModule", { value: true });
 	lib.HttpClient = lib.isHttps = lib.HttpClientResponse = lib.HttpClientError = lib.getProxyUrl = lib.MediaTypes = lib.Headers = lib.HttpCodes = void 0;
-	const http = __importStar(require$$2);
-	const https = __importStar(require$$3);
+	const http$1 = __importStar(http);
+	const https$1 = __importStar(https);
 	const pm = __importStar(requireProxy());
 	const tunnel = __importStar(requireTunnel());
 	const undici_1 = requireUndici();
@@ -24817,7 +24826,7 @@ function requireLib () {
 	        const info = {};
 	        info.parsedUrl = requestUrl;
 	        const usingSsl = info.parsedUrl.protocol === 'https:';
-	        info.httpModule = usingSsl ? https : http;
+	        info.httpModule = usingSsl ? https$1 : http$1;
 	        const defaultPort = usingSsl ? 443 : 80;
 	        info.options = {};
 	        info.options.host = info.parsedUrl.hostname;
@@ -24870,7 +24879,7 @@ function requireLib () {
 	        const usingSsl = parsedUrl.protocol === 'https:';
 	        let maxSockets = 100;
 	        if (this.requestOptions) {
-	            maxSockets = this.requestOptions.maxSockets || http.globalAgent.maxSockets;
+	            maxSockets = this.requestOptions.maxSockets || http$1.globalAgent.maxSockets;
 	        }
 	        // This is `useProxy` again, but we need to check `proxyURl` directly for TypeScripts's flow analysis.
 	        if (proxyUrl && proxyUrl.hostname) {
@@ -24895,7 +24904,7 @@ function requireLib () {
 	        // if tunneling agent isn't assigned create a new agent
 	        if (!agent) {
 	            const options = { keepAlive: this._keepAlive, maxSockets };
-	            agent = usingSsl ? new https.Agent(options) : new http.Agent(options);
+	            agent = usingSsl ? new https$1.Agent(options) : new http$1.Agent(options);
 	            this._agent = agent;
 	        }
 	        if (usingSsl && this._ignoreSslError) {
@@ -25511,7 +25520,7 @@ function requirePathUtils () {
 	};
 	Object.defineProperty(pathUtils, "__esModule", { value: true });
 	pathUtils.toPlatformPath = pathUtils.toWin32Path = pathUtils.toPosixPath = void 0;
-	const path = __importStar(require$$1$5);
+	const path = __importStar(require$$1$4);
 	/**
 	 * toPosixPath converts the given path to the posix form. On Windows, \\ will be
 	 * replaced with /.
@@ -25598,7 +25607,7 @@ function requireIoUtil () {
 		Object.defineProperty(exports$1, "__esModule", { value: true });
 		exports$1.getCmdPath = exports$1.tryGetExecutablePath = exports$1.isRooted = exports$1.isDirectory = exports$1.exists = exports$1.READONLY = exports$1.UV_FS_O_EXLOCK = exports$1.IS_WINDOWS = exports$1.unlink = exports$1.symlink = exports$1.stat = exports$1.rmdir = exports$1.rm = exports$1.rename = exports$1.readlink = exports$1.readdir = exports$1.open = exports$1.mkdir = exports$1.lstat = exports$1.copyFile = exports$1.chmod = void 0;
 		const fs = __importStar(require$$1);
-		const path = __importStar(require$$1$5);
+		const path = __importStar(require$$1$4);
 		_a = fs.promises
 		// export const {open} = 'fs'
 		, exports$1.chmod = _a.chmod, exports$1.copyFile = _a.copyFile, exports$1.lstat = _a.lstat, exports$1.mkdir = _a.mkdir, exports$1.open = _a.open, exports$1.readdir = _a.readdir, exports$1.readlink = _a.readlink, exports$1.rename = _a.rename, exports$1.rm = _a.rm, exports$1.rmdir = _a.rmdir, exports$1.stat = _a.stat, exports$1.symlink = _a.symlink, exports$1.unlink = _a.unlink;
@@ -25788,7 +25797,7 @@ function requireIo () {
 	Object.defineProperty(io, "__esModule", { value: true });
 	io.findInPath = io.which = io.mkdirP = io.rmRF = io.mv = io.cp = void 0;
 	const assert_1 = require$$0$3;
-	const path = __importStar(require$$1$5);
+	const path = __importStar(require$$1$4);
 	const ioUtil = __importStar(requireIoUtil());
 	/**
 	 * Copies a file or folder.
@@ -26095,8 +26104,8 @@ function requireToolrunner () {
 	toolrunner.argStringToArray = toolrunner.ToolRunner = void 0;
 	const os = __importStar(require$$0);
 	const events = __importStar(require$$4);
-	const child = __importStar(require$$2$2);
-	const path = __importStar(require$$1$5);
+	const child = __importStar(child_process);
+	const path = __importStar(require$$1$4);
 	const io = __importStar(requireIo());
 	const ioUtil = __importStar(requireIoUtil());
 	const timers_1 = require$$6$1;
@@ -26940,7 +26949,7 @@ function requireCore () {
 		const file_command_1 = requireFileCommand();
 		const utils_1 = requireUtils$1();
 		const os = __importStar(require$$0);
-		const path = __importStar(require$$1$5);
+		const path = __importStar(require$$1$4);
 		const oidc_utils_1 = requireOidcUtils();
 		/**
 		 * The code to exit an action
@@ -27251,10 +27260,25632 @@ function requireCore () {
 
 var coreExports = requireCore();
 
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+/**
+ * Current version of the `@azure/identity` package.
+ */
+const SDK_VERSION$1 = `4.13.0`;
+/**
+ * The default client ID for authentication
+ * @internal
+ */
+// TODO: temporary - this is the Azure CLI clientID - we'll replace it when
+// Developer Sign On application is available
+// https://github.com/Azure/azure-sdk-for-net/blob/main/sdk/identity/Azure.Identity/src/Constants.cs#L9
+const DeveloperSignOnClientId = "04b07795-8ddb-461a-bbee-02f9e1bf7b46";
+/**
+ * The default tenant for authentication
+ * @internal
+ */
+const DefaultTenantId = "common";
+/**
+ * A list of known Azure authority hosts
+ */
+var AzureAuthorityHosts;
+(function (AzureAuthorityHosts) {
+    /**
+     * China-based Azure Authority Host
+     */
+    AzureAuthorityHosts["AzureChina"] = "https://login.chinacloudapi.cn";
+    /**
+     * Germany-based Azure Authority Host
+     *
+     * @deprecated Microsoft Cloud Germany was closed on October 29th, 2021.
+     *
+     * */
+    AzureAuthorityHosts["AzureGermany"] = "https://login.microsoftonline.de";
+    /**
+     * US Government Azure Authority Host
+     */
+    AzureAuthorityHosts["AzureGovernment"] = "https://login.microsoftonline.us";
+    /**
+     * Public Cloud Azure Authority Host
+     */
+    AzureAuthorityHosts["AzurePublicCloud"] = "https://login.microsoftonline.com";
+})(AzureAuthorityHosts || (AzureAuthorityHosts = {}));
+/**
+ * @internal
+ * The default authority host.
+ */
+const DefaultAuthorityHost = AzureAuthorityHosts.AzurePublicCloud;
+/**
+ * @internal
+ * The default environment host for Azure Public Cloud
+ */
+const DefaultAuthority = "login.microsoftonline.com";
+/**
+ * @internal
+ * Allow acquiring tokens for any tenant for multi-tentant auth.
+ */
+const ALL_TENANTS = ["*"];
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+/**
+ * The current native broker provider, undefined by default.
+ * @internal
+ */
+let nativeBrokerInfo = undefined;
+/**
+ * The current VSCode broker, undefined by default.
+ * @internal
+ */
+let vsCodeBrokerInfo = undefined;
+/**
+ * Configures plugins, validating that required plugins are available and enabled.
+ *
+ * Does not create the plugins themselves, but rather returns the configuration that will be used to create them.
+ *
+ * @param options - options for creating the MSAL client
+ * @returns plugin configuration
+ */
+function generatePluginConfiguration(options) {
+    const config = {
+        cache: {},
+        broker: {
+            ...options.brokerOptions,
+            isEnabled: options.brokerOptions?.enabled ?? false,
+            enableMsaPassthrough: options.brokerOptions?.legacyEnableMsaPassthrough ?? false,
+        },
+    };
+    if (options.tokenCachePersistenceOptions?.enabled) {
+        {
+            throw new Error([
+                "Persistent token caching was requested, but no persistence provider was configured.",
+                "You must install the identity-cache-persistence plugin package (`npm install --save @azure/identity-cache-persistence`)",
+                "and enable it by importing `useIdentityPlugin` from `@azure/identity` and calling",
+                "`useIdentityPlugin(cachePersistencePlugin)` before using `tokenCachePersistenceOptions`.",
+            ].join(" "));
+        }
+    }
+    if (options.brokerOptions?.enabled) {
+        config.broker.nativeBrokerPlugin = getBrokerPlugin(options.isVSCodeCredential || false);
+    }
+    return config;
+}
+// Broker error message templates with variables for credential and package names
+const brokerErrorTemplates = {
+    missing: (credentialName, packageName, pluginVar) => [
+        `${credentialName} was requested, but no plugin was configured or no authentication record was found.`,
+        `You must install the ${packageName} plugin package (npm install --save ${packageName})`,
+        "and enable it by importing `useIdentityPlugin` from `@azure/identity` and calling",
+        `useIdentityPlugin(${pluginVar}) before using enableBroker.`,
+    ].join(" "),
+    unavailable: (credentialName, packageName) => [
+        `${credentialName} was requested, and the plugin is configured, but the broker is unavailable.`,
+        `Ensure the ${credentialName} plugin is properly installed and configured.`,
+        "Check for missing native dependencies and ensure the package is properly installed.",
+        `See the README for prerequisites on installing and using ${packageName}.`,
+    ].join(" "),
+};
+// Values for VSCode and native broker configurations for error message
+const brokerConfig = {
+    vsCode: {
+        credentialName: "Visual Studio Code Credential",
+        packageName: "@azure/identity-vscode",
+        pluginVar: "vsCodePlugin",
+        get brokerInfo() {
+            return vsCodeBrokerInfo;
+        },
+    },
+    native: {
+        credentialName: "Broker for WAM",
+        packageName: "@azure/identity-broker",
+        pluginVar: "nativeBrokerPlugin",
+        get brokerInfo() {
+            return nativeBrokerInfo;
+        },
+    },
+};
+/**
+ * Set appropriate broker plugin based on whether VSCode or native broker is requested.
+ * @param isVSCodePlugin - true for VSCode broker, false for native broker
+ * @returns the broker plugin if available
+ */
+function getBrokerPlugin(isVSCodePlugin) {
+    const { credentialName, packageName, pluginVar, brokerInfo } = brokerConfig[isVSCodePlugin ? "vsCode" : "native"];
+    if (brokerInfo === undefined) {
+        throw new Error(brokerErrorTemplates.missing(credentialName, packageName, pluginVar));
+    }
+    if (brokerInfo.broker.isBrokerAvailable === false) {
+        throw new Error(brokerErrorTemplates.unavailable(credentialName, packageName));
+    }
+    return brokerInfo.broker;
+}
+/**
+ * Wraps generatePluginConfiguration as a writeable property for test stubbing purposes.
+ */
+const msalPlugins = {
+    generatePluginConfiguration,
+};
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+function isErrorResponse(errorResponse) {
+    return (errorResponse &&
+        typeof errorResponse.error === "string" &&
+        typeof errorResponse.error_description === "string");
+}
+/**
+ * The Error.name value of an CredentialUnavailable
+ */
+const CredentialUnavailableErrorName = "CredentialUnavailableError";
+/**
+ * This signifies that the credential that was tried in a chained credential
+ * was not available to be used as the credential. Rather than treating this as
+ * an error that should halt the chain, it's caught and the chain continues
+ */
+class CredentialUnavailableError extends Error {
+    constructor(message, options) {
+        super(message, options);
+        this.name = CredentialUnavailableErrorName;
+    }
+}
+/**
+ * The Error.name value of an AuthenticationError
+ */
+const AuthenticationErrorName = "AuthenticationError";
+/**
+ * Provides details about a failure to authenticate with Azure Active
+ * Directory.  The `errorResponse` field contains more details about
+ * the specific failure.
+ */
+class AuthenticationError extends Error {
+    /**
+     * The HTTP status code returned from the authentication request.
+     */
+    statusCode;
+    /**
+     * The error response details.
+     */
+    errorResponse;
+    constructor(statusCode, errorBody, options) {
+        let errorResponse = {
+            error: "unknown",
+            errorDescription: "An unknown error occurred and no additional details are available.",
+        };
+        if (isErrorResponse(errorBody)) {
+            errorResponse = convertOAuthErrorResponseToErrorResponse(errorBody);
+        }
+        else if (typeof errorBody === "string") {
+            try {
+                // Most error responses will contain JSON-formatted error details
+                // in the response body
+                const oauthErrorResponse = JSON.parse(errorBody);
+                errorResponse = convertOAuthErrorResponseToErrorResponse(oauthErrorResponse);
+            }
+            catch (e) {
+                if (statusCode === 400) {
+                    errorResponse = {
+                        error: "invalid_request",
+                        errorDescription: `The service indicated that the request was invalid.\n\n${errorBody}`,
+                    };
+                }
+                else {
+                    errorResponse = {
+                        error: "unknown_error",
+                        errorDescription: `An unknown error has occurred. Response body:\n\n${errorBody}`,
+                    };
+                }
+            }
+        }
+        else {
+            errorResponse = {
+                error: "unknown_error",
+                errorDescription: "An unknown error occurred and no additional details are available.",
+            };
+        }
+        super(`${errorResponse.error} Status code: ${statusCode}\nMore details:\n${errorResponse.errorDescription},`, options);
+        this.statusCode = statusCode;
+        this.errorResponse = errorResponse;
+        // Ensure that this type reports the correct name
+        this.name = AuthenticationErrorName;
+    }
+}
+function convertOAuthErrorResponseToErrorResponse(errorBody) {
+    return {
+        error: errorBody.error,
+        errorDescription: errorBody.error_description,
+        correlationId: errorBody.correlation_id,
+        errorCodes: errorBody.error_codes,
+        timestamp: errorBody.timestamp,
+        traceId: errorBody.trace_id,
+    };
+}
+/**
+ * Error used to enforce authentication after trying to retrieve a token silently.
+ */
+class AuthenticationRequiredError extends Error {
+    /**
+     * The list of scopes for which the token will have access.
+     */
+    scopes;
+    /**
+     * The options passed to the getToken request.
+     */
+    getTokenOptions;
+    constructor(
+    /**
+     * Optional parameters. A message can be specified. The {@link GetTokenOptions} of the request can also be specified to more easily associate the error with the received parameters.
+     */
+    options) {
+        super(options.message, options.cause ? { cause: options.cause } : undefined);
+        this.scopes = options.scopes;
+        this.getTokenOptions = options.getTokenOptions;
+        this.name = "AuthenticationRequiredError";
+    }
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+function log(message, ...args) {
+    process$1.stderr.write(`${require$$1$2.format(message, ...args)}${EOL$1}`);
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+const debugEnvVariable = (typeof process !== "undefined" && process.env && process.env.DEBUG) || undefined;
+let enabledString;
+let enabledNamespaces = [];
+let skippedNamespaces = [];
+const debuggers = [];
+if (debugEnvVariable) {
+    enable(debugEnvVariable);
+}
+const debugObj = Object.assign((namespace) => {
+    return createDebugger(namespace);
+}, {
+    enable,
+    enabled,
+    disable,
+    log,
+});
+function enable(namespaces) {
+    enabledString = namespaces;
+    enabledNamespaces = [];
+    skippedNamespaces = [];
+    const namespaceList = namespaces.split(",").map((ns) => ns.trim());
+    for (const ns of namespaceList) {
+        if (ns.startsWith("-")) {
+            skippedNamespaces.push(ns.substring(1));
+        }
+        else {
+            enabledNamespaces.push(ns);
+        }
+    }
+    for (const instance of debuggers) {
+        instance.enabled = enabled(instance.namespace);
+    }
+}
+function enabled(namespace) {
+    if (namespace.endsWith("*")) {
+        return true;
+    }
+    for (const skipped of skippedNamespaces) {
+        if (namespaceMatches(namespace, skipped)) {
+            return false;
+        }
+    }
+    for (const enabledNamespace of enabledNamespaces) {
+        if (namespaceMatches(namespace, enabledNamespace)) {
+            return true;
+        }
+    }
+    return false;
+}
+/**
+ * Given a namespace, check if it matches a pattern.
+ * Patterns only have a single wildcard character which is *.
+ * The behavior of * is that it matches zero or more other characters.
+ */
+function namespaceMatches(namespace, patternToMatch) {
+    // simple case, no pattern matching required
+    if (patternToMatch.indexOf("*") === -1) {
+        return namespace === patternToMatch;
+    }
+    let pattern = patternToMatch;
+    // normalize successive * if needed
+    if (patternToMatch.indexOf("**") !== -1) {
+        const patternParts = [];
+        let lastCharacter = "";
+        for (const character of patternToMatch) {
+            if (character === "*" && lastCharacter === "*") {
+                continue;
+            }
+            else {
+                lastCharacter = character;
+                patternParts.push(character);
+            }
+        }
+        pattern = patternParts.join("");
+    }
+    let namespaceIndex = 0;
+    let patternIndex = 0;
+    const patternLength = pattern.length;
+    const namespaceLength = namespace.length;
+    let lastWildcard = -1;
+    let lastWildcardNamespace = -1;
+    while (namespaceIndex < namespaceLength && patternIndex < patternLength) {
+        if (pattern[patternIndex] === "*") {
+            lastWildcard = patternIndex;
+            patternIndex++;
+            if (patternIndex === patternLength) {
+                // if wildcard is the last character, it will match the remaining namespace string
+                return true;
+            }
+            // now we let the wildcard eat characters until we match the next literal in the pattern
+            while (namespace[namespaceIndex] !== pattern[patternIndex]) {
+                namespaceIndex++;
+                // reached the end of the namespace without a match
+                if (namespaceIndex === namespaceLength) {
+                    return false;
+                }
+            }
+            // now that we have a match, let's try to continue on
+            // however, it's possible we could find a later match
+            // so keep a reference in case we have to backtrack
+            lastWildcardNamespace = namespaceIndex;
+            namespaceIndex++;
+            patternIndex++;
+            continue;
+        }
+        else if (pattern[patternIndex] === namespace[namespaceIndex]) {
+            // simple case: literal pattern matches so keep going
+            patternIndex++;
+            namespaceIndex++;
+        }
+        else if (lastWildcard >= 0) {
+            // special case: we don't have a literal match, but there is a previous wildcard
+            // which we can backtrack to and try having the wildcard eat the match instead
+            patternIndex = lastWildcard + 1;
+            namespaceIndex = lastWildcardNamespace + 1;
+            // we've reached the end of the namespace without a match
+            if (namespaceIndex === namespaceLength) {
+                return false;
+            }
+            // similar to the previous logic, let's keep going until we find the next literal match
+            while (namespace[namespaceIndex] !== pattern[patternIndex]) {
+                namespaceIndex++;
+                if (namespaceIndex === namespaceLength) {
+                    return false;
+                }
+            }
+            lastWildcardNamespace = namespaceIndex;
+            namespaceIndex++;
+            patternIndex++;
+            continue;
+        }
+        else {
+            return false;
+        }
+    }
+    const namespaceDone = namespaceIndex === namespace.length;
+    const patternDone = patternIndex === pattern.length;
+    // this is to detect the case of an unneeded final wildcard
+    // e.g. the pattern `ab*` should match the string `ab`
+    const trailingWildCard = patternIndex === pattern.length - 1 && pattern[patternIndex] === "*";
+    return namespaceDone && (patternDone || trailingWildCard);
+}
+function disable() {
+    const result = enabledString || "";
+    enable("");
+    return result;
+}
+function createDebugger(namespace) {
+    const newDebugger = Object.assign(debug, {
+        enabled: enabled(namespace),
+        destroy,
+        log: debugObj.log,
+        namespace,
+        extend,
+    });
+    function debug(...args) {
+        if (!newDebugger.enabled) {
+            return;
+        }
+        if (args.length > 0) {
+            args[0] = `${namespace} ${args[0]}`;
+        }
+        newDebugger.log(...args);
+    }
+    debuggers.push(newDebugger);
+    return newDebugger;
+}
+function destroy() {
+    const index = debuggers.indexOf(this);
+    if (index >= 0) {
+        debuggers.splice(index, 1);
+        return true;
+    }
+    return false;
+}
+function extend(namespace) {
+    const newDebugger = createDebugger(`${this.namespace}:${namespace}`);
+    newDebugger.log = this.log;
+    return newDebugger;
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+const TYPESPEC_RUNTIME_LOG_LEVELS = ["verbose", "info", "warning", "error"];
+const levelMap = {
+    verbose: 400,
+    info: 300,
+    warning: 200,
+    error: 100,
+};
+function patchLogMethod(parent, child) {
+    child.log = (...args) => {
+        parent.log(...args);
+    };
+}
+function isTypeSpecRuntimeLogLevel(level) {
+    return TYPESPEC_RUNTIME_LOG_LEVELS.includes(level);
+}
+/**
+ * Creates a logger context base on the provided options.
+ * @param options - The options for creating a logger context.
+ * @returns The logger context.
+ */
+function createLoggerContext(options) {
+    const registeredLoggers = new Set();
+    const logLevelFromEnv = (typeof process !== "undefined" && process.env && process.env[options.logLevelEnvVarName]) ||
+        undefined;
+    let logLevel;
+    const clientLogger = debugObj(options.namespace);
+    clientLogger.log = (...args) => {
+        debugObj.log(...args);
+    };
+    function contextSetLogLevel(level) {
+        if (level && !isTypeSpecRuntimeLogLevel(level)) {
+            throw new Error(`Unknown log level '${level}'. Acceptable values: ${TYPESPEC_RUNTIME_LOG_LEVELS.join(",")}`);
+        }
+        logLevel = level;
+        const enabledNamespaces = [];
+        for (const logger of registeredLoggers) {
+            if (shouldEnable(logger)) {
+                enabledNamespaces.push(logger.namespace);
+            }
+        }
+        debugObj.enable(enabledNamespaces.join(","));
+    }
+    if (logLevelFromEnv) {
+        // avoid calling setLogLevel because we don't want a mis-set environment variable to crash
+        if (isTypeSpecRuntimeLogLevel(logLevelFromEnv)) {
+            contextSetLogLevel(logLevelFromEnv);
+        }
+        else {
+            console.error(`${options.logLevelEnvVarName} set to unknown log level '${logLevelFromEnv}'; logging is not enabled. Acceptable values: ${TYPESPEC_RUNTIME_LOG_LEVELS.join(", ")}.`);
+        }
+    }
+    function shouldEnable(logger) {
+        return Boolean(logLevel && levelMap[logger.level] <= levelMap[logLevel]);
+    }
+    function createLogger(parent, level) {
+        const logger = Object.assign(parent.extend(level), {
+            level,
+        });
+        patchLogMethod(parent, logger);
+        if (shouldEnable(logger)) {
+            const enabledNamespaces = debugObj.disable();
+            debugObj.enable(enabledNamespaces + "," + logger.namespace);
+        }
+        registeredLoggers.add(logger);
+        return logger;
+    }
+    function contextGetLogLevel() {
+        return logLevel;
+    }
+    function contextCreateClientLogger(namespace) {
+        const clientRootLogger = clientLogger.extend(namespace);
+        patchLogMethod(clientLogger, clientRootLogger);
+        return {
+            error: createLogger(clientRootLogger, "error"),
+            warning: createLogger(clientRootLogger, "warning"),
+            info: createLogger(clientRootLogger, "info"),
+            verbose: createLogger(clientRootLogger, "verbose"),
+        };
+    }
+    return {
+        setLogLevel: contextSetLogLevel,
+        getLogLevel: contextGetLogLevel,
+        createClientLogger: contextCreateClientLogger,
+        logger: clientLogger,
+    };
+}
+const context$1 = createLoggerContext({
+    logLevelEnvVarName: "TYPESPEC_RUNTIME_LOG_LEVEL",
+    namespace: "typeSpecRuntime",
+});
+/**
+ * Creates a logger for use by the SDKs that inherits from `TypeSpecRuntimeLogger`.
+ * @param namespace - The name of the SDK package.
+ * @hidden
+ */
+function createClientLogger$1(namespace) {
+    return context$1.createClientLogger(namespace);
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+const context = createLoggerContext({
+    logLevelEnvVarName: "AZURE_LOG_LEVEL",
+    namespace: "azure",
+});
+/**
+ * Retrieves the currently specified log level.
+ */
+function getLogLevel() {
+    return context.getLogLevel();
+}
+/**
+ * Creates a logger for use by the Azure SDKs that inherits from `AzureLogger`.
+ * @param namespace - The name of the SDK package.
+ * @hidden
+ */
+function createClientLogger(namespace) {
+    return context.createClientLogger(namespace);
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+/**
+ * The AzureLogger used for all clients within the identity package
+ */
+const logger$5 = createClientLogger("identity");
+/**
+ * Formatting the success event on the credentials
+ */
+function formatSuccess(scope) {
+    return `SUCCESS. Scopes: ${Array.isArray(scope) ? scope.join(", ") : scope}.`;
+}
+/**
+ * Formatting the success event on the credentials
+ */
+function formatError(scope, error) {
+    let message = "ERROR.";
+    if (scope?.length) {
+        message += ` Scopes: ${Array.isArray(scope) ? scope.join(", ") : scope}.`;
+    }
+    return `${message} Error message: ${typeof error === "string" ? error : error.message}.`;
+}
+/**
+ * Generates a CredentialLoggerInstance.
+ *
+ * It logs with the format:
+ *
+ *   `[title] => [message]`
+ *
+ */
+function credentialLoggerInstance(title, parent, log = logger$5) {
+    const fullTitle = parent ? `${parent.fullTitle} ${title}` : title;
+    function info(message) {
+        log.info(`${fullTitle} =>`, message);
+    }
+    function warning(message) {
+        log.warning(`${fullTitle} =>`, message);
+    }
+    function verbose(message) {
+        log.verbose(`${fullTitle} =>`, message);
+    }
+    function error(message) {
+        log.error(`${fullTitle} =>`, message);
+    }
+    return {
+        title,
+        fullTitle,
+        info,
+        warning,
+        verbose,
+        error,
+    };
+}
+/**
+ * Generates a CredentialLogger, which is a logger declared at the credential's constructor, and used at any point in the credential.
+ * It has all the properties of a CredentialLoggerInstance, plus other logger instances, one per method.
+ *
+ * It logs with the format:
+ *
+ *   `[title] => [message]`
+ *   `[title] => getToken() => [message]`
+ *
+ */
+function credentialLogger(title, log = logger$5) {
+    const credLogger = credentialLoggerInstance(title, undefined, log);
+    return {
+        ...credLogger,
+        parent: log,
+        getToken: credentialLoggerInstance("=> getToken()", credLogger, log),
+    };
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+/** @internal */
+const knownContextKeys = {
+    span: Symbol.for("@azure/core-tracing span"),
+    namespace: Symbol.for("@azure/core-tracing namespace"),
+};
+/**
+ * Creates a new {@link TracingContext} with the given options.
+ * @param options - A set of known keys that may be set on the context.
+ * @returns A new {@link TracingContext} with the given options.
+ *
+ * @internal
+ */
+function createTracingContext(options = {}) {
+    let context = new TracingContextImpl(options.parentContext);
+    if (options.span) {
+        context = context.setValue(knownContextKeys.span, options.span);
+    }
+    if (options.namespace) {
+        context = context.setValue(knownContextKeys.namespace, options.namespace);
+    }
+    return context;
+}
+/** @internal */
+class TracingContextImpl {
+    _contextMap;
+    constructor(initialContext) {
+        this._contextMap =
+            initialContext instanceof TracingContextImpl
+                ? new Map(initialContext._contextMap)
+                : new Map();
+    }
+    setValue(key, value) {
+        const newContext = new TracingContextImpl(this);
+        newContext._contextMap.set(key, value);
+        return newContext;
+    }
+    getValue(key) {
+        return this._contextMap.get(key);
+    }
+    deleteValue(key) {
+        const newContext = new TracingContextImpl(this);
+        newContext._contextMap.delete(key);
+        return newContext;
+    }
+}
+
+var state$3 = {};
+
+var hasRequiredState$1;
+
+function requireState$1 () {
+	if (hasRequiredState$1) return state$3;
+	hasRequiredState$1 = 1;
+	// Copyright (c) Microsoft Corporation.
+	// Licensed under the MIT License.
+	Object.defineProperty(state$3, "__esModule", { value: true });
+	state$3.state = void 0;
+	/**
+	 * @internal
+	 *
+	 * Holds the singleton instrumenter, to be shared across CJS and ESM imports.
+	 */
+	state$3.state = {
+	    instrumenterImplementation: undefined,
+	};
+	
+	return state$3;
+}
+
+var stateExports$1 = requireState$1();
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+// @ts-expect-error The recommended approach to sharing module state between ESM and CJS.
+// See https://github.com/isaacs/tshy/blob/main/README.md#module-local-state for additional information.
+/**
+ * Defines the shared state between CJS and ESM by re-exporting the CJS state.
+ */
+const state$2 = stateExports$1.state;
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+function createDefaultTracingSpan() {
+    return {
+        end: () => {
+            // noop
+        },
+        isRecording: () => false,
+        recordException: () => {
+            // noop
+        },
+        setAttribute: () => {
+            // noop
+        },
+        setStatus: () => {
+            // noop
+        },
+        addEvent: () => {
+            // noop
+        },
+    };
+}
+function createDefaultInstrumenter() {
+    return {
+        createRequestHeaders: () => {
+            return {};
+        },
+        parseTraceparentHeader: () => {
+            return undefined;
+        },
+        startSpan: (_name, spanOptions) => {
+            return {
+                span: createDefaultTracingSpan(),
+                tracingContext: createTracingContext({ parentContext: spanOptions.tracingContext }),
+            };
+        },
+        withContext(_context, callback, ...callbackArgs) {
+            return callback(...callbackArgs);
+        },
+    };
+}
+/**
+ * Gets the currently set instrumenter, a No-Op instrumenter by default.
+ *
+ * @returns The currently set instrumenter
+ */
+function getInstrumenter() {
+    if (!state$2.instrumenterImplementation) {
+        state$2.instrumenterImplementation = createDefaultInstrumenter();
+    }
+    return state$2.instrumenterImplementation;
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+/**
+ * Creates a new tracing client.
+ *
+ * @param options - Options used to configure the tracing client.
+ * @returns - An instance of {@link TracingClient}.
+ */
+function createTracingClient(options) {
+    const { namespace, packageName, packageVersion } = options;
+    function startSpan(name, operationOptions, spanOptions) {
+        const startSpanResult = getInstrumenter().startSpan(name, {
+            ...spanOptions,
+            packageName: packageName,
+            packageVersion: packageVersion,
+            tracingContext: operationOptions?.tracingOptions?.tracingContext,
+        });
+        let tracingContext = startSpanResult.tracingContext;
+        const span = startSpanResult.span;
+        if (!tracingContext.getValue(knownContextKeys.namespace)) {
+            tracingContext = tracingContext.setValue(knownContextKeys.namespace, namespace);
+        }
+        span.setAttribute("az.namespace", tracingContext.getValue(knownContextKeys.namespace));
+        const updatedOptions = Object.assign({}, operationOptions, {
+            tracingOptions: { ...operationOptions?.tracingOptions, tracingContext },
+        });
+        return {
+            span,
+            updatedOptions,
+        };
+    }
+    async function withSpan(name, operationOptions, callback, spanOptions) {
+        const { span, updatedOptions } = startSpan(name, operationOptions, spanOptions);
+        try {
+            const result = await withContext(updatedOptions.tracingOptions.tracingContext, () => Promise.resolve(callback(updatedOptions, span)));
+            span.setStatus({ status: "success" });
+            return result;
+        }
+        catch (err) {
+            span.setStatus({ status: "error", error: err });
+            throw err;
+        }
+        finally {
+            span.end();
+        }
+    }
+    function withContext(context, callback, ...callbackArgs) {
+        return getInstrumenter().withContext(context, callback, ...callbackArgs);
+    }
+    /**
+     * Parses a traceparent header value into a span identifier.
+     *
+     * @param traceparentHeader - The traceparent header to parse.
+     * @returns An implementation-specific identifier for the span.
+     */
+    function parseTraceparentHeader(traceparentHeader) {
+        return getInstrumenter().parseTraceparentHeader(traceparentHeader);
+    }
+    /**
+     * Creates a set of request headers to propagate tracing information to a backend.
+     *
+     * @param tracingContext - The context containing the span to serialize.
+     * @returns The set of headers to add to a request.
+     */
+    function createRequestHeaders(tracingContext) {
+        return getInstrumenter().createRequestHeaders(tracingContext);
+    }
+    return {
+        startSpan,
+        withSpan,
+        withContext,
+        parseTraceparentHeader,
+        createRequestHeaders,
+    };
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+/**
+ * Creates a span using the global tracer.
+ * @internal
+ */
+const tracingClient = createTracingClient({
+    namespace: "Microsoft.AAD",
+    packageName: "@azure/identity",
+    packageVersion: SDK_VERSION$1,
+});
+
+/*! @azure/msal-node v3.8.3 2025-11-19 */
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ */
+/**
+ * This class serializes cache entities to be saved into in-memory object types defined internally
+ * @internal
+ */
+class Serializer {
+    /**
+     * serialize the JSON blob
+     * @param data - JSON blob cache
+     */
+    static serializeJSONBlob(data) {
+        return JSON.stringify(data);
+    }
+    /**
+     * Serialize Accounts
+     * @param accCache - cache of accounts
+     */
+    static serializeAccounts(accCache) {
+        const accounts = {};
+        Object.keys(accCache).map(function (key) {
+            const accountEntity = accCache[key];
+            accounts[key] = {
+                home_account_id: accountEntity.homeAccountId,
+                environment: accountEntity.environment,
+                realm: accountEntity.realm,
+                local_account_id: accountEntity.localAccountId,
+                username: accountEntity.username,
+                authority_type: accountEntity.authorityType,
+                name: accountEntity.name,
+                client_info: accountEntity.clientInfo,
+                last_modification_time: accountEntity.lastModificationTime,
+                last_modification_app: accountEntity.lastModificationApp,
+                tenantProfiles: accountEntity.tenantProfiles?.map((tenantProfile) => {
+                    return JSON.stringify(tenantProfile);
+                }),
+            };
+        });
+        return accounts;
+    }
+    /**
+     * Serialize IdTokens
+     * @param idTCache - cache of ID tokens
+     */
+    static serializeIdTokens(idTCache) {
+        const idTokens = {};
+        Object.keys(idTCache).map(function (key) {
+            const idTEntity = idTCache[key];
+            idTokens[key] = {
+                home_account_id: idTEntity.homeAccountId,
+                environment: idTEntity.environment,
+                credential_type: idTEntity.credentialType,
+                client_id: idTEntity.clientId,
+                secret: idTEntity.secret,
+                realm: idTEntity.realm,
+            };
+        });
+        return idTokens;
+    }
+    /**
+     * Serializes AccessTokens
+     * @param atCache - cache of access tokens
+     */
+    static serializeAccessTokens(atCache) {
+        const accessTokens = {};
+        Object.keys(atCache).map(function (key) {
+            const atEntity = atCache[key];
+            accessTokens[key] = {
+                home_account_id: atEntity.homeAccountId,
+                environment: atEntity.environment,
+                credential_type: atEntity.credentialType,
+                client_id: atEntity.clientId,
+                secret: atEntity.secret,
+                realm: atEntity.realm,
+                target: atEntity.target,
+                cached_at: atEntity.cachedAt,
+                expires_on: atEntity.expiresOn,
+                extended_expires_on: atEntity.extendedExpiresOn,
+                refresh_on: atEntity.refreshOn,
+                key_id: atEntity.keyId,
+                token_type: atEntity.tokenType,
+                requestedClaims: atEntity.requestedClaims,
+                requestedClaimsHash: atEntity.requestedClaimsHash,
+                userAssertionHash: atEntity.userAssertionHash,
+            };
+        });
+        return accessTokens;
+    }
+    /**
+     * Serialize refreshTokens
+     * @param rtCache - cache of refresh tokens
+     */
+    static serializeRefreshTokens(rtCache) {
+        const refreshTokens = {};
+        Object.keys(rtCache).map(function (key) {
+            const rtEntity = rtCache[key];
+            refreshTokens[key] = {
+                home_account_id: rtEntity.homeAccountId,
+                environment: rtEntity.environment,
+                credential_type: rtEntity.credentialType,
+                client_id: rtEntity.clientId,
+                secret: rtEntity.secret,
+                family_id: rtEntity.familyId,
+                target: rtEntity.target,
+                realm: rtEntity.realm,
+            };
+        });
+        return refreshTokens;
+    }
+    /**
+     * Serialize amdtCache
+     * @param amdtCache - cache of app metadata
+     */
+    static serializeAppMetadata(amdtCache) {
+        const appMetadata = {};
+        Object.keys(amdtCache).map(function (key) {
+            const amdtEntity = amdtCache[key];
+            appMetadata[key] = {
+                client_id: amdtEntity.clientId,
+                environment: amdtEntity.environment,
+                family_id: amdtEntity.familyId,
+            };
+        });
+        return appMetadata;
+    }
+    /**
+     * Serialize the cache
+     * @param inMemCache - itemised cache read from the JSON
+     */
+    static serializeAllCache(inMemCache) {
+        return {
+            Account: this.serializeAccounts(inMemCache.accounts),
+            IdToken: this.serializeIdTokens(inMemCache.idTokens),
+            AccessToken: this.serializeAccessTokens(inMemCache.accessTokens),
+            RefreshToken: this.serializeRefreshTokens(inMemCache.refreshTokens),
+            AppMetadata: this.serializeAppMetadata(inMemCache.appMetadata),
+        };
+    }
+}
+
+/*! @azure/msal-common v15.13.2 2025-11-19 */
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ */
+const Constants$1 = {
+    LIBRARY_NAME: "MSAL.JS",
+    SKU: "msal.js.common",
+    // default authority
+    DEFAULT_AUTHORITY: "https://login.microsoftonline.com/common/",
+    DEFAULT_AUTHORITY_HOST: "login.microsoftonline.com",
+    DEFAULT_COMMON_TENANT: "common",
+    // ADFS String
+    ADFS: "adfs",
+    DSTS: "dstsv2",
+    // Default AAD Instance Discovery Endpoint
+    AAD_INSTANCE_DISCOVERY_ENDPT: "https://login.microsoftonline.com/common/discovery/instance?api-version=1.1&authorization_endpoint=",
+    // CIAM URL
+    CIAM_AUTH_URL: ".ciamlogin.com",
+    AAD_TENANT_DOMAIN_SUFFIX: ".onmicrosoft.com",
+    // Resource delimiter - used for certain cache entries
+    RESOURCE_DELIM: "|",
+    // Placeholder for non-existent account ids/objects
+    NO_ACCOUNT: "NO_ACCOUNT",
+    // Claims
+    CLAIMS: "claims",
+    // Consumer UTID
+    CONSUMER_UTID: "9188040d-6c67-4c5b-b112-36a304b66dad",
+    // Default scopes
+    OPENID_SCOPE: "openid",
+    PROFILE_SCOPE: "profile",
+    OFFLINE_ACCESS_SCOPE: "offline_access",
+    EMAIL_SCOPE: "email",
+    CODE_GRANT_TYPE: "authorization_code",
+    RT_GRANT_TYPE: "refresh_token",
+    S256_CODE_CHALLENGE_METHOD: "S256",
+    URL_FORM_CONTENT_TYPE: "application/x-www-form-urlencoded;charset=utf-8",
+    AUTHORIZATION_PENDING: "authorization_pending",
+    NOT_DEFINED: "not_defined",
+    EMPTY_STRING: "",
+    NOT_APPLICABLE: "N/A",
+    NOT_AVAILABLE: "Not Available",
+    FORWARD_SLASH: "/",
+    IMDS_ENDPOINT: "http://169.254.169.254/metadata/instance/compute/location",
+    IMDS_VERSION: "2020-06-01",
+    IMDS_TIMEOUT: 2000,
+    AZURE_REGION_AUTO_DISCOVER_FLAG: "TryAutoDetect",
+    REGIONAL_AUTH_PUBLIC_CLOUD_SUFFIX: "login.microsoft.com",
+    KNOWN_PUBLIC_CLOUDS: [
+        "login.microsoftonline.com",
+        "login.windows.net",
+        "login.microsoft.com",
+        "sts.windows.net",
+    ],
+    SHR_NONCE_VALIDITY: 240,
+    INVALID_INSTANCE: "invalid_instance",
+};
+const HttpStatus = {
+    SUCCESS: 200,
+    SUCCESS_RANGE_START: 200,
+    SUCCESS_RANGE_END: 299,
+    REDIRECT: 302,
+    CLIENT_ERROR: 400,
+    CLIENT_ERROR_RANGE_START: 400,
+    BAD_REQUEST: 400,
+    UNAUTHORIZED: 401,
+    NOT_FOUND: 404,
+    REQUEST_TIMEOUT: 408,
+    GONE: 410,
+    TOO_MANY_REQUESTS: 429,
+    CLIENT_ERROR_RANGE_END: 499,
+    SERVER_ERROR: 500,
+    SERVER_ERROR_RANGE_START: 500,
+    SERVICE_UNAVAILABLE: 503,
+    GATEWAY_TIMEOUT: 504,
+    SERVER_ERROR_RANGE_END: 599,
+    MULTI_SIDED_ERROR: 600,
+};
+const OIDC_DEFAULT_SCOPES = [
+    Constants$1.OPENID_SCOPE,
+    Constants$1.PROFILE_SCOPE,
+    Constants$1.OFFLINE_ACCESS_SCOPE,
+];
+const OIDC_SCOPES = [...OIDC_DEFAULT_SCOPES, Constants$1.EMAIL_SCOPE];
+/**
+ * Request header names
+ */
+const HeaderNames = {
+    CONTENT_TYPE: "Content-Type",
+    CONTENT_LENGTH: "Content-Length",
+    RETRY_AFTER: "Retry-After",
+    CCS_HEADER: "X-AnchorMailbox",
+    WWWAuthenticate: "WWW-Authenticate",
+    AuthenticationInfo: "Authentication-Info",
+    X_MS_REQUEST_ID: "x-ms-request-id",
+    X_MS_HTTP_VERSION: "x-ms-httpver",
+};
+/**
+ * String constants related to AAD Authority
+ */
+const AADAuthorityConstants = {
+    COMMON: "common",
+    ORGANIZATIONS: "organizations",
+    CONSUMERS: "consumers",
+};
+/**
+ * Claims request keys
+ */
+const ClaimsRequestKeys = {
+    ACCESS_TOKEN: "access_token",
+    XMS_CC: "xms_cc",
+};
+/**
+ * we considered making this "enum" in the request instead of string, however it looks like the allowed list of
+ * prompt values kept changing over past couple of years. There are some undocumented prompt values for some
+ * internal partners too, hence the choice of generic "string" type instead of the "enum"
+ */
+const PromptValue = {
+    SELECT_ACCOUNT: "select_account",
+    NONE: "none"};
+/**
+ * allowed values for codeVerifier
+ */
+const CodeChallengeMethodValues = {
+    PLAIN: "plain",
+    S256: "S256",
+};
+/**
+ * Allowed values for response_type
+ */
+const OAuthResponseType = {
+    CODE: "code",
+    IDTOKEN_TOKEN: "id_token token"};
+/**
+ * allowed values for response_mode
+ */
+const ResponseMode = {
+    QUERY: "query",
+    FRAGMENT: "fragment",
+    FORM_POST: "form_post",
+};
+/**
+ * allowed grant_type
+ */
+const GrantType = {
+    AUTHORIZATION_CODE_GRANT: "authorization_code",
+    CLIENT_CREDENTIALS_GRANT: "client_credentials",
+    RESOURCE_OWNER_PASSWORD_GRANT: "password",
+    REFRESH_TOKEN_GRANT: "refresh_token",
+    DEVICE_CODE_GRANT: "device_code",
+    JWT_BEARER: "urn:ietf:params:oauth:grant-type:jwt-bearer",
+};
+/**
+ * Account types in Cache
+ */
+const CacheAccountType = {
+    MSSTS_ACCOUNT_TYPE: "MSSTS",
+    ADFS_ACCOUNT_TYPE: "ADFS",
+    GENERIC_ACCOUNT_TYPE: "Generic", // NTLM, Kerberos, FBA, Basic etc
+};
+/**
+ * Separators used in cache
+ */
+const Separators = {
+    CACHE_KEY_SEPARATOR: "-",
+    CLIENT_INFO_SEPARATOR: ".",
+};
+/**
+ * Credential Type stored in the cache
+ */
+const CredentialType = {
+    ID_TOKEN: "IdToken",
+    ACCESS_TOKEN: "AccessToken",
+    ACCESS_TOKEN_WITH_AUTH_SCHEME: "AccessToken_With_AuthScheme",
+    REFRESH_TOKEN: "RefreshToken",
+};
+/**
+ * More Cache related constants
+ */
+const APP_METADATA = "appmetadata";
+const CLIENT_INFO = "client_info";
+const THE_FAMILY_ID = "1";
+const AUTHORITY_METADATA_CONSTANTS = {
+    CACHE_KEY: "authority-metadata",
+    REFRESH_TIME_SECONDS: 3600 * 24, // 24 Hours
+};
+const AuthorityMetadataSource = {
+    CONFIG: "config",
+    CACHE: "cache",
+    NETWORK: "network",
+    HARDCODED_VALUES: "hardcoded_values",
+};
+const SERVER_TELEM_CONSTANTS = {
+    SCHEMA_VERSION: 5,
+    MAX_LAST_HEADER_BYTES: 330,
+    MAX_CACHED_ERRORS: 50,
+    CACHE_KEY: "server-telemetry",
+    CATEGORY_SEPARATOR: "|",
+    VALUE_SEPARATOR: ",",
+    OVERFLOW_TRUE: "1",
+    OVERFLOW_FALSE: "0",
+    UNKNOWN_ERROR: "unknown_error",
+};
+/**
+ * Type of the authentication request
+ */
+const AuthenticationScheme = {
+    BEARER: "Bearer",
+    POP: "pop",
+    SSH: "ssh-cert",
+};
+/**
+ * Constants related to throttling
+ */
+const ThrottlingConstants = {
+    // Default time to throttle RequestThumbprint in seconds
+    DEFAULT_THROTTLE_TIME_SECONDS: 60,
+    // Default maximum time to throttle in seconds, overrides what the server sends back
+    DEFAULT_MAX_THROTTLE_TIME_SECONDS: 3600,
+    // Prefix for storing throttling entries
+    THROTTLING_PREFIX: "throttling",
+    // Value assigned to the x-ms-lib-capability header to indicate to the server the library supports throttling
+    X_MS_LIB_CAPABILITY_VALUE: "retry-after, h429",
+};
+const Errors = {
+    INVALID_GRANT_ERROR: "invalid_grant",
+    CLIENT_MISMATCH_ERROR: "client_mismatch",
+};
+/**
+ * Password grant parameters
+ */
+const PasswordGrantConstants = {
+    username: "username",
+    password: "password",
+};
+/**
+ * Region Discovery Sources
+ */
+const RegionDiscoverySources = {
+    FAILED_AUTO_DETECTION: "1",
+    INTERNAL_CACHE: "2",
+    ENVIRONMENT_VARIABLE: "3",
+    IMDS: "4",
+};
+/**
+ * Region Discovery Outcomes
+ */
+const RegionDiscoveryOutcomes = {
+    CONFIGURED_NO_AUTO_DETECTION: "2",
+    AUTO_DETECTION_REQUESTED_SUCCESSFUL: "4",
+    AUTO_DETECTION_REQUESTED_FAILED: "5",
+};
+/**
+ * Specifies the reason for fetching the access token from the identity provider
+ */
+const CacheOutcome = {
+    // When a token is found in the cache or the cache is not supposed to be hit when making the request
+    NOT_APPLICABLE: "0",
+    // When the token request goes to the identity provider because force_refresh was set to true. Also occurs if claims were requested
+    FORCE_REFRESH_OR_CLAIMS: "1",
+    // When the token request goes to the identity provider because no cached access token exists
+    NO_CACHED_ACCESS_TOKEN: "2",
+    // When the token request goes to the identity provider because cached access token expired
+    CACHED_ACCESS_TOKEN_EXPIRED: "3",
+    // When the token request goes to the identity provider because refresh_in was used and the existing token needs to be refreshed
+    PROACTIVELY_REFRESHED: "4",
+};
+// Token renewal offset default in seconds
+const DEFAULT_TOKEN_RENEWAL_OFFSET_SEC = 300;
+const EncodingTypes = {
+    BASE64: "base64",
+    HEX: "hex"};
+
+/*! @azure/msal-common v15.13.2 2025-11-19 */
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ */
+/**
+ * AuthErrorMessage class containing string constants used by error codes and messages.
+ */
+const unexpectedError = "unexpected_error";
+const postRequestFailed = "post_request_failed";
+
+/*! @azure/msal-common v15.13.2 2025-11-19 */
+
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ */
+const AuthErrorMessages = {
+    [unexpectedError]: "Unexpected error in authentication.",
+    [postRequestFailed]: "Post request failed from the network, could be a 4xx/5xx or a network unavailability. Please check the exact error code for details.",
+};
+/**
+ * General error class thrown by the MSAL.js library.
+ */
+class AuthError extends Error {
+    constructor(errorCode, errorMessage, suberror) {
+        const errorString = errorMessage
+            ? `${errorCode}: ${errorMessage}`
+            : errorCode;
+        super(errorString);
+        Object.setPrototypeOf(this, AuthError.prototype);
+        this.errorCode = errorCode || Constants$1.EMPTY_STRING;
+        this.errorMessage = errorMessage || Constants$1.EMPTY_STRING;
+        this.subError = suberror || Constants$1.EMPTY_STRING;
+        this.name = "AuthError";
+    }
+    setCorrelationId(correlationId) {
+        this.correlationId = correlationId;
+    }
+}
+function createAuthError(code, additionalMessage) {
+    return new AuthError(code, additionalMessage
+        ? `${AuthErrorMessages[code]} ${additionalMessage}`
+        : AuthErrorMessages[code]);
+}
+
+/*! @azure/msal-common v15.13.2 2025-11-19 */
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ */
+const clientInfoDecodingError = "client_info_decoding_error";
+const clientInfoEmptyError = "client_info_empty_error";
+const tokenParsingError = "token_parsing_error";
+const nullOrEmptyToken = "null_or_empty_token";
+const endpointResolutionError = "endpoints_resolution_error";
+const networkError = "network_error";
+const openIdConfigError = "openid_config_error";
+const hashNotDeserialized = "hash_not_deserialized";
+const invalidState = "invalid_state";
+const stateMismatch = "state_mismatch";
+const stateNotFound = "state_not_found";
+const nonceMismatch = "nonce_mismatch";
+const authTimeNotFound = "auth_time_not_found";
+const maxAgeTranspired = "max_age_transpired";
+const multipleMatchingTokens = "multiple_matching_tokens";
+const multipleMatchingAccounts = "multiple_matching_accounts";
+const multipleMatchingAppMetadata = "multiple_matching_appMetadata";
+const requestCannotBeMade = "request_cannot_be_made";
+const cannotRemoveEmptyScope = "cannot_remove_empty_scope";
+const cannotAppendScopeSet = "cannot_append_scopeset";
+const emptyInputScopeSet = "empty_input_scopeset";
+const deviceCodePollingCancelled = "device_code_polling_cancelled";
+const deviceCodeExpired = "device_code_expired";
+const deviceCodeUnknownError = "device_code_unknown_error";
+const noAccountInSilentRequest = "no_account_in_silent_request";
+const invalidCacheRecord = "invalid_cache_record";
+const invalidCacheEnvironment = "invalid_cache_environment";
+const noAccountFound = "no_account_found";
+const noCryptoObject = "no_crypto_object";
+const unexpectedCredentialType = "unexpected_credential_type";
+const invalidAssertion = "invalid_assertion";
+const invalidClientCredential = "invalid_client_credential";
+const tokenRefreshRequired = "token_refresh_required";
+const userTimeoutReached = "user_timeout_reached";
+const tokenClaimsCnfRequiredForSignedJwt = "token_claims_cnf_required_for_signedjwt";
+const authorizationCodeMissingFromServerResponse = "authorization_code_missing_from_server_response";
+const bindingKeyNotRemoved = "binding_key_not_removed";
+const endSessionEndpointNotSupported = "end_session_endpoint_not_supported";
+const keyIdMissing = "key_id_missing";
+const noNetworkConnectivity = "no_network_connectivity";
+const userCanceled = "user_canceled";
+const missingTenantIdError = "missing_tenant_id_error";
+const methodNotImplemented = "method_not_implemented";
+const nestedAppAuthBridgeDisabled = "nested_app_auth_bridge_disabled";
+const platformBrokerError = "platform_broker_error";
+
+/*! @azure/msal-common v15.13.2 2025-11-19 */
+
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ */
+/**
+ * ClientAuthErrorMessage class containing string constants used by error codes and messages.
+ */
+const ClientAuthErrorMessages = {
+    [clientInfoDecodingError]: "The client info could not be parsed/decoded correctly",
+    [clientInfoEmptyError]: "The client info was empty",
+    [tokenParsingError]: "Token cannot be parsed",
+    [nullOrEmptyToken]: "The token is null or empty",
+    [endpointResolutionError]: "Endpoints cannot be resolved",
+    [networkError]: "Network request failed",
+    [openIdConfigError]: "Could not retrieve endpoints. Check your authority and verify the .well-known/openid-configuration endpoint returns the required endpoints.",
+    [hashNotDeserialized]: "The hash parameters could not be deserialized",
+    [invalidState]: "State was not the expected format",
+    [stateMismatch]: "State mismatch error",
+    [stateNotFound]: "State not found",
+    [nonceMismatch]: "Nonce mismatch error",
+    [authTimeNotFound]: "Max Age was requested and the ID token is missing the auth_time variable." +
+        " auth_time is an optional claim and is not enabled by default - it must be enabled." +
+        " See https://aka.ms/msaljs/optional-claims for more information.",
+    [maxAgeTranspired]: "Max Age is set to 0, or too much time has elapsed since the last end-user authentication.",
+    [multipleMatchingTokens]: "The cache contains multiple tokens satisfying the requirements. " +
+        "Call AcquireToken again providing more requirements such as authority or account.",
+    [multipleMatchingAccounts]: "The cache contains multiple accounts satisfying the given parameters. Please pass more info to obtain the correct account",
+    [multipleMatchingAppMetadata]: "The cache contains multiple appMetadata satisfying the given parameters. Please pass more info to obtain the correct appMetadata",
+    [requestCannotBeMade]: "Token request cannot be made without authorization code or refresh token.",
+    [cannotRemoveEmptyScope]: "Cannot remove null or empty scope from ScopeSet",
+    [cannotAppendScopeSet]: "Cannot append ScopeSet",
+    [emptyInputScopeSet]: "Empty input ScopeSet cannot be processed",
+    [deviceCodePollingCancelled]: "Caller has cancelled token endpoint polling during device code flow by setting DeviceCodeRequest.cancel = true.",
+    [deviceCodeExpired]: "Device code is expired.",
+    [deviceCodeUnknownError]: "Device code stopped polling for unknown reasons.",
+    [noAccountInSilentRequest]: "Please pass an account object, silent flow is not supported without account information",
+    [invalidCacheRecord]: "Cache record object was null or undefined.",
+    [invalidCacheEnvironment]: "Invalid environment when attempting to create cache entry",
+    [noAccountFound]: "No account found in cache for given key.",
+    [noCryptoObject]: "No crypto object detected.",
+    [unexpectedCredentialType]: "Unexpected credential type.",
+    [invalidAssertion]: "Client assertion must meet requirements described in https://tools.ietf.org/html/rfc7515",
+    [invalidClientCredential]: "Client credential (secret, certificate, or assertion) must not be empty when creating a confidential client. An application should at most have one credential",
+    [tokenRefreshRequired]: "Cannot return token from cache because it must be refreshed. This may be due to one of the following reasons: forceRefresh parameter is set to true, claims have been requested, there is no cached access token or it is expired.",
+    [userTimeoutReached]: "User defined timeout for device code polling reached",
+    [tokenClaimsCnfRequiredForSignedJwt]: "Cannot generate a POP jwt if the token_claims are not populated",
+    [authorizationCodeMissingFromServerResponse]: "Server response does not contain an authorization code to proceed",
+    [bindingKeyNotRemoved]: "Could not remove the credential's binding key from storage.",
+    [endSessionEndpointNotSupported]: "The provided authority does not support logout",
+    [keyIdMissing]: "A keyId value is missing from the requested bound token's cache record and is required to match the token to it's stored binding key.",
+    [noNetworkConnectivity]: "No network connectivity. Check your internet connection.",
+    [userCanceled]: "User cancelled the flow.",
+    [missingTenantIdError]: "A tenant id - not common, organizations, or consumers - must be specified when using the client_credentials flow.",
+    [methodNotImplemented]: "This method has not been implemented",
+    [nestedAppAuthBridgeDisabled]: "The nested app auth bridge is disabled",
+    [platformBrokerError]: "An error occurred in the native broker. See the platformBrokerError property for details.",
+};
+/**
+ * Error thrown when there is an error in the client code running on the browser.
+ */
+class ClientAuthError extends AuthError {
+    constructor(errorCode, additionalMessage) {
+        super(errorCode, additionalMessage
+            ? `${ClientAuthErrorMessages[errorCode]}: ${additionalMessage}`
+            : ClientAuthErrorMessages[errorCode]);
+        this.name = "ClientAuthError";
+        Object.setPrototypeOf(this, ClientAuthError.prototype);
+    }
+}
+function createClientAuthError(errorCode, additionalMessage) {
+    return new ClientAuthError(errorCode, additionalMessage);
+}
+
+/*! @azure/msal-common v15.13.2 2025-11-19 */
+
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ */
+const DEFAULT_CRYPTO_IMPLEMENTATION = {
+    createNewGuid: () => {
+        throw createClientAuthError(methodNotImplemented);
+    },
+    base64Decode: () => {
+        throw createClientAuthError(methodNotImplemented);
+    },
+    base64Encode: () => {
+        throw createClientAuthError(methodNotImplemented);
+    },
+    base64UrlEncode: () => {
+        throw createClientAuthError(methodNotImplemented);
+    },
+    encodeKid: () => {
+        throw createClientAuthError(methodNotImplemented);
+    },
+    async getPublicKeyThumbprint() {
+        throw createClientAuthError(methodNotImplemented);
+    },
+    async removeTokenBindingKey() {
+        throw createClientAuthError(methodNotImplemented);
+    },
+    async clearKeystore() {
+        throw createClientAuthError(methodNotImplemented);
+    },
+    async signJwt() {
+        throw createClientAuthError(methodNotImplemented);
+    },
+    async hashString() {
+        throw createClientAuthError(methodNotImplemented);
+    },
+};
+
+/*! @azure/msal-common v15.13.2 2025-11-19 */
+
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ */
+/**
+ * Log message level.
+ */
+var LogLevel;
+(function (LogLevel) {
+    LogLevel[LogLevel["Error"] = 0] = "Error";
+    LogLevel[LogLevel["Warning"] = 1] = "Warning";
+    LogLevel[LogLevel["Info"] = 2] = "Info";
+    LogLevel[LogLevel["Verbose"] = 3] = "Verbose";
+    LogLevel[LogLevel["Trace"] = 4] = "Trace";
+})(LogLevel || (LogLevel = {}));
+/**
+ * Class which facilitates logging of messages to a specific place.
+ */
+class Logger {
+    constructor(loggerOptions, packageName, packageVersion) {
+        // Current log level, defaults to info.
+        this.level = LogLevel.Info;
+        const defaultLoggerCallback = () => {
+            return;
+        };
+        const setLoggerOptions = loggerOptions || Logger.createDefaultLoggerOptions();
+        this.localCallback =
+            setLoggerOptions.loggerCallback || defaultLoggerCallback;
+        this.piiLoggingEnabled = setLoggerOptions.piiLoggingEnabled || false;
+        this.level =
+            typeof setLoggerOptions.logLevel === "number"
+                ? setLoggerOptions.logLevel
+                : LogLevel.Info;
+        this.correlationId =
+            setLoggerOptions.correlationId || Constants$1.EMPTY_STRING;
+        this.packageName = packageName || Constants$1.EMPTY_STRING;
+        this.packageVersion = packageVersion || Constants$1.EMPTY_STRING;
+    }
+    static createDefaultLoggerOptions() {
+        return {
+            loggerCallback: () => {
+                // allow users to not set loggerCallback
+            },
+            piiLoggingEnabled: false,
+            logLevel: LogLevel.Info,
+        };
+    }
+    /**
+     * Create new Logger with existing configurations.
+     */
+    clone(packageName, packageVersion, correlationId) {
+        return new Logger({
+            loggerCallback: this.localCallback,
+            piiLoggingEnabled: this.piiLoggingEnabled,
+            logLevel: this.level,
+            correlationId: correlationId || this.correlationId,
+        }, packageName, packageVersion);
+    }
+    /**
+     * Log message with required options.
+     */
+    logMessage(logMessage, options) {
+        if (options.logLevel > this.level ||
+            (!this.piiLoggingEnabled && options.containsPii)) {
+            return;
+        }
+        const timestamp = new Date().toUTCString();
+        // Add correlationId to logs if set, correlationId provided on log messages take precedence
+        const logHeader = `[${timestamp}] : [${options.correlationId || this.correlationId || ""}]`;
+        const log = `${logHeader} : ${this.packageName}@${this.packageVersion} : ${LogLevel[options.logLevel]} - ${logMessage}`;
+        // debug(`msal:${LogLevel[options.logLevel]}${options.containsPii ? "-Pii": Constants.EMPTY_STRING}${options.context ? `:${options.context}` : Constants.EMPTY_STRING}`)(logMessage);
+        this.executeCallback(options.logLevel, log, options.containsPii || false);
+    }
+    /**
+     * Execute callback with message.
+     */
+    executeCallback(level, message, containsPii) {
+        if (this.localCallback) {
+            this.localCallback(level, message, containsPii);
+        }
+    }
+    /**
+     * Logs error messages.
+     */
+    error(message, correlationId) {
+        this.logMessage(message, {
+            logLevel: LogLevel.Error,
+            containsPii: false,
+            correlationId: correlationId || Constants$1.EMPTY_STRING,
+        });
+    }
+    /**
+     * Logs error messages with PII.
+     */
+    errorPii(message, correlationId) {
+        this.logMessage(message, {
+            logLevel: LogLevel.Error,
+            containsPii: true,
+            correlationId: correlationId || Constants$1.EMPTY_STRING,
+        });
+    }
+    /**
+     * Logs warning messages.
+     */
+    warning(message, correlationId) {
+        this.logMessage(message, {
+            logLevel: LogLevel.Warning,
+            containsPii: false,
+            correlationId: correlationId || Constants$1.EMPTY_STRING,
+        });
+    }
+    /**
+     * Logs warning messages with PII.
+     */
+    warningPii(message, correlationId) {
+        this.logMessage(message, {
+            logLevel: LogLevel.Warning,
+            containsPii: true,
+            correlationId: correlationId || Constants$1.EMPTY_STRING,
+        });
+    }
+    /**
+     * Logs info messages.
+     */
+    info(message, correlationId) {
+        this.logMessage(message, {
+            logLevel: LogLevel.Info,
+            containsPii: false,
+            correlationId: correlationId || Constants$1.EMPTY_STRING,
+        });
+    }
+    /**
+     * Logs info messages with PII.
+     */
+    infoPii(message, correlationId) {
+        this.logMessage(message, {
+            logLevel: LogLevel.Info,
+            containsPii: true,
+            correlationId: correlationId || Constants$1.EMPTY_STRING,
+        });
+    }
+    /**
+     * Logs verbose messages.
+     */
+    verbose(message, correlationId) {
+        this.logMessage(message, {
+            logLevel: LogLevel.Verbose,
+            containsPii: false,
+            correlationId: correlationId || Constants$1.EMPTY_STRING,
+        });
+    }
+    /**
+     * Logs verbose messages with PII.
+     */
+    verbosePii(message, correlationId) {
+        this.logMessage(message, {
+            logLevel: LogLevel.Verbose,
+            containsPii: true,
+            correlationId: correlationId || Constants$1.EMPTY_STRING,
+        });
+    }
+    /**
+     * Logs trace messages.
+     */
+    trace(message, correlationId) {
+        this.logMessage(message, {
+            logLevel: LogLevel.Trace,
+            containsPii: false,
+            correlationId: correlationId || Constants$1.EMPTY_STRING,
+        });
+    }
+    /**
+     * Logs trace messages with PII.
+     */
+    tracePii(message, correlationId) {
+        this.logMessage(message, {
+            logLevel: LogLevel.Trace,
+            containsPii: true,
+            correlationId: correlationId || Constants$1.EMPTY_STRING,
+        });
+    }
+    /**
+     * Returns whether PII Logging is enabled or not.
+     */
+    isPiiLoggingEnabled() {
+        return this.piiLoggingEnabled || false;
+    }
+}
+
+/*! @azure/msal-common v15.13.2 2025-11-19 */
+/* eslint-disable header/header */
+const name$1 = "@azure/msal-common";
+const version$1 = "15.13.2";
+
+/*! @azure/msal-common v15.13.2 2025-11-19 */
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ */
+const AzureCloudInstance = {
+    // AzureCloudInstance is not specified.
+    None: "none"};
+
+/*! @azure/msal-common v15.13.2 2025-11-19 */
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ */
+const redirectUriEmpty = "redirect_uri_empty";
+const claimsRequestParsingError = "claims_request_parsing_error";
+const authorityUriInsecure = "authority_uri_insecure";
+const urlParseError = "url_parse_error";
+const urlEmptyError = "empty_url_error";
+const emptyInputScopesError = "empty_input_scopes_error";
+const invalidClaims = "invalid_claims";
+const tokenRequestEmpty = "token_request_empty";
+const logoutRequestEmpty = "logout_request_empty";
+const invalidCodeChallengeMethod = "invalid_code_challenge_method";
+const pkceParamsMissing = "pkce_params_missing";
+const invalidCloudDiscoveryMetadata = "invalid_cloud_discovery_metadata";
+const invalidAuthorityMetadata = "invalid_authority_metadata";
+const untrustedAuthority = "untrusted_authority";
+const missingSshJwk = "missing_ssh_jwk";
+const missingSshKid = "missing_ssh_kid";
+const missingNonceAuthenticationHeader = "missing_nonce_authentication_header";
+const invalidAuthenticationHeader = "invalid_authentication_header";
+const cannotSetOIDCOptions = "cannot_set_OIDCOptions";
+const cannotAllowPlatformBroker = "cannot_allow_platform_broker";
+const authorityMismatch = "authority_mismatch";
+const invalidRequestMethodForEAR = "invalid_request_method_for_EAR";
+const invalidAuthorizePostBodyParameters = "invalid_authorize_post_body_parameters";
+
+/*! @azure/msal-common v15.13.2 2025-11-19 */
+
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ */
+const ClientConfigurationErrorMessages = {
+    [redirectUriEmpty]: "A redirect URI is required for all calls, and none has been set.",
+    [claimsRequestParsingError]: "Could not parse the given claims request object.",
+    [authorityUriInsecure]: "Authority URIs must use https.  Please see here for valid authority configuration options: https://docs.microsoft.com/en-us/azure/active-directory/develop/msal-js-initializing-client-applications#configuration-options",
+    [urlParseError]: "URL could not be parsed into appropriate segments.",
+    [urlEmptyError]: "URL was empty or null.",
+    [emptyInputScopesError]: "Scopes cannot be passed as null, undefined or empty array because they are required to obtain an access token.",
+    [invalidClaims]: "Given claims parameter must be a stringified JSON object.",
+    [tokenRequestEmpty]: "Token request was empty and not found in cache.",
+    [logoutRequestEmpty]: "The logout request was null or undefined.",
+    [invalidCodeChallengeMethod]: 'code_challenge_method passed is invalid. Valid values are "plain" and "S256".',
+    [pkceParamsMissing]: "Both params: code_challenge and code_challenge_method are to be passed if to be sent in the request",
+    [invalidCloudDiscoveryMetadata]: "Invalid cloudDiscoveryMetadata provided. Must be a stringified JSON object containing tenant_discovery_endpoint and metadata fields",
+    [invalidAuthorityMetadata]: "Invalid authorityMetadata provided. Must by a stringified JSON object containing authorization_endpoint, token_endpoint, issuer fields.",
+    [untrustedAuthority]: "The provided authority is not a trusted authority. Please include this authority in the knownAuthorities config parameter.",
+    [missingSshJwk]: "Missing sshJwk in SSH certificate request. A stringified JSON Web Key is required when using the SSH authentication scheme.",
+    [missingSshKid]: "Missing sshKid in SSH certificate request. A string that uniquely identifies the public SSH key is required when using the SSH authentication scheme.",
+    [missingNonceAuthenticationHeader]: "Unable to find an authentication header containing server nonce. Either the Authentication-Info or WWW-Authenticate headers must be present in order to obtain a server nonce.",
+    [invalidAuthenticationHeader]: "Invalid authentication header provided",
+    [cannotSetOIDCOptions]: "Cannot set OIDCOptions parameter. Please change the protocol mode to OIDC or use a non-Microsoft authority.",
+    [cannotAllowPlatformBroker]: "Cannot set allowPlatformBroker parameter to true when not in AAD protocol mode.",
+    [authorityMismatch]: "Authority mismatch error. Authority provided in login request or PublicClientApplication config does not match the environment of the provided account. Please use a matching account or make an interactive request to login to this authority.",
+    [invalidAuthorizePostBodyParameters]: "Invalid authorize post body parameters provided. If you are using authorizePostBodyParameters, the request method must be POST. Please check the request method and parameters.",
+    [invalidRequestMethodForEAR]: "Invalid request method for EAR protocol mode. The request method cannot be GET when using EAR protocol mode. Please change the request method to POST.",
+};
+/**
+ * Error thrown when there is an error in configuration of the MSAL.js library.
+ */
+class ClientConfigurationError extends AuthError {
+    constructor(errorCode) {
+        super(errorCode, ClientConfigurationErrorMessages[errorCode]);
+        this.name = "ClientConfigurationError";
+        Object.setPrototypeOf(this, ClientConfigurationError.prototype);
+    }
+}
+function createClientConfigurationError(errorCode) {
+    return new ClientConfigurationError(errorCode);
+}
+
+/*! @azure/msal-common v15.13.2 2025-11-19 */
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ */
+/**
+ * @hidden
+ */
+class StringUtils {
+    /**
+     * Check if stringified object is empty
+     * @param strObj
+     */
+    static isEmptyObj(strObj) {
+        if (strObj) {
+            try {
+                const obj = JSON.parse(strObj);
+                return Object.keys(obj).length === 0;
+            }
+            catch (e) { }
+        }
+        return true;
+    }
+    static startsWith(str, search) {
+        return str.indexOf(search) === 0;
+    }
+    static endsWith(str, search) {
+        return (str.length >= search.length &&
+            str.lastIndexOf(search) === str.length - search.length);
+    }
+    /**
+     * Parses string into an object.
+     *
+     * @param query
+     */
+    static queryStringToObject(query) {
+        const obj = {};
+        const params = query.split("&");
+        const decode = (s) => decodeURIComponent(s.replace(/\+/g, " "));
+        params.forEach((pair) => {
+            if (pair.trim()) {
+                const [key, value] = pair.split(/=(.+)/g, 2); // Split on the first occurence of the '=' character
+                if (key && value) {
+                    obj[decode(key)] = decode(value);
+                }
+            }
+        });
+        return obj;
+    }
+    /**
+     * Trims entries in an array.
+     *
+     * @param arr
+     */
+    static trimArrayEntries(arr) {
+        return arr.map((entry) => entry.trim());
+    }
+    /**
+     * Removes empty strings from array
+     * @param arr
+     */
+    static removeEmptyStringsFromArray(arr) {
+        return arr.filter((entry) => {
+            return !!entry;
+        });
+    }
+    /**
+     * Attempts to parse a string into JSON
+     * @param str
+     */
+    static jsonParseHelper(str) {
+        try {
+            return JSON.parse(str);
+        }
+        catch (e) {
+            return null;
+        }
+    }
+    /**
+     * Tests if a given string matches a given pattern, with support for wildcards and queries.
+     * @param pattern Wildcard pattern to string match. Supports "*" for wildcards and "?" for queries
+     * @param input String to match against
+     */
+    static matchPattern(pattern, input) {
+        /**
+         * Wildcard support: https://stackoverflow.com/a/3117248/4888559
+         * Queries: replaces "?" in string with escaped "\?" for regex test
+         */
+        // eslint-disable-next-line security/detect-non-literal-regexp
+        const regex = new RegExp(pattern
+            .replace(/\\/g, "\\\\")
+            .replace(/\*/g, "[^ ]*")
+            .replace(/\?/g, "\\?"));
+        return regex.test(input);
+    }
+}
+
+/*! @azure/msal-common v15.13.2 2025-11-19 */
+
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ */
+/**
+ * The ScopeSet class creates a set of scopes. Scopes are case-insensitive, unique values, so the Set object in JS makes
+ * the most sense to implement for this class. All scopes are trimmed and converted to lower case strings in intersection and union functions
+ * to ensure uniqueness of strings.
+ */
+class ScopeSet {
+    constructor(inputScopes) {
+        // Filter empty string and null/undefined array items
+        const scopeArr = inputScopes
+            ? StringUtils.trimArrayEntries([...inputScopes])
+            : [];
+        const filteredInput = scopeArr
+            ? StringUtils.removeEmptyStringsFromArray(scopeArr)
+            : [];
+        // Check if scopes array has at least one member
+        if (!filteredInput || !filteredInput.length) {
+            throw createClientConfigurationError(emptyInputScopesError);
+        }
+        this.scopes = new Set(); // Iterator in constructor not supported by IE11
+        filteredInput.forEach((scope) => this.scopes.add(scope));
+    }
+    /**
+     * Factory method to create ScopeSet from space-delimited string
+     * @param inputScopeString
+     * @param appClientId
+     * @param scopesRequired
+     */
+    static fromString(inputScopeString) {
+        const scopeString = inputScopeString || Constants$1.EMPTY_STRING;
+        const inputScopes = scopeString.split(" ");
+        return new ScopeSet(inputScopes);
+    }
+    /**
+     * Creates the set of scopes to search for in cache lookups
+     * @param inputScopeString
+     * @returns
+     */
+    static createSearchScopes(inputScopeString) {
+        // Handle empty scopes by using default OIDC scopes for cache lookup
+        const scopesToUse = inputScopeString && inputScopeString.length > 0
+            ? inputScopeString
+            : [...OIDC_DEFAULT_SCOPES];
+        const scopeSet = new ScopeSet(scopesToUse);
+        if (!scopeSet.containsOnlyOIDCScopes()) {
+            scopeSet.removeOIDCScopes();
+        }
+        else {
+            scopeSet.removeScope(Constants$1.OFFLINE_ACCESS_SCOPE);
+        }
+        return scopeSet;
+    }
+    /**
+     * Check if a given scope is present in this set of scopes.
+     * @param scope
+     */
+    containsScope(scope) {
+        const lowerCaseScopes = this.printScopesLowerCase().split(" ");
+        const lowerCaseScopesSet = new ScopeSet(lowerCaseScopes);
+        // compare lowercase scopes
+        return scope
+            ? lowerCaseScopesSet.scopes.has(scope.toLowerCase())
+            : false;
+    }
+    /**
+     * Check if a set of scopes is present in this set of scopes.
+     * @param scopeSet
+     */
+    containsScopeSet(scopeSet) {
+        if (!scopeSet || scopeSet.scopes.size <= 0) {
+            return false;
+        }
+        return (this.scopes.size >= scopeSet.scopes.size &&
+            scopeSet.asArray().every((scope) => this.containsScope(scope)));
+    }
+    /**
+     * Check if set of scopes contains only the defaults
+     */
+    containsOnlyOIDCScopes() {
+        let defaultScopeCount = 0;
+        OIDC_SCOPES.forEach((defaultScope) => {
+            if (this.containsScope(defaultScope)) {
+                defaultScopeCount += 1;
+            }
+        });
+        return this.scopes.size === defaultScopeCount;
+    }
+    /**
+     * Appends single scope if passed
+     * @param newScope
+     */
+    appendScope(newScope) {
+        if (newScope) {
+            this.scopes.add(newScope.trim());
+        }
+    }
+    /**
+     * Appends multiple scopes if passed
+     * @param newScopes
+     */
+    appendScopes(newScopes) {
+        try {
+            newScopes.forEach((newScope) => this.appendScope(newScope));
+        }
+        catch (e) {
+            throw createClientAuthError(cannotAppendScopeSet);
+        }
+    }
+    /**
+     * Removes element from set of scopes.
+     * @param scope
+     */
+    removeScope(scope) {
+        if (!scope) {
+            throw createClientAuthError(cannotRemoveEmptyScope);
+        }
+        this.scopes.delete(scope.trim());
+    }
+    /**
+     * Removes default scopes from set of scopes
+     * Primarily used to prevent cache misses if the default scopes are not returned from the server
+     */
+    removeOIDCScopes() {
+        OIDC_SCOPES.forEach((defaultScope) => {
+            this.scopes.delete(defaultScope);
+        });
+    }
+    /**
+     * Combines an array of scopes with the current set of scopes.
+     * @param otherScopes
+     */
+    unionScopeSets(otherScopes) {
+        if (!otherScopes) {
+            throw createClientAuthError(emptyInputScopeSet);
+        }
+        const unionScopes = new Set(); // Iterator in constructor not supported in IE11
+        otherScopes.scopes.forEach((scope) => unionScopes.add(scope.toLowerCase()));
+        this.scopes.forEach((scope) => unionScopes.add(scope.toLowerCase()));
+        return unionScopes;
+    }
+    /**
+     * Check if scopes intersect between this set and another.
+     * @param otherScopes
+     */
+    intersectingScopeSets(otherScopes) {
+        if (!otherScopes) {
+            throw createClientAuthError(emptyInputScopeSet);
+        }
+        // Do not allow OIDC scopes to be the only intersecting scopes
+        if (!otherScopes.containsOnlyOIDCScopes()) {
+            otherScopes.removeOIDCScopes();
+        }
+        const unionScopes = this.unionScopeSets(otherScopes);
+        const sizeOtherScopes = otherScopes.getScopeCount();
+        const sizeThisScopes = this.getScopeCount();
+        const sizeUnionScopes = unionScopes.size;
+        return sizeUnionScopes < sizeThisScopes + sizeOtherScopes;
+    }
+    /**
+     * Returns size of set of scopes.
+     */
+    getScopeCount() {
+        return this.scopes.size;
+    }
+    /**
+     * Returns the scopes as an array of string values
+     */
+    asArray() {
+        const array = [];
+        this.scopes.forEach((val) => array.push(val));
+        return array;
+    }
+    /**
+     * Prints scopes into a space-delimited string
+     */
+    printScopes() {
+        if (this.scopes) {
+            const scopeArr = this.asArray();
+            return scopeArr.join(" ");
+        }
+        return Constants$1.EMPTY_STRING;
+    }
+    /**
+     * Prints scopes into a space-delimited lower-case string (used for caching)
+     */
+    printScopesLowerCase() {
+        return this.printScopes().toLowerCase();
+    }
+}
+
+/*! @azure/msal-common v15.13.2 2025-11-19 */
+
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ */
+/**
+ * Function to build a client info object from server clientInfo string
+ * @param rawClientInfo
+ * @param crypto
+ */
+function buildClientInfo(rawClientInfo, base64Decode) {
+    if (!rawClientInfo) {
+        throw createClientAuthError(clientInfoEmptyError);
+    }
+    try {
+        const decodedClientInfo = base64Decode(rawClientInfo);
+        return JSON.parse(decodedClientInfo);
+    }
+    catch (e) {
+        throw createClientAuthError(clientInfoDecodingError);
+    }
+}
+/**
+ * Function to build a client info object from cached homeAccountId string
+ * @param homeAccountId
+ */
+function buildClientInfoFromHomeAccountId(homeAccountId) {
+    if (!homeAccountId) {
+        throw createClientAuthError(clientInfoDecodingError);
+    }
+    const clientInfoParts = homeAccountId.split(Separators.CLIENT_INFO_SEPARATOR, 2);
+    return {
+        uid: clientInfoParts[0],
+        utid: clientInfoParts.length < 2
+            ? Constants$1.EMPTY_STRING
+            : clientInfoParts[1],
+    };
+}
+
+/*! @azure/msal-common v15.13.2 2025-11-19 */
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ */
+/**
+ * Returns true if tenantId matches the utid portion of homeAccountId
+ * @param tenantId
+ * @param homeAccountId
+ * @returns
+ */
+function tenantIdMatchesHomeTenant(tenantId, homeAccountId) {
+    return (!!tenantId &&
+        !!homeAccountId &&
+        tenantId === homeAccountId.split(".")[1]);
+}
+/**
+ * Build tenant profile
+ * @param homeAccountId - Home account identifier for this account object
+ * @param localAccountId - Local account identifer for this account object
+ * @param tenantId - Full tenant or organizational id that this account belongs to
+ * @param idTokenClaims - Claims from the ID token
+ * @returns
+ */
+function buildTenantProfile(homeAccountId, localAccountId, tenantId, idTokenClaims) {
+    if (idTokenClaims) {
+        const { oid, sub, tid, name, tfp, acr, preferred_username, upn, login_hint, } = idTokenClaims;
+        /**
+         * Since there is no way to determine if the authority is AAD or B2C, we exhaust all the possible claims that can serve as tenant ID with the following precedence:
+         * tid - TenantID claim that identifies the tenant that issued the token in AAD. Expected in all AAD ID tokens, not present in B2C ID Tokens.
+         * tfp - Trust Framework Policy claim that identifies the policy that was used to authenticate the user. Functions as tenant for B2C scenarios.
+         * acr - Authentication Context Class Reference claim used only with older B2C policies. Fallback in case tfp is not present, but likely won't be present anyway.
+         */
+        const tenantId = tid || tfp || acr || "";
+        return {
+            tenantId: tenantId,
+            localAccountId: oid || sub || "",
+            name: name,
+            username: preferred_username || upn || "",
+            loginHint: login_hint,
+            isHomeTenant: tenantIdMatchesHomeTenant(tenantId, homeAccountId),
+        };
+    }
+    else {
+        return {
+            tenantId,
+            localAccountId,
+            username: "",
+            isHomeTenant: tenantIdMatchesHomeTenant(tenantId, homeAccountId),
+        };
+    }
+}
+/**
+ * Replaces account info that varies by tenant profile sourced from the ID token claims passed in with the tenant-specific account info
+ * @param baseAccountInfo
+ * @param idTokenClaims
+ * @returns
+ */
+function updateAccountTenantProfileData(baseAccountInfo, tenantProfile, idTokenClaims, idTokenSecret) {
+    let updatedAccountInfo = baseAccountInfo;
+    // Tenant Profile overrides passed in account info
+    if (tenantProfile) {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { isHomeTenant, ...tenantProfileOverride } = tenantProfile;
+        updatedAccountInfo = { ...baseAccountInfo, ...tenantProfileOverride };
+    }
+    // ID token claims override passed in account info and tenant profile
+    if (idTokenClaims) {
+        // Ignore isHomeTenant, loginHint, and sid which are part of tenant profile but not base account info
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { isHomeTenant, ...claimsSourcedTenantProfile } = buildTenantProfile(baseAccountInfo.homeAccountId, baseAccountInfo.localAccountId, baseAccountInfo.tenantId, idTokenClaims);
+        updatedAccountInfo = {
+            ...updatedAccountInfo,
+            ...claimsSourcedTenantProfile,
+            idTokenClaims: idTokenClaims,
+            idToken: idTokenSecret,
+        };
+        return updatedAccountInfo;
+    }
+    return updatedAccountInfo;
+}
+
+/*! @azure/msal-common v15.13.2 2025-11-19 */
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ */
+/**
+ * Authority types supported by MSAL.
+ */
+const AuthorityType = {
+    Default: 0,
+    Adfs: 1,
+    Dsts: 2,
+    Ciam: 3,
+};
+
+/*! @azure/msal-common v15.13.2 2025-11-19 */
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ */
+/**
+ * Gets tenantId from available ID token claims to set as credential realm with the following precedence:
+ * 1. tid - if the token is acquired from an Azure AD tenant tid will be present
+ * 2. tfp - if the token is acquired from a modern B2C tenant tfp should be present
+ * 3. acr - if the token is acquired from a legacy B2C tenant acr should be present
+ * Downcased to match the realm case-insensitive comparison requirements
+ * @param idTokenClaims
+ * @returns
+ */
+function getTenantIdFromIdTokenClaims(idTokenClaims) {
+    if (idTokenClaims) {
+        const tenantId = idTokenClaims.tid || idTokenClaims.tfp || idTokenClaims.acr;
+        return tenantId || null;
+    }
+    return null;
+}
+
+/*! @azure/msal-common v15.13.2 2025-11-19 */
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ */
+/**
+ * Protocol modes supported by MSAL.
+ */
+const ProtocolMode = {
+    /**
+     * Auth Code + PKCE with Entra ID (formerly AAD) specific optimizations and features
+     */
+    AAD: "AAD",
+    /**
+     * Auth Code + PKCE without Entra ID specific optimizations and features. For use only with non-Microsoft owned authorities.
+     * Support is limited for this mode.
+     */
+    OIDC: "OIDC"};
+
+/*! @azure/msal-common v15.13.2 2025-11-19 */
+
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ */
+/**
+ * Type that defines required and optional parameters for an Account field (based on universal cache schema implemented by all MSALs).
+ *
+ * Key : Value Schema
+ *
+ * Key: <home_account_id>-<environment>-<realm*>
+ *
+ * Value Schema:
+ * {
+ *      homeAccountId: home account identifier for the auth scheme,
+ *      environment: entity that issued the token, represented as a full host
+ *      realm: Full tenant or organizational identifier that the account belongs to
+ *      localAccountId: Original tenant-specific accountID, usually used for legacy cases
+ *      username: primary username that represents the user, usually corresponds to preferred_username in the v2 endpt
+ *      authorityType: Accounts authority type as a string
+ *      name: Full name for the account, including given name and family name,
+ *      lastModificationTime: last time this entity was modified in the cache
+ *      lastModificationApp:
+ *      nativeAccountId: Account identifier on the native device
+ *      tenantProfiles: Array of tenant profile objects for each tenant that the account has authenticated with in the browser
+ * }
+ * @internal
+ */
+class AccountEntity {
+    /**
+     * Returns the AccountInfo interface for this account.
+     */
+    static getAccountInfo(accountEntity) {
+        return {
+            homeAccountId: accountEntity.homeAccountId,
+            environment: accountEntity.environment,
+            tenantId: accountEntity.realm,
+            username: accountEntity.username,
+            localAccountId: accountEntity.localAccountId,
+            loginHint: accountEntity.loginHint,
+            name: accountEntity.name,
+            nativeAccountId: accountEntity.nativeAccountId,
+            authorityType: accountEntity.authorityType,
+            // Deserialize tenant profiles array into a Map
+            tenantProfiles: new Map((accountEntity.tenantProfiles || []).map((tenantProfile) => {
+                return [tenantProfile.tenantId, tenantProfile];
+            })),
+            dataBoundary: accountEntity.dataBoundary,
+        };
+    }
+    /**
+     * Returns true if the account entity is in single tenant format (outdated), false otherwise
+     */
+    isSingleTenant() {
+        return !this.tenantProfiles;
+    }
+    /**
+     * Build Account cache from IdToken, clientInfo and authority/policy. Associated with AAD.
+     * @param accountDetails
+     */
+    static createAccount(accountDetails, authority, base64Decode) {
+        const account = new AccountEntity();
+        if (authority.authorityType === AuthorityType.Adfs) {
+            account.authorityType = CacheAccountType.ADFS_ACCOUNT_TYPE;
+        }
+        else if (authority.protocolMode === ProtocolMode.OIDC) {
+            account.authorityType = CacheAccountType.GENERIC_ACCOUNT_TYPE;
+        }
+        else {
+            account.authorityType = CacheAccountType.MSSTS_ACCOUNT_TYPE;
+        }
+        let clientInfo;
+        if (accountDetails.clientInfo && base64Decode) {
+            clientInfo = buildClientInfo(accountDetails.clientInfo, base64Decode);
+            if (clientInfo.xms_tdbr) {
+                account.dataBoundary =
+                    clientInfo.xms_tdbr === "EU" ? "EU" : "None";
+            }
+        }
+        account.clientInfo = accountDetails.clientInfo;
+        account.homeAccountId = accountDetails.homeAccountId;
+        account.nativeAccountId = accountDetails.nativeAccountId;
+        const env = accountDetails.environment ||
+            (authority && authority.getPreferredCache());
+        if (!env) {
+            throw createClientAuthError(invalidCacheEnvironment);
+        }
+        account.environment = env;
+        // non AAD scenarios can have empty realm
+        account.realm =
+            clientInfo?.utid ||
+                getTenantIdFromIdTokenClaims(accountDetails.idTokenClaims) ||
+                "";
+        // How do you account for MSA CID here?
+        account.localAccountId =
+            clientInfo?.uid ||
+                accountDetails.idTokenClaims?.oid ||
+                accountDetails.idTokenClaims?.sub ||
+                "";
+        /*
+         * In B2C scenarios the emails claim is used instead of preferred_username and it is an array.
+         * In most cases it will contain a single email. This field should not be relied upon if a custom
+         * policy is configured to return more than 1 email.
+         */
+        const preferredUsername = accountDetails.idTokenClaims?.preferred_username ||
+            accountDetails.idTokenClaims?.upn;
+        const email = accountDetails.idTokenClaims?.emails
+            ? accountDetails.idTokenClaims.emails[0]
+            : null;
+        account.username = preferredUsername || email || "";
+        account.loginHint = accountDetails.idTokenClaims?.login_hint;
+        account.name = accountDetails.idTokenClaims?.name || "";
+        account.cloudGraphHostName = accountDetails.cloudGraphHostName;
+        account.msGraphHost = accountDetails.msGraphHost;
+        if (accountDetails.tenantProfiles) {
+            account.tenantProfiles = accountDetails.tenantProfiles;
+        }
+        else {
+            const tenantProfile = buildTenantProfile(accountDetails.homeAccountId, account.localAccountId, account.realm, accountDetails.idTokenClaims);
+            account.tenantProfiles = [tenantProfile];
+        }
+        return account;
+    }
+    /**
+     * Creates an AccountEntity object from AccountInfo
+     * @param accountInfo
+     * @param cloudGraphHostName
+     * @param msGraphHost
+     * @returns
+     */
+    static createFromAccountInfo(accountInfo, cloudGraphHostName, msGraphHost) {
+        const account = new AccountEntity();
+        account.authorityType =
+            accountInfo.authorityType || CacheAccountType.GENERIC_ACCOUNT_TYPE;
+        account.homeAccountId = accountInfo.homeAccountId;
+        account.localAccountId = accountInfo.localAccountId;
+        account.nativeAccountId = accountInfo.nativeAccountId;
+        account.realm = accountInfo.tenantId;
+        account.environment = accountInfo.environment;
+        account.username = accountInfo.username;
+        account.name = accountInfo.name;
+        account.loginHint = accountInfo.loginHint;
+        account.cloudGraphHostName = cloudGraphHostName;
+        account.msGraphHost = msGraphHost;
+        // Serialize tenant profiles map into an array
+        account.tenantProfiles = Array.from(accountInfo.tenantProfiles?.values() || []);
+        account.dataBoundary = accountInfo.dataBoundary;
+        return account;
+    }
+    /**
+     * Generate HomeAccountId from server response
+     * @param serverClientInfo
+     * @param authType
+     */
+    static generateHomeAccountId(serverClientInfo, authType, logger, cryptoObj, idTokenClaims) {
+        // since ADFS/DSTS do not have tid and does not set client_info
+        if (!(authType === AuthorityType.Adfs ||
+            authType === AuthorityType.Dsts)) {
+            // for cases where there is clientInfo
+            if (serverClientInfo) {
+                try {
+                    const clientInfo = buildClientInfo(serverClientInfo, cryptoObj.base64Decode);
+                    if (clientInfo.uid && clientInfo.utid) {
+                        return `${clientInfo.uid}.${clientInfo.utid}`;
+                    }
+                }
+                catch (e) { }
+            }
+            logger.warning("No client info in response");
+        }
+        // default to "sub" claim
+        return idTokenClaims?.sub || "";
+    }
+    /**
+     * Validates an entity: checks for all expected params
+     * @param entity
+     */
+    static isAccountEntity(entity) {
+        if (!entity) {
+            return false;
+        }
+        return (entity.hasOwnProperty("homeAccountId") &&
+            entity.hasOwnProperty("environment") &&
+            entity.hasOwnProperty("realm") &&
+            entity.hasOwnProperty("localAccountId") &&
+            entity.hasOwnProperty("username") &&
+            entity.hasOwnProperty("authorityType"));
+    }
+    /**
+     * Helper function to determine whether 2 accountInfo objects represent the same account
+     * @param accountA
+     * @param accountB
+     * @param compareClaims - If set to true idTokenClaims will also be compared to determine account equality
+     */
+    static accountInfoIsEqual(accountA, accountB, compareClaims) {
+        if (!accountA || !accountB) {
+            return false;
+        }
+        let claimsMatch = true; // default to true so as to not fail comparison below if compareClaims: false
+        if (compareClaims) {
+            const accountAClaims = (accountA.idTokenClaims ||
+                {});
+            const accountBClaims = (accountB.idTokenClaims ||
+                {});
+            // issued at timestamp and nonce are expected to change each time a new id token is acquired
+            claimsMatch =
+                accountAClaims.iat === accountBClaims.iat &&
+                    accountAClaims.nonce === accountBClaims.nonce;
+        }
+        return (accountA.homeAccountId === accountB.homeAccountId &&
+            accountA.localAccountId === accountB.localAccountId &&
+            accountA.username === accountB.username &&
+            accountA.tenantId === accountB.tenantId &&
+            accountA.loginHint === accountB.loginHint &&
+            accountA.environment === accountB.environment &&
+            accountA.nativeAccountId === accountB.nativeAccountId &&
+            claimsMatch);
+    }
+}
+
+/*! @azure/msal-common v15.13.2 2025-11-19 */
+
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ */
+/**
+ * Extract token by decoding the rawToken
+ *
+ * @param encodedToken
+ */
+function extractTokenClaims(encodedToken, base64Decode) {
+    const jswPayload = getJWSPayload(encodedToken);
+    // token will be decoded to get the username
+    try {
+        // base64Decode() should throw an error if there is an issue
+        const base64Decoded = base64Decode(jswPayload);
+        return JSON.parse(base64Decoded);
+    }
+    catch (err) {
+        throw createClientAuthError(tokenParsingError);
+    }
+}
+/**
+ * Check if the signin_state claim contains "kmsi"
+ * @param idTokenClaims
+ * @returns
+ */
+function isKmsi(idTokenClaims) {
+    if (!idTokenClaims.signin_state) {
+        return false;
+    }
+    /**
+     * Signin_state claim known values:
+     * dvc_mngd - device is managed
+     * dvc_dmjd - device is domain joined
+     * kmsi - user opted to "keep me signed in"
+     * inknownntwk - Request made inside a known network. Don't use this, use CAE instead.
+     */
+    const kmsiClaims = ["kmsi", "dvc_dmjd"]; // There are some cases where kmsi may not be returned but persistent storage is still OK - allow dvc_dmjd as well
+    const kmsi = idTokenClaims.signin_state.some((value) => kmsiClaims.includes(value.trim().toLowerCase()));
+    return kmsi;
+}
+/**
+ * decode a JWT
+ *
+ * @param authToken
+ */
+function getJWSPayload(authToken) {
+    if (!authToken) {
+        throw createClientAuthError(nullOrEmptyToken);
+    }
+    const tokenPartsRegex = /^([^\.\s]*)\.([^\.\s]+)\.([^\.\s]*)$/;
+    const matches = tokenPartsRegex.exec(authToken);
+    if (!matches || matches.length < 4) {
+        throw createClientAuthError(tokenParsingError);
+    }
+    /**
+     * const crackedToken = {
+     *  header: matches[1],
+     *  JWSPayload: matches[2],
+     *  JWSSig: matches[3],
+     * };
+     */
+    return matches[2];
+}
+/**
+ * Determine if the token's max_age has transpired
+ */
+function checkMaxAge(authTime, maxAge) {
+    /*
+     * per https://openid.net/specs/openid-connect-core-1_0.html#AuthRequest
+     * To force an immediate re-authentication: If an app requires that a user re-authenticate prior to access,
+     * provide a value of 0 for the max_age parameter and the AS will force a fresh login.
+     */
+    const fiveMinuteSkew = 300000; // five minutes in milliseconds
+    if (maxAge === 0 || Date.now() - fiveMinuteSkew > authTime + maxAge) {
+        throw createClientAuthError(maxAgeTranspired);
+    }
+}
+
+/*! @azure/msal-common v15.13.2 2025-11-19 */
+/**
+ * Parses hash string from given string. Returns empty string if no hash symbol is found.
+ * @param hashString
+ */
+function stripLeadingHashOrQuery(responseString) {
+    if (responseString.startsWith("#/")) {
+        return responseString.substring(2);
+    }
+    else if (responseString.startsWith("#") ||
+        responseString.startsWith("?")) {
+        return responseString.substring(1);
+    }
+    return responseString;
+}
+/**
+ * Returns URL hash as server auth code response object.
+ */
+function getDeserializedResponse(responseString) {
+    // Check if given hash is empty
+    if (!responseString || responseString.indexOf("=") < 0) {
+        return null;
+    }
+    try {
+        // Strip the # or ? symbol if present
+        const normalizedResponse = stripLeadingHashOrQuery(responseString);
+        // If # symbol was not present, above will return empty string, so give original hash value
+        const deserializedHash = Object.fromEntries(new URLSearchParams(normalizedResponse));
+        // Check for known response properties
+        if (deserializedHash.code ||
+            deserializedHash.ear_jwe ||
+            deserializedHash.error ||
+            deserializedHash.error_description ||
+            deserializedHash.state) {
+            return deserializedHash;
+        }
+    }
+    catch (e) {
+        throw createClientAuthError(hashNotDeserialized);
+    }
+    return null;
+}
+/**
+ * Utility to create a URL from the params map
+ */
+function mapToQueryString(parameters, encodeExtraParams = true, extraQueryParameters) {
+    const queryParameterArray = new Array();
+    parameters.forEach((value, key) => {
+        if (!encodeExtraParams &&
+            extraQueryParameters &&
+            key in extraQueryParameters) {
+            queryParameterArray.push(`${key}=${value}`);
+        }
+        else {
+            queryParameterArray.push(`${key}=${encodeURIComponent(value)}`);
+        }
+    });
+    return queryParameterArray.join("&");
+}
+
+/*! @azure/msal-common v15.13.2 2025-11-19 */
+
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ */
+/**
+ * Url object class which can perform various transformations on url strings.
+ */
+class UrlString {
+    get urlString() {
+        return this._urlString;
+    }
+    constructor(url) {
+        this._urlString = url;
+        if (!this._urlString) {
+            // Throws error if url is empty
+            throw createClientConfigurationError(urlEmptyError);
+        }
+        if (!url.includes("#")) {
+            this._urlString = UrlString.canonicalizeUri(url);
+        }
+    }
+    /**
+     * Ensure urls are lower case and end with a / character.
+     * @param url
+     */
+    static canonicalizeUri(url) {
+        if (url) {
+            let lowerCaseUrl = url.toLowerCase();
+            if (StringUtils.endsWith(lowerCaseUrl, "?")) {
+                lowerCaseUrl = lowerCaseUrl.slice(0, -1);
+            }
+            else if (StringUtils.endsWith(lowerCaseUrl, "?/")) {
+                lowerCaseUrl = lowerCaseUrl.slice(0, -2);
+            }
+            if (!StringUtils.endsWith(lowerCaseUrl, "/")) {
+                lowerCaseUrl += "/";
+            }
+            return lowerCaseUrl;
+        }
+        return url;
+    }
+    /**
+     * Throws if urlString passed is not a valid authority URI string.
+     */
+    validateAsUri() {
+        // Attempts to parse url for uri components
+        let components;
+        try {
+            components = this.getUrlComponents();
+        }
+        catch (e) {
+            throw createClientConfigurationError(urlParseError);
+        }
+        // Throw error if URI or path segments are not parseable.
+        if (!components.HostNameAndPort || !components.PathSegments) {
+            throw createClientConfigurationError(urlParseError);
+        }
+        // Throw error if uri is insecure.
+        if (!components.Protocol ||
+            components.Protocol.toLowerCase() !== "https:") {
+            throw createClientConfigurationError(authorityUriInsecure);
+        }
+    }
+    /**
+     * Given a url and a query string return the url with provided query string appended
+     * @param url
+     * @param queryString
+     */
+    static appendQueryString(url, queryString) {
+        if (!queryString) {
+            return url;
+        }
+        return url.indexOf("?") < 0
+            ? `${url}?${queryString}`
+            : `${url}&${queryString}`;
+    }
+    /**
+     * Returns a url with the hash removed
+     * @param url
+     */
+    static removeHashFromUrl(url) {
+        return UrlString.canonicalizeUri(url.split("#")[0]);
+    }
+    /**
+     * Given a url like https://a:b/common/d?e=f#g, and a tenantId, returns https://a:b/tenantId/d
+     * @param href The url
+     * @param tenantId The tenant id to replace
+     */
+    replaceTenantPath(tenantId) {
+        const urlObject = this.getUrlComponents();
+        const pathArray = urlObject.PathSegments;
+        if (tenantId &&
+            pathArray.length !== 0 &&
+            (pathArray[0] === AADAuthorityConstants.COMMON ||
+                pathArray[0] === AADAuthorityConstants.ORGANIZATIONS)) {
+            pathArray[0] = tenantId;
+        }
+        return UrlString.constructAuthorityUriFromObject(urlObject);
+    }
+    /**
+     * Parses out the components from a url string.
+     * @returns An object with the various components. Please cache this value insted of calling this multiple times on the same url.
+     */
+    getUrlComponents() {
+        // https://gist.github.com/curtisz/11139b2cfcaef4a261e0
+        const regEx = RegExp("^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\\?([^#]*))?(#(.*))?");
+        // If url string does not match regEx, we throw an error
+        const match = this.urlString.match(regEx);
+        if (!match) {
+            throw createClientConfigurationError(urlParseError);
+        }
+        // Url component object
+        const urlComponents = {
+            Protocol: match[1],
+            HostNameAndPort: match[4],
+            AbsolutePath: match[5],
+            QueryString: match[7],
+        };
+        let pathSegments = urlComponents.AbsolutePath.split("/");
+        pathSegments = pathSegments.filter((val) => val && val.length > 0); // remove empty elements
+        urlComponents.PathSegments = pathSegments;
+        if (urlComponents.QueryString &&
+            urlComponents.QueryString.endsWith("/")) {
+            urlComponents.QueryString = urlComponents.QueryString.substring(0, urlComponents.QueryString.length - 1);
+        }
+        return urlComponents;
+    }
+    static getDomainFromUrl(url) {
+        const regEx = RegExp("^([^:/?#]+://)?([^/?#]*)");
+        const match = url.match(regEx);
+        if (!match) {
+            throw createClientConfigurationError(urlParseError);
+        }
+        return match[2];
+    }
+    static getAbsoluteUrl(relativeUrl, baseUrl) {
+        if (relativeUrl[0] === Constants$1.FORWARD_SLASH) {
+            const url = new UrlString(baseUrl);
+            const baseComponents = url.getUrlComponents();
+            return (baseComponents.Protocol +
+                "//" +
+                baseComponents.HostNameAndPort +
+                relativeUrl);
+        }
+        return relativeUrl;
+    }
+    static constructAuthorityUriFromObject(urlObject) {
+        return new UrlString(urlObject.Protocol +
+            "//" +
+            urlObject.HostNameAndPort +
+            "/" +
+            urlObject.PathSegments.join("/"));
+    }
+    /**
+     * Check if the hash of the URL string contains known properties
+     * @deprecated This API will be removed in a future version
+     */
+    static hashContainsKnownProperties(response) {
+        return !!getDeserializedResponse(response);
+    }
+}
+
+/*! @azure/msal-common v15.13.2 2025-11-19 */
+
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ */
+const rawMetdataJSON = {
+    endpointMetadata: {
+        "login.microsoftonline.com": {
+            token_endpoint: "https://login.microsoftonline.com/{tenantid}/oauth2/v2.0/token",
+            jwks_uri: "https://login.microsoftonline.com/{tenantid}/discovery/v2.0/keys",
+            issuer: "https://login.microsoftonline.com/{tenantid}/v2.0",
+            authorization_endpoint: "https://login.microsoftonline.com/{tenantid}/oauth2/v2.0/authorize",
+            end_session_endpoint: "https://login.microsoftonline.com/{tenantid}/oauth2/v2.0/logout",
+        },
+        "login.chinacloudapi.cn": {
+            token_endpoint: "https://login.chinacloudapi.cn/{tenantid}/oauth2/v2.0/token",
+            jwks_uri: "https://login.chinacloudapi.cn/{tenantid}/discovery/v2.0/keys",
+            issuer: "https://login.partner.microsoftonline.cn/{tenantid}/v2.0",
+            authorization_endpoint: "https://login.chinacloudapi.cn/{tenantid}/oauth2/v2.0/authorize",
+            end_session_endpoint: "https://login.chinacloudapi.cn/{tenantid}/oauth2/v2.0/logout",
+        },
+        "login.microsoftonline.us": {
+            token_endpoint: "https://login.microsoftonline.us/{tenantid}/oauth2/v2.0/token",
+            jwks_uri: "https://login.microsoftonline.us/{tenantid}/discovery/v2.0/keys",
+            issuer: "https://login.microsoftonline.us/{tenantid}/v2.0",
+            authorization_endpoint: "https://login.microsoftonline.us/{tenantid}/oauth2/v2.0/authorize",
+            end_session_endpoint: "https://login.microsoftonline.us/{tenantid}/oauth2/v2.0/logout",
+        },
+    },
+    instanceDiscoveryMetadata: {
+        metadata: [
+            {
+                preferred_network: "login.microsoftonline.com",
+                preferred_cache: "login.windows.net",
+                aliases: [
+                    "login.microsoftonline.com",
+                    "login.windows.net",
+                    "login.microsoft.com",
+                    "sts.windows.net",
+                ],
+            },
+            {
+                preferred_network: "login.partner.microsoftonline.cn",
+                preferred_cache: "login.partner.microsoftonline.cn",
+                aliases: [
+                    "login.partner.microsoftonline.cn",
+                    "login.chinacloudapi.cn",
+                ],
+            },
+            {
+                preferred_network: "login.microsoftonline.de",
+                preferred_cache: "login.microsoftonline.de",
+                aliases: ["login.microsoftonline.de"],
+            },
+            {
+                preferred_network: "login.microsoftonline.us",
+                preferred_cache: "login.microsoftonline.us",
+                aliases: [
+                    "login.microsoftonline.us",
+                    "login.usgovcloudapi.net",
+                ],
+            },
+            {
+                preferred_network: "login-us.microsoftonline.com",
+                preferred_cache: "login-us.microsoftonline.com",
+                aliases: ["login-us.microsoftonline.com"],
+            },
+        ],
+    },
+};
+const EndpointMetadata = rawMetdataJSON.endpointMetadata;
+const InstanceDiscoveryMetadata = rawMetdataJSON.instanceDiscoveryMetadata;
+const InstanceDiscoveryMetadataAliases = new Set();
+InstanceDiscoveryMetadata.metadata.forEach((metadataEntry) => {
+    metadataEntry.aliases.forEach((alias) => {
+        InstanceDiscoveryMetadataAliases.add(alias);
+    });
+});
+/**
+ * Attempts to get an aliases array from the static authority metadata sources based on the canonical authority host
+ * @param staticAuthorityOptions
+ * @param logger
+ * @returns
+ */
+function getAliasesFromStaticSources(staticAuthorityOptions, logger) {
+    let staticAliases;
+    const canonicalAuthority = staticAuthorityOptions.canonicalAuthority;
+    if (canonicalAuthority) {
+        const authorityHost = new UrlString(canonicalAuthority).getUrlComponents().HostNameAndPort;
+        staticAliases =
+            getAliasesFromMetadata(authorityHost, staticAuthorityOptions.cloudDiscoveryMetadata?.metadata, AuthorityMetadataSource.CONFIG, logger) ||
+                getAliasesFromMetadata(authorityHost, InstanceDiscoveryMetadata.metadata, AuthorityMetadataSource.HARDCODED_VALUES, logger) ||
+                staticAuthorityOptions.knownAuthorities;
+    }
+    return staticAliases || [];
+}
+/**
+ * Returns aliases for from the raw cloud discovery metadata passed in
+ * @param authorityHost
+ * @param rawCloudDiscoveryMetadata
+ * @returns
+ */
+function getAliasesFromMetadata(authorityHost, cloudDiscoveryMetadata, source, logger) {
+    logger?.trace(`getAliasesFromMetadata called with source: ${source}`);
+    if (authorityHost && cloudDiscoveryMetadata) {
+        const metadata = getCloudDiscoveryMetadataFromNetworkResponse(cloudDiscoveryMetadata, authorityHost);
+        if (metadata) {
+            logger?.trace(`getAliasesFromMetadata: found cloud discovery metadata in ${source}, returning aliases`);
+            return metadata.aliases;
+        }
+        else {
+            logger?.trace(`getAliasesFromMetadata: did not find cloud discovery metadata in ${source}`);
+        }
+    }
+    return null;
+}
+/**
+ * Get cloud discovery metadata for common authorities
+ */
+function getCloudDiscoveryMetadataFromHardcodedValues(authorityHost) {
+    const metadata = getCloudDiscoveryMetadataFromNetworkResponse(InstanceDiscoveryMetadata.metadata, authorityHost);
+    return metadata;
+}
+/**
+ * Searches instance discovery network response for the entry that contains the host in the aliases list
+ * @param response
+ * @param authority
+ */
+function getCloudDiscoveryMetadataFromNetworkResponse(response, authorityHost) {
+    for (let i = 0; i < response.length; i++) {
+        const metadata = response[i];
+        if (metadata.aliases.includes(authorityHost)) {
+            return metadata;
+        }
+    }
+    return null;
+}
+
+/*! @azure/msal-common v15.13.2 2025-11-19 */
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ */
+const cacheQuotaExceeded = "cache_quota_exceeded";
+const cacheErrorUnknown = "cache_error_unknown";
+
+/*! @azure/msal-common v15.13.2 2025-11-19 */
+
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ */
+const CacheErrorMessages = {
+    [cacheQuotaExceeded]: "Exceeded cache storage capacity.",
+    [cacheErrorUnknown]: "Unexpected error occurred when using cache storage.",
+};
+/**
+ * Error thrown when there is an error with the cache
+ */
+class CacheError extends AuthError {
+    constructor(errorCode, errorMessage) {
+        const message = errorMessage ||
+            (CacheErrorMessages[errorCode]
+                ? CacheErrorMessages[errorCode]
+                : CacheErrorMessages[cacheErrorUnknown]);
+        super(`${errorCode}: ${message}`);
+        Object.setPrototypeOf(this, CacheError.prototype);
+        this.name = "CacheError";
+        this.errorCode = errorCode;
+        this.errorMessage = message;
+    }
+}
+/**
+ * Helper function to wrap browser errors in a CacheError object
+ * @param e
+ * @returns
+ */
+function createCacheError(e) {
+    if (!(e instanceof Error)) {
+        return new CacheError(cacheErrorUnknown);
+    }
+    if (e.name === "QuotaExceededError" ||
+        e.name === "NS_ERROR_DOM_QUOTA_REACHED" ||
+        e.message.includes("exceeded the quota")) {
+        return new CacheError(cacheQuotaExceeded);
+    }
+    else {
+        return new CacheError(e.name, e.message);
+    }
+}
+
+/*! @azure/msal-common v15.13.2 2025-11-19 */
+
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ */
+/**
+ * Interface class which implement cache storage functions used by MSAL to perform validity checks, and store tokens.
+ * @internal
+ */
+class CacheManager {
+    constructor(clientId, cryptoImpl, logger, performanceClient, staticAuthorityOptions) {
+        this.clientId = clientId;
+        this.cryptoImpl = cryptoImpl;
+        this.commonLogger = logger.clone(name$1, version$1);
+        this.staticAuthorityOptions = staticAuthorityOptions;
+        this.performanceClient = performanceClient;
+    }
+    /**
+     * Returns all the accounts in the cache that match the optional filter. If no filter is provided, all accounts are returned.
+     * @param accountFilter - (Optional) filter to narrow down the accounts returned
+     * @returns Array of AccountInfo objects in cache
+     */
+    getAllAccounts(accountFilter, correlationId) {
+        return this.buildTenantProfiles(this.getAccountsFilteredBy(accountFilter, correlationId), correlationId, accountFilter);
+    }
+    /**
+     * Gets first tenanted AccountInfo object found based on provided filters
+     */
+    getAccountInfoFilteredBy(accountFilter, correlationId) {
+        if (Object.keys(accountFilter).length === 0 ||
+            Object.values(accountFilter).every((value) => !value)) {
+            this.commonLogger.warning("getAccountInfoFilteredBy: Account filter is empty or invalid, returning null");
+            return null;
+        }
+        const allAccounts = this.getAllAccounts(accountFilter, correlationId);
+        if (allAccounts.length > 1) {
+            // If one or more accounts are found, prioritize accounts that have an ID token
+            const sortedAccounts = allAccounts.sort((account) => {
+                return account.idTokenClaims ? -1 : 1;
+            });
+            return sortedAccounts[0];
+        }
+        else if (allAccounts.length === 1) {
+            // If only one account is found, return it regardless of whether a matching ID token was found
+            return allAccounts[0];
+        }
+        else {
+            return null;
+        }
+    }
+    /**
+     * Returns a single matching
+     * @param accountFilter
+     * @returns
+     */
+    getBaseAccountInfo(accountFilter, correlationId) {
+        const accountEntities = this.getAccountsFilteredBy(accountFilter, correlationId);
+        if (accountEntities.length > 0) {
+            return AccountEntity.getAccountInfo(accountEntities[0]);
+        }
+        else {
+            return null;
+        }
+    }
+    /**
+     * Matches filtered account entities with cached ID tokens that match the tenant profile-specific account filters
+     * and builds the account info objects from the matching ID token's claims
+     * @param cachedAccounts
+     * @param accountFilter
+     * @returns Array of AccountInfo objects that match account and tenant profile filters
+     */
+    buildTenantProfiles(cachedAccounts, correlationId, accountFilter) {
+        return cachedAccounts.flatMap((accountEntity) => {
+            return this.getTenantProfilesFromAccountEntity(accountEntity, correlationId, accountFilter?.tenantId, accountFilter);
+        });
+    }
+    getTenantedAccountInfoByFilter(accountInfo, tokenKeys, tenantProfile, correlationId, tenantProfileFilter) {
+        let tenantedAccountInfo = null;
+        let idTokenClaims;
+        if (tenantProfileFilter) {
+            if (!this.tenantProfileMatchesFilter(tenantProfile, tenantProfileFilter)) {
+                return null;
+            }
+        }
+        const idToken = this.getIdToken(accountInfo, correlationId, tokenKeys, tenantProfile.tenantId);
+        if (idToken) {
+            idTokenClaims = extractTokenClaims(idToken.secret, this.cryptoImpl.base64Decode);
+            if (!this.idTokenClaimsMatchTenantProfileFilter(idTokenClaims, tenantProfileFilter)) {
+                // ID token sourced claims don't match so this tenant profile is not a match
+                return null;
+            }
+        }
+        // Expand tenant profile into account info based on matching tenant profile and if available matching ID token claims
+        tenantedAccountInfo = updateAccountTenantProfileData(accountInfo, tenantProfile, idTokenClaims, idToken?.secret);
+        return tenantedAccountInfo;
+    }
+    getTenantProfilesFromAccountEntity(accountEntity, correlationId, targetTenantId, tenantProfileFilter) {
+        const accountInfo = AccountEntity.getAccountInfo(accountEntity);
+        let searchTenantProfiles = accountInfo.tenantProfiles || new Map();
+        const tokenKeys = this.getTokenKeys();
+        // If a tenant ID was provided, only return the tenant profile for that tenant ID if it exists
+        if (targetTenantId) {
+            const tenantProfile = searchTenantProfiles.get(targetTenantId);
+            if (tenantProfile) {
+                // Reduce search field to just this tenant profile
+                searchTenantProfiles = new Map([
+                    [targetTenantId, tenantProfile],
+                ]);
+            }
+            else {
+                // No tenant profile for search tenant ID, return empty array
+                return [];
+            }
+        }
+        const matchingTenantProfiles = [];
+        searchTenantProfiles.forEach((tenantProfile) => {
+            const tenantedAccountInfo = this.getTenantedAccountInfoByFilter(accountInfo, tokenKeys, tenantProfile, correlationId, tenantProfileFilter);
+            if (tenantedAccountInfo) {
+                matchingTenantProfiles.push(tenantedAccountInfo);
+            }
+        });
+        return matchingTenantProfiles;
+    }
+    tenantProfileMatchesFilter(tenantProfile, tenantProfileFilter) {
+        if (!!tenantProfileFilter.localAccountId &&
+            !this.matchLocalAccountIdFromTenantProfile(tenantProfile, tenantProfileFilter.localAccountId)) {
+            return false;
+        }
+        if (!!tenantProfileFilter.name &&
+            !(tenantProfile.name === tenantProfileFilter.name)) {
+            return false;
+        }
+        if (tenantProfileFilter.isHomeTenant !== undefined &&
+            !(tenantProfile.isHomeTenant === tenantProfileFilter.isHomeTenant)) {
+            return false;
+        }
+        return true;
+    }
+    idTokenClaimsMatchTenantProfileFilter(idTokenClaims, tenantProfileFilter) {
+        // Tenant Profile filtering
+        if (tenantProfileFilter) {
+            if (!!tenantProfileFilter.localAccountId &&
+                !this.matchLocalAccountIdFromTokenClaims(idTokenClaims, tenantProfileFilter.localAccountId)) {
+                return false;
+            }
+            if (!!tenantProfileFilter.loginHint &&
+                !this.matchLoginHintFromTokenClaims(idTokenClaims, tenantProfileFilter.loginHint)) {
+                return false;
+            }
+            if (!!tenantProfileFilter.username &&
+                !this.matchUsername(idTokenClaims.preferred_username, tenantProfileFilter.username)) {
+                return false;
+            }
+            if (!!tenantProfileFilter.name &&
+                !this.matchName(idTokenClaims, tenantProfileFilter.name)) {
+                return false;
+            }
+            if (!!tenantProfileFilter.sid &&
+                !this.matchSid(idTokenClaims, tenantProfileFilter.sid)) {
+                return false;
+            }
+        }
+        return true;
+    }
+    /**
+     * saves a cache record
+     * @param cacheRecord {CacheRecord}
+     * @param correlationId {?string} correlation id
+     * @param kmsi - Keep Me Signed In
+     * @param storeInCache {?StoreInCache}
+     */
+    async saveCacheRecord(cacheRecord, correlationId, kmsi, storeInCache) {
+        if (!cacheRecord) {
+            throw createClientAuthError(invalidCacheRecord);
+        }
+        try {
+            if (!!cacheRecord.account) {
+                await this.setAccount(cacheRecord.account, correlationId, kmsi);
+            }
+            if (!!cacheRecord.idToken && storeInCache?.idToken !== false) {
+                await this.setIdTokenCredential(cacheRecord.idToken, correlationId, kmsi);
+            }
+            if (!!cacheRecord.accessToken &&
+                storeInCache?.accessToken !== false) {
+                await this.saveAccessToken(cacheRecord.accessToken, correlationId, kmsi);
+            }
+            if (!!cacheRecord.refreshToken &&
+                storeInCache?.refreshToken !== false) {
+                await this.setRefreshTokenCredential(cacheRecord.refreshToken, correlationId, kmsi);
+            }
+            if (!!cacheRecord.appMetadata) {
+                this.setAppMetadata(cacheRecord.appMetadata, correlationId);
+            }
+        }
+        catch (e) {
+            this.commonLogger?.error(`CacheManager.saveCacheRecord: failed`);
+            if (e instanceof AuthError) {
+                throw e;
+            }
+            else {
+                throw createCacheError(e);
+            }
+        }
+    }
+    /**
+     * saves access token credential
+     * @param credential
+     */
+    async saveAccessToken(credential, correlationId, kmsi) {
+        const accessTokenFilter = {
+            clientId: credential.clientId,
+            credentialType: credential.credentialType,
+            environment: credential.environment,
+            homeAccountId: credential.homeAccountId,
+            realm: credential.realm,
+            tokenType: credential.tokenType,
+            requestedClaimsHash: credential.requestedClaimsHash,
+        };
+        const tokenKeys = this.getTokenKeys();
+        const currentScopes = ScopeSet.fromString(credential.target);
+        tokenKeys.accessToken.forEach((key) => {
+            if (!this.accessTokenKeyMatchesFilter(key, accessTokenFilter, false)) {
+                return;
+            }
+            const tokenEntity = this.getAccessTokenCredential(key, correlationId);
+            if (tokenEntity &&
+                this.credentialMatchesFilter(tokenEntity, accessTokenFilter)) {
+                const tokenScopeSet = ScopeSet.fromString(tokenEntity.target);
+                if (tokenScopeSet.intersectingScopeSets(currentScopes)) {
+                    this.removeAccessToken(key, correlationId);
+                }
+            }
+        });
+        await this.setAccessTokenCredential(credential, correlationId, kmsi);
+    }
+    /**
+     * Retrieve account entities matching all provided tenant-agnostic filters; if no filter is set, get all account entities in the cache
+     * Not checking for casing as keys are all generated in lower case, remember to convert to lower case if object properties are compared
+     * @param accountFilter - An object containing Account properties to filter by
+     */
+    getAccountsFilteredBy(accountFilter, correlationId) {
+        const allAccountKeys = this.getAccountKeys();
+        const matchingAccounts = [];
+        allAccountKeys.forEach((cacheKey) => {
+            const entity = this.getAccount(cacheKey, correlationId);
+            // Match base account fields
+            if (!entity) {
+                return;
+            }
+            if (!!accountFilter.homeAccountId &&
+                !this.matchHomeAccountId(entity, accountFilter.homeAccountId)) {
+                return;
+            }
+            if (!!accountFilter.username &&
+                !this.matchUsername(entity.username, accountFilter.username)) {
+                return;
+            }
+            if (!!accountFilter.environment &&
+                !this.matchEnvironment(entity, accountFilter.environment)) {
+                return;
+            }
+            if (!!accountFilter.realm &&
+                !this.matchRealm(entity, accountFilter.realm)) {
+                return;
+            }
+            if (!!accountFilter.nativeAccountId &&
+                !this.matchNativeAccountId(entity, accountFilter.nativeAccountId)) {
+                return;
+            }
+            if (!!accountFilter.authorityType &&
+                !this.matchAuthorityType(entity, accountFilter.authorityType)) {
+                return;
+            }
+            // If at least one tenant profile matches the tenant profile filter, add the account to the list of matching accounts
+            const tenantProfileFilter = {
+                localAccountId: accountFilter?.localAccountId,
+                name: accountFilter?.name,
+            };
+            const matchingTenantProfiles = entity.tenantProfiles?.filter((tenantProfile) => {
+                return this.tenantProfileMatchesFilter(tenantProfile, tenantProfileFilter);
+            });
+            if (matchingTenantProfiles && matchingTenantProfiles.length === 0) {
+                // No tenant profile for this account matches filter, don't add to list of matching accounts
+                return;
+            }
+            matchingAccounts.push(entity);
+        });
+        return matchingAccounts;
+    }
+    /**
+     * Returns whether or not the given credential entity matches the filter
+     * @param entity
+     * @param filter
+     * @returns
+     */
+    credentialMatchesFilter(entity, filter) {
+        if (!!filter.clientId && !this.matchClientId(entity, filter.clientId)) {
+            return false;
+        }
+        if (!!filter.userAssertionHash &&
+            !this.matchUserAssertionHash(entity, filter.userAssertionHash)) {
+            return false;
+        }
+        /*
+         * homeAccountId can be undefined, and we want to filter out cached items that have a homeAccountId of ""
+         * because we don't want a client_credential request to return a cached token that has a homeAccountId
+         */
+        if (typeof filter.homeAccountId === "string" &&
+            !this.matchHomeAccountId(entity, filter.homeAccountId)) {
+            return false;
+        }
+        if (!!filter.environment &&
+            !this.matchEnvironment(entity, filter.environment)) {
+            return false;
+        }
+        if (!!filter.realm && !this.matchRealm(entity, filter.realm)) {
+            return false;
+        }
+        if (!!filter.credentialType &&
+            !this.matchCredentialType(entity, filter.credentialType)) {
+            return false;
+        }
+        if (!!filter.familyId && !this.matchFamilyId(entity, filter.familyId)) {
+            return false;
+        }
+        /*
+         * idTokens do not have "target", target specific refreshTokens do exist for some types of authentication
+         * Resource specific refresh tokens case will be added when the support is deemed necessary
+         */
+        if (!!filter.target && !this.matchTarget(entity, filter.target)) {
+            return false;
+        }
+        // If request OR cached entity has requested Claims Hash, check if they match
+        if (filter.requestedClaimsHash || entity.requestedClaimsHash) {
+            // Don't match if either is undefined or they are different
+            if (entity.requestedClaimsHash !== filter.requestedClaimsHash) {
+                return false;
+            }
+        }
+        // Access Token with Auth Scheme specific matching
+        if (entity.credentialType ===
+            CredentialType.ACCESS_TOKEN_WITH_AUTH_SCHEME) {
+            if (!!filter.tokenType &&
+                !this.matchTokenType(entity, filter.tokenType)) {
+                return false;
+            }
+            // KeyId (sshKid) in request must match cached SSH certificate keyId because SSH cert is bound to a specific key
+            if (filter.tokenType === AuthenticationScheme.SSH) {
+                if (filter.keyId && !this.matchKeyId(entity, filter.keyId)) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+    /**
+     * retrieve appMetadata matching all provided filters; if no filter is set, get all appMetadata
+     * @param filter
+     */
+    getAppMetadataFilteredBy(filter) {
+        const allCacheKeys = this.getKeys();
+        const matchingAppMetadata = {};
+        allCacheKeys.forEach((cacheKey) => {
+            // don't parse any non-appMetadata type cache entities
+            if (!this.isAppMetadata(cacheKey)) {
+                return;
+            }
+            // Attempt retrieval
+            const entity = this.getAppMetadata(cacheKey);
+            if (!entity) {
+                return;
+            }
+            if (!!filter.environment &&
+                !this.matchEnvironment(entity, filter.environment)) {
+                return;
+            }
+            if (!!filter.clientId &&
+                !this.matchClientId(entity, filter.clientId)) {
+                return;
+            }
+            matchingAppMetadata[cacheKey] = entity;
+        });
+        return matchingAppMetadata;
+    }
+    /**
+     * retrieve authorityMetadata that contains a matching alias
+     * @param filter
+     */
+    getAuthorityMetadataByAlias(host) {
+        const allCacheKeys = this.getAuthorityMetadataKeys();
+        let matchedEntity = null;
+        allCacheKeys.forEach((cacheKey) => {
+            // don't parse any non-authorityMetadata type cache entities
+            if (!this.isAuthorityMetadata(cacheKey) ||
+                cacheKey.indexOf(this.clientId) === -1) {
+                return;
+            }
+            // Attempt retrieval
+            const entity = this.getAuthorityMetadata(cacheKey);
+            if (!entity) {
+                return;
+            }
+            if (entity.aliases.indexOf(host) === -1) {
+                return;
+            }
+            matchedEntity = entity;
+        });
+        return matchedEntity;
+    }
+    /**
+     * Removes all accounts and related tokens from cache.
+     */
+    removeAllAccounts(correlationId) {
+        const accounts = this.getAllAccounts({}, correlationId);
+        accounts.forEach((account) => {
+            this.removeAccount(account, correlationId);
+        });
+    }
+    /**
+     * Removes the account and related tokens for a given account key
+     * @param account
+     */
+    removeAccount(account, correlationId) {
+        this.removeAccountContext(account, correlationId);
+        const accountKeys = this.getAccountKeys();
+        const keyFilter = (key) => {
+            return (key.includes(account.homeAccountId) &&
+                key.includes(account.environment));
+        };
+        accountKeys.filter(keyFilter).forEach((key) => {
+            this.removeItem(key, correlationId);
+            this.performanceClient.incrementFields({ accountsRemoved: 1 }, correlationId);
+        });
+    }
+    /**
+     * Removes credentials associated with the provided account
+     * @param account
+     */
+    removeAccountContext(account, correlationId) {
+        const allTokenKeys = this.getTokenKeys();
+        const keyFilter = (key) => {
+            return (key.includes(account.homeAccountId) &&
+                key.includes(account.environment));
+        };
+        allTokenKeys.idToken.filter(keyFilter).forEach((key) => {
+            this.removeIdToken(key, correlationId);
+        });
+        allTokenKeys.accessToken.filter(keyFilter).forEach((key) => {
+            this.removeAccessToken(key, correlationId);
+        });
+        allTokenKeys.refreshToken.filter(keyFilter).forEach((key) => {
+            this.removeRefreshToken(key, correlationId);
+        });
+    }
+    /**
+     * Removes accessToken from the cache
+     * @param key
+     * @param correlationId
+     */
+    removeAccessToken(key, correlationId) {
+        const credential = this.getAccessTokenCredential(key, correlationId);
+        this.removeItem(key, correlationId);
+        this.performanceClient.incrementFields({ accessTokensRemoved: 1 }, correlationId);
+        if (!credential ||
+            credential.credentialType.toLowerCase() !==
+                CredentialType.ACCESS_TOKEN_WITH_AUTH_SCHEME.toLowerCase() ||
+            credential.tokenType !== AuthenticationScheme.POP) {
+            // If the credential is not a PoP token, we can return
+            return;
+        }
+        // Remove Token Binding Key from key store for PoP Tokens Credentials
+        const kid = credential.keyId;
+        if (kid) {
+            void this.cryptoImpl.removeTokenBindingKey(kid).catch(() => {
+                this.commonLogger.error(`Failed to remove token binding key ${kid}`, correlationId);
+                this.performanceClient?.incrementFields({ removeTokenBindingKeyFailure: 1 }, correlationId);
+            });
+        }
+    }
+    /**
+     * Removes all app metadata objects from cache.
+     */
+    removeAppMetadata(correlationId) {
+        const allCacheKeys = this.getKeys();
+        allCacheKeys.forEach((cacheKey) => {
+            if (this.isAppMetadata(cacheKey)) {
+                this.removeItem(cacheKey, correlationId);
+            }
+        });
+        return true;
+    }
+    /**
+     * Retrieve IdTokenEntity from cache
+     * @param account {AccountInfo}
+     * @param tokenKeys {?TokenKeys}
+     * @param targetRealm {?string}
+     * @param performanceClient {?IPerformanceClient}
+     * @param correlationId {?string}
+     */
+    getIdToken(account, correlationId, tokenKeys, targetRealm, performanceClient) {
+        this.commonLogger.trace("CacheManager - getIdToken called");
+        const idTokenFilter = {
+            homeAccountId: account.homeAccountId,
+            environment: account.environment,
+            credentialType: CredentialType.ID_TOKEN,
+            clientId: this.clientId,
+            realm: targetRealm,
+        };
+        const idTokenMap = this.getIdTokensByFilter(idTokenFilter, correlationId, tokenKeys);
+        const numIdTokens = idTokenMap.size;
+        if (numIdTokens < 1) {
+            this.commonLogger.info("CacheManager:getIdToken - No token found");
+            return null;
+        }
+        else if (numIdTokens > 1) {
+            let tokensToBeRemoved = idTokenMap;
+            // Multiple tenant profiles and no tenant specified, pick home account
+            if (!targetRealm) {
+                const homeIdTokenMap = new Map();
+                idTokenMap.forEach((idToken, key) => {
+                    if (idToken.realm === account.tenantId) {
+                        homeIdTokenMap.set(key, idToken);
+                    }
+                });
+                const numHomeIdTokens = homeIdTokenMap.size;
+                if (numHomeIdTokens < 1) {
+                    this.commonLogger.info("CacheManager:getIdToken - Multiple ID tokens found for account but none match account entity tenant id, returning first result");
+                    return idTokenMap.values().next().value;
+                }
+                else if (numHomeIdTokens === 1) {
+                    this.commonLogger.info("CacheManager:getIdToken - Multiple ID tokens found for account, defaulting to home tenant profile");
+                    return homeIdTokenMap.values().next().value;
+                }
+                else {
+                    // Multiple ID tokens for home tenant profile, remove all and return null
+                    tokensToBeRemoved = homeIdTokenMap;
+                }
+            }
+            // Multiple tokens for a single tenant profile, remove all and return null
+            this.commonLogger.info("CacheManager:getIdToken - Multiple matching ID tokens found, clearing them");
+            tokensToBeRemoved.forEach((idToken, key) => {
+                this.removeIdToken(key, correlationId);
+            });
+            if (performanceClient && correlationId) {
+                performanceClient.addFields({ multiMatchedID: idTokenMap.size }, correlationId);
+            }
+            return null;
+        }
+        this.commonLogger.info("CacheManager:getIdToken - Returning ID token");
+        return idTokenMap.values().next().value;
+    }
+    /**
+     * Gets all idTokens matching the given filter
+     * @param filter
+     * @returns
+     */
+    getIdTokensByFilter(filter, correlationId, tokenKeys) {
+        const idTokenKeys = (tokenKeys && tokenKeys.idToken) || this.getTokenKeys().idToken;
+        const idTokens = new Map();
+        idTokenKeys.forEach((key) => {
+            if (!this.idTokenKeyMatchesFilter(key, {
+                clientId: this.clientId,
+                ...filter,
+            })) {
+                return;
+            }
+            const idToken = this.getIdTokenCredential(key, correlationId);
+            if (idToken && this.credentialMatchesFilter(idToken, filter)) {
+                idTokens.set(key, idToken);
+            }
+        });
+        return idTokens;
+    }
+    /**
+     * Validate the cache key against filter before retrieving and parsing cache value
+     * @param key
+     * @param filter
+     * @returns
+     */
+    idTokenKeyMatchesFilter(inputKey, filter) {
+        const key = inputKey.toLowerCase();
+        if (filter.clientId &&
+            key.indexOf(filter.clientId.toLowerCase()) === -1) {
+            return false;
+        }
+        if (filter.homeAccountId &&
+            key.indexOf(filter.homeAccountId.toLowerCase()) === -1) {
+            return false;
+        }
+        return true;
+    }
+    /**
+     * Removes idToken from the cache
+     * @param key
+     */
+    removeIdToken(key, correlationId) {
+        this.removeItem(key, correlationId);
+    }
+    /**
+     * Removes refresh token from the cache
+     * @param key
+     */
+    removeRefreshToken(key, correlationId) {
+        this.removeItem(key, correlationId);
+    }
+    /**
+     * Retrieve AccessTokenEntity from cache
+     * @param account {AccountInfo}
+     * @param request {BaseAuthRequest}
+     * @param correlationId {?string}
+     * @param tokenKeys {?TokenKeys}
+     * @param performanceClient {?IPerformanceClient}
+     */
+    getAccessToken(account, request, tokenKeys, targetRealm) {
+        const correlationId = request.correlationId;
+        this.commonLogger.trace("CacheManager - getAccessToken called", correlationId);
+        const scopes = ScopeSet.createSearchScopes(request.scopes);
+        const authScheme = request.authenticationScheme || AuthenticationScheme.BEARER;
+        /*
+         * Distinguish between Bearer and PoP/SSH token cache types
+         * Cast to lowercase to handle "bearer" from ADFS
+         */
+        const credentialType = authScheme.toLowerCase() !==
+                AuthenticationScheme.BEARER.toLowerCase()
+            ? CredentialType.ACCESS_TOKEN_WITH_AUTH_SCHEME
+            : CredentialType.ACCESS_TOKEN;
+        const accessTokenFilter = {
+            homeAccountId: account.homeAccountId,
+            environment: account.environment,
+            credentialType: credentialType,
+            clientId: this.clientId,
+            realm: targetRealm || account.tenantId,
+            target: scopes,
+            tokenType: authScheme,
+            keyId: request.sshKid,
+            requestedClaimsHash: request.requestedClaimsHash,
+        };
+        const accessTokenKeys = (tokenKeys && tokenKeys.accessToken) ||
+            this.getTokenKeys().accessToken;
+        const accessTokens = [];
+        accessTokenKeys.forEach((key) => {
+            // Validate key
+            if (this.accessTokenKeyMatchesFilter(key, accessTokenFilter, true)) {
+                const accessToken = this.getAccessTokenCredential(key, correlationId);
+                // Validate value
+                if (accessToken &&
+                    this.credentialMatchesFilter(accessToken, accessTokenFilter)) {
+                    accessTokens.push(accessToken);
+                }
+            }
+        });
+        const numAccessTokens = accessTokens.length;
+        if (numAccessTokens < 1) {
+            this.commonLogger.info("CacheManager:getAccessToken - No token found", correlationId);
+            return null;
+        }
+        else if (numAccessTokens > 1) {
+            this.commonLogger.info("CacheManager:getAccessToken - Multiple access tokens found, clearing them", correlationId);
+            accessTokens.forEach((accessToken) => {
+                this.removeAccessToken(this.generateCredentialKey(accessToken), correlationId);
+            });
+            this.performanceClient.addFields({ multiMatchedAT: accessTokens.length }, correlationId);
+            return null;
+        }
+        this.commonLogger.info("CacheManager:getAccessToken - Returning access token", correlationId);
+        return accessTokens[0];
+    }
+    /**
+     * Validate the cache key against filter before retrieving and parsing cache value
+     * @param key
+     * @param filter
+     * @param keyMustContainAllScopes
+     * @returns
+     */
+    accessTokenKeyMatchesFilter(inputKey, filter, keyMustContainAllScopes) {
+        const key = inputKey.toLowerCase();
+        if (filter.clientId &&
+            key.indexOf(filter.clientId.toLowerCase()) === -1) {
+            return false;
+        }
+        if (filter.homeAccountId &&
+            key.indexOf(filter.homeAccountId.toLowerCase()) === -1) {
+            return false;
+        }
+        if (filter.realm && key.indexOf(filter.realm.toLowerCase()) === -1) {
+            return false;
+        }
+        if (filter.requestedClaimsHash &&
+            key.indexOf(filter.requestedClaimsHash.toLowerCase()) === -1) {
+            return false;
+        }
+        if (filter.target) {
+            const scopes = filter.target.asArray();
+            for (let i = 0; i < scopes.length; i++) {
+                if (keyMustContainAllScopes &&
+                    !key.includes(scopes[i].toLowerCase())) {
+                    // When performing a cache lookup a missing scope would be a cache miss
+                    return false;
+                }
+                else if (!keyMustContainAllScopes &&
+                    key.includes(scopes[i].toLowerCase())) {
+                    // When performing a cache write, any token with a subset of requested scopes should be replaced
+                    return true;
+                }
+            }
+        }
+        return true;
+    }
+    /**
+     * Gets all access tokens matching the filter
+     * @param filter
+     * @returns
+     */
+    getAccessTokensByFilter(filter, correlationId) {
+        const tokenKeys = this.getTokenKeys();
+        const accessTokens = [];
+        tokenKeys.accessToken.forEach((key) => {
+            if (!this.accessTokenKeyMatchesFilter(key, filter, true)) {
+                return;
+            }
+            const accessToken = this.getAccessTokenCredential(key, correlationId);
+            if (accessToken &&
+                this.credentialMatchesFilter(accessToken, filter)) {
+                accessTokens.push(accessToken);
+            }
+        });
+        return accessTokens;
+    }
+    /**
+     * Helper to retrieve the appropriate refresh token from cache
+     * @param account {AccountInfo}
+     * @param familyRT {boolean}
+     * @param correlationId {?string}
+     * @param tokenKeys {?TokenKeys}
+     * @param performanceClient {?IPerformanceClient}
+     */
+    getRefreshToken(account, familyRT, correlationId, tokenKeys, performanceClient) {
+        this.commonLogger.trace("CacheManager - getRefreshToken called");
+        const id = familyRT ? THE_FAMILY_ID : undefined;
+        const refreshTokenFilter = {
+            homeAccountId: account.homeAccountId,
+            environment: account.environment,
+            credentialType: CredentialType.REFRESH_TOKEN,
+            clientId: this.clientId,
+            familyId: id,
+        };
+        const refreshTokenKeys = (tokenKeys && tokenKeys.refreshToken) ||
+            this.getTokenKeys().refreshToken;
+        const refreshTokens = [];
+        refreshTokenKeys.forEach((key) => {
+            // Validate key
+            if (this.refreshTokenKeyMatchesFilter(key, refreshTokenFilter)) {
+                const refreshToken = this.getRefreshTokenCredential(key, correlationId);
+                // Validate value
+                if (refreshToken &&
+                    this.credentialMatchesFilter(refreshToken, refreshTokenFilter)) {
+                    refreshTokens.push(refreshToken);
+                }
+            }
+        });
+        const numRefreshTokens = refreshTokens.length;
+        if (numRefreshTokens < 1) {
+            this.commonLogger.info("CacheManager:getRefreshToken - No refresh token found.");
+            return null;
+        }
+        // address the else case after remove functions address environment aliases
+        if (numRefreshTokens > 1 && performanceClient && correlationId) {
+            performanceClient.addFields({ multiMatchedRT: numRefreshTokens }, correlationId);
+        }
+        this.commonLogger.info("CacheManager:getRefreshToken - returning refresh token");
+        return refreshTokens[0];
+    }
+    /**
+     * Validate the cache key against filter before retrieving and parsing cache value
+     * @param key
+     * @param filter
+     */
+    refreshTokenKeyMatchesFilter(inputKey, filter) {
+        const key = inputKey.toLowerCase();
+        if (filter.familyId &&
+            key.indexOf(filter.familyId.toLowerCase()) === -1) {
+            return false;
+        }
+        // If familyId is used, clientId is not in the key
+        if (!filter.familyId &&
+            filter.clientId &&
+            key.indexOf(filter.clientId.toLowerCase()) === -1) {
+            return false;
+        }
+        if (filter.homeAccountId &&
+            key.indexOf(filter.homeAccountId.toLowerCase()) === -1) {
+            return false;
+        }
+        return true;
+    }
+    /**
+     * Retrieve AppMetadataEntity from cache
+     */
+    readAppMetadataFromCache(environment) {
+        const appMetadataFilter = {
+            environment,
+            clientId: this.clientId,
+        };
+        const appMetadata = this.getAppMetadataFilteredBy(appMetadataFilter);
+        const appMetadataEntries = Object.keys(appMetadata).map((key) => appMetadata[key]);
+        const numAppMetadata = appMetadataEntries.length;
+        if (numAppMetadata < 1) {
+            return null;
+        }
+        else if (numAppMetadata > 1) {
+            throw createClientAuthError(multipleMatchingAppMetadata);
+        }
+        return appMetadataEntries[0];
+    }
+    /**
+     * Return the family_id value associated  with FOCI
+     * @param environment
+     * @param clientId
+     */
+    isAppMetadataFOCI(environment) {
+        const appMetadata = this.readAppMetadataFromCache(environment);
+        return !!(appMetadata && appMetadata.familyId === THE_FAMILY_ID);
+    }
+    /**
+     * helper to match account ids
+     * @param value
+     * @param homeAccountId
+     */
+    matchHomeAccountId(entity, homeAccountId) {
+        return !!(typeof entity.homeAccountId === "string" &&
+            homeAccountId === entity.homeAccountId);
+    }
+    /**
+     * helper to match account ids
+     * @param entity
+     * @param localAccountId
+     * @returns
+     */
+    matchLocalAccountIdFromTokenClaims(tokenClaims, localAccountId) {
+        const idTokenLocalAccountId = tokenClaims.oid || tokenClaims.sub;
+        return localAccountId === idTokenLocalAccountId;
+    }
+    matchLocalAccountIdFromTenantProfile(tenantProfile, localAccountId) {
+        return tenantProfile.localAccountId === localAccountId;
+    }
+    /**
+     * helper to match names
+     * @param entity
+     * @param name
+     * @returns true if the downcased name properties are present and match in the filter and the entity
+     */
+    matchName(claims, name) {
+        return !!(name.toLowerCase() === claims.name?.toLowerCase());
+    }
+    /**
+     * helper to match usernames
+     * @param entity
+     * @param username
+     * @returns
+     */
+    matchUsername(cachedUsername, filterUsername) {
+        return !!(cachedUsername &&
+            typeof cachedUsername === "string" &&
+            filterUsername?.toLowerCase() === cachedUsername.toLowerCase());
+    }
+    /**
+     * helper to match assertion
+     * @param value
+     * @param oboAssertion
+     */
+    matchUserAssertionHash(entity, userAssertionHash) {
+        return !!(entity.userAssertionHash &&
+            userAssertionHash === entity.userAssertionHash);
+    }
+    /**
+     * helper to match environment
+     * @param value
+     * @param environment
+     */
+    matchEnvironment(entity, environment) {
+        // Check static authority options first for cases where authority metadata has not been resolved and cached yet
+        if (this.staticAuthorityOptions) {
+            const staticAliases = getAliasesFromStaticSources(this.staticAuthorityOptions, this.commonLogger);
+            if (staticAliases.includes(environment) &&
+                staticAliases.includes(entity.environment)) {
+                return true;
+            }
+        }
+        // Query metadata cache if no static authority configuration has aliases that match enviroment
+        const cloudMetadata = this.getAuthorityMetadataByAlias(environment);
+        if (cloudMetadata &&
+            cloudMetadata.aliases.indexOf(entity.environment) > -1) {
+            return true;
+        }
+        return false;
+    }
+    /**
+     * helper to match credential type
+     * @param entity
+     * @param credentialType
+     */
+    matchCredentialType(entity, credentialType) {
+        return (entity.credentialType &&
+            credentialType.toLowerCase() === entity.credentialType.toLowerCase());
+    }
+    /**
+     * helper to match client ids
+     * @param entity
+     * @param clientId
+     */
+    matchClientId(entity, clientId) {
+        return !!(entity.clientId && clientId === entity.clientId);
+    }
+    /**
+     * helper to match family ids
+     * @param entity
+     * @param familyId
+     */
+    matchFamilyId(entity, familyId) {
+        return !!(entity.familyId && familyId === entity.familyId);
+    }
+    /**
+     * helper to match realm
+     * @param entity
+     * @param realm
+     */
+    matchRealm(entity, realm) {
+        return !!(entity.realm?.toLowerCase() === realm.toLowerCase());
+    }
+    /**
+     * helper to match nativeAccountId
+     * @param entity
+     * @param nativeAccountId
+     * @returns boolean indicating the match result
+     */
+    matchNativeAccountId(entity, nativeAccountId) {
+        return !!(entity.nativeAccountId && nativeAccountId === entity.nativeAccountId);
+    }
+    /**
+     * helper to match loginHint which can be either:
+     * 1. login_hint ID token claim
+     * 2. username in cached account object
+     * 3. upn in ID token claims
+     * @param entity
+     * @param loginHint
+     * @returns
+     */
+    matchLoginHintFromTokenClaims(tokenClaims, loginHint) {
+        if (tokenClaims.login_hint === loginHint) {
+            return true;
+        }
+        if (tokenClaims.preferred_username === loginHint) {
+            return true;
+        }
+        if (tokenClaims.upn === loginHint) {
+            return true;
+        }
+        return false;
+    }
+    /**
+     * Helper to match sid
+     * @param entity
+     * @param sid
+     * @returns true if the sid claim is present and matches the filter
+     */
+    matchSid(idTokenClaims, sid) {
+        return idTokenClaims.sid === sid;
+    }
+    matchAuthorityType(entity, authorityType) {
+        return !!(entity.authorityType &&
+            authorityType.toLowerCase() === entity.authorityType.toLowerCase());
+    }
+    /**
+     * Returns true if the target scopes are a subset of the current entity's scopes, false otherwise.
+     * @param entity
+     * @param target
+     */
+    matchTarget(entity, target) {
+        const isNotAccessTokenCredential = entity.credentialType !== CredentialType.ACCESS_TOKEN &&
+            entity.credentialType !==
+                CredentialType.ACCESS_TOKEN_WITH_AUTH_SCHEME;
+        if (isNotAccessTokenCredential || !entity.target) {
+            return false;
+        }
+        const entityScopeSet = ScopeSet.fromString(entity.target);
+        return entityScopeSet.containsScopeSet(target);
+    }
+    /**
+     * Returns true if the credential's tokenType or Authentication Scheme matches the one in the request, false otherwise
+     * @param entity
+     * @param tokenType
+     */
+    matchTokenType(entity, tokenType) {
+        return !!(entity.tokenType && entity.tokenType === tokenType);
+    }
+    /**
+     * Returns true if the credential's keyId matches the one in the request, false otherwise
+     * @param entity
+     * @param keyId
+     */
+    matchKeyId(entity, keyId) {
+        return !!(entity.keyId && entity.keyId === keyId);
+    }
+    /**
+     * returns if a given cache entity is of the type appmetadata
+     * @param key
+     */
+    isAppMetadata(key) {
+        return key.indexOf(APP_METADATA) !== -1;
+    }
+    /**
+     * returns if a given cache entity is of the type authoritymetadata
+     * @param key
+     */
+    isAuthorityMetadata(key) {
+        return key.indexOf(AUTHORITY_METADATA_CONSTANTS.CACHE_KEY) !== -1;
+    }
+    /**
+     * returns cache key used for cloud instance metadata
+     */
+    generateAuthorityMetadataCacheKey(authority) {
+        return `${AUTHORITY_METADATA_CONSTANTS.CACHE_KEY}-${this.clientId}-${authority}`;
+    }
+    /**
+     * Helper to convert serialized data to object
+     * @param obj
+     * @param json
+     */
+    static toObject(obj, json) {
+        for (const propertyName in json) {
+            obj[propertyName] = json[propertyName];
+        }
+        return obj;
+    }
+}
+/** @internal */
+class DefaultStorageClass extends CacheManager {
+    async setAccount() {
+        throw createClientAuthError(methodNotImplemented);
+    }
+    getAccount() {
+        throw createClientAuthError(methodNotImplemented);
+    }
+    async setIdTokenCredential() {
+        throw createClientAuthError(methodNotImplemented);
+    }
+    getIdTokenCredential() {
+        throw createClientAuthError(methodNotImplemented);
+    }
+    async setAccessTokenCredential() {
+        throw createClientAuthError(methodNotImplemented);
+    }
+    getAccessTokenCredential() {
+        throw createClientAuthError(methodNotImplemented);
+    }
+    async setRefreshTokenCredential() {
+        throw createClientAuthError(methodNotImplemented);
+    }
+    getRefreshTokenCredential() {
+        throw createClientAuthError(methodNotImplemented);
+    }
+    setAppMetadata() {
+        throw createClientAuthError(methodNotImplemented);
+    }
+    getAppMetadata() {
+        throw createClientAuthError(methodNotImplemented);
+    }
+    setServerTelemetry() {
+        throw createClientAuthError(methodNotImplemented);
+    }
+    getServerTelemetry() {
+        throw createClientAuthError(methodNotImplemented);
+    }
+    setAuthorityMetadata() {
+        throw createClientAuthError(methodNotImplemented);
+    }
+    getAuthorityMetadata() {
+        throw createClientAuthError(methodNotImplemented);
+    }
+    getAuthorityMetadataKeys() {
+        throw createClientAuthError(methodNotImplemented);
+    }
+    setThrottlingCache() {
+        throw createClientAuthError(methodNotImplemented);
+    }
+    getThrottlingCache() {
+        throw createClientAuthError(methodNotImplemented);
+    }
+    removeItem() {
+        throw createClientAuthError(methodNotImplemented);
+    }
+    getKeys() {
+        throw createClientAuthError(methodNotImplemented);
+    }
+    getAccountKeys() {
+        throw createClientAuthError(methodNotImplemented);
+    }
+    getTokenKeys() {
+        throw createClientAuthError(methodNotImplemented);
+    }
+    generateCredentialKey() {
+        throw createClientAuthError(methodNotImplemented);
+    }
+    generateAccountKey() {
+        throw createClientAuthError(methodNotImplemented);
+    }
+}
+
+/*! @azure/msal-common v15.13.2 2025-11-19 */
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ */
+/**
+ * Enumeration of operations that are instrumented by have their performance measured by the PerformanceClient.
+ *
+ * @export
+ * @enum {number}
+ */
+const PerformanceEvents = {
+    /**
+     * acquireTokenByCode API (msal-browser and msal-node).
+     * Used to acquire tokens by trading an authorization code against the token endpoint.
+     */
+    AcquireTokenByCode: "acquireTokenByCode",
+    /**
+     * acquireTokenByRefreshToken API (msal-browser and msal-node).
+     * Used to renew an access token using a refresh token against the token endpoint.
+     */
+    AcquireTokenByRefreshToken: "acquireTokenByRefreshToken",
+    /**
+     * acquireTokenSilent API (msal-browser and msal-node).
+     * Used to silently acquire a new access token (from the cache or the network).
+     */
+    AcquireTokenSilent: "acquireTokenSilent",
+    /**
+     * acquireTokenSilentAsync (msal-browser).
+     * Internal API for acquireTokenSilent.
+     */
+    AcquireTokenSilentAsync: "acquireTokenSilentAsync",
+    /**
+     * acquireTokenPopup (msal-browser).
+     * Used to acquire a new access token interactively through pop ups
+     */
+    AcquireTokenPopup: "acquireTokenPopup",
+    /**
+     * acquireTokenPreRedirect (msal-browser).
+     * First part of the redirect flow.
+     * Used to acquire a new access token interactively through redirects.
+     */
+    AcquireTokenPreRedirect: "acquireTokenPreRedirect",
+    /**
+     * acquireTokenRedirect (msal-browser).
+     * Second part of the redirect flow.
+     * Used to acquire a new access token interactively through redirects.
+     */
+    AcquireTokenRedirect: "acquireTokenRedirect",
+    /**
+     * getPublicKeyThumbprint API in CryptoOpts class (msal-browser).
+     * Used to generate a public/private keypair and generate a public key thumbprint for pop requests.
+     */
+    CryptoOptsGetPublicKeyThumbprint: "cryptoOptsGetPublicKeyThumbprint",
+    /**
+     * signJwt API in CryptoOpts class (msal-browser).
+     * Used to signed a pop token.
+     */
+    CryptoOptsSignJwt: "cryptoOptsSignJwt",
+    /**
+     * acquireToken API in the SilentCacheClient class (msal-browser).
+     * Used to read access tokens from the cache.
+     */
+    SilentCacheClientAcquireToken: "silentCacheClientAcquireToken",
+    /**
+     * acquireToken API in the SilentIframeClient class (msal-browser).
+     * Used to acquire a new set of tokens from the authorize endpoint in a hidden iframe.
+     */
+    SilentIframeClientAcquireToken: "silentIframeClientAcquireToken",
+    AwaitConcurrentIframe: "awaitConcurrentIframe",
+    /**
+     * acquireToken API in SilentRereshClient (msal-browser).
+     * Used to acquire a new set of tokens from the token endpoint using a refresh token.
+     */
+    SilentRefreshClientAcquireToken: "silentRefreshClientAcquireToken",
+    /**
+     * ssoSilent API (msal-browser).
+     * Used to silently acquire an authorization code and set of tokens using a hidden iframe.
+     */
+    SsoSilent: "ssoSilent",
+    /**
+     * getDiscoveredAuthority API in StandardInteractionClient class (msal-browser).
+     * Used to load authority metadata for a request.
+     */
+    StandardInteractionClientGetDiscoveredAuthority: "standardInteractionClientGetDiscoveredAuthority",
+    /**
+     * acquireToken APIs in msal-browser.
+     * Used to make an /authorize endpoint call with native brokering enabled.
+     */
+    FetchAccountIdWithNativeBroker: "fetchAccountIdWithNativeBroker",
+    /**
+     * acquireToken API in NativeInteractionClient class (msal-browser).
+     * Used to acquire a token from Native component when native brokering is enabled.
+     */
+    NativeInteractionClientAcquireToken: "nativeInteractionClientAcquireToken",
+    /**
+     * Time spent creating default headers for requests to token endpoint
+     */
+    BaseClientCreateTokenRequestHeaders: "baseClientCreateTokenRequestHeaders",
+    /**
+     * Time spent sending/waiting for the response of a request to the token endpoint
+     */
+    NetworkClientSendPostRequestAsync: "networkClientSendPostRequestAsync",
+    RefreshTokenClientExecutePostToTokenEndpoint: "refreshTokenClientExecutePostToTokenEndpoint",
+    AuthorizationCodeClientExecutePostToTokenEndpoint: "authorizationCodeClientExecutePostToTokenEndpoint",
+    /**
+     * Used to measure the time taken for completing embedded-broker handshake (PW-Broker).
+     */
+    BrokerHandhshake: "brokerHandshake",
+    /**
+     * acquireTokenByRefreshToken API in BrokerClientApplication (PW-Broker) .
+     */
+    AcquireTokenByRefreshTokenInBroker: "acquireTokenByRefreshTokenInBroker",
+    /**
+     * Time taken for token acquisition by broker
+     */
+    AcquireTokenByBroker: "acquireTokenByBroker",
+    /**
+     * Time spent on the network for refresh token acquisition
+     */
+    RefreshTokenClientExecuteTokenRequest: "refreshTokenClientExecuteTokenRequest",
+    /**
+     * Time taken for acquiring refresh token , records RT size
+     */
+    RefreshTokenClientAcquireToken: "refreshTokenClientAcquireToken",
+    /**
+     * Time taken for acquiring cached refresh token
+     */
+    RefreshTokenClientAcquireTokenWithCachedRefreshToken: "refreshTokenClientAcquireTokenWithCachedRefreshToken",
+    /**
+     * acquireTokenByRefreshToken API in RefreshTokenClient (msal-common).
+     */
+    RefreshTokenClientAcquireTokenByRefreshToken: "refreshTokenClientAcquireTokenByRefreshToken",
+    /**
+     * Helper function to create token request body in RefreshTokenClient (msal-common).
+     */
+    RefreshTokenClientCreateTokenRequestBody: "refreshTokenClientCreateTokenRequestBody",
+    /**
+     * acquireTokenFromCache (msal-browser).
+     * Internal API for acquiring token from cache
+     */
+    AcquireTokenFromCache: "acquireTokenFromCache",
+    SilentFlowClientAcquireCachedToken: "silentFlowClientAcquireCachedToken",
+    SilentFlowClientGenerateResultFromCacheRecord: "silentFlowClientGenerateResultFromCacheRecord",
+    /**
+     * acquireTokenBySilentIframe (msal-browser).
+     * Internal API for acquiring token by silent Iframe
+     */
+    AcquireTokenBySilentIframe: "acquireTokenBySilentIframe",
+    /**
+     * Internal API for initializing base request in BaseInteractionClient (msal-browser)
+     */
+    InitializeBaseRequest: "initializeBaseRequest",
+    /**
+     * Internal API for initializing silent request in SilentCacheClient (msal-browser)
+     */
+    InitializeSilentRequest: "initializeSilentRequest",
+    InitializeClientApplication: "initializeClientApplication",
+    InitializeCache: "initializeCache",
+    /**
+     * Helper function in SilentIframeClient class (msal-browser).
+     */
+    SilentIframeClientTokenHelper: "silentIframeClientTokenHelper",
+    /**
+     * SilentHandler
+     */
+    SilentHandlerInitiateAuthRequest: "silentHandlerInitiateAuthRequest",
+    SilentHandlerMonitorIframeForHash: "silentHandlerMonitorIframeForHash",
+    SilentHandlerLoadFrame: "silentHandlerLoadFrame",
+    SilentHandlerLoadFrameSync: "silentHandlerLoadFrameSync",
+    /**
+     * Helper functions in StandardInteractionClient class (msal-browser)
+     */
+    StandardInteractionClientCreateAuthCodeClient: "standardInteractionClientCreateAuthCodeClient",
+    StandardInteractionClientGetClientConfiguration: "standardInteractionClientGetClientConfiguration",
+    StandardInteractionClientInitializeAuthorizationRequest: "standardInteractionClientInitializeAuthorizationRequest",
+    /**
+     * getAuthCodeUrl API (msal-browser and msal-node).
+     */
+    GetAuthCodeUrl: "getAuthCodeUrl",
+    GetStandardParams: "getStandardParams",
+    /**
+     * Functions from InteractionHandler (msal-browser)
+     */
+    HandleCodeResponseFromServer: "handleCodeResponseFromServer",
+    HandleCodeResponse: "handleCodeResponse",
+    HandleResponseEar: "handleResponseEar",
+    HandleResponsePlatformBroker: "handleResponsePlatformBroker",
+    HandleResponseCode: "handleResponseCode",
+    UpdateTokenEndpointAuthority: "updateTokenEndpointAuthority",
+    /**
+     * APIs in Authorization Code Client (msal-common)
+     */
+    AuthClientAcquireToken: "authClientAcquireToken",
+    AuthClientExecuteTokenRequest: "authClientExecuteTokenRequest",
+    AuthClientCreateTokenRequestBody: "authClientCreateTokenRequestBody",
+    /**
+     * Generate functions in PopTokenGenerator (msal-common)
+     */
+    PopTokenGenerateCnf: "popTokenGenerateCnf",
+    PopTokenGenerateKid: "popTokenGenerateKid",
+    /**
+     * handleServerTokenResponse API in ResponseHandler (msal-common)
+     */
+    HandleServerTokenResponse: "handleServerTokenResponse",
+    DeserializeResponse: "deserializeResponse",
+    /**
+     * Authority functions
+     */
+    AuthorityFactoryCreateDiscoveredInstance: "authorityFactoryCreateDiscoveredInstance",
+    AuthorityResolveEndpointsAsync: "authorityResolveEndpointsAsync",
+    AuthorityResolveEndpointsFromLocalSources: "authorityResolveEndpointsFromLocalSources",
+    AuthorityGetCloudDiscoveryMetadataFromNetwork: "authorityGetCloudDiscoveryMetadataFromNetwork",
+    AuthorityUpdateCloudDiscoveryMetadata: "authorityUpdateCloudDiscoveryMetadata",
+    AuthorityGetEndpointMetadataFromNetwork: "authorityGetEndpointMetadataFromNetwork",
+    AuthorityUpdateEndpointMetadata: "authorityUpdateEndpointMetadata",
+    AuthorityUpdateMetadataWithRegionalInformation: "authorityUpdateMetadataWithRegionalInformation",
+    /**
+     * Region Discovery functions
+     */
+    RegionDiscoveryDetectRegion: "regionDiscoveryDetectRegion",
+    RegionDiscoveryGetRegionFromIMDS: "regionDiscoveryGetRegionFromIMDS",
+    RegionDiscoveryGetCurrentVersion: "regionDiscoveryGetCurrentVersion",
+    AcquireTokenByCodeAsync: "acquireTokenByCodeAsync",
+    GetEndpointMetadataFromNetwork: "getEndpointMetadataFromNetwork",
+    GetCloudDiscoveryMetadataFromNetworkMeasurement: "getCloudDiscoveryMetadataFromNetworkMeasurement",
+    HandleRedirectPromiseMeasurement: "handleRedirectPromise",
+    HandleNativeRedirectPromiseMeasurement: "handleNativeRedirectPromise",
+    UpdateCloudDiscoveryMetadataMeasurement: "updateCloudDiscoveryMetadataMeasurement",
+    UsernamePasswordClientAcquireToken: "usernamePasswordClientAcquireToken",
+    NativeMessageHandlerHandshake: "nativeMessageHandlerHandshake",
+    NativeGenerateAuthResult: "nativeGenerateAuthResult",
+    RemoveHiddenIframe: "removeHiddenIframe",
+    /**
+     * Cache operations
+     */
+    ClearTokensAndKeysWithClaims: "clearTokensAndKeysWithClaims",
+    CacheManagerGetRefreshToken: "cacheManagerGetRefreshToken",
+    ImportExistingCache: "importExistingCache",
+    SetUserData: "setUserData",
+    LocalStorageUpdated: "localStorageUpdated",
+    /**
+     * Crypto Operations
+     */
+    GeneratePkceCodes: "generatePkceCodes",
+    GenerateCodeVerifier: "generateCodeVerifier",
+    GenerateCodeChallengeFromVerifier: "generateCodeChallengeFromVerifier",
+    Sha256Digest: "sha256Digest",
+    GetRandomValues: "getRandomValues",
+    GenerateHKDF: "generateHKDF",
+    GenerateBaseKey: "generateBaseKey",
+    Base64Decode: "base64Decode",
+    UrlEncodeArr: "urlEncodeArr",
+    Encrypt: "encrypt",
+    Decrypt: "decrypt",
+    GenerateEarKey: "generateEarKey",
+    DecryptEarResponse: "decryptEarResponse",
+};
+/**
+ * State of the performance event.
+ *
+ * @export
+ * @enum {number}
+ */
+const PerformanceEventStatus = {
+    InProgress: 1};
+
+/*! @azure/msal-common v15.13.2 2025-11-19 */
+
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ */
+class StubPerformanceMeasurement {
+    startMeasurement() {
+        return;
+    }
+    endMeasurement() {
+        return;
+    }
+    flushMeasurement() {
+        return null;
+    }
+}
+class StubPerformanceClient {
+    generateId() {
+        return "callback-id";
+    }
+    startMeasurement(measureName, correlationId) {
+        return {
+            end: () => null,
+            discard: () => { },
+            add: () => { },
+            increment: () => { },
+            event: {
+                eventId: this.generateId(),
+                status: PerformanceEventStatus.InProgress,
+                authority: "",
+                libraryName: "",
+                libraryVersion: "",
+                clientId: "",
+                name: measureName,
+                startTimeMs: Date.now(),
+                correlationId: correlationId || "",
+            },
+            measurement: new StubPerformanceMeasurement(),
+        };
+    }
+    startPerformanceMeasurement() {
+        return new StubPerformanceMeasurement();
+    }
+    calculateQueuedTime() {
+        return 0;
+    }
+    addQueueMeasurement() {
+        return;
+    }
+    setPreQueueTime() {
+        return;
+    }
+    endMeasurement() {
+        return null;
+    }
+    discardMeasurements() {
+        return;
+    }
+    removePerformanceCallback() {
+        return true;
+    }
+    addPerformanceCallback() {
+        return "";
+    }
+    emitEvents() {
+        return;
+    }
+    addFields() {
+        return;
+    }
+    incrementFields() {
+        return;
+    }
+    cacheEventByCorrelationId() {
+        return;
+    }
+}
+
+/*! @azure/msal-common v15.13.2 2025-11-19 */
+
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ */
+const DEFAULT_SYSTEM_OPTIONS$1 = {
+    tokenRenewalOffsetSeconds: DEFAULT_TOKEN_RENEWAL_OFFSET_SEC,
+    preventCorsPreflight: false,
+};
+const DEFAULT_LOGGER_IMPLEMENTATION = {
+    loggerCallback: () => {
+        // allow users to not set loggerCallback
+    },
+    piiLoggingEnabled: false,
+    logLevel: LogLevel.Info,
+    correlationId: Constants$1.EMPTY_STRING,
+};
+const DEFAULT_CACHE_OPTIONS$1 = {
+    claimsBasedCachingEnabled: false,
+};
+const DEFAULT_NETWORK_IMPLEMENTATION = {
+    async sendGetRequestAsync() {
+        throw createClientAuthError(methodNotImplemented);
+    },
+    async sendPostRequestAsync() {
+        throw createClientAuthError(methodNotImplemented);
+    },
+};
+const DEFAULT_LIBRARY_INFO = {
+    sku: Constants$1.SKU,
+    version: version$1,
+    cpu: Constants$1.EMPTY_STRING,
+    os: Constants$1.EMPTY_STRING,
+};
+const DEFAULT_CLIENT_CREDENTIALS = {
+    clientSecret: Constants$1.EMPTY_STRING,
+    clientAssertion: undefined,
+};
+const DEFAULT_AZURE_CLOUD_OPTIONS = {
+    azureCloudInstance: AzureCloudInstance.None,
+    tenant: `${Constants$1.DEFAULT_COMMON_TENANT}`,
+};
+const DEFAULT_TELEMETRY_OPTIONS$1 = {
+    application: {
+        appName: "",
+        appVersion: "",
+    },
+};
+/**
+ * Function that sets the default options when not explicitly configured from app developer
+ *
+ * @param Configuration
+ *
+ * @returns Configuration
+ */
+function buildClientConfiguration({ authOptions: userAuthOptions, systemOptions: userSystemOptions, loggerOptions: userLoggerOption, cacheOptions: userCacheOptions, storageInterface: storageImplementation, networkInterface: networkImplementation, cryptoInterface: cryptoImplementation, clientCredentials: clientCredentials, libraryInfo: libraryInfo, telemetry: telemetry, serverTelemetryManager: serverTelemetryManager, persistencePlugin: persistencePlugin, serializableCache: serializableCache, }) {
+    const loggerOptions = {
+        ...DEFAULT_LOGGER_IMPLEMENTATION,
+        ...userLoggerOption,
+    };
+    return {
+        authOptions: buildAuthOptions(userAuthOptions),
+        systemOptions: { ...DEFAULT_SYSTEM_OPTIONS$1, ...userSystemOptions },
+        loggerOptions: loggerOptions,
+        cacheOptions: { ...DEFAULT_CACHE_OPTIONS$1, ...userCacheOptions },
+        storageInterface: storageImplementation ||
+            new DefaultStorageClass(userAuthOptions.clientId, DEFAULT_CRYPTO_IMPLEMENTATION, new Logger(loggerOptions), new StubPerformanceClient()),
+        networkInterface: networkImplementation || DEFAULT_NETWORK_IMPLEMENTATION,
+        cryptoInterface: cryptoImplementation || DEFAULT_CRYPTO_IMPLEMENTATION,
+        clientCredentials: clientCredentials || DEFAULT_CLIENT_CREDENTIALS,
+        libraryInfo: { ...DEFAULT_LIBRARY_INFO, ...libraryInfo },
+        telemetry: { ...DEFAULT_TELEMETRY_OPTIONS$1, ...telemetry },
+        serverTelemetryManager: serverTelemetryManager || null,
+        persistencePlugin: persistencePlugin || null,
+        serializableCache: serializableCache || null,
+    };
+}
+/**
+ * Construct authoptions from the client and platform passed values
+ * @param authOptions
+ */
+function buildAuthOptions(authOptions) {
+    return {
+        clientCapabilities: [],
+        azureCloudOptions: DEFAULT_AZURE_CLOUD_OPTIONS,
+        skipAuthorityMetadataCache: false,
+        instanceAware: false,
+        encodeExtraQueryParams: false,
+        ...authOptions,
+    };
+}
+/**
+ * Returns true if config has protocolMode set to ProtocolMode.OIDC, false otherwise
+ * @param ClientConfiguration
+ */
+function isOidcProtocolMode(config) {
+    return (config.authOptions.authority.options.protocolMode === ProtocolMode.OIDC);
+}
+
+/*! @azure/msal-common v15.13.2 2025-11-19 */
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ */
+const CcsCredentialType = {
+    HOME_ACCOUNT_ID: "home_account_id",
+    UPN: "UPN",
+};
+
+/*! @azure/msal-common v15.13.2 2025-11-19 */
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ */
+const CLIENT_ID = "client_id";
+const REDIRECT_URI = "redirect_uri";
+const RESPONSE_TYPE = "response_type";
+const RESPONSE_MODE = "response_mode";
+const GRANT_TYPE = "grant_type";
+const CLAIMS = "claims";
+const SCOPE$1 = "scope";
+const REFRESH_TOKEN = "refresh_token";
+const STATE = "state";
+const NONCE = "nonce";
+const PROMPT = "prompt";
+const CODE = "code";
+const CODE_CHALLENGE = "code_challenge";
+const CODE_CHALLENGE_METHOD = "code_challenge_method";
+const CODE_VERIFIER = "code_verifier";
+const CLIENT_REQUEST_ID = "client-request-id";
+const X_CLIENT_SKU = "x-client-SKU";
+const X_CLIENT_VER = "x-client-VER";
+const X_CLIENT_OS = "x-client-OS";
+const X_CLIENT_CPU = "x-client-CPU";
+const X_CLIENT_CURR_TELEM = "x-client-current-telemetry";
+const X_CLIENT_LAST_TELEM = "x-client-last-telemetry";
+const X_MS_LIB_CAPABILITY = "x-ms-lib-capability";
+const X_APP_NAME = "x-app-name";
+const X_APP_VER = "x-app-ver";
+const POST_LOGOUT_URI = "post_logout_redirect_uri";
+const ID_TOKEN_HINT = "id_token_hint";
+const DEVICE_CODE = "device_code";
+const CLIENT_SECRET = "client_secret";
+const CLIENT_ASSERTION = "client_assertion";
+const CLIENT_ASSERTION_TYPE = "client_assertion_type";
+const TOKEN_TYPE = "token_type";
+const REQ_CNF = "req_cnf";
+const OBO_ASSERTION = "assertion";
+const REQUESTED_TOKEN_USE = "requested_token_use";
+const ON_BEHALF_OF = "on_behalf_of";
+const RETURN_SPA_CODE = "return_spa_code";
+const LOGOUT_HINT = "logout_hint";
+const SID = "sid";
+const LOGIN_HINT = "login_hint";
+const DOMAIN_HINT = "domain_hint";
+const X_CLIENT_EXTRA_SKU = "x-client-xtra-sku";
+const BROKER_CLIENT_ID = "brk_client_id";
+const BROKER_REDIRECT_URI = "brk_redirect_uri";
+const INSTANCE_AWARE = "instance_aware";
+
+/*! @azure/msal-common v15.13.2 2025-11-19 */
+
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ */
+function instrumentBrokerParams(parameters, correlationId, performanceClient) {
+    if (!correlationId) {
+        return;
+    }
+    const clientId = parameters.get(CLIENT_ID);
+    if (clientId && parameters.has(BROKER_CLIENT_ID)) {
+        performanceClient?.addFields({
+            embeddedClientId: clientId,
+            embeddedRedirectUri: parameters.get(REDIRECT_URI),
+        }, correlationId);
+    }
+}
+/**
+ * Add the given response_type
+ * @param parameters
+ * @param responseType
+ */
+function addResponseType(parameters, responseType) {
+    parameters.set(RESPONSE_TYPE, responseType);
+}
+/**
+ * add response_mode. defaults to query.
+ * @param responseMode
+ */
+function addResponseMode(parameters, responseMode) {
+    parameters.set(RESPONSE_MODE, responseMode ? responseMode : ResponseMode.QUERY);
+}
+/**
+ * add scopes. set addOidcScopes to false to prevent default scopes in non-user scenarios
+ * @param scopeSet
+ * @param addOidcScopes
+ */
+function addScopes(parameters, scopes, addOidcScopes = true, defaultScopes = OIDC_DEFAULT_SCOPES) {
+    // Always add openid to the scopes when adding OIDC scopes
+    if (addOidcScopes &&
+        !defaultScopes.includes("openid") &&
+        !scopes.includes("openid")) {
+        defaultScopes.push("openid");
+    }
+    const requestScopes = addOidcScopes
+        ? [...(scopes || []), ...defaultScopes]
+        : scopes || [];
+    const scopeSet = new ScopeSet(requestScopes);
+    parameters.set(SCOPE$1, scopeSet.printScopes());
+}
+/**
+ * add clientId
+ * @param clientId
+ */
+function addClientId(parameters, clientId) {
+    parameters.set(CLIENT_ID, clientId);
+}
+/**
+ * add redirect_uri
+ * @param redirectUri
+ */
+function addRedirectUri(parameters, redirectUri) {
+    parameters.set(REDIRECT_URI, redirectUri);
+}
+/**
+ * add post logout redirectUri
+ * @param redirectUri
+ */
+function addPostLogoutRedirectUri(parameters, redirectUri) {
+    parameters.set(POST_LOGOUT_URI, redirectUri);
+}
+/**
+ * add id_token_hint to logout request
+ * @param idTokenHint
+ */
+function addIdTokenHint(parameters, idTokenHint) {
+    parameters.set(ID_TOKEN_HINT, idTokenHint);
+}
+/**
+ * add domain_hint
+ * @param domainHint
+ */
+function addDomainHint(parameters, domainHint) {
+    parameters.set(DOMAIN_HINT, domainHint);
+}
+/**
+ * add login_hint
+ * @param loginHint
+ */
+function addLoginHint(parameters, loginHint) {
+    parameters.set(LOGIN_HINT, loginHint);
+}
+/**
+ * Adds the CCS (Cache Credential Service) query parameter for login_hint
+ * @param loginHint
+ */
+function addCcsUpn(parameters, loginHint) {
+    parameters.set(HeaderNames.CCS_HEADER, `UPN:${loginHint}`);
+}
+/**
+ * Adds the CCS (Cache Credential Service) query parameter for account object
+ * @param loginHint
+ */
+function addCcsOid(parameters, clientInfo) {
+    parameters.set(HeaderNames.CCS_HEADER, `Oid:${clientInfo.uid}@${clientInfo.utid}`);
+}
+/**
+ * add sid
+ * @param sid
+ */
+function addSid(parameters, sid) {
+    parameters.set(SID, sid);
+}
+/**
+ * add claims
+ * @param claims
+ */
+function addClaims(parameters, claims, clientCapabilities) {
+    const mergedClaims = addClientCapabilitiesToClaims(claims, clientCapabilities);
+    try {
+        JSON.parse(mergedClaims);
+    }
+    catch (e) {
+        throw createClientConfigurationError(invalidClaims);
+    }
+    parameters.set(CLAIMS, mergedClaims);
+}
+/**
+ * add correlationId
+ * @param correlationId
+ */
+function addCorrelationId(parameters, correlationId) {
+    parameters.set(CLIENT_REQUEST_ID, correlationId);
+}
+/**
+ * add library info query params
+ * @param libraryInfo
+ */
+function addLibraryInfo(parameters, libraryInfo) {
+    // Telemetry Info
+    parameters.set(X_CLIENT_SKU, libraryInfo.sku);
+    parameters.set(X_CLIENT_VER, libraryInfo.version);
+    if (libraryInfo.os) {
+        parameters.set(X_CLIENT_OS, libraryInfo.os);
+    }
+    if (libraryInfo.cpu) {
+        parameters.set(X_CLIENT_CPU, libraryInfo.cpu);
+    }
+}
+/**
+ * Add client telemetry parameters
+ * @param appTelemetry
+ */
+function addApplicationTelemetry(parameters, appTelemetry) {
+    if (appTelemetry?.appName) {
+        parameters.set(X_APP_NAME, appTelemetry.appName);
+    }
+    if (appTelemetry?.appVersion) {
+        parameters.set(X_APP_VER, appTelemetry.appVersion);
+    }
+}
+/**
+ * add prompt
+ * @param prompt
+ */
+function addPrompt(parameters, prompt) {
+    parameters.set(PROMPT, prompt);
+}
+/**
+ * add state
+ * @param state
+ */
+function addState(parameters, state) {
+    if (state) {
+        parameters.set(STATE, state);
+    }
+}
+/**
+ * add nonce
+ * @param nonce
+ */
+function addNonce(parameters, nonce) {
+    parameters.set(NONCE, nonce);
+}
+/**
+ * add code_challenge and code_challenge_method
+ * - throw if either of them are not passed
+ * @param codeChallenge
+ * @param codeChallengeMethod
+ */
+function addCodeChallengeParams(parameters, codeChallenge, codeChallengeMethod) {
+    if (codeChallenge && codeChallengeMethod) {
+        parameters.set(CODE_CHALLENGE, codeChallenge);
+        parameters.set(CODE_CHALLENGE_METHOD, codeChallengeMethod);
+    }
+    else {
+        throw createClientConfigurationError(pkceParamsMissing);
+    }
+}
+/**
+ * add the `authorization_code` passed by the user to exchange for a token
+ * @param code
+ */
+function addAuthorizationCode(parameters, code) {
+    parameters.set(CODE, code);
+}
+/**
+ * add the `authorization_code` passed by the user to exchange for a token
+ * @param code
+ */
+function addDeviceCode(parameters, code) {
+    parameters.set(DEVICE_CODE, code);
+}
+/**
+ * add the `refreshToken` passed by the user
+ * @param refreshToken
+ */
+function addRefreshToken(parameters, refreshToken) {
+    parameters.set(REFRESH_TOKEN, refreshToken);
+}
+/**
+ * add the `code_verifier` passed by the user to exchange for a token
+ * @param codeVerifier
+ */
+function addCodeVerifier(parameters, codeVerifier) {
+    parameters.set(CODE_VERIFIER, codeVerifier);
+}
+/**
+ * add client_secret
+ * @param clientSecret
+ */
+function addClientSecret(parameters, clientSecret) {
+    parameters.set(CLIENT_SECRET, clientSecret);
+}
+/**
+ * add clientAssertion for confidential client flows
+ * @param clientAssertion
+ */
+function addClientAssertion(parameters, clientAssertion) {
+    if (clientAssertion) {
+        parameters.set(CLIENT_ASSERTION, clientAssertion);
+    }
+}
+/**
+ * add clientAssertionType for confidential client flows
+ * @param clientAssertionType
+ */
+function addClientAssertionType(parameters, clientAssertionType) {
+    if (clientAssertionType) {
+        parameters.set(CLIENT_ASSERTION_TYPE, clientAssertionType);
+    }
+}
+/**
+ * add OBO assertion for confidential client flows
+ * @param clientAssertion
+ */
+function addOboAssertion(parameters, oboAssertion) {
+    parameters.set(OBO_ASSERTION, oboAssertion);
+}
+/**
+ * add grant type
+ * @param grantType
+ */
+function addRequestTokenUse(parameters, tokenUse) {
+    parameters.set(REQUESTED_TOKEN_USE, tokenUse);
+}
+/**
+ * add grant type
+ * @param grantType
+ */
+function addGrantType(parameters, grantType) {
+    parameters.set(GRANT_TYPE, grantType);
+}
+/**
+ * add client info
+ *
+ */
+function addClientInfo(parameters) {
+    parameters.set(CLIENT_INFO, "1");
+}
+function addInstanceAware(parameters) {
+    if (!parameters.has(INSTANCE_AWARE)) {
+        parameters.set(INSTANCE_AWARE, "true");
+    }
+}
+/**
+ * add extraQueryParams
+ * @param eQParams
+ */
+function addExtraQueryParameters(parameters, eQParams) {
+    Object.entries(eQParams).forEach(([key, value]) => {
+        if (!parameters.has(key) && value) {
+            parameters.set(key, value);
+        }
+    });
+}
+function addClientCapabilitiesToClaims(claims, clientCapabilities) {
+    let mergedClaims;
+    // Parse provided claims into JSON object or initialize empty object
+    if (!claims) {
+        mergedClaims = {};
+    }
+    else {
+        try {
+            mergedClaims = JSON.parse(claims);
+        }
+        catch (e) {
+            throw createClientConfigurationError(invalidClaims);
+        }
+    }
+    if (clientCapabilities && clientCapabilities.length > 0) {
+        if (!mergedClaims.hasOwnProperty(ClaimsRequestKeys.ACCESS_TOKEN)) {
+            // Add access_token key to claims object
+            mergedClaims[ClaimsRequestKeys.ACCESS_TOKEN] = {};
+        }
+        // Add xms_cc claim with provided clientCapabilities to access_token key
+        mergedClaims[ClaimsRequestKeys.ACCESS_TOKEN][ClaimsRequestKeys.XMS_CC] =
+            {
+                values: clientCapabilities,
+            };
+    }
+    return JSON.stringify(mergedClaims);
+}
+/**
+ * adds `username` for Password Grant flow
+ * @param username
+ */
+function addUsername(parameters, username) {
+    parameters.set(PasswordGrantConstants.username, username);
+}
+/**
+ * adds `password` for Password Grant flow
+ * @param password
+ */
+function addPassword(parameters, password) {
+    parameters.set(PasswordGrantConstants.password, password);
+}
+/**
+ * add pop_jwk to query params
+ * @param cnfString
+ */
+function addPopToken(parameters, cnfString) {
+    if (cnfString) {
+        parameters.set(TOKEN_TYPE, AuthenticationScheme.POP);
+        parameters.set(REQ_CNF, cnfString);
+    }
+}
+/**
+ * add SSH JWK and key ID to query params
+ */
+function addSshJwk(parameters, sshJwkString) {
+    if (sshJwkString) {
+        parameters.set(TOKEN_TYPE, AuthenticationScheme.SSH);
+        parameters.set(REQ_CNF, sshJwkString);
+    }
+}
+/**
+ * add server telemetry fields
+ * @param serverTelemetryManager
+ */
+function addServerTelemetry(parameters, serverTelemetryManager) {
+    parameters.set(X_CLIENT_CURR_TELEM, serverTelemetryManager.generateCurrentRequestHeaderValue());
+    parameters.set(X_CLIENT_LAST_TELEM, serverTelemetryManager.generateLastRequestHeaderValue());
+}
+/**
+ * Adds parameter that indicates to the server that throttling is supported
+ */
+function addThrottling(parameters) {
+    parameters.set(X_MS_LIB_CAPABILITY, ThrottlingConstants.X_MS_LIB_CAPABILITY_VALUE);
+}
+/**
+ * Adds logout_hint parameter for "silent" logout which prevent server account picker
+ */
+function addLogoutHint(parameters, logoutHint) {
+    parameters.set(LOGOUT_HINT, logoutHint);
+}
+function addBrokerParameters(parameters, brokerClientId, brokerRedirectUri) {
+    if (!parameters.has(BROKER_CLIENT_ID)) {
+        parameters.set(BROKER_CLIENT_ID, brokerClientId);
+    }
+    if (!parameters.has(BROKER_REDIRECT_URI)) {
+        parameters.set(BROKER_REDIRECT_URI, brokerRedirectUri);
+    }
+}
+
+/*! @azure/msal-common v15.13.2 2025-11-19 */
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ */
+function isOpenIdConfigResponse(response) {
+    return (response.hasOwnProperty("authorization_endpoint") &&
+        response.hasOwnProperty("token_endpoint") &&
+        response.hasOwnProperty("issuer") &&
+        response.hasOwnProperty("jwks_uri"));
+}
+
+/*! @azure/msal-common v15.13.2 2025-11-19 */
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ */
+function isCloudInstanceDiscoveryResponse(response) {
+    return (response.hasOwnProperty("tenant_discovery_endpoint") &&
+        response.hasOwnProperty("metadata"));
+}
+
+/*! @azure/msal-common v15.13.2 2025-11-19 */
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ */
+function isCloudInstanceDiscoveryErrorResponse(response) {
+    return (response.hasOwnProperty("error") &&
+        response.hasOwnProperty("error_description"));
+}
+
+/*! @azure/msal-common v15.13.2 2025-11-19 */
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ */
+/**
+ * Wraps a function with a performance measurement.
+ * Usage: invoke(functionToCall, performanceClient, "EventName", "correlationId")(...argsToPassToFunction)
+ * @param callback
+ * @param eventName
+ * @param logger
+ * @param telemetryClient
+ * @param correlationId
+ * @returns
+ * @internal
+ */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const invoke = (callback, eventName, logger, telemetryClient, correlationId) => {
+    return (...args) => {
+        logger.trace(`Executing function ${eventName}`);
+        const inProgressEvent = telemetryClient?.startMeasurement(eventName, correlationId);
+        if (correlationId) {
+            // Track number of times this API is called in a single request
+            const eventCount = eventName + "CallCount";
+            telemetryClient?.incrementFields({ [eventCount]: 1 }, correlationId);
+        }
+        try {
+            const result = callback(...args);
+            inProgressEvent?.end({
+                success: true,
+            });
+            logger.trace(`Returning result from ${eventName}`);
+            return result;
+        }
+        catch (e) {
+            logger.trace(`Error occurred in ${eventName}`);
+            try {
+                logger.trace(JSON.stringify(e));
+            }
+            catch (e) {
+                logger.trace("Unable to print error message.");
+            }
+            inProgressEvent?.end({
+                success: false,
+            }, e);
+            throw e;
+        }
+    };
+};
+/**
+ * Wraps an async function with a performance measurement.
+ * Usage: invokeAsync(functionToCall, performanceClient, "EventName", "correlationId")(...argsToPassToFunction)
+ * @param callback
+ * @param eventName
+ * @param logger
+ * @param telemetryClient
+ * @param correlationId
+ * @returns
+ * @internal
+ *
+ */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const invokeAsync = (callback, eventName, logger, telemetryClient, correlationId) => {
+    return (...args) => {
+        logger.trace(`Executing function ${eventName}`);
+        const inProgressEvent = telemetryClient?.startMeasurement(eventName, correlationId);
+        if (correlationId) {
+            // Track number of times this API is called in a single request
+            const eventCount = eventName + "CallCount";
+            telemetryClient?.incrementFields({ [eventCount]: 1 }, correlationId);
+        }
+        telemetryClient?.setPreQueueTime(eventName, correlationId);
+        return callback(...args)
+            .then((response) => {
+            logger.trace(`Returning result from ${eventName}`);
+            inProgressEvent?.end({
+                success: true,
+            });
+            return response;
+        })
+            .catch((e) => {
+            logger.trace(`Error occurred in ${eventName}`);
+            try {
+                logger.trace(JSON.stringify(e));
+            }
+            catch (e) {
+                logger.trace("Unable to print error message.");
+            }
+            inProgressEvent?.end({
+                success: false,
+            }, e);
+            throw e;
+        });
+    };
+};
+
+/*! @azure/msal-common v15.13.2 2025-11-19 */
+
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ */
+class RegionDiscovery {
+    constructor(networkInterface, logger, performanceClient, correlationId) {
+        this.networkInterface = networkInterface;
+        this.logger = logger;
+        this.performanceClient = performanceClient;
+        this.correlationId = correlationId;
+    }
+    /**
+     * Detect the region from the application's environment.
+     *
+     * @returns Promise<string | null>
+     */
+    async detectRegion(environmentRegion, regionDiscoveryMetadata) {
+        this.performanceClient?.addQueueMeasurement(PerformanceEvents.RegionDiscoveryDetectRegion, this.correlationId);
+        // Initialize auto detected region with the region from the envrionment
+        let autodetectedRegionName = environmentRegion;
+        // Check if a region was detected from the environment, if not, attempt to get the region from IMDS
+        if (!autodetectedRegionName) {
+            const options = RegionDiscovery.IMDS_OPTIONS;
+            try {
+                const localIMDSVersionResponse = await invokeAsync(this.getRegionFromIMDS.bind(this), PerformanceEvents.RegionDiscoveryGetRegionFromIMDS, this.logger, this.performanceClient, this.correlationId)(Constants$1.IMDS_VERSION, options);
+                if (localIMDSVersionResponse.status === HttpStatus.SUCCESS) {
+                    autodetectedRegionName = localIMDSVersionResponse.body;
+                    regionDiscoveryMetadata.region_source =
+                        RegionDiscoverySources.IMDS;
+                }
+                // If the response using the local IMDS version failed, try to fetch the current version of IMDS and retry.
+                if (localIMDSVersionResponse.status === HttpStatus.BAD_REQUEST) {
+                    const currentIMDSVersion = await invokeAsync(this.getCurrentVersion.bind(this), PerformanceEvents.RegionDiscoveryGetCurrentVersion, this.logger, this.performanceClient, this.correlationId)(options);
+                    if (!currentIMDSVersion) {
+                        regionDiscoveryMetadata.region_source =
+                            RegionDiscoverySources.FAILED_AUTO_DETECTION;
+                        return null;
+                    }
+                    const currentIMDSVersionResponse = await invokeAsync(this.getRegionFromIMDS.bind(this), PerformanceEvents.RegionDiscoveryGetRegionFromIMDS, this.logger, this.performanceClient, this.correlationId)(currentIMDSVersion, options);
+                    if (currentIMDSVersionResponse.status === HttpStatus.SUCCESS) {
+                        autodetectedRegionName =
+                            currentIMDSVersionResponse.body;
+                        regionDiscoveryMetadata.region_source =
+                            RegionDiscoverySources.IMDS;
+                    }
+                }
+            }
+            catch (e) {
+                regionDiscoveryMetadata.region_source =
+                    RegionDiscoverySources.FAILED_AUTO_DETECTION;
+                return null;
+            }
+        }
+        else {
+            regionDiscoveryMetadata.region_source =
+                RegionDiscoverySources.ENVIRONMENT_VARIABLE;
+        }
+        // If no region was auto detected from the environment or from the IMDS endpoint, mark the attempt as a FAILED_AUTO_DETECTION
+        if (!autodetectedRegionName) {
+            regionDiscoveryMetadata.region_source =
+                RegionDiscoverySources.FAILED_AUTO_DETECTION;
+        }
+        return autodetectedRegionName || null;
+    }
+    /**
+     * Make the call to the IMDS endpoint
+     *
+     * @param imdsEndpointUrl
+     * @returns Promise<NetworkResponse<string>>
+     */
+    async getRegionFromIMDS(version, options) {
+        this.performanceClient?.addQueueMeasurement(PerformanceEvents.RegionDiscoveryGetRegionFromIMDS, this.correlationId);
+        return this.networkInterface.sendGetRequestAsync(`${Constants$1.IMDS_ENDPOINT}?api-version=${version}&format=text`, options, Constants$1.IMDS_TIMEOUT);
+    }
+    /**
+     * Get the most recent version of the IMDS endpoint available
+     *
+     * @returns Promise<string | null>
+     */
+    async getCurrentVersion(options) {
+        this.performanceClient?.addQueueMeasurement(PerformanceEvents.RegionDiscoveryGetCurrentVersion, this.correlationId);
+        try {
+            const response = await this.networkInterface.sendGetRequestAsync(`${Constants$1.IMDS_ENDPOINT}?format=json`, options);
+            // When IMDS endpoint is called without the api version query param, bad request response comes back with latest version.
+            if (response.status === HttpStatus.BAD_REQUEST &&
+                response.body &&
+                response.body["newest-versions"] &&
+                response.body["newest-versions"].length > 0) {
+                return response.body["newest-versions"][0];
+            }
+            return null;
+        }
+        catch (e) {
+            return null;
+        }
+    }
+}
+// Options for the IMDS endpoint request
+RegionDiscovery.IMDS_OPTIONS = {
+    headers: {
+        Metadata: "true",
+    },
+};
+
+/*! @azure/msal-common v15.13.2 2025-11-19 */
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ */
+/**
+ * Utility functions for managing date and time operations.
+ */
+/**
+ * return the current time in Unix time (seconds).
+ */
+function nowSeconds() {
+    // Date.getTime() returns in milliseconds.
+    return Math.round(new Date().getTime() / 1000.0);
+}
+/**
+ * Convert seconds to JS Date object. Seconds can be in a number or string format or undefined (will still return a date).
+ * @param seconds
+ */
+function toDateFromSeconds(seconds) {
+    if (seconds) {
+        return new Date(Number(seconds) * 1000);
+    }
+    return new Date();
+}
+/**
+ * check if a token is expired based on given UTC time in seconds.
+ * @param expiresOn
+ */
+function isTokenExpired(expiresOn, offset) {
+    // check for access token expiry
+    const expirationSec = Number(expiresOn) || 0;
+    const offsetCurrentTimeSec = nowSeconds() + offset;
+    // If current time + offset is greater than token expiration time, then token is expired.
+    return offsetCurrentTimeSec > expirationSec;
+}
+/**
+ * If the current time is earlier than the time that a token was cached at, we must discard the token
+ * i.e. The system clock was turned back after acquiring the cached token
+ * @param cachedAt
+ * @param offset
+ */
+function wasClockTurnedBack(cachedAt) {
+    const cachedAtSec = Number(cachedAt);
+    return cachedAtSec > nowSeconds();
+}
+/**
+ * Waits for t number of milliseconds
+ * @param t number
+ * @param value T
+ */
+function delay$2(t, value) {
+    return new Promise((resolve) => setTimeout(() => resolve(value), t));
+}
+
+/*! @azure/msal-common v15.13.2 2025-11-19 */
+
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ */
+/**
+ * Create IdTokenEntity
+ * @param homeAccountId
+ * @param authenticationResult
+ * @param clientId
+ * @param authority
+ */
+function createIdTokenEntity(homeAccountId, environment, idToken, clientId, tenantId) {
+    const idTokenEntity = {
+        credentialType: CredentialType.ID_TOKEN,
+        homeAccountId: homeAccountId,
+        environment: environment,
+        clientId: clientId,
+        secret: idToken,
+        realm: tenantId,
+        lastUpdatedAt: Date.now().toString(), // Set the last updated time to now
+    };
+    return idTokenEntity;
+}
+/**
+ * Create AccessTokenEntity
+ * @param homeAccountId
+ * @param environment
+ * @param accessToken
+ * @param clientId
+ * @param tenantId
+ * @param scopes
+ * @param expiresOn
+ * @param extExpiresOn
+ */
+function createAccessTokenEntity(homeAccountId, environment, accessToken, clientId, tenantId, scopes, expiresOn, extExpiresOn, base64Decode, refreshOn, tokenType, userAssertionHash, keyId, requestedClaims, requestedClaimsHash) {
+    const atEntity = {
+        homeAccountId: homeAccountId,
+        credentialType: CredentialType.ACCESS_TOKEN,
+        secret: accessToken,
+        cachedAt: nowSeconds().toString(),
+        expiresOn: expiresOn.toString(),
+        extendedExpiresOn: extExpiresOn.toString(),
+        environment: environment,
+        clientId: clientId,
+        realm: tenantId,
+        target: scopes,
+        tokenType: tokenType || AuthenticationScheme.BEARER,
+        lastUpdatedAt: Date.now().toString(), // Set the last updated time to now
+    };
+    if (userAssertionHash) {
+        atEntity.userAssertionHash = userAssertionHash;
+    }
+    if (refreshOn) {
+        atEntity.refreshOn = refreshOn.toString();
+    }
+    if (requestedClaims) {
+        atEntity.requestedClaims = requestedClaims;
+        atEntity.requestedClaimsHash = requestedClaimsHash;
+    }
+    /*
+     * Create Access Token With Auth Scheme instead of regular access token
+     * Cast to lower to handle "bearer" from ADFS
+     */
+    if (atEntity.tokenType?.toLowerCase() !==
+        AuthenticationScheme.BEARER.toLowerCase()) {
+        atEntity.credentialType = CredentialType.ACCESS_TOKEN_WITH_AUTH_SCHEME;
+        switch (atEntity.tokenType) {
+            case AuthenticationScheme.POP:
+                // Make sure keyId is present and add it to credential
+                const tokenClaims = extractTokenClaims(accessToken, base64Decode);
+                if (!tokenClaims?.cnf?.kid) {
+                    throw createClientAuthError(tokenClaimsCnfRequiredForSignedJwt);
+                }
+                atEntity.keyId = tokenClaims.cnf.kid;
+                break;
+            case AuthenticationScheme.SSH:
+                atEntity.keyId = keyId;
+        }
+    }
+    return atEntity;
+}
+/**
+ * Create RefreshTokenEntity
+ * @param homeAccountId
+ * @param authenticationResult
+ * @param clientId
+ * @param authority
+ */
+function createRefreshTokenEntity(homeAccountId, environment, refreshToken, clientId, familyId, userAssertionHash, expiresOn) {
+    const rtEntity = {
+        credentialType: CredentialType.REFRESH_TOKEN,
+        homeAccountId: homeAccountId,
+        environment: environment,
+        clientId: clientId,
+        secret: refreshToken,
+        lastUpdatedAt: Date.now().toString(),
+    };
+    if (userAssertionHash) {
+        rtEntity.userAssertionHash = userAssertionHash;
+    }
+    if (familyId) {
+        rtEntity.familyId = familyId;
+    }
+    if (expiresOn) {
+        rtEntity.expiresOn = expiresOn.toString();
+    }
+    return rtEntity;
+}
+function isCredentialEntity(entity) {
+    return (entity.hasOwnProperty("homeAccountId") &&
+        entity.hasOwnProperty("environment") &&
+        entity.hasOwnProperty("credentialType") &&
+        entity.hasOwnProperty("clientId") &&
+        entity.hasOwnProperty("secret"));
+}
+/**
+ * Validates an entity: checks for all expected params
+ * @param entity
+ */
+function isAccessTokenEntity(entity) {
+    if (!entity) {
+        return false;
+    }
+    return (isCredentialEntity(entity) &&
+        entity.hasOwnProperty("realm") &&
+        entity.hasOwnProperty("target") &&
+        (entity["credentialType"] === CredentialType.ACCESS_TOKEN ||
+            entity["credentialType"] ===
+                CredentialType.ACCESS_TOKEN_WITH_AUTH_SCHEME));
+}
+/**
+ * Validates an entity: checks for all expected params
+ * @param entity
+ */
+function isIdTokenEntity(entity) {
+    if (!entity) {
+        return false;
+    }
+    return (isCredentialEntity(entity) &&
+        entity.hasOwnProperty("realm") &&
+        entity["credentialType"] === CredentialType.ID_TOKEN);
+}
+/**
+ * Validates an entity: checks for all expected params
+ * @param entity
+ */
+function isRefreshTokenEntity(entity) {
+    if (!entity) {
+        return false;
+    }
+    return (isCredentialEntity(entity) &&
+        entity["credentialType"] === CredentialType.REFRESH_TOKEN);
+}
+/**
+ * validates if a given cache entry is "Telemetry", parses <key,value>
+ * @param key
+ * @param entity
+ */
+function isServerTelemetryEntity(key, entity) {
+    const validateKey = key.indexOf(SERVER_TELEM_CONSTANTS.CACHE_KEY) === 0;
+    let validateEntity = true;
+    if (entity) {
+        validateEntity =
+            entity.hasOwnProperty("failedRequests") &&
+                entity.hasOwnProperty("errors") &&
+                entity.hasOwnProperty("cacheHits");
+    }
+    return validateKey && validateEntity;
+}
+/**
+ * validates if a given cache entry is "Throttling", parses <key,value>
+ * @param key
+ * @param entity
+ */
+function isThrottlingEntity(key, entity) {
+    let validateKey = false;
+    if (key) {
+        validateKey = key.indexOf(ThrottlingConstants.THROTTLING_PREFIX) === 0;
+    }
+    let validateEntity = true;
+    if (entity) {
+        validateEntity = entity.hasOwnProperty("throttleTime");
+    }
+    return validateKey && validateEntity;
+}
+/**
+ * Generate AppMetadata Cache Key as per the schema: appmetadata-<environment>-<client_id>
+ */
+function generateAppMetadataKey({ environment, clientId, }) {
+    const appMetaDataKeyArray = [
+        APP_METADATA,
+        environment,
+        clientId,
+    ];
+    return appMetaDataKeyArray
+        .join(Separators.CACHE_KEY_SEPARATOR)
+        .toLowerCase();
+}
+/*
+ * Validates an entity: checks for all expected params
+ * @param entity
+ */
+function isAppMetadataEntity(key, entity) {
+    if (!entity) {
+        return false;
+    }
+    return (key.indexOf(APP_METADATA) === 0 &&
+        entity.hasOwnProperty("clientId") &&
+        entity.hasOwnProperty("environment"));
+}
+/**
+ * Validates an entity: checks for all expected params
+ * @param entity
+ */
+function isAuthorityMetadataEntity(key, entity) {
+    if (!entity) {
+        return false;
+    }
+    return (key.indexOf(AUTHORITY_METADATA_CONSTANTS.CACHE_KEY) === 0 &&
+        entity.hasOwnProperty("aliases") &&
+        entity.hasOwnProperty("preferred_cache") &&
+        entity.hasOwnProperty("preferred_network") &&
+        entity.hasOwnProperty("canonical_authority") &&
+        entity.hasOwnProperty("authorization_endpoint") &&
+        entity.hasOwnProperty("token_endpoint") &&
+        entity.hasOwnProperty("issuer") &&
+        entity.hasOwnProperty("aliasesFromNetwork") &&
+        entity.hasOwnProperty("endpointsFromNetwork") &&
+        entity.hasOwnProperty("expiresAt") &&
+        entity.hasOwnProperty("jwks_uri"));
+}
+/**
+ * Reset the exiresAt value
+ */
+function generateAuthorityMetadataExpiresAt() {
+    return (nowSeconds() +
+        AUTHORITY_METADATA_CONSTANTS.REFRESH_TIME_SECONDS);
+}
+function updateAuthorityEndpointMetadata(authorityMetadata, updatedValues, fromNetwork) {
+    authorityMetadata.authorization_endpoint =
+        updatedValues.authorization_endpoint;
+    authorityMetadata.token_endpoint = updatedValues.token_endpoint;
+    authorityMetadata.end_session_endpoint = updatedValues.end_session_endpoint;
+    authorityMetadata.issuer = updatedValues.issuer;
+    authorityMetadata.endpointsFromNetwork = fromNetwork;
+    authorityMetadata.jwks_uri = updatedValues.jwks_uri;
+}
+function updateCloudDiscoveryMetadata(authorityMetadata, updatedValues, fromNetwork) {
+    authorityMetadata.aliases = updatedValues.aliases;
+    authorityMetadata.preferred_cache = updatedValues.preferred_cache;
+    authorityMetadata.preferred_network = updatedValues.preferred_network;
+    authorityMetadata.aliasesFromNetwork = fromNetwork;
+}
+/**
+ * Returns whether or not the data needs to be refreshed
+ */
+function isAuthorityMetadataExpired(metadata) {
+    return metadata.expiresAt <= nowSeconds();
+}
+
+/*! @azure/msal-common v15.13.2 2025-11-19 */
+
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ */
+/**
+ * The authority class validates the authority URIs used by the user, and retrieves the OpenID Configuration Data from the
+ * endpoint. It will store the pertinent config data in this object for use during token calls.
+ * @internal
+ */
+class Authority {
+    constructor(authority, networkInterface, cacheManager, authorityOptions, logger, correlationId, performanceClient, managedIdentity) {
+        this.canonicalAuthority = authority;
+        this._canonicalAuthority.validateAsUri();
+        this.networkInterface = networkInterface;
+        this.cacheManager = cacheManager;
+        this.authorityOptions = authorityOptions;
+        this.regionDiscoveryMetadata = {
+            region_used: undefined,
+            region_source: undefined,
+            region_outcome: undefined,
+        };
+        this.logger = logger;
+        this.performanceClient = performanceClient;
+        this.correlationId = correlationId;
+        this.managedIdentity = managedIdentity || false;
+        this.regionDiscovery = new RegionDiscovery(networkInterface, this.logger, this.performanceClient, this.correlationId);
+    }
+    /**
+     * Get {@link AuthorityType}
+     * @param authorityUri {@link IUri}
+     * @private
+     */
+    getAuthorityType(authorityUri) {
+        // CIAM auth url pattern is being standardized as: <tenant>.ciamlogin.com
+        if (authorityUri.HostNameAndPort.endsWith(Constants$1.CIAM_AUTH_URL)) {
+            return AuthorityType.Ciam;
+        }
+        const pathSegments = authorityUri.PathSegments;
+        if (pathSegments.length) {
+            switch (pathSegments[0].toLowerCase()) {
+                case Constants$1.ADFS:
+                    return AuthorityType.Adfs;
+                case Constants$1.DSTS:
+                    return AuthorityType.Dsts;
+            }
+        }
+        return AuthorityType.Default;
+    }
+    // See above for AuthorityType
+    get authorityType() {
+        return this.getAuthorityType(this.canonicalAuthorityUrlComponents);
+    }
+    /**
+     * ProtocolMode enum representing the way endpoints are constructed.
+     */
+    get protocolMode() {
+        return this.authorityOptions.protocolMode;
+    }
+    /**
+     * Returns authorityOptions which can be used to reinstantiate a new authority instance
+     */
+    get options() {
+        return this.authorityOptions;
+    }
+    /**
+     * A URL that is the authority set by the developer
+     */
+    get canonicalAuthority() {
+        return this._canonicalAuthority.urlString;
+    }
+    /**
+     * Sets canonical authority.
+     */
+    set canonicalAuthority(url) {
+        this._canonicalAuthority = new UrlString(url);
+        this._canonicalAuthority.validateAsUri();
+        this._canonicalAuthorityUrlComponents = null;
+    }
+    /**
+     * Get authority components.
+     */
+    get canonicalAuthorityUrlComponents() {
+        if (!this._canonicalAuthorityUrlComponents) {
+            this._canonicalAuthorityUrlComponents =
+                this._canonicalAuthority.getUrlComponents();
+        }
+        return this._canonicalAuthorityUrlComponents;
+    }
+    /**
+     * Get hostname and port i.e. login.microsoftonline.com
+     */
+    get hostnameAndPort() {
+        return this.canonicalAuthorityUrlComponents.HostNameAndPort.toLowerCase();
+    }
+    /**
+     * Get tenant for authority.
+     */
+    get tenant() {
+        return this.canonicalAuthorityUrlComponents.PathSegments[0];
+    }
+    /**
+     * OAuth /authorize endpoint for requests
+     */
+    get authorizationEndpoint() {
+        if (this.discoveryComplete()) {
+            return this.replacePath(this.metadata.authorization_endpoint);
+        }
+        else {
+            throw createClientAuthError(endpointResolutionError);
+        }
+    }
+    /**
+     * OAuth /token endpoint for requests
+     */
+    get tokenEndpoint() {
+        if (this.discoveryComplete()) {
+            return this.replacePath(this.metadata.token_endpoint);
+        }
+        else {
+            throw createClientAuthError(endpointResolutionError);
+        }
+    }
+    get deviceCodeEndpoint() {
+        if (this.discoveryComplete()) {
+            return this.replacePath(this.metadata.token_endpoint.replace("/token", "/devicecode"));
+        }
+        else {
+            throw createClientAuthError(endpointResolutionError);
+        }
+    }
+    /**
+     * OAuth logout endpoint for requests
+     */
+    get endSessionEndpoint() {
+        if (this.discoveryComplete()) {
+            // ROPC policies may not have end_session_endpoint set
+            if (!this.metadata.end_session_endpoint) {
+                throw createClientAuthError(endSessionEndpointNotSupported);
+            }
+            return this.replacePath(this.metadata.end_session_endpoint);
+        }
+        else {
+            throw createClientAuthError(endpointResolutionError);
+        }
+    }
+    /**
+     * OAuth issuer for requests
+     */
+    get selfSignedJwtAudience() {
+        if (this.discoveryComplete()) {
+            return this.replacePath(this.metadata.issuer);
+        }
+        else {
+            throw createClientAuthError(endpointResolutionError);
+        }
+    }
+    /**
+     * Jwks_uri for token signing keys
+     */
+    get jwksUri() {
+        if (this.discoveryComplete()) {
+            return this.replacePath(this.metadata.jwks_uri);
+        }
+        else {
+            throw createClientAuthError(endpointResolutionError);
+        }
+    }
+    /**
+     * Returns a flag indicating that tenant name can be replaced in authority {@link IUri}
+     * @param authorityUri {@link IUri}
+     * @private
+     */
+    canReplaceTenant(authorityUri) {
+        return (authorityUri.PathSegments.length === 1 &&
+            !Authority.reservedTenantDomains.has(authorityUri.PathSegments[0]) &&
+            this.getAuthorityType(authorityUri) === AuthorityType.Default &&
+            this.protocolMode !== ProtocolMode.OIDC);
+    }
+    /**
+     * Replaces tenant in url path with current tenant. Defaults to common.
+     * @param urlString
+     */
+    replaceTenant(urlString) {
+        return urlString.replace(/{tenant}|{tenantid}/g, this.tenant);
+    }
+    /**
+     * Replaces path such as tenant or policy with the current tenant or policy.
+     * @param urlString
+     */
+    replacePath(urlString) {
+        let endpoint = urlString;
+        const cachedAuthorityUrl = new UrlString(this.metadata.canonical_authority);
+        const cachedAuthorityUrlComponents = cachedAuthorityUrl.getUrlComponents();
+        const cachedAuthorityParts = cachedAuthorityUrlComponents.PathSegments;
+        const currentAuthorityParts = this.canonicalAuthorityUrlComponents.PathSegments;
+        currentAuthorityParts.forEach((currentPart, index) => {
+            let cachedPart = cachedAuthorityParts[index];
+            if (index === 0 &&
+                this.canReplaceTenant(cachedAuthorityUrlComponents)) {
+                const tenantId = new UrlString(this.metadata.authorization_endpoint).getUrlComponents().PathSegments[0];
+                /**
+                 * Check if AAD canonical authority contains tenant domain name, for example "testdomain.onmicrosoft.com",
+                 * by comparing its first path segment to the corresponding authorization endpoint path segment, which is
+                 * always resolved with tenant id by OIDC.
+                 */
+                if (cachedPart !== tenantId) {
+                    this.logger.verbose(`Replacing tenant domain name ${cachedPart} with id ${tenantId}`);
+                    cachedPart = tenantId;
+                }
+            }
+            if (currentPart !== cachedPart) {
+                endpoint = endpoint.replace(`/${cachedPart}/`, `/${currentPart}/`);
+            }
+        });
+        return this.replaceTenant(endpoint);
+    }
+    /**
+     * The default open id configuration endpoint for any canonical authority.
+     */
+    get defaultOpenIdConfigurationEndpoint() {
+        const canonicalAuthorityHost = this.hostnameAndPort;
+        if (this.canonicalAuthority.endsWith("v2.0/") ||
+            this.authorityType === AuthorityType.Adfs ||
+            (this.protocolMode === ProtocolMode.OIDC &&
+                !this.isAliasOfKnownMicrosoftAuthority(canonicalAuthorityHost))) {
+            return `${this.canonicalAuthority}.well-known/openid-configuration`;
+        }
+        return `${this.canonicalAuthority}v2.0/.well-known/openid-configuration`;
+    }
+    /**
+     * Boolean that returns whether or not tenant discovery has been completed.
+     */
+    discoveryComplete() {
+        return !!this.metadata;
+    }
+    /**
+     * Perform endpoint discovery to discover aliases, preferred_cache, preferred_network
+     * and the /authorize, /token and logout endpoints.
+     */
+    async resolveEndpointsAsync() {
+        this.performanceClient?.addQueueMeasurement(PerformanceEvents.AuthorityResolveEndpointsAsync, this.correlationId);
+        const metadataEntity = this.getCurrentMetadataEntity();
+        const cloudDiscoverySource = await invokeAsync(this.updateCloudDiscoveryMetadata.bind(this), PerformanceEvents.AuthorityUpdateCloudDiscoveryMetadata, this.logger, this.performanceClient, this.correlationId)(metadataEntity);
+        this.canonicalAuthority = this.canonicalAuthority.replace(this.hostnameAndPort, metadataEntity.preferred_network);
+        const endpointSource = await invokeAsync(this.updateEndpointMetadata.bind(this), PerformanceEvents.AuthorityUpdateEndpointMetadata, this.logger, this.performanceClient, this.correlationId)(metadataEntity);
+        this.updateCachedMetadata(metadataEntity, cloudDiscoverySource, {
+            source: endpointSource,
+        });
+        this.performanceClient?.addFields({
+            cloudDiscoverySource: cloudDiscoverySource,
+            authorityEndpointSource: endpointSource,
+        }, this.correlationId);
+    }
+    /**
+     * Returns metadata entity from cache if it exists, otherwiser returns a new metadata entity built
+     * from the configured canonical authority
+     * @returns
+     */
+    getCurrentMetadataEntity() {
+        let metadataEntity = this.cacheManager.getAuthorityMetadataByAlias(this.hostnameAndPort);
+        if (!metadataEntity) {
+            metadataEntity = {
+                aliases: [],
+                preferred_cache: this.hostnameAndPort,
+                preferred_network: this.hostnameAndPort,
+                canonical_authority: this.canonicalAuthority,
+                authorization_endpoint: "",
+                token_endpoint: "",
+                end_session_endpoint: "",
+                issuer: "",
+                aliasesFromNetwork: false,
+                endpointsFromNetwork: false,
+                expiresAt: generateAuthorityMetadataExpiresAt(),
+                jwks_uri: "",
+            };
+        }
+        return metadataEntity;
+    }
+    /**
+     * Updates cached metadata based on metadata source and sets the instance's metadata
+     * property to the same value
+     * @param metadataEntity
+     * @param cloudDiscoverySource
+     * @param endpointMetadataResult
+     */
+    updateCachedMetadata(metadataEntity, cloudDiscoverySource, endpointMetadataResult) {
+        if (cloudDiscoverySource !== AuthorityMetadataSource.CACHE &&
+            endpointMetadataResult?.source !== AuthorityMetadataSource.CACHE) {
+            // Reset the expiration time unless both values came from a successful cache lookup
+            metadataEntity.expiresAt =
+                generateAuthorityMetadataExpiresAt();
+            metadataEntity.canonical_authority = this.canonicalAuthority;
+        }
+        const cacheKey = this.cacheManager.generateAuthorityMetadataCacheKey(metadataEntity.preferred_cache);
+        this.cacheManager.setAuthorityMetadata(cacheKey, metadataEntity);
+        this.metadata = metadataEntity;
+    }
+    /**
+     * Update AuthorityMetadataEntity with new endpoints and return where the information came from
+     * @param metadataEntity
+     */
+    async updateEndpointMetadata(metadataEntity) {
+        this.performanceClient?.addQueueMeasurement(PerformanceEvents.AuthorityUpdateEndpointMetadata, this.correlationId);
+        const localMetadata = this.updateEndpointMetadataFromLocalSources(metadataEntity);
+        // Further update may be required for hardcoded metadata if regional metadata is preferred
+        if (localMetadata) {
+            if (localMetadata.source ===
+                AuthorityMetadataSource.HARDCODED_VALUES) {
+                // If the user prefers to use an azure region replace the global endpoints with regional information.
+                if (this.authorityOptions.azureRegionConfiguration?.azureRegion) {
+                    if (localMetadata.metadata) {
+                        const hardcodedMetadata = await invokeAsync(this.updateMetadataWithRegionalInformation.bind(this), PerformanceEvents.AuthorityUpdateMetadataWithRegionalInformation, this.logger, this.performanceClient, this.correlationId)(localMetadata.metadata);
+                        updateAuthorityEndpointMetadata(metadataEntity, hardcodedMetadata, false);
+                        metadataEntity.canonical_authority =
+                            this.canonicalAuthority;
+                    }
+                }
+            }
+            return localMetadata.source;
+        }
+        // Get metadata from network if local sources aren't available
+        let metadata = await invokeAsync(this.getEndpointMetadataFromNetwork.bind(this), PerformanceEvents.AuthorityGetEndpointMetadataFromNetwork, this.logger, this.performanceClient, this.correlationId)();
+        if (metadata) {
+            // If the user prefers to use an azure region replace the global endpoints with regional information.
+            if (this.authorityOptions.azureRegionConfiguration?.azureRegion) {
+                metadata = await invokeAsync(this.updateMetadataWithRegionalInformation.bind(this), PerformanceEvents.AuthorityUpdateMetadataWithRegionalInformation, this.logger, this.performanceClient, this.correlationId)(metadata);
+            }
+            updateAuthorityEndpointMetadata(metadataEntity, metadata, true);
+            return AuthorityMetadataSource.NETWORK;
+        }
+        else {
+            // Metadata could not be obtained from the config, cache, network or hardcoded values
+            throw createClientAuthError(openIdConfigError, this.defaultOpenIdConfigurationEndpoint);
+        }
+    }
+    /**
+     * Updates endpoint metadata from local sources and returns where the information was retrieved from and the metadata config
+     * response if the source is hardcoded metadata
+     * @param metadataEntity
+     * @returns
+     */
+    updateEndpointMetadataFromLocalSources(metadataEntity) {
+        this.logger.verbose("Attempting to get endpoint metadata from authority configuration");
+        const configMetadata = this.getEndpointMetadataFromConfig();
+        if (configMetadata) {
+            this.logger.verbose("Found endpoint metadata in authority configuration");
+            updateAuthorityEndpointMetadata(metadataEntity, configMetadata, false);
+            return {
+                source: AuthorityMetadataSource.CONFIG,
+            };
+        }
+        this.logger.verbose("Did not find endpoint metadata in the config... Attempting to get endpoint metadata from the hardcoded values.");
+        // skipAuthorityMetadataCache is used to bypass hardcoded authority metadata and force a network metadata cache lookup and network metadata request if no cached response is available.
+        if (this.authorityOptions.skipAuthorityMetadataCache) {
+            this.logger.verbose("Skipping hardcoded metadata cache since skipAuthorityMetadataCache is set to true. Attempting to get endpoint metadata from the network metadata cache.");
+        }
+        else {
+            const hardcodedMetadata = this.getEndpointMetadataFromHardcodedValues();
+            if (hardcodedMetadata) {
+                updateAuthorityEndpointMetadata(metadataEntity, hardcodedMetadata, false);
+                return {
+                    source: AuthorityMetadataSource.HARDCODED_VALUES,
+                    metadata: hardcodedMetadata,
+                };
+            }
+            else {
+                this.logger.verbose("Did not find endpoint metadata in hardcoded values... Attempting to get endpoint metadata from the network metadata cache.");
+            }
+        }
+        // Check cached metadata entity expiration status
+        const metadataEntityExpired = isAuthorityMetadataExpired(metadataEntity);
+        if (this.isAuthoritySameType(metadataEntity) &&
+            metadataEntity.endpointsFromNetwork &&
+            !metadataEntityExpired) {
+            // No need to update
+            this.logger.verbose("Found endpoint metadata in the cache.");
+            return { source: AuthorityMetadataSource.CACHE };
+        }
+        else if (metadataEntityExpired) {
+            this.logger.verbose("The metadata entity is expired.");
+        }
+        return null;
+    }
+    /**
+     * Compares the number of url components after the domain to determine if the cached
+     * authority metadata can be used for the requested authority. Protects against same domain different
+     * authority such as login.microsoftonline.com/tenant and login.microsoftonline.com/tfp/tenant/policy
+     * @param metadataEntity
+     */
+    isAuthoritySameType(metadataEntity) {
+        const cachedAuthorityUrl = new UrlString(metadataEntity.canonical_authority);
+        const cachedParts = cachedAuthorityUrl.getUrlComponents().PathSegments;
+        return (cachedParts.length ===
+            this.canonicalAuthorityUrlComponents.PathSegments.length);
+    }
+    /**
+     * Parse authorityMetadata config option
+     */
+    getEndpointMetadataFromConfig() {
+        if (this.authorityOptions.authorityMetadata) {
+            try {
+                return JSON.parse(this.authorityOptions.authorityMetadata);
+            }
+            catch (e) {
+                throw createClientConfigurationError(invalidAuthorityMetadata);
+            }
+        }
+        return null;
+    }
+    /**
+     * Gets OAuth endpoints from the given OpenID configuration endpoint.
+     *
+     * @param hasHardcodedMetadata boolean
+     */
+    async getEndpointMetadataFromNetwork() {
+        this.performanceClient?.addQueueMeasurement(PerformanceEvents.AuthorityGetEndpointMetadataFromNetwork, this.correlationId);
+        const options = {};
+        /*
+         * TODO: Add a timeout if the authority exists in our library's
+         * hardcoded list of metadata
+         */
+        const openIdConfigurationEndpoint = this.defaultOpenIdConfigurationEndpoint;
+        this.logger.verbose(`Authority.getEndpointMetadataFromNetwork: attempting to retrieve OAuth endpoints from ${openIdConfigurationEndpoint}`);
+        try {
+            const response = await this.networkInterface.sendGetRequestAsync(openIdConfigurationEndpoint, options);
+            const isValidResponse = isOpenIdConfigResponse(response.body);
+            if (isValidResponse) {
+                return response.body;
+            }
+            else {
+                this.logger.verbose(`Authority.getEndpointMetadataFromNetwork: could not parse response as OpenID configuration`);
+                return null;
+            }
+        }
+        catch (e) {
+            this.logger.verbose(`Authority.getEndpointMetadataFromNetwork: ${e}`);
+            return null;
+        }
+    }
+    /**
+     * Get OAuth endpoints for common authorities.
+     */
+    getEndpointMetadataFromHardcodedValues() {
+        if (this.hostnameAndPort in EndpointMetadata) {
+            return EndpointMetadata[this.hostnameAndPort];
+        }
+        return null;
+    }
+    /**
+     * Update the retrieved metadata with regional information.
+     * User selected Azure region will be used if configured.
+     */
+    async updateMetadataWithRegionalInformation(metadata) {
+        this.performanceClient?.addQueueMeasurement(PerformanceEvents.AuthorityUpdateMetadataWithRegionalInformation, this.correlationId);
+        const userConfiguredAzureRegion = this.authorityOptions.azureRegionConfiguration?.azureRegion;
+        if (userConfiguredAzureRegion) {
+            if (userConfiguredAzureRegion !==
+                Constants$1.AZURE_REGION_AUTO_DISCOVER_FLAG) {
+                this.regionDiscoveryMetadata.region_outcome =
+                    RegionDiscoveryOutcomes.CONFIGURED_NO_AUTO_DETECTION;
+                this.regionDiscoveryMetadata.region_used =
+                    userConfiguredAzureRegion;
+                return Authority.replaceWithRegionalInformation(metadata, userConfiguredAzureRegion);
+            }
+            const autodetectedRegionName = await invokeAsync(this.regionDiscovery.detectRegion.bind(this.regionDiscovery), PerformanceEvents.RegionDiscoveryDetectRegion, this.logger, this.performanceClient, this.correlationId)(this.authorityOptions.azureRegionConfiguration
+                ?.environmentRegion, this.regionDiscoveryMetadata);
+            if (autodetectedRegionName) {
+                this.regionDiscoveryMetadata.region_outcome =
+                    RegionDiscoveryOutcomes.AUTO_DETECTION_REQUESTED_SUCCESSFUL;
+                this.regionDiscoveryMetadata.region_used =
+                    autodetectedRegionName;
+                return Authority.replaceWithRegionalInformation(metadata, autodetectedRegionName);
+            }
+            this.regionDiscoveryMetadata.region_outcome =
+                RegionDiscoveryOutcomes.AUTO_DETECTION_REQUESTED_FAILED;
+        }
+        return metadata;
+    }
+    /**
+     * Updates the AuthorityMetadataEntity with new aliases, preferred_network and preferred_cache
+     * and returns where the information was retrieved from
+     * @param metadataEntity
+     * @returns AuthorityMetadataSource
+     */
+    async updateCloudDiscoveryMetadata(metadataEntity) {
+        this.performanceClient?.addQueueMeasurement(PerformanceEvents.AuthorityUpdateCloudDiscoveryMetadata, this.correlationId);
+        const localMetadataSource = this.updateCloudDiscoveryMetadataFromLocalSources(metadataEntity);
+        if (localMetadataSource) {
+            return localMetadataSource;
+        }
+        // Fallback to network as metadata source
+        const metadata = await invokeAsync(this.getCloudDiscoveryMetadataFromNetwork.bind(this), PerformanceEvents.AuthorityGetCloudDiscoveryMetadataFromNetwork, this.logger, this.performanceClient, this.correlationId)();
+        if (metadata) {
+            updateCloudDiscoveryMetadata(metadataEntity, metadata, true);
+            return AuthorityMetadataSource.NETWORK;
+        }
+        // Metadata could not be obtained from the config, cache, network or hardcoded values
+        throw createClientConfigurationError(untrustedAuthority);
+    }
+    updateCloudDiscoveryMetadataFromLocalSources(metadataEntity) {
+        this.logger.verbose("Attempting to get cloud discovery metadata  from authority configuration");
+        this.logger.verbosePii(`Known Authorities: ${this.authorityOptions.knownAuthorities ||
+            Constants$1.NOT_APPLICABLE}`);
+        this.logger.verbosePii(`Authority Metadata: ${this.authorityOptions.authorityMetadata ||
+            Constants$1.NOT_APPLICABLE}`);
+        this.logger.verbosePii(`Canonical Authority: ${metadataEntity.canonical_authority || Constants$1.NOT_APPLICABLE}`);
+        const metadata = this.getCloudDiscoveryMetadataFromConfig();
+        if (metadata) {
+            this.logger.verbose("Found cloud discovery metadata in authority configuration");
+            updateCloudDiscoveryMetadata(metadataEntity, metadata, false);
+            return AuthorityMetadataSource.CONFIG;
+        }
+        // If the cached metadata came from config but that config was not passed to this instance, we must go to hardcoded values
+        this.logger.verbose("Did not find cloud discovery metadata in the config... Attempting to get cloud discovery metadata from the hardcoded values.");
+        if (this.options.skipAuthorityMetadataCache) {
+            this.logger.verbose("Skipping hardcoded cloud discovery metadata cache since skipAuthorityMetadataCache is set to true. Attempting to get cloud discovery metadata from the network metadata cache.");
+        }
+        else {
+            const hardcodedMetadata = getCloudDiscoveryMetadataFromHardcodedValues(this.hostnameAndPort);
+            if (hardcodedMetadata) {
+                this.logger.verbose("Found cloud discovery metadata from hardcoded values.");
+                updateCloudDiscoveryMetadata(metadataEntity, hardcodedMetadata, false);
+                return AuthorityMetadataSource.HARDCODED_VALUES;
+            }
+            this.logger.verbose("Did not find cloud discovery metadata in hardcoded values... Attempting to get cloud discovery metadata from the network metadata cache.");
+        }
+        const metadataEntityExpired = isAuthorityMetadataExpired(metadataEntity);
+        if (this.isAuthoritySameType(metadataEntity) &&
+            metadataEntity.aliasesFromNetwork &&
+            !metadataEntityExpired) {
+            this.logger.verbose("Found cloud discovery metadata in the cache.");
+            // No need to update
+            return AuthorityMetadataSource.CACHE;
+        }
+        else if (metadataEntityExpired) {
+            this.logger.verbose("The metadata entity is expired.");
+        }
+        return null;
+    }
+    /**
+     * Parse cloudDiscoveryMetadata config or check knownAuthorities
+     */
+    getCloudDiscoveryMetadataFromConfig() {
+        // CIAM does not support cloud discovery metadata
+        if (this.authorityType === AuthorityType.Ciam) {
+            this.logger.verbose("CIAM authorities do not support cloud discovery metadata, generate the aliases from authority host.");
+            return Authority.createCloudDiscoveryMetadataFromHost(this.hostnameAndPort);
+        }
+        // Check if network response was provided in config
+        if (this.authorityOptions.cloudDiscoveryMetadata) {
+            this.logger.verbose("The cloud discovery metadata has been provided as a network response, in the config.");
+            try {
+                this.logger.verbose("Attempting to parse the cloud discovery metadata.");
+                const parsedResponse = JSON.parse(this.authorityOptions.cloudDiscoveryMetadata);
+                const metadata = getCloudDiscoveryMetadataFromNetworkResponse(parsedResponse.metadata, this.hostnameAndPort);
+                this.logger.verbose("Parsed the cloud discovery metadata.");
+                if (metadata) {
+                    this.logger.verbose("There is returnable metadata attached to the parsed cloud discovery metadata.");
+                    return metadata;
+                }
+                else {
+                    this.logger.verbose("There is no metadata attached to the parsed cloud discovery metadata.");
+                }
+            }
+            catch (e) {
+                this.logger.verbose("Unable to parse the cloud discovery metadata. Throwing Invalid Cloud Discovery Metadata Error.");
+                throw createClientConfigurationError(invalidCloudDiscoveryMetadata);
+            }
+        }
+        // If cloudDiscoveryMetadata is empty or does not contain the host, check knownAuthorities
+        if (this.isInKnownAuthorities()) {
+            this.logger.verbose("The host is included in knownAuthorities. Creating new cloud discovery metadata from the host.");
+            return Authority.createCloudDiscoveryMetadataFromHost(this.hostnameAndPort);
+        }
+        return null;
+    }
+    /**
+     * Called to get metadata from network if CloudDiscoveryMetadata was not populated by config
+     *
+     * @param hasHardcodedMetadata boolean
+     */
+    async getCloudDiscoveryMetadataFromNetwork() {
+        this.performanceClient?.addQueueMeasurement(PerformanceEvents.AuthorityGetCloudDiscoveryMetadataFromNetwork, this.correlationId);
+        const instanceDiscoveryEndpoint = `${Constants$1.AAD_INSTANCE_DISCOVERY_ENDPT}${this.canonicalAuthority}oauth2/v2.0/authorize`;
+        const options = {};
+        /*
+         * TODO: Add a timeout if the authority exists in our library's
+         * hardcoded list of metadata
+         */
+        let match = null;
+        try {
+            const response = await this.networkInterface.sendGetRequestAsync(instanceDiscoveryEndpoint, options);
+            let typedResponseBody;
+            let metadata;
+            if (isCloudInstanceDiscoveryResponse(response.body)) {
+                typedResponseBody =
+                    response.body;
+                metadata = typedResponseBody.metadata;
+                this.logger.verbosePii(`tenant_discovery_endpoint is: ${typedResponseBody.tenant_discovery_endpoint}`);
+            }
+            else if (isCloudInstanceDiscoveryErrorResponse(response.body)) {
+                this.logger.warning(`A CloudInstanceDiscoveryErrorResponse was returned. The cloud instance discovery network request's status code is: ${response.status}`);
+                typedResponseBody =
+                    response.body;
+                if (typedResponseBody.error === Constants$1.INVALID_INSTANCE) {
+                    this.logger.error("The CloudInstanceDiscoveryErrorResponse error is invalid_instance.");
+                    return null;
+                }
+                this.logger.warning(`The CloudInstanceDiscoveryErrorResponse error is ${typedResponseBody.error}`);
+                this.logger.warning(`The CloudInstanceDiscoveryErrorResponse error description is ${typedResponseBody.error_description}`);
+                this.logger.warning("Setting the value of the CloudInstanceDiscoveryMetadata (returned from the network) to []");
+                metadata = [];
+            }
+            else {
+                this.logger.error("AAD did not return a CloudInstanceDiscoveryResponse or CloudInstanceDiscoveryErrorResponse");
+                return null;
+            }
+            this.logger.verbose("Attempting to find a match between the developer's authority and the CloudInstanceDiscoveryMetadata returned from the network request.");
+            match = getCloudDiscoveryMetadataFromNetworkResponse(metadata, this.hostnameAndPort);
+        }
+        catch (error) {
+            if (error instanceof AuthError) {
+                this.logger.error(`There was a network error while attempting to get the cloud discovery instance metadata.\nError: ${error.errorCode}\nError Description: ${error.errorMessage}`);
+            }
+            else {
+                const typedError = error;
+                this.logger.error(`A non-MSALJS error was thrown while attempting to get the cloud instance discovery metadata.\nError: ${typedError.name}\nError Description: ${typedError.message}`);
+            }
+            return null;
+        }
+        // Custom Domain scenario, host is trusted because Instance Discovery call succeeded
+        if (!match) {
+            this.logger.warning("The developer's authority was not found within the CloudInstanceDiscoveryMetadata returned from the network request.");
+            this.logger.verbose("Creating custom Authority for custom domain scenario.");
+            match = Authority.createCloudDiscoveryMetadataFromHost(this.hostnameAndPort);
+        }
+        return match;
+    }
+    /**
+     * Helper function to determine if this host is included in the knownAuthorities config option
+     */
+    isInKnownAuthorities() {
+        const matches = this.authorityOptions.knownAuthorities.filter((authority) => {
+            return (authority &&
+                UrlString.getDomainFromUrl(authority).toLowerCase() ===
+                    this.hostnameAndPort);
+        });
+        return matches.length > 0;
+    }
+    /**
+     * helper function to populate the authority based on azureCloudOptions
+     * @param authorityString
+     * @param azureCloudOptions
+     */
+    static generateAuthority(authorityString, azureCloudOptions) {
+        let authorityAzureCloudInstance;
+        if (azureCloudOptions &&
+            azureCloudOptions.azureCloudInstance !== AzureCloudInstance.None) {
+            const tenant = azureCloudOptions.tenant
+                ? azureCloudOptions.tenant
+                : Constants$1.DEFAULT_COMMON_TENANT;
+            authorityAzureCloudInstance = `${azureCloudOptions.azureCloudInstance}/${tenant}/`;
+        }
+        return authorityAzureCloudInstance
+            ? authorityAzureCloudInstance
+            : authorityString;
+    }
+    /**
+     * Creates cloud discovery metadata object from a given host
+     * @param host
+     */
+    static createCloudDiscoveryMetadataFromHost(host) {
+        return {
+            preferred_network: host,
+            preferred_cache: host,
+            aliases: [host],
+        };
+    }
+    /**
+     * helper function to generate environment from authority object
+     */
+    getPreferredCache() {
+        if (this.managedIdentity) {
+            return Constants$1.DEFAULT_AUTHORITY_HOST;
+        }
+        else if (this.discoveryComplete()) {
+            return this.metadata.preferred_cache;
+        }
+        else {
+            throw createClientAuthError(endpointResolutionError);
+        }
+    }
+    /**
+     * Returns whether or not the provided host is an alias of this authority instance
+     * @param host
+     */
+    isAlias(host) {
+        return this.metadata.aliases.indexOf(host) > -1;
+    }
+    /**
+     * Returns whether or not the provided host is an alias of a known Microsoft authority for purposes of endpoint discovery
+     * @param host
+     */
+    isAliasOfKnownMicrosoftAuthority(host) {
+        return InstanceDiscoveryMetadataAliases.has(host);
+    }
+    /**
+     * Checks whether the provided host is that of a public cloud authority
+     *
+     * @param authority string
+     * @returns bool
+     */
+    static isPublicCloudAuthority(host) {
+        return Constants$1.KNOWN_PUBLIC_CLOUDS.indexOf(host) >= 0;
+    }
+    /**
+     * Rebuild the authority string with the region
+     *
+     * @param host string
+     * @param region string
+     */
+    static buildRegionalAuthorityString(host, region, queryString) {
+        // Create and validate a Url string object with the initial authority string
+        const authorityUrlInstance = new UrlString(host);
+        authorityUrlInstance.validateAsUri();
+        const authorityUrlParts = authorityUrlInstance.getUrlComponents();
+        let hostNameAndPort = `${region}.${authorityUrlParts.HostNameAndPort}`;
+        if (this.isPublicCloudAuthority(authorityUrlParts.HostNameAndPort)) {
+            hostNameAndPort = `${region}.${Constants$1.REGIONAL_AUTH_PUBLIC_CLOUD_SUFFIX}`;
+        }
+        // Include the query string portion of the url
+        const url = UrlString.constructAuthorityUriFromObject({
+            ...authorityUrlInstance.getUrlComponents(),
+            HostNameAndPort: hostNameAndPort,
+        }).urlString;
+        // Add the query string if a query string was provided
+        if (queryString)
+            return `${url}?${queryString}`;
+        return url;
+    }
+    /**
+     * Replace the endpoints in the metadata object with their regional equivalents.
+     *
+     * @param metadata OpenIdConfigResponse
+     * @param azureRegion string
+     */
+    static replaceWithRegionalInformation(metadata, azureRegion) {
+        const regionalMetadata = { ...metadata };
+        regionalMetadata.authorization_endpoint =
+            Authority.buildRegionalAuthorityString(regionalMetadata.authorization_endpoint, azureRegion);
+        regionalMetadata.token_endpoint =
+            Authority.buildRegionalAuthorityString(regionalMetadata.token_endpoint, azureRegion);
+        if (regionalMetadata.end_session_endpoint) {
+            regionalMetadata.end_session_endpoint =
+                Authority.buildRegionalAuthorityString(regionalMetadata.end_session_endpoint, azureRegion);
+        }
+        return regionalMetadata;
+    }
+    /**
+     * Transform CIAM_AUTHORIY as per the below rules:
+     * If no path segments found and it is a CIAM authority (hostname ends with .ciamlogin.com), then transform it
+     *
+     * NOTE: The transformation path should go away once STS supports CIAM with the format: `tenantIdorDomain.ciamlogin.com`
+     * `ciamlogin.com` can also change in the future and we should accommodate the same
+     *
+     * @param authority
+     */
+    static transformCIAMAuthority(authority) {
+        let ciamAuthority = authority;
+        const authorityUrl = new UrlString(authority);
+        const authorityUrlComponents = authorityUrl.getUrlComponents();
+        // check if transformation is needed
+        if (authorityUrlComponents.PathSegments.length === 0 &&
+            authorityUrlComponents.HostNameAndPort.endsWith(Constants$1.CIAM_AUTH_URL)) {
+            const tenantIdOrDomain = authorityUrlComponents.HostNameAndPort.split(".")[0];
+            ciamAuthority = `${ciamAuthority}${tenantIdOrDomain}${Constants$1.AAD_TENANT_DOMAIN_SUFFIX}`;
+        }
+        return ciamAuthority;
+    }
+}
+// Reserved tenant domain names that will not be replaced with tenant id
+Authority.reservedTenantDomains = new Set([
+    "{tenant}",
+    "{tenantid}",
+    AADAuthorityConstants.COMMON,
+    AADAuthorityConstants.CONSUMERS,
+    AADAuthorityConstants.ORGANIZATIONS,
+]);
+/**
+ * Extract tenantId from authority
+ */
+function getTenantFromAuthorityString(authority) {
+    const authorityUrl = new UrlString(authority);
+    const authorityUrlComponents = authorityUrl.getUrlComponents();
+    /**
+     * For credential matching purposes, tenantId is the last path segment of the authority URL:
+     *  AAD Authority - domain/tenantId -> Credentials are cached with realm = tenantId
+     *  B2C Authority - domain/{tenantId}?/.../policy -> Credentials are cached with realm = policy
+     *  tenantId is downcased because B2C policies can have mixed case but tfp claim is downcased
+     *
+     * Note that we may not have any path segments in certain OIDC scenarios.
+     */
+    const tenantId = authorityUrlComponents.PathSegments.slice(-1)[0]?.toLowerCase();
+    switch (tenantId) {
+        case AADAuthorityConstants.COMMON:
+        case AADAuthorityConstants.ORGANIZATIONS:
+        case AADAuthorityConstants.CONSUMERS:
+            return undefined;
+        default:
+            return tenantId;
+    }
+}
+function formatAuthorityUri(authorityUri) {
+    return authorityUri.endsWith(Constants$1.FORWARD_SLASH)
+        ? authorityUri
+        : `${authorityUri}${Constants$1.FORWARD_SLASH}`;
+}
+function buildStaticAuthorityOptions(authOptions) {
+    const rawCloudDiscoveryMetadata = authOptions.cloudDiscoveryMetadata;
+    let cloudDiscoveryMetadata = undefined;
+    if (rawCloudDiscoveryMetadata) {
+        try {
+            cloudDiscoveryMetadata = JSON.parse(rawCloudDiscoveryMetadata);
+        }
+        catch (e) {
+            throw createClientConfigurationError(invalidCloudDiscoveryMetadata);
+        }
+    }
+    return {
+        canonicalAuthority: authOptions.authority
+            ? formatAuthorityUri(authOptions.authority)
+            : undefined,
+        knownAuthorities: authOptions.knownAuthorities,
+        cloudDiscoveryMetadata: cloudDiscoveryMetadata,
+    };
+}
+
+/*! @azure/msal-common v15.13.2 2025-11-19 */
+
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ */
+/**
+ * Create an authority object of the correct type based on the url
+ * Performs basic authority validation - checks to see if the authority is of a valid type (i.e. aad, b2c, adfs)
+ *
+ * Also performs endpoint discovery.
+ *
+ * @param authorityUri
+ * @param networkClient
+ * @param protocolMode
+ * @internal
+ */
+async function createDiscoveredInstance(authorityUri, networkClient, cacheManager, authorityOptions, logger, correlationId, performanceClient) {
+    performanceClient?.addQueueMeasurement(PerformanceEvents.AuthorityFactoryCreateDiscoveredInstance, correlationId);
+    const authorityUriFinal = Authority.transformCIAMAuthority(formatAuthorityUri(authorityUri));
+    // Initialize authority and perform discovery endpoint check.
+    const acquireTokenAuthority = new Authority(authorityUriFinal, networkClient, cacheManager, authorityOptions, logger, correlationId, performanceClient);
+    try {
+        await invokeAsync(acquireTokenAuthority.resolveEndpointsAsync.bind(acquireTokenAuthority), PerformanceEvents.AuthorityResolveEndpointsAsync, logger, performanceClient, correlationId)();
+        return acquireTokenAuthority;
+    }
+    catch (e) {
+        throw createClientAuthError(endpointResolutionError);
+    }
+}
+
+/*! @azure/msal-common v15.13.2 2025-11-19 */
+
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ */
+/**
+ * Error thrown when there is an error with the server code, for example, unavailability.
+ */
+class ServerError extends AuthError {
+    constructor(errorCode, errorMessage, subError, errorNo, status) {
+        super(errorCode, errorMessage, subError);
+        this.name = "ServerError";
+        this.errorNo = errorNo;
+        this.status = status;
+        Object.setPrototypeOf(this, ServerError.prototype);
+    }
+}
+
+/*! @azure/msal-common v15.13.2 2025-11-19 */
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ */
+function getRequestThumbprint(clientId, request, homeAccountId) {
+    return {
+        clientId: clientId,
+        authority: request.authority,
+        scopes: request.scopes,
+        homeAccountIdentifier: homeAccountId,
+        claims: request.claims,
+        authenticationScheme: request.authenticationScheme,
+        resourceRequestMethod: request.resourceRequestMethod,
+        resourceRequestUri: request.resourceRequestUri,
+        shrClaims: request.shrClaims,
+        sshKid: request.sshKid,
+        embeddedClientId: request.embeddedClientId || request.tokenBodyParameters?.clientId,
+    };
+}
+
+/*! @azure/msal-common v15.13.2 2025-11-19 */
+
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ */
+/** @internal */
+class ThrottlingUtils {
+    /**
+     * Prepares a RequestThumbprint to be stored as a key.
+     * @param thumbprint
+     */
+    static generateThrottlingStorageKey(thumbprint) {
+        return `${ThrottlingConstants.THROTTLING_PREFIX}.${JSON.stringify(thumbprint)}`;
+    }
+    /**
+     * Performs necessary throttling checks before a network request.
+     * @param cacheManager
+     * @param thumbprint
+     */
+    static preProcess(cacheManager, thumbprint, correlationId) {
+        const key = ThrottlingUtils.generateThrottlingStorageKey(thumbprint);
+        const value = cacheManager.getThrottlingCache(key);
+        if (value) {
+            if (value.throttleTime < Date.now()) {
+                cacheManager.removeItem(key, correlationId);
+                return;
+            }
+            throw new ServerError(value.errorCodes?.join(" ") || Constants$1.EMPTY_STRING, value.errorMessage, value.subError);
+        }
+    }
+    /**
+     * Performs necessary throttling checks after a network request.
+     * @param cacheManager
+     * @param thumbprint
+     * @param response
+     */
+    static postProcess(cacheManager, thumbprint, response, correlationId) {
+        if (ThrottlingUtils.checkResponseStatus(response) ||
+            ThrottlingUtils.checkResponseForRetryAfter(response)) {
+            const thumbprintValue = {
+                throttleTime: ThrottlingUtils.calculateThrottleTime(parseInt(response.headers[HeaderNames.RETRY_AFTER])),
+                error: response.body.error,
+                errorCodes: response.body.error_codes,
+                errorMessage: response.body.error_description,
+                subError: response.body.suberror,
+            };
+            cacheManager.setThrottlingCache(ThrottlingUtils.generateThrottlingStorageKey(thumbprint), thumbprintValue, correlationId);
+        }
+    }
+    /**
+     * Checks a NetworkResponse object's status codes against 429 or 5xx
+     * @param response
+     */
+    static checkResponseStatus(response) {
+        return (response.status === 429 ||
+            (response.status >= 500 && response.status < 600));
+    }
+    /**
+     * Checks a NetworkResponse object's RetryAfter header
+     * @param response
+     */
+    static checkResponseForRetryAfter(response) {
+        if (response.headers) {
+            return (response.headers.hasOwnProperty(HeaderNames.RETRY_AFTER) &&
+                (response.status < 200 || response.status >= 300));
+        }
+        return false;
+    }
+    /**
+     * Calculates the Unix-time value for a throttle to expire given throttleTime in seconds.
+     * @param throttleTime
+     */
+    static calculateThrottleTime(throttleTime) {
+        const time = throttleTime <= 0 ? 0 : throttleTime;
+        const currentSeconds = Date.now() / 1000;
+        return Math.floor(Math.min(currentSeconds +
+            (time || ThrottlingConstants.DEFAULT_THROTTLE_TIME_SECONDS), currentSeconds +
+            ThrottlingConstants.DEFAULT_MAX_THROTTLE_TIME_SECONDS) * 1000);
+    }
+    static removeThrottle(cacheManager, clientId, request, homeAccountIdentifier) {
+        const thumbprint = getRequestThumbprint(clientId, request, homeAccountIdentifier);
+        const key = this.generateThrottlingStorageKey(thumbprint);
+        cacheManager.removeItem(key, request.correlationId);
+    }
+}
+
+/*! @azure/msal-common v15.13.2 2025-11-19 */
+
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ */
+/**
+ * Represents network related errors
+ */
+class NetworkError extends AuthError {
+    constructor(error, httpStatus, responseHeaders) {
+        super(error.errorCode, error.errorMessage, error.subError);
+        Object.setPrototypeOf(this, NetworkError.prototype);
+        this.name = "NetworkError";
+        this.error = error;
+        this.httpStatus = httpStatus;
+        this.responseHeaders = responseHeaders;
+    }
+}
+
+/*! @azure/msal-common v15.13.2 2025-11-19 */
+
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ */
+/**
+ * Base application class which will construct requests to send to and handle responses from the Microsoft STS using the authorization code flow.
+ * @internal
+ */
+class BaseClient {
+    constructor(configuration, performanceClient) {
+        // Set the configuration
+        this.config = buildClientConfiguration(configuration);
+        // Initialize the logger
+        this.logger = new Logger(this.config.loggerOptions, name$1, version$1);
+        // Initialize crypto
+        this.cryptoUtils = this.config.cryptoInterface;
+        // Initialize storage interface
+        this.cacheManager = this.config.storageInterface;
+        // Set the network interface
+        this.networkClient = this.config.networkInterface;
+        // Set TelemetryManager
+        this.serverTelemetryManager = this.config.serverTelemetryManager;
+        // set Authority
+        this.authority = this.config.authOptions.authority;
+        // set performance telemetry client
+        this.performanceClient = performanceClient;
+    }
+    /**
+     * Creates default headers for requests to token endpoint
+     */
+    createTokenRequestHeaders(ccsCred) {
+        const headers = {};
+        headers[HeaderNames.CONTENT_TYPE] = Constants$1.URL_FORM_CONTENT_TYPE;
+        if (!this.config.systemOptions.preventCorsPreflight && ccsCred) {
+            switch (ccsCred.type) {
+                case CcsCredentialType.HOME_ACCOUNT_ID:
+                    try {
+                        const clientInfo = buildClientInfoFromHomeAccountId(ccsCred.credential);
+                        headers[HeaderNames.CCS_HEADER] = `Oid:${clientInfo.uid}@${clientInfo.utid}`;
+                    }
+                    catch (e) {
+                        this.logger.verbose("Could not parse home account ID for CCS Header: " +
+                            e);
+                    }
+                    break;
+                case CcsCredentialType.UPN:
+                    headers[HeaderNames.CCS_HEADER] = `UPN: ${ccsCred.credential}`;
+                    break;
+            }
+        }
+        return headers;
+    }
+    /**
+     * Http post to token endpoint
+     * @param tokenEndpoint
+     * @param queryString
+     * @param headers
+     * @param thumbprint
+     */
+    async executePostToTokenEndpoint(tokenEndpoint, queryString, headers, thumbprint, correlationId, queuedEvent) {
+        if (queuedEvent) {
+            this.performanceClient?.addQueueMeasurement(queuedEvent, correlationId);
+        }
+        const response = await this.sendPostRequest(thumbprint, tokenEndpoint, { body: queryString, headers: headers }, correlationId);
+        if (this.config.serverTelemetryManager &&
+            response.status < 500 &&
+            response.status !== 429) {
+            // Telemetry data successfully logged by server, clear Telemetry cache
+            this.config.serverTelemetryManager.clearTelemetryCache();
+        }
+        return response;
+    }
+    /**
+     * Wraps sendPostRequestAsync with necessary preflight and postflight logic
+     * @param thumbprint - Request thumbprint for throttling
+     * @param tokenEndpoint - Endpoint to make the POST to
+     * @param options - Body and Headers to include on the POST request
+     * @param correlationId - CorrelationId for telemetry
+     */
+    async sendPostRequest(thumbprint, tokenEndpoint, options, correlationId) {
+        ThrottlingUtils.preProcess(this.cacheManager, thumbprint, correlationId);
+        let response;
+        try {
+            response = await invokeAsync((this.networkClient.sendPostRequestAsync.bind(this.networkClient)), PerformanceEvents.NetworkClientSendPostRequestAsync, this.logger, this.performanceClient, correlationId)(tokenEndpoint, options);
+            const responseHeaders = response.headers || {};
+            this.performanceClient?.addFields({
+                refreshTokenSize: response.body.refresh_token?.length || 0,
+                httpVerToken: responseHeaders[HeaderNames.X_MS_HTTP_VERSION] || "",
+                requestId: responseHeaders[HeaderNames.X_MS_REQUEST_ID] || "",
+            }, correlationId);
+        }
+        catch (e) {
+            if (e instanceof NetworkError) {
+                const responseHeaders = e.responseHeaders;
+                if (responseHeaders) {
+                    this.performanceClient?.addFields({
+                        httpVerToken: responseHeaders[HeaderNames.X_MS_HTTP_VERSION] || "",
+                        requestId: responseHeaders[HeaderNames.X_MS_REQUEST_ID] ||
+                            "",
+                        contentTypeHeader: responseHeaders[HeaderNames.CONTENT_TYPE] ||
+                            undefined,
+                        contentLengthHeader: responseHeaders[HeaderNames.CONTENT_LENGTH] ||
+                            undefined,
+                        httpStatus: e.httpStatus,
+                    }, correlationId);
+                }
+                throw e.error;
+            }
+            if (e instanceof AuthError) {
+                throw e;
+            }
+            else {
+                throw createClientAuthError(networkError);
+            }
+        }
+        ThrottlingUtils.postProcess(this.cacheManager, thumbprint, response, correlationId);
+        return response;
+    }
+    /**
+     * Updates the authority object of the client. Endpoint discovery must be completed.
+     * @param updatedAuthority
+     */
+    async updateAuthority(cloudInstanceHostname, correlationId) {
+        this.performanceClient?.addQueueMeasurement(PerformanceEvents.UpdateTokenEndpointAuthority, correlationId);
+        const cloudInstanceAuthorityUri = `https://${cloudInstanceHostname}/${this.authority.tenant}/`;
+        const cloudInstanceAuthority = await createDiscoveredInstance(cloudInstanceAuthorityUri, this.networkClient, this.cacheManager, this.authority.options, this.logger, correlationId, this.performanceClient);
+        this.authority = cloudInstanceAuthority;
+    }
+    /**
+     * Creates query string for the /token request
+     * @param request
+     */
+    createTokenQueryParameters(request) {
+        const parameters = new Map();
+        if (request.embeddedClientId) {
+            addBrokerParameters(parameters, this.config.authOptions.clientId, this.config.authOptions.redirectUri);
+        }
+        if (request.tokenQueryParameters) {
+            addExtraQueryParameters(parameters, request.tokenQueryParameters);
+        }
+        addCorrelationId(parameters, request.correlationId);
+        instrumentBrokerParams(parameters, request.correlationId, this.performanceClient);
+        return mapToQueryString(parameters);
+    }
+}
+
+/*! @azure/msal-common v15.13.2 2025-11-19 */
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ */
+// Codes defined by MSAL
+const noTokensFound = "no_tokens_found";
+const nativeAccountUnavailable = "native_account_unavailable";
+const refreshTokenExpired = "refresh_token_expired";
+const uxNotAllowed = "ux_not_allowed";
+// Codes potentially returned by server
+const interactionRequired = "interaction_required";
+const consentRequired = "consent_required";
+const loginRequired = "login_required";
+const badToken = "bad_token";
+
+/*! @azure/msal-common v15.13.2 2025-11-19 */
+
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ */
+/**
+ * InteractionRequiredServerErrorMessage contains string constants used by error codes and messages returned by the server indicating interaction is required
+ */
+const InteractionRequiredServerErrorMessage = [
+    interactionRequired,
+    consentRequired,
+    loginRequired,
+    badToken,
+    uxNotAllowed,
+];
+const InteractionRequiredAuthSubErrorMessage = [
+    "message_only",
+    "additional_action",
+    "basic_action",
+    "user_password_expired",
+    "consent_required",
+    "bad_token",
+];
+const InteractionRequiredAuthErrorMessages = {
+    [noTokensFound]: "No refresh token found in the cache. Please sign-in.",
+    [nativeAccountUnavailable]: "The requested account is not available in the native broker. It may have been deleted or logged out. Please sign-in again using an interactive API.",
+    [refreshTokenExpired]: "Refresh token has expired.",
+    [badToken]: "Identity provider returned bad_token due to an expired or invalid refresh token. Please invoke an interactive API to resolve.",
+    [uxNotAllowed]: "`canShowUI` flag in Edge was set to false. User interaction required on web page. Please invoke an interactive API to resolve.",
+};
+/**
+ * Error thrown when user interaction is required.
+ */
+class InteractionRequiredAuthError extends AuthError {
+    constructor(errorCode, errorMessage, subError, timestamp, traceId, correlationId, claims, errorNo) {
+        super(errorCode, errorMessage, subError);
+        Object.setPrototypeOf(this, InteractionRequiredAuthError.prototype);
+        this.timestamp = timestamp || Constants$1.EMPTY_STRING;
+        this.traceId = traceId || Constants$1.EMPTY_STRING;
+        this.correlationId = correlationId || Constants$1.EMPTY_STRING;
+        this.claims = claims || Constants$1.EMPTY_STRING;
+        this.name = "InteractionRequiredAuthError";
+        this.errorNo = errorNo;
+    }
+}
+/**
+ * Helper function used to determine if an error thrown by the server requires interaction to resolve
+ * @param errorCode
+ * @param errorString
+ * @param subError
+ */
+function isInteractionRequiredError(errorCode, errorString, subError) {
+    const isInteractionRequiredErrorCode = !!errorCode &&
+        InteractionRequiredServerErrorMessage.indexOf(errorCode) > -1;
+    const isInteractionRequiredSubError = !!subError &&
+        InteractionRequiredAuthSubErrorMessage.indexOf(subError) > -1;
+    const isInteractionRequiredErrorDesc = !!errorString &&
+        InteractionRequiredServerErrorMessage.some((irErrorCode) => {
+            return errorString.indexOf(irErrorCode) > -1;
+        });
+    return (isInteractionRequiredErrorCode ||
+        isInteractionRequiredErrorDesc ||
+        isInteractionRequiredSubError);
+}
+/**
+ * Creates an InteractionRequiredAuthError
+ */
+function createInteractionRequiredAuthError(errorCode) {
+    return new InteractionRequiredAuthError(errorCode, InteractionRequiredAuthErrorMessages[errorCode]);
+}
+
+/*! @azure/msal-common v15.13.2 2025-11-19 */
+
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ */
+/**
+ * Class which provides helpers for OAuth 2.0 protocol specific values
+ */
+class ProtocolUtils {
+    /**
+     * Appends user state with random guid, or returns random guid.
+     * @param userState
+     * @param randomGuid
+     */
+    static setRequestState(cryptoObj, userState, meta) {
+        const libraryState = ProtocolUtils.generateLibraryState(cryptoObj, meta);
+        return userState
+            ? `${libraryState}${Constants$1.RESOURCE_DELIM}${userState}`
+            : libraryState;
+    }
+    /**
+     * Generates the state value used by the common library.
+     * @param randomGuid
+     * @param cryptoObj
+     */
+    static generateLibraryState(cryptoObj, meta) {
+        if (!cryptoObj) {
+            throw createClientAuthError(noCryptoObject);
+        }
+        // Create a state object containing a unique id and the timestamp of the request creation
+        const stateObj = {
+            id: cryptoObj.createNewGuid(),
+        };
+        if (meta) {
+            stateObj.meta = meta;
+        }
+        const stateString = JSON.stringify(stateObj);
+        return cryptoObj.base64Encode(stateString);
+    }
+    /**
+     * Parses the state into the RequestStateObject, which contains the LibraryState info and the state passed by the user.
+     * @param state
+     * @param cryptoObj
+     */
+    static parseRequestState(cryptoObj, state) {
+        if (!cryptoObj) {
+            throw createClientAuthError(noCryptoObject);
+        }
+        if (!state) {
+            throw createClientAuthError(invalidState);
+        }
+        try {
+            // Split the state between library state and user passed state and decode them separately
+            const splitState = state.split(Constants$1.RESOURCE_DELIM);
+            const libraryState = splitState[0];
+            const userState = splitState.length > 1
+                ? splitState.slice(1).join(Constants$1.RESOURCE_DELIM)
+                : Constants$1.EMPTY_STRING;
+            const libraryStateString = cryptoObj.base64Decode(libraryState);
+            const libraryStateObj = JSON.parse(libraryStateString);
+            return {
+                userRequestState: userState || Constants$1.EMPTY_STRING,
+                libraryState: libraryStateObj,
+            };
+        }
+        catch (e) {
+            throw createClientAuthError(invalidState);
+        }
+    }
+}
+
+/*! @azure/msal-common v15.13.2 2025-11-19 */
+
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ */
+const KeyLocation = {
+    SW: "sw"};
+/** @internal */
+class PopTokenGenerator {
+    constructor(cryptoUtils, performanceClient) {
+        this.cryptoUtils = cryptoUtils;
+        this.performanceClient = performanceClient;
+    }
+    /**
+     * Generates the req_cnf validated at the RP in the POP protocol for SHR parameters
+     * and returns an object containing the keyid, the full req_cnf string and the req_cnf string hash
+     * @param request
+     * @returns
+     */
+    async generateCnf(request, logger) {
+        this.performanceClient?.addQueueMeasurement(PerformanceEvents.PopTokenGenerateCnf, request.correlationId);
+        const reqCnf = await invokeAsync(this.generateKid.bind(this), PerformanceEvents.PopTokenGenerateCnf, logger, this.performanceClient, request.correlationId)(request);
+        const reqCnfString = this.cryptoUtils.base64UrlEncode(JSON.stringify(reqCnf));
+        return {
+            kid: reqCnf.kid,
+            reqCnfString,
+        };
+    }
+    /**
+     * Generates key_id for a SHR token request
+     * @param request
+     * @returns
+     */
+    async generateKid(request) {
+        this.performanceClient?.addQueueMeasurement(PerformanceEvents.PopTokenGenerateKid, request.correlationId);
+        const kidThumbprint = await this.cryptoUtils.getPublicKeyThumbprint(request);
+        return {
+            kid: kidThumbprint,
+            xms_ksl: KeyLocation.SW,
+        };
+    }
+    /**
+     * Signs the POP access_token with the local generated key-pair
+     * @param accessToken
+     * @param request
+     * @returns
+     */
+    async signPopToken(accessToken, keyId, request) {
+        return this.signPayload(accessToken, keyId, request);
+    }
+    /**
+     * Utility function to generate the signed JWT for an access_token
+     * @param payload
+     * @param kid
+     * @param request
+     * @param claims
+     * @returns
+     */
+    async signPayload(payload, keyId, request, claims) {
+        // Deconstruct request to extract SHR parameters
+        const { resourceRequestMethod, resourceRequestUri, shrClaims, shrNonce, shrOptions, } = request;
+        const resourceUrlString = resourceRequestUri
+            ? new UrlString(resourceRequestUri)
+            : undefined;
+        const resourceUrlComponents = resourceUrlString?.getUrlComponents();
+        return this.cryptoUtils.signJwt({
+            at: payload,
+            ts: nowSeconds(),
+            m: resourceRequestMethod?.toUpperCase(),
+            u: resourceUrlComponents?.HostNameAndPort,
+            nonce: shrNonce || this.cryptoUtils.createNewGuid(),
+            p: resourceUrlComponents?.AbsolutePath,
+            q: resourceUrlComponents?.QueryString
+                ? [[], resourceUrlComponents.QueryString]
+                : undefined,
+            client_claims: shrClaims || undefined,
+            ...claims,
+        }, keyId, shrOptions, request.correlationId);
+    }
+}
+
+/*! @azure/msal-common v15.13.2 2025-11-19 */
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ */
+/**
+ * This class instance helps track the memory changes facilitating
+ * decisions to read from and write to the persistent cache
+ */ class TokenCacheContext {
+    constructor(tokenCache, hasChanged) {
+        this.cache = tokenCache;
+        this.hasChanged = hasChanged;
+    }
+    /**
+     * boolean which indicates the changes in cache
+     */
+    get cacheHasChanged() {
+        return this.hasChanged;
+    }
+    /**
+     * function to retrieve the token cache
+     */
+    get tokenCache() {
+        return this.cache;
+    }
+}
+
+/*! @azure/msal-common v15.13.2 2025-11-19 */
+
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ */
+/**
+ * Class that handles response parsing.
+ * @internal
+ */
+class ResponseHandler {
+    constructor(clientId, cacheStorage, cryptoObj, logger, serializableCache, persistencePlugin, performanceClient) {
+        this.clientId = clientId;
+        this.cacheStorage = cacheStorage;
+        this.cryptoObj = cryptoObj;
+        this.logger = logger;
+        this.serializableCache = serializableCache;
+        this.persistencePlugin = persistencePlugin;
+        this.performanceClient = performanceClient;
+    }
+    /**
+     * Function which validates server authorization token response.
+     * @param serverResponse
+     * @param refreshAccessToken
+     */
+    validateTokenResponse(serverResponse, refreshAccessToken) {
+        // Check for error
+        if (serverResponse.error ||
+            serverResponse.error_description ||
+            serverResponse.suberror) {
+            const errString = `Error(s): ${serverResponse.error_codes || Constants$1.NOT_AVAILABLE} - Timestamp: ${serverResponse.timestamp || Constants$1.NOT_AVAILABLE} - Description: ${serverResponse.error_description || Constants$1.NOT_AVAILABLE} - Correlation ID: ${serverResponse.correlation_id || Constants$1.NOT_AVAILABLE} - Trace ID: ${serverResponse.trace_id || Constants$1.NOT_AVAILABLE}`;
+            const serverErrorNo = serverResponse.error_codes?.length
+                ? serverResponse.error_codes[0]
+                : undefined;
+            const serverError = new ServerError(serverResponse.error, errString, serverResponse.suberror, serverErrorNo, serverResponse.status);
+            // check if 500 error
+            if (refreshAccessToken &&
+                serverResponse.status &&
+                serverResponse.status >= HttpStatus.SERVER_ERROR_RANGE_START &&
+                serverResponse.status <= HttpStatus.SERVER_ERROR_RANGE_END) {
+                this.logger.warning(`executeTokenRequest:validateTokenResponse - AAD is currently unavailable and the access token is unable to be refreshed.\n${serverError}`);
+                // don't throw an exception, but alert the user via a log that the token was unable to be refreshed
+                return;
+                // check if 400 error
+            }
+            else if (refreshAccessToken &&
+                serverResponse.status &&
+                serverResponse.status >= HttpStatus.CLIENT_ERROR_RANGE_START &&
+                serverResponse.status <= HttpStatus.CLIENT_ERROR_RANGE_END) {
+                this.logger.warning(`executeTokenRequest:validateTokenResponse - AAD is currently available but is unable to refresh the access token.\n${serverError}`);
+                // don't throw an exception, but alert the user via a log that the token was unable to be refreshed
+                return;
+            }
+            if (isInteractionRequiredError(serverResponse.error, serverResponse.error_description, serverResponse.suberror)) {
+                throw new InteractionRequiredAuthError(serverResponse.error, serverResponse.error_description, serverResponse.suberror, serverResponse.timestamp || Constants$1.EMPTY_STRING, serverResponse.trace_id || Constants$1.EMPTY_STRING, serverResponse.correlation_id || Constants$1.EMPTY_STRING, serverResponse.claims || Constants$1.EMPTY_STRING, serverErrorNo);
+            }
+            throw serverError;
+        }
+    }
+    /**
+     * Returns a constructed token response based on given string. Also manages the cache updates and cleanups.
+     * @param serverTokenResponse
+     * @param authority
+     */
+    async handleServerTokenResponse(serverTokenResponse, authority, reqTimestamp, request, authCodePayload, userAssertionHash, handlingRefreshTokenResponse, forceCacheRefreshTokenResponse, serverRequestId) {
+        this.performanceClient?.addQueueMeasurement(PerformanceEvents.HandleServerTokenResponse, serverTokenResponse.correlation_id);
+        // create an idToken object (not entity)
+        let idTokenClaims;
+        if (serverTokenResponse.id_token) {
+            idTokenClaims = extractTokenClaims(serverTokenResponse.id_token || Constants$1.EMPTY_STRING, this.cryptoObj.base64Decode);
+            // token nonce check (TODO: Add a warning if no nonce is given?)
+            if (authCodePayload && authCodePayload.nonce) {
+                if (idTokenClaims.nonce !== authCodePayload.nonce) {
+                    throw createClientAuthError(nonceMismatch);
+                }
+            }
+            // token max_age check
+            if (request.maxAge || request.maxAge === 0) {
+                const authTime = idTokenClaims.auth_time;
+                if (!authTime) {
+                    throw createClientAuthError(authTimeNotFound);
+                }
+                checkMaxAge(authTime, request.maxAge);
+            }
+        }
+        // generate homeAccountId
+        this.homeAccountIdentifier = AccountEntity.generateHomeAccountId(serverTokenResponse.client_info || Constants$1.EMPTY_STRING, authority.authorityType, this.logger, this.cryptoObj, idTokenClaims);
+        // save the response tokens
+        let requestStateObj;
+        if (!!authCodePayload && !!authCodePayload.state) {
+            requestStateObj = ProtocolUtils.parseRequestState(this.cryptoObj, authCodePayload.state);
+        }
+        // Add keyId from request to serverTokenResponse if defined
+        serverTokenResponse.key_id =
+            serverTokenResponse.key_id || request.sshKid || undefined;
+        const cacheRecord = this.generateCacheRecord(serverTokenResponse, authority, reqTimestamp, request, idTokenClaims, userAssertionHash, authCodePayload);
+        let cacheContext;
+        try {
+            if (this.persistencePlugin && this.serializableCache) {
+                this.logger.verbose("Persistence enabled, calling beforeCacheAccess");
+                cacheContext = new TokenCacheContext(this.serializableCache, true);
+                await this.persistencePlugin.beforeCacheAccess(cacheContext);
+            }
+            /*
+             * When saving a refreshed tokens to the cache, it is expected that the account that was used is present in the cache.
+             * If not present, we should return null, as it's the case that another application called removeAccount in between
+             * the calls to getAllAccounts and acquireTokenSilent. We should not overwrite that removal, unless explicitly flagged by
+             * the developer, as in the case of refresh token flow used in ADAL Node to MSAL Node migration.
+             */
+            if (handlingRefreshTokenResponse &&
+                !forceCacheRefreshTokenResponse &&
+                cacheRecord.account) {
+                const key = this.cacheStorage.generateAccountKey(AccountEntity.getAccountInfo(cacheRecord.account));
+                const account = this.cacheStorage.getAccount(key, request.correlationId);
+                if (!account) {
+                    this.logger.warning("Account used to refresh tokens not in persistence, refreshed tokens will not be stored in the cache");
+                    return await ResponseHandler.generateAuthenticationResult(this.cryptoObj, authority, cacheRecord, false, request, idTokenClaims, requestStateObj, undefined, serverRequestId);
+                }
+            }
+            await this.cacheStorage.saveCacheRecord(cacheRecord, request.correlationId, isKmsi(idTokenClaims || {}), request.storeInCache);
+        }
+        finally {
+            if (this.persistencePlugin &&
+                this.serializableCache &&
+                cacheContext) {
+                this.logger.verbose("Persistence enabled, calling afterCacheAccess");
+                await this.persistencePlugin.afterCacheAccess(cacheContext);
+            }
+        }
+        return ResponseHandler.generateAuthenticationResult(this.cryptoObj, authority, cacheRecord, false, request, idTokenClaims, requestStateObj, serverTokenResponse, serverRequestId);
+    }
+    /**
+     * Generates CacheRecord
+     * @param serverTokenResponse
+     * @param idTokenObj
+     * @param authority
+     */
+    generateCacheRecord(serverTokenResponse, authority, reqTimestamp, request, idTokenClaims, userAssertionHash, authCodePayload) {
+        const env = authority.getPreferredCache();
+        if (!env) {
+            throw createClientAuthError(invalidCacheEnvironment);
+        }
+        const claimsTenantId = getTenantIdFromIdTokenClaims(idTokenClaims);
+        // IdToken: non AAD scenarios can have empty realm
+        let cachedIdToken;
+        let cachedAccount;
+        if (serverTokenResponse.id_token && !!idTokenClaims) {
+            cachedIdToken = createIdTokenEntity(this.homeAccountIdentifier, env, serverTokenResponse.id_token, this.clientId, claimsTenantId || "");
+            cachedAccount = buildAccountToCache(this.cacheStorage, authority, this.homeAccountIdentifier, this.cryptoObj.base64Decode, request.correlationId, idTokenClaims, serverTokenResponse.client_info, env, claimsTenantId, authCodePayload, undefined, // nativeAccountId
+            this.logger);
+        }
+        // AccessToken
+        let cachedAccessToken = null;
+        if (serverTokenResponse.access_token) {
+            // If scopes not returned in server response, use request scopes
+            const responseScopes = serverTokenResponse.scope
+                ? ScopeSet.fromString(serverTokenResponse.scope)
+                : new ScopeSet(request.scopes || []);
+            /*
+             * Use timestamp calculated before request
+             * Server may return timestamps as strings, parse to numbers if so.
+             */
+            const expiresIn = (typeof serverTokenResponse.expires_in === "string"
+                ? parseInt(serverTokenResponse.expires_in, 10)
+                : serverTokenResponse.expires_in) || 0;
+            const extExpiresIn = (typeof serverTokenResponse.ext_expires_in === "string"
+                ? parseInt(serverTokenResponse.ext_expires_in, 10)
+                : serverTokenResponse.ext_expires_in) || 0;
+            const refreshIn = (typeof serverTokenResponse.refresh_in === "string"
+                ? parseInt(serverTokenResponse.refresh_in, 10)
+                : serverTokenResponse.refresh_in) || undefined;
+            const tokenExpirationSeconds = reqTimestamp + expiresIn;
+            const extendedTokenExpirationSeconds = tokenExpirationSeconds + extExpiresIn;
+            const refreshOnSeconds = refreshIn && refreshIn > 0
+                ? reqTimestamp + refreshIn
+                : undefined;
+            // non AAD scenarios can have empty realm
+            cachedAccessToken = createAccessTokenEntity(this.homeAccountIdentifier, env, serverTokenResponse.access_token, this.clientId, claimsTenantId || authority.tenant || "", responseScopes.printScopes(), tokenExpirationSeconds, extendedTokenExpirationSeconds, this.cryptoObj.base64Decode, refreshOnSeconds, serverTokenResponse.token_type, userAssertionHash, serverTokenResponse.key_id, request.claims, request.requestedClaimsHash);
+        }
+        // refreshToken
+        let cachedRefreshToken = null;
+        if (serverTokenResponse.refresh_token) {
+            let rtExpiresOn;
+            if (serverTokenResponse.refresh_token_expires_in) {
+                const rtExpiresIn = typeof serverTokenResponse.refresh_token_expires_in ===
+                    "string"
+                    ? parseInt(serverTokenResponse.refresh_token_expires_in, 10)
+                    : serverTokenResponse.refresh_token_expires_in;
+                rtExpiresOn = reqTimestamp + rtExpiresIn;
+            }
+            cachedRefreshToken = createRefreshTokenEntity(this.homeAccountIdentifier, env, serverTokenResponse.refresh_token, this.clientId, serverTokenResponse.foci, userAssertionHash, rtExpiresOn);
+        }
+        // appMetadata
+        let cachedAppMetadata = null;
+        if (serverTokenResponse.foci) {
+            cachedAppMetadata = {
+                clientId: this.clientId,
+                environment: env,
+                familyId: serverTokenResponse.foci,
+            };
+        }
+        return {
+            account: cachedAccount,
+            idToken: cachedIdToken,
+            accessToken: cachedAccessToken,
+            refreshToken: cachedRefreshToken,
+            appMetadata: cachedAppMetadata,
+        };
+    }
+    /**
+     * Creates an @AuthenticationResult from @CacheRecord , @IdToken , and a boolean that states whether or not the result is from cache.
+     *
+     * Optionally takes a state string that is set as-is in the response.
+     *
+     * @param cacheRecord
+     * @param idTokenObj
+     * @param fromTokenCache
+     * @param stateString
+     */
+    static async generateAuthenticationResult(cryptoObj, authority, cacheRecord, fromTokenCache, request, idTokenClaims, requestState, serverTokenResponse, requestId) {
+        let accessToken = Constants$1.EMPTY_STRING;
+        let responseScopes = [];
+        let expiresOn = null;
+        let extExpiresOn;
+        let refreshOn;
+        let familyId = Constants$1.EMPTY_STRING;
+        if (cacheRecord.accessToken) {
+            /*
+             * if the request object has `popKid` property, `signPopToken` will be set to false and
+             * the token will be returned unsigned
+             */
+            if (cacheRecord.accessToken.tokenType ===
+                AuthenticationScheme.POP &&
+                !request.popKid) {
+                const popTokenGenerator = new PopTokenGenerator(cryptoObj);
+                const { secret, keyId } = cacheRecord.accessToken;
+                if (!keyId) {
+                    throw createClientAuthError(keyIdMissing);
+                }
+                accessToken = await popTokenGenerator.signPopToken(secret, keyId, request);
+            }
+            else {
+                accessToken = cacheRecord.accessToken.secret;
+            }
+            responseScopes = ScopeSet.fromString(cacheRecord.accessToken.target).asArray();
+            // Access token expiresOn cached in seconds, converting to Date for AuthenticationResult
+            expiresOn = toDateFromSeconds(cacheRecord.accessToken.expiresOn);
+            extExpiresOn = toDateFromSeconds(cacheRecord.accessToken.extendedExpiresOn);
+            if (cacheRecord.accessToken.refreshOn) {
+                refreshOn = toDateFromSeconds(cacheRecord.accessToken.refreshOn);
+            }
+        }
+        if (cacheRecord.appMetadata) {
+            familyId =
+                cacheRecord.appMetadata.familyId === THE_FAMILY_ID
+                    ? THE_FAMILY_ID
+                    : "";
+        }
+        const uid = idTokenClaims?.oid || idTokenClaims?.sub || "";
+        const tid = idTokenClaims?.tid || "";
+        // for hybrid + native bridge enablement, send back the native account Id
+        if (serverTokenResponse?.spa_accountid && !!cacheRecord.account) {
+            cacheRecord.account.nativeAccountId =
+                serverTokenResponse?.spa_accountid;
+        }
+        const accountInfo = cacheRecord.account
+            ? updateAccountTenantProfileData(AccountEntity.getAccountInfo(cacheRecord.account), undefined, // tenantProfile optional
+            idTokenClaims, cacheRecord.idToken?.secret)
+            : null;
+        return {
+            authority: authority.canonicalAuthority,
+            uniqueId: uid,
+            tenantId: tid,
+            scopes: responseScopes,
+            account: accountInfo,
+            idToken: cacheRecord?.idToken?.secret || "",
+            idTokenClaims: idTokenClaims || {},
+            accessToken: accessToken,
+            fromCache: fromTokenCache,
+            expiresOn: expiresOn,
+            extExpiresOn: extExpiresOn,
+            refreshOn: refreshOn,
+            correlationId: request.correlationId,
+            requestId: requestId || Constants$1.EMPTY_STRING,
+            familyId: familyId,
+            tokenType: cacheRecord.accessToken?.tokenType || Constants$1.EMPTY_STRING,
+            state: requestState
+                ? requestState.userRequestState
+                : Constants$1.EMPTY_STRING,
+            cloudGraphHostName: cacheRecord.account?.cloudGraphHostName ||
+                Constants$1.EMPTY_STRING,
+            msGraphHost: cacheRecord.account?.msGraphHost || Constants$1.EMPTY_STRING,
+            code: serverTokenResponse?.spa_code,
+            fromNativeBroker: false,
+        };
+    }
+}
+function buildAccountToCache(cacheStorage, authority, homeAccountId, base64Decode, correlationId, idTokenClaims, clientInfo, environment, claimsTenantId, authCodePayload, nativeAccountId, logger) {
+    logger?.verbose("setCachedAccount called");
+    // Check if base account is already cached
+    const accountKeys = cacheStorage.getAccountKeys();
+    const baseAccountKey = accountKeys.find((accountKey) => {
+        return accountKey.startsWith(homeAccountId);
+    });
+    let cachedAccount = null;
+    if (baseAccountKey) {
+        cachedAccount = cacheStorage.getAccount(baseAccountKey, correlationId);
+    }
+    const baseAccount = cachedAccount ||
+        AccountEntity.createAccount({
+            homeAccountId,
+            idTokenClaims,
+            clientInfo,
+            environment,
+            cloudGraphHostName: authCodePayload?.cloud_graph_host_name,
+            msGraphHost: authCodePayload?.msgraph_host,
+            nativeAccountId: nativeAccountId,
+        }, authority, base64Decode);
+    const tenantProfiles = baseAccount.tenantProfiles || [];
+    const tenantId = claimsTenantId || baseAccount.realm;
+    if (tenantId &&
+        !tenantProfiles.find((tenantProfile) => {
+            return tenantProfile.tenantId === tenantId;
+        })) {
+        const newTenantProfile = buildTenantProfile(homeAccountId, baseAccount.localAccountId, tenantId, idTokenClaims);
+        tenantProfiles.push(newTenantProfile);
+    }
+    baseAccount.tenantProfiles = tenantProfiles;
+    return baseAccount;
+}
+
+/*! @azure/msal-common v15.13.2 2025-11-19 */
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ */
+async function getClientAssertion(clientAssertion, clientId, tokenEndpoint) {
+    if (typeof clientAssertion === "string") {
+        return clientAssertion;
+    }
+    else {
+        const config = {
+            clientId: clientId,
+            tokenEndpoint: tokenEndpoint,
+        };
+        return clientAssertion(config);
+    }
+}
+
+/*! @azure/msal-common v15.13.2 2025-11-19 */
+
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ */
+/**
+ * Oauth2.0 Authorization Code client
+ * @internal
+ */
+class AuthorizationCodeClient extends BaseClient {
+    constructor(configuration, performanceClient) {
+        super(configuration, performanceClient);
+        // Flag to indicate if client is for hybrid spa auth code redemption
+        this.includeRedirectUri = true;
+        this.oidcDefaultScopes =
+            this.config.authOptions.authority.options.OIDCOptions?.defaultScopes;
+    }
+    /**
+     * API to acquire a token in exchange of 'authorization_code` acquired by the user in the first leg of the
+     * authorization_code_grant
+     * @param request
+     */
+    async acquireToken(request, authCodePayload) {
+        this.performanceClient?.addQueueMeasurement(PerformanceEvents.AuthClientAcquireToken, request.correlationId);
+        if (!request.code) {
+            throw createClientAuthError(requestCannotBeMade);
+        }
+        const reqTimestamp = nowSeconds();
+        const response = await invokeAsync(this.executeTokenRequest.bind(this), PerformanceEvents.AuthClientExecuteTokenRequest, this.logger, this.performanceClient, request.correlationId)(this.authority, request);
+        // Retrieve requestId from response headers
+        const requestId = response.headers?.[HeaderNames.X_MS_REQUEST_ID];
+        const responseHandler = new ResponseHandler(this.config.authOptions.clientId, this.cacheManager, this.cryptoUtils, this.logger, this.config.serializableCache, this.config.persistencePlugin, this.performanceClient);
+        // Validate response. This function throws a server error if an error is returned by the server.
+        responseHandler.validateTokenResponse(response.body);
+        return invokeAsync(responseHandler.handleServerTokenResponse.bind(responseHandler), PerformanceEvents.HandleServerTokenResponse, this.logger, this.performanceClient, request.correlationId)(response.body, this.authority, reqTimestamp, request, authCodePayload, undefined, undefined, undefined, requestId);
+    }
+    /**
+     * Used to log out the current user, and redirect the user to the postLogoutRedirectUri.
+     * Default behaviour is to redirect the user to `window.location.href`.
+     * @param authorityUri
+     */
+    getLogoutUri(logoutRequest) {
+        // Throw error if logoutRequest is null/undefined
+        if (!logoutRequest) {
+            throw createClientConfigurationError(logoutRequestEmpty);
+        }
+        const queryString = this.createLogoutUrlQueryString(logoutRequest);
+        // Construct logout URI
+        return UrlString.appendQueryString(this.authority.endSessionEndpoint, queryString);
+    }
+    /**
+     * Executes POST request to token endpoint
+     * @param authority
+     * @param request
+     */
+    async executeTokenRequest(authority, request) {
+        this.performanceClient?.addQueueMeasurement(PerformanceEvents.AuthClientExecuteTokenRequest, request.correlationId);
+        const queryParametersString = this.createTokenQueryParameters(request);
+        const endpoint = UrlString.appendQueryString(authority.tokenEndpoint, queryParametersString);
+        const requestBody = await invokeAsync(this.createTokenRequestBody.bind(this), PerformanceEvents.AuthClientCreateTokenRequestBody, this.logger, this.performanceClient, request.correlationId)(request);
+        let ccsCredential = undefined;
+        if (request.clientInfo) {
+            try {
+                const clientInfo = buildClientInfo(request.clientInfo, this.cryptoUtils.base64Decode);
+                ccsCredential = {
+                    credential: `${clientInfo.uid}${Separators.CLIENT_INFO_SEPARATOR}${clientInfo.utid}`,
+                    type: CcsCredentialType.HOME_ACCOUNT_ID,
+                };
+            }
+            catch (e) {
+                this.logger.verbose("Could not parse client info for CCS Header: " + e);
+            }
+        }
+        const headers = this.createTokenRequestHeaders(ccsCredential || request.ccsCredential);
+        const thumbprint = getRequestThumbprint(this.config.authOptions.clientId, request);
+        return invokeAsync(this.executePostToTokenEndpoint.bind(this), PerformanceEvents.AuthorizationCodeClientExecutePostToTokenEndpoint, this.logger, this.performanceClient, request.correlationId)(endpoint, requestBody, headers, thumbprint, request.correlationId, PerformanceEvents.AuthorizationCodeClientExecutePostToTokenEndpoint);
+    }
+    /**
+     * Generates a map for all the params to be sent to the service
+     * @param request
+     */
+    async createTokenRequestBody(request) {
+        this.performanceClient?.addQueueMeasurement(PerformanceEvents.AuthClientCreateTokenRequestBody, request.correlationId);
+        const parameters = new Map();
+        addClientId(parameters, request.embeddedClientId ||
+            request.tokenBodyParameters?.[CLIENT_ID] ||
+            this.config.authOptions.clientId);
+        /*
+         * For hybrid spa flow, there will be a code but no verifier
+         * In this scenario, don't include redirect uri as auth code will not be bound to redirect URI
+         */
+        if (!this.includeRedirectUri) {
+            // Just validate
+            if (!request.redirectUri) {
+                throw createClientConfigurationError(redirectUriEmpty);
+            }
+        }
+        else {
+            // Validate and include redirect uri
+            addRedirectUri(parameters, request.redirectUri);
+        }
+        // Add scope array, parameter builder will add default scopes and dedupe
+        addScopes(parameters, request.scopes, true, this.oidcDefaultScopes);
+        // add code: user set, not validated
+        addAuthorizationCode(parameters, request.code);
+        // Add library metadata
+        addLibraryInfo(parameters, this.config.libraryInfo);
+        addApplicationTelemetry(parameters, this.config.telemetry.application);
+        addThrottling(parameters);
+        if (this.serverTelemetryManager && !isOidcProtocolMode(this.config)) {
+            addServerTelemetry(parameters, this.serverTelemetryManager);
+        }
+        // add code_verifier if passed
+        if (request.codeVerifier) {
+            addCodeVerifier(parameters, request.codeVerifier);
+        }
+        if (this.config.clientCredentials.clientSecret) {
+            addClientSecret(parameters, this.config.clientCredentials.clientSecret);
+        }
+        if (this.config.clientCredentials.clientAssertion) {
+            const clientAssertion = this.config.clientCredentials.clientAssertion;
+            addClientAssertion(parameters, await getClientAssertion(clientAssertion.assertion, this.config.authOptions.clientId, request.resourceRequestUri));
+            addClientAssertionType(parameters, clientAssertion.assertionType);
+        }
+        addGrantType(parameters, GrantType.AUTHORIZATION_CODE_GRANT);
+        addClientInfo(parameters);
+        if (request.authenticationScheme === AuthenticationScheme.POP) {
+            const popTokenGenerator = new PopTokenGenerator(this.cryptoUtils, this.performanceClient);
+            let reqCnfData;
+            if (!request.popKid) {
+                const generatedReqCnfData = await invokeAsync(popTokenGenerator.generateCnf.bind(popTokenGenerator), PerformanceEvents.PopTokenGenerateCnf, this.logger, this.performanceClient, request.correlationId)(request, this.logger);
+                reqCnfData = generatedReqCnfData.reqCnfString;
+            }
+            else {
+                reqCnfData = this.cryptoUtils.encodeKid(request.popKid);
+            }
+            // SPA PoP requires full Base64Url encoded req_cnf string (unhashed)
+            addPopToken(parameters, reqCnfData);
+        }
+        else if (request.authenticationScheme === AuthenticationScheme.SSH) {
+            if (request.sshJwk) {
+                addSshJwk(parameters, request.sshJwk);
+            }
+            else {
+                throw createClientConfigurationError(missingSshJwk);
+            }
+        }
+        if (!StringUtils.isEmptyObj(request.claims) ||
+            (this.config.authOptions.clientCapabilities &&
+                this.config.authOptions.clientCapabilities.length > 0)) {
+            addClaims(parameters, request.claims, this.config.authOptions.clientCapabilities);
+        }
+        let ccsCred = undefined;
+        if (request.clientInfo) {
+            try {
+                const clientInfo = buildClientInfo(request.clientInfo, this.cryptoUtils.base64Decode);
+                ccsCred = {
+                    credential: `${clientInfo.uid}${Separators.CLIENT_INFO_SEPARATOR}${clientInfo.utid}`,
+                    type: CcsCredentialType.HOME_ACCOUNT_ID,
+                };
+            }
+            catch (e) {
+                this.logger.verbose("Could not parse client info for CCS Header: " + e);
+            }
+        }
+        else {
+            ccsCred = request.ccsCredential;
+        }
+        // Adds these as parameters in the request instead of headers to prevent CORS preflight request
+        if (this.config.systemOptions.preventCorsPreflight && ccsCred) {
+            switch (ccsCred.type) {
+                case CcsCredentialType.HOME_ACCOUNT_ID:
+                    try {
+                        const clientInfo = buildClientInfoFromHomeAccountId(ccsCred.credential);
+                        addCcsOid(parameters, clientInfo);
+                    }
+                    catch (e) {
+                        this.logger.verbose("Could not parse home account ID for CCS Header: " +
+                            e);
+                    }
+                    break;
+                case CcsCredentialType.UPN:
+                    addCcsUpn(parameters, ccsCred.credential);
+                    break;
+            }
+        }
+        if (request.embeddedClientId) {
+            addBrokerParameters(parameters, this.config.authOptions.clientId, this.config.authOptions.redirectUri);
+        }
+        if (request.tokenBodyParameters) {
+            addExtraQueryParameters(parameters, request.tokenBodyParameters);
+        }
+        // Add hybrid spa parameters if not already provided
+        if (request.enableSpaAuthorizationCode &&
+            (!request.tokenBodyParameters ||
+                !request.tokenBodyParameters[RETURN_SPA_CODE])) {
+            addExtraQueryParameters(parameters, {
+                [RETURN_SPA_CODE]: "1",
+            });
+        }
+        instrumentBrokerParams(parameters, request.correlationId, this.performanceClient);
+        return mapToQueryString(parameters);
+    }
+    /**
+     * This API validates the `EndSessionRequest` and creates a URL
+     * @param request
+     */
+    createLogoutUrlQueryString(request) {
+        const parameters = new Map();
+        if (request.postLogoutRedirectUri) {
+            addPostLogoutRedirectUri(parameters, request.postLogoutRedirectUri);
+        }
+        if (request.correlationId) {
+            addCorrelationId(parameters, request.correlationId);
+        }
+        if (request.idTokenHint) {
+            addIdTokenHint(parameters, request.idTokenHint);
+        }
+        if (request.state) {
+            addState(parameters, request.state);
+        }
+        if (request.logoutHint) {
+            addLogoutHint(parameters, request.logoutHint);
+        }
+        if (request.extraQueryParameters) {
+            addExtraQueryParameters(parameters, request.extraQueryParameters);
+        }
+        if (this.config.authOptions.instanceAware) {
+            addInstanceAware(parameters);
+        }
+        return mapToQueryString(parameters, this.config.authOptions.encodeExtraQueryParams, request.extraQueryParameters);
+    }
+}
+
+/*! @azure/msal-common v15.13.2 2025-11-19 */
+
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ */
+const DEFAULT_REFRESH_TOKEN_EXPIRATION_OFFSET_SECONDS = 300; // 5 Minutes
+/**
+ * OAuth2.0 refresh token client
+ * @internal
+ */
+class RefreshTokenClient extends BaseClient {
+    constructor(configuration, performanceClient) {
+        super(configuration, performanceClient);
+    }
+    async acquireToken(request) {
+        this.performanceClient?.addQueueMeasurement(PerformanceEvents.RefreshTokenClientAcquireToken, request.correlationId);
+        const reqTimestamp = nowSeconds();
+        const response = await invokeAsync(this.executeTokenRequest.bind(this), PerformanceEvents.RefreshTokenClientExecuteTokenRequest, this.logger, this.performanceClient, request.correlationId)(request, this.authority);
+        // Retrieve requestId from response headers
+        const requestId = response.headers?.[HeaderNames.X_MS_REQUEST_ID];
+        const responseHandler = new ResponseHandler(this.config.authOptions.clientId, this.cacheManager, this.cryptoUtils, this.logger, this.config.serializableCache, this.config.persistencePlugin);
+        responseHandler.validateTokenResponse(response.body);
+        return invokeAsync(responseHandler.handleServerTokenResponse.bind(responseHandler), PerformanceEvents.HandleServerTokenResponse, this.logger, this.performanceClient, request.correlationId)(response.body, this.authority, reqTimestamp, request, undefined, undefined, true, request.forceCache, requestId);
+    }
+    /**
+     * Gets cached refresh token and attaches to request, then calls acquireToken API
+     * @param request
+     */
+    async acquireTokenByRefreshToken(request) {
+        // Cannot renew token if no request object is given.
+        if (!request) {
+            throw createClientConfigurationError(tokenRequestEmpty);
+        }
+        this.performanceClient?.addQueueMeasurement(PerformanceEvents.RefreshTokenClientAcquireTokenByRefreshToken, request.correlationId);
+        // We currently do not support silent flow for account === null use cases; This will be revisited for confidential flow usecases
+        if (!request.account) {
+            throw createClientAuthError(noAccountInSilentRequest);
+        }
+        // try checking if FOCI is enabled for the given application
+        const isFOCI = this.cacheManager.isAppMetadataFOCI(request.account.environment);
+        // if the app is part of the family, retrive a Family refresh token if present and make a refreshTokenRequest
+        if (isFOCI) {
+            try {
+                return await invokeAsync(this.acquireTokenWithCachedRefreshToken.bind(this), PerformanceEvents.RefreshTokenClientAcquireTokenWithCachedRefreshToken, this.logger, this.performanceClient, request.correlationId)(request, true);
+            }
+            catch (e) {
+                const noFamilyRTInCache = e instanceof InteractionRequiredAuthError &&
+                    e.errorCode ===
+                        noTokensFound;
+                const clientMismatchErrorWithFamilyRT = e instanceof ServerError &&
+                    e.errorCode === Errors.INVALID_GRANT_ERROR &&
+                    e.subError === Errors.CLIENT_MISMATCH_ERROR;
+                // if family Refresh Token (FRT) cache acquisition fails or if client_mismatch error is seen with FRT, reattempt with application Refresh Token (ART)
+                if (noFamilyRTInCache || clientMismatchErrorWithFamilyRT) {
+                    return invokeAsync(this.acquireTokenWithCachedRefreshToken.bind(this), PerformanceEvents.RefreshTokenClientAcquireTokenWithCachedRefreshToken, this.logger, this.performanceClient, request.correlationId)(request, false);
+                    // throw in all other cases
+                }
+                else {
+                    throw e;
+                }
+            }
+        }
+        // fall back to application refresh token acquisition
+        return invokeAsync(this.acquireTokenWithCachedRefreshToken.bind(this), PerformanceEvents.RefreshTokenClientAcquireTokenWithCachedRefreshToken, this.logger, this.performanceClient, request.correlationId)(request, false);
+    }
+    /**
+     * makes a network call to acquire tokens by exchanging RefreshToken available in userCache; throws if refresh token is not cached
+     * @param request
+     */
+    async acquireTokenWithCachedRefreshToken(request, foci) {
+        this.performanceClient?.addQueueMeasurement(PerformanceEvents.RefreshTokenClientAcquireTokenWithCachedRefreshToken, request.correlationId);
+        // fetches family RT or application RT based on FOCI value
+        const refreshToken = invoke(this.cacheManager.getRefreshToken.bind(this.cacheManager), PerformanceEvents.CacheManagerGetRefreshToken, this.logger, this.performanceClient, request.correlationId)(request.account, foci, request.correlationId, undefined, this.performanceClient);
+        if (!refreshToken) {
+            throw createInteractionRequiredAuthError(noTokensFound);
+        }
+        if (refreshToken.expiresOn &&
+            isTokenExpired(refreshToken.expiresOn, request.refreshTokenExpirationOffsetSeconds ||
+                DEFAULT_REFRESH_TOKEN_EXPIRATION_OFFSET_SECONDS)) {
+            this.performanceClient?.addFields({ rtExpiresOnMs: Number(refreshToken.expiresOn) }, request.correlationId);
+            throw createInteractionRequiredAuthError(refreshTokenExpired);
+        }
+        // attach cached RT size to the current measurement
+        const refreshTokenRequest = {
+            ...request,
+            refreshToken: refreshToken.secret,
+            authenticationScheme: request.authenticationScheme || AuthenticationScheme.BEARER,
+            ccsCredential: {
+                credential: request.account.homeAccountId,
+                type: CcsCredentialType.HOME_ACCOUNT_ID,
+            },
+        };
+        try {
+            return await invokeAsync(this.acquireToken.bind(this), PerformanceEvents.RefreshTokenClientAcquireToken, this.logger, this.performanceClient, request.correlationId)(refreshTokenRequest);
+        }
+        catch (e) {
+            if (e instanceof InteractionRequiredAuthError) {
+                this.performanceClient?.addFields({ rtExpiresOnMs: Number(refreshToken.expiresOn) }, request.correlationId);
+                if (e.subError === badToken) {
+                    // Remove bad refresh token from cache
+                    this.logger.verbose("acquireTokenWithRefreshToken: bad refresh token, removing from cache");
+                    const badRefreshTokenKey = this.cacheManager.generateCredentialKey(refreshToken);
+                    this.cacheManager.removeRefreshToken(badRefreshTokenKey, request.correlationId);
+                }
+            }
+            throw e;
+        }
+    }
+    /**
+     * Constructs the network message and makes a NW call to the underlying secure token service
+     * @param request
+     * @param authority
+     */
+    async executeTokenRequest(request, authority) {
+        this.performanceClient?.addQueueMeasurement(PerformanceEvents.RefreshTokenClientExecuteTokenRequest, request.correlationId);
+        const queryParametersString = this.createTokenQueryParameters(request);
+        const endpoint = UrlString.appendQueryString(authority.tokenEndpoint, queryParametersString);
+        const requestBody = await invokeAsync(this.createTokenRequestBody.bind(this), PerformanceEvents.RefreshTokenClientCreateTokenRequestBody, this.logger, this.performanceClient, request.correlationId)(request);
+        const headers = this.createTokenRequestHeaders(request.ccsCredential);
+        const thumbprint = getRequestThumbprint(this.config.authOptions.clientId, request);
+        return invokeAsync(this.executePostToTokenEndpoint.bind(this), PerformanceEvents.RefreshTokenClientExecutePostToTokenEndpoint, this.logger, this.performanceClient, request.correlationId)(endpoint, requestBody, headers, thumbprint, request.correlationId, PerformanceEvents.RefreshTokenClientExecutePostToTokenEndpoint);
+    }
+    /**
+     * Helper function to create the token request body
+     * @param request
+     */
+    async createTokenRequestBody(request) {
+        this.performanceClient?.addQueueMeasurement(PerformanceEvents.RefreshTokenClientCreateTokenRequestBody, request.correlationId);
+        const parameters = new Map();
+        addClientId(parameters, request.embeddedClientId ||
+            request.tokenBodyParameters?.[CLIENT_ID] ||
+            this.config.authOptions.clientId);
+        if (request.redirectUri) {
+            addRedirectUri(parameters, request.redirectUri);
+        }
+        addScopes(parameters, request.scopes, true, this.config.authOptions.authority.options.OIDCOptions?.defaultScopes);
+        addGrantType(parameters, GrantType.REFRESH_TOKEN_GRANT);
+        addClientInfo(parameters);
+        addLibraryInfo(parameters, this.config.libraryInfo);
+        addApplicationTelemetry(parameters, this.config.telemetry.application);
+        addThrottling(parameters);
+        if (this.serverTelemetryManager && !isOidcProtocolMode(this.config)) {
+            addServerTelemetry(parameters, this.serverTelemetryManager);
+        }
+        addRefreshToken(parameters, request.refreshToken);
+        if (this.config.clientCredentials.clientSecret) {
+            addClientSecret(parameters, this.config.clientCredentials.clientSecret);
+        }
+        if (this.config.clientCredentials.clientAssertion) {
+            const clientAssertion = this.config.clientCredentials.clientAssertion;
+            addClientAssertion(parameters, await getClientAssertion(clientAssertion.assertion, this.config.authOptions.clientId, request.resourceRequestUri));
+            addClientAssertionType(parameters, clientAssertion.assertionType);
+        }
+        if (request.authenticationScheme === AuthenticationScheme.POP) {
+            const popTokenGenerator = new PopTokenGenerator(this.cryptoUtils, this.performanceClient);
+            let reqCnfData;
+            if (!request.popKid) {
+                const generatedReqCnfData = await invokeAsync(popTokenGenerator.generateCnf.bind(popTokenGenerator), PerformanceEvents.PopTokenGenerateCnf, this.logger, this.performanceClient, request.correlationId)(request, this.logger);
+                reqCnfData = generatedReqCnfData.reqCnfString;
+            }
+            else {
+                reqCnfData = this.cryptoUtils.encodeKid(request.popKid);
+            }
+            // SPA PoP requires full Base64Url encoded req_cnf string (unhashed)
+            addPopToken(parameters, reqCnfData);
+        }
+        else if (request.authenticationScheme === AuthenticationScheme.SSH) {
+            if (request.sshJwk) {
+                addSshJwk(parameters, request.sshJwk);
+            }
+            else {
+                throw createClientConfigurationError(missingSshJwk);
+            }
+        }
+        if (!StringUtils.isEmptyObj(request.claims) ||
+            (this.config.authOptions.clientCapabilities &&
+                this.config.authOptions.clientCapabilities.length > 0)) {
+            addClaims(parameters, request.claims, this.config.authOptions.clientCapabilities);
+        }
+        if (this.config.systemOptions.preventCorsPreflight &&
+            request.ccsCredential) {
+            switch (request.ccsCredential.type) {
+                case CcsCredentialType.HOME_ACCOUNT_ID:
+                    try {
+                        const clientInfo = buildClientInfoFromHomeAccountId(request.ccsCredential.credential);
+                        addCcsOid(parameters, clientInfo);
+                    }
+                    catch (e) {
+                        this.logger.verbose("Could not parse home account ID for CCS Header: " +
+                            e);
+                    }
+                    break;
+                case CcsCredentialType.UPN:
+                    addCcsUpn(parameters, request.ccsCredential.credential);
+                    break;
+            }
+        }
+        if (request.embeddedClientId) {
+            addBrokerParameters(parameters, this.config.authOptions.clientId, this.config.authOptions.redirectUri);
+        }
+        if (request.tokenBodyParameters) {
+            addExtraQueryParameters(parameters, request.tokenBodyParameters);
+        }
+        instrumentBrokerParams(parameters, request.correlationId, this.performanceClient);
+        return mapToQueryString(parameters);
+    }
+}
+
+/*! @azure/msal-common v15.13.2 2025-11-19 */
+
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ */
+/** @internal */
+class SilentFlowClient extends BaseClient {
+    constructor(configuration, performanceClient) {
+        super(configuration, performanceClient);
+    }
+    /**
+     * Retrieves token from cache or throws an error if it must be refreshed.
+     * @param request
+     */
+    async acquireCachedToken(request) {
+        this.performanceClient?.addQueueMeasurement(PerformanceEvents.SilentFlowClientAcquireCachedToken, request.correlationId);
+        let lastCacheOutcome = CacheOutcome.NOT_APPLICABLE;
+        if (request.forceRefresh ||
+            (!this.config.cacheOptions.claimsBasedCachingEnabled &&
+                !StringUtils.isEmptyObj(request.claims))) {
+            // Must refresh due to present force_refresh flag.
+            this.setCacheOutcome(CacheOutcome.FORCE_REFRESH_OR_CLAIMS, request.correlationId);
+            throw createClientAuthError(tokenRefreshRequired);
+        }
+        // We currently do not support silent flow for account === null use cases; This will be revisited for confidential flow usecases
+        if (!request.account) {
+            throw createClientAuthError(noAccountInSilentRequest);
+        }
+        const requestTenantId = request.account.tenantId ||
+            getTenantFromAuthorityString(request.authority);
+        const tokenKeys = this.cacheManager.getTokenKeys();
+        const cachedAccessToken = this.cacheManager.getAccessToken(request.account, request, tokenKeys, requestTenantId);
+        if (!cachedAccessToken) {
+            // must refresh due to non-existent access_token
+            this.setCacheOutcome(CacheOutcome.NO_CACHED_ACCESS_TOKEN, request.correlationId);
+            throw createClientAuthError(tokenRefreshRequired);
+        }
+        else if (wasClockTurnedBack(cachedAccessToken.cachedAt) ||
+            isTokenExpired(cachedAccessToken.expiresOn, this.config.systemOptions.tokenRenewalOffsetSeconds)) {
+            // must refresh due to the expires_in value
+            this.setCacheOutcome(CacheOutcome.CACHED_ACCESS_TOKEN_EXPIRED, request.correlationId);
+            throw createClientAuthError(tokenRefreshRequired);
+        }
+        else if (cachedAccessToken.refreshOn &&
+            isTokenExpired(cachedAccessToken.refreshOn, 0)) {
+            // must refresh (in the background) due to the refresh_in value
+            lastCacheOutcome = CacheOutcome.PROACTIVELY_REFRESHED;
+            // don't throw ClientAuthError.createRefreshRequiredError(), return cached token instead
+        }
+        const environment = request.authority || this.authority.getPreferredCache();
+        const cacheRecord = {
+            account: this.cacheManager.getAccount(this.cacheManager.generateAccountKey(request.account), request.correlationId),
+            accessToken: cachedAccessToken,
+            idToken: this.cacheManager.getIdToken(request.account, request.correlationId, tokenKeys, requestTenantId, this.performanceClient),
+            refreshToken: null,
+            appMetadata: this.cacheManager.readAppMetadataFromCache(environment),
+        };
+        this.setCacheOutcome(lastCacheOutcome, request.correlationId);
+        if (this.config.serverTelemetryManager) {
+            this.config.serverTelemetryManager.incrementCacheHits();
+        }
+        return [
+            await invokeAsync(this.generateResultFromCacheRecord.bind(this), PerformanceEvents.SilentFlowClientGenerateResultFromCacheRecord, this.logger, this.performanceClient, request.correlationId)(cacheRecord, request),
+            lastCacheOutcome,
+        ];
+    }
+    setCacheOutcome(cacheOutcome, correlationId) {
+        this.serverTelemetryManager?.setCacheOutcome(cacheOutcome);
+        this.performanceClient?.addFields({
+            cacheOutcome: cacheOutcome,
+        }, correlationId);
+        if (cacheOutcome !== CacheOutcome.NOT_APPLICABLE) {
+            this.logger.info(`Token refresh is required due to cache outcome: ${cacheOutcome}`);
+        }
+    }
+    /**
+     * Helper function to build response object from the CacheRecord
+     * @param cacheRecord
+     */
+    async generateResultFromCacheRecord(cacheRecord, request) {
+        this.performanceClient?.addQueueMeasurement(PerformanceEvents.SilentFlowClientGenerateResultFromCacheRecord, request.correlationId);
+        let idTokenClaims;
+        if (cacheRecord.idToken) {
+            idTokenClaims = extractTokenClaims(cacheRecord.idToken.secret, this.config.cryptoInterface.base64Decode);
+        }
+        // token max_age check
+        if (request.maxAge || request.maxAge === 0) {
+            const authTime = idTokenClaims?.auth_time;
+            if (!authTime) {
+                throw createClientAuthError(authTimeNotFound);
+            }
+            checkMaxAge(authTime, request.maxAge);
+        }
+        return ResponseHandler.generateAuthenticationResult(this.cryptoUtils, this.authority, cacheRecord, true, request, idTokenClaims);
+    }
+}
+
+/*! @azure/msal-common v15.13.2 2025-11-19 */
+
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ */
+/**
+ * Returns map of parameters that are applicable to all calls to /authorize whether using PKCE or EAR
+ * @param config
+ * @param request
+ * @param logger
+ * @param performanceClient
+ * @returns
+ */
+function getStandardAuthorizeRequestParameters(authOptions, request, logger, performanceClient) {
+    // generate the correlationId if not set by the user and add
+    const correlationId = request.correlationId;
+    const parameters = new Map();
+    addClientId(parameters, request.embeddedClientId ||
+        request.extraQueryParameters?.[CLIENT_ID] ||
+        authOptions.clientId);
+    const requestScopes = [
+        ...(request.scopes || []),
+        ...(request.extraScopesToConsent || []),
+    ];
+    addScopes(parameters, requestScopes, true, authOptions.authority.options.OIDCOptions?.defaultScopes);
+    addRedirectUri(parameters, request.redirectUri);
+    addCorrelationId(parameters, correlationId);
+    // add response_mode. If not passed in it defaults to query.
+    addResponseMode(parameters, request.responseMode);
+    // add client_info=1
+    addClientInfo(parameters);
+    if (request.prompt) {
+        addPrompt(parameters, request.prompt);
+    }
+    if (request.domainHint) {
+        addDomainHint(parameters, request.domainHint);
+    }
+    // Add sid or loginHint with preference for login_hint claim (in request) -> sid -> loginHint (upn/email) -> username of AccountInfo object
+    if (request.prompt !== PromptValue.SELECT_ACCOUNT) {
+        // AAD will throw if prompt=select_account is passed with an account hint
+        if (request.sid && request.prompt === PromptValue.NONE) {
+            // SessionID is only used in silent calls
+            logger.verbose("createAuthCodeUrlQueryString: Prompt is none, adding sid from request");
+            addSid(parameters, request.sid);
+        }
+        else if (request.account) {
+            const accountSid = extractAccountSid(request.account);
+            let accountLoginHintClaim = extractLoginHint(request.account);
+            if (accountLoginHintClaim && request.domainHint) {
+                logger.warning(`AuthorizationCodeClient.createAuthCodeUrlQueryString: "domainHint" param is set, skipping opaque "login_hint" claim. Please consider not passing domainHint`);
+                accountLoginHintClaim = null;
+            }
+            // If login_hint claim is present, use it over sid/username
+            if (accountLoginHintClaim) {
+                logger.verbose("createAuthCodeUrlQueryString: login_hint claim present on account");
+                addLoginHint(parameters, accountLoginHintClaim);
+                try {
+                    const clientInfo = buildClientInfoFromHomeAccountId(request.account.homeAccountId);
+                    addCcsOid(parameters, clientInfo);
+                }
+                catch (e) {
+                    logger.verbose("createAuthCodeUrlQueryString: Could not parse home account ID for CCS Header");
+                }
+            }
+            else if (accountSid && request.prompt === PromptValue.NONE) {
+                /*
+                 * If account and loginHint are provided, we will check account first for sid before adding loginHint
+                 * SessionId is only used in silent calls
+                 */
+                logger.verbose("createAuthCodeUrlQueryString: Prompt is none, adding sid from account");
+                addSid(parameters, accountSid);
+                try {
+                    const clientInfo = buildClientInfoFromHomeAccountId(request.account.homeAccountId);
+                    addCcsOid(parameters, clientInfo);
+                }
+                catch (e) {
+                    logger.verbose("createAuthCodeUrlQueryString: Could not parse home account ID for CCS Header");
+                }
+            }
+            else if (request.loginHint) {
+                logger.verbose("createAuthCodeUrlQueryString: Adding login_hint from request");
+                addLoginHint(parameters, request.loginHint);
+                addCcsUpn(parameters, request.loginHint);
+            }
+            else if (request.account.username) {
+                // Fallback to account username if provided
+                logger.verbose("createAuthCodeUrlQueryString: Adding login_hint from account");
+                addLoginHint(parameters, request.account.username);
+                try {
+                    const clientInfo = buildClientInfoFromHomeAccountId(request.account.homeAccountId);
+                    addCcsOid(parameters, clientInfo);
+                }
+                catch (e) {
+                    logger.verbose("createAuthCodeUrlQueryString: Could not parse home account ID for CCS Header");
+                }
+            }
+        }
+        else if (request.loginHint) {
+            logger.verbose("createAuthCodeUrlQueryString: No account, adding login_hint from request");
+            addLoginHint(parameters, request.loginHint);
+            addCcsUpn(parameters, request.loginHint);
+        }
+    }
+    else {
+        logger.verbose("createAuthCodeUrlQueryString: Prompt is select_account, ignoring account hints");
+    }
+    if (request.nonce) {
+        addNonce(parameters, request.nonce);
+    }
+    if (request.state) {
+        addState(parameters, request.state);
+    }
+    if (request.claims ||
+        (authOptions.clientCapabilities &&
+            authOptions.clientCapabilities.length > 0)) {
+        addClaims(parameters, request.claims, authOptions.clientCapabilities);
+    }
+    if (request.embeddedClientId) {
+        addBrokerParameters(parameters, authOptions.clientId, authOptions.redirectUri);
+    }
+    // If extraQueryParameters includes instance_aware its value will be added when extraQueryParameters are added
+    if (authOptions.instanceAware &&
+        (!request.extraQueryParameters ||
+            !Object.keys(request.extraQueryParameters).includes(INSTANCE_AWARE))) {
+        addInstanceAware(parameters);
+    }
+    return parameters;
+}
+/**
+ * Returns authorize endpoint with given request parameters in the query string
+ * @param authority
+ * @param requestParameters
+ * @returns
+ */
+function getAuthorizeUrl(authority, requestParameters, encodeParams, extraQueryParameters) {
+    const queryString = mapToQueryString(requestParameters, encodeParams, extraQueryParameters);
+    return UrlString.appendQueryString(authority.authorizationEndpoint, queryString);
+}
+/**
+ * Helper to get sid from account. Returns null if idTokenClaims are not present or sid is not present.
+ * @param account
+ */
+function extractAccountSid(account) {
+    return account.idTokenClaims?.sid || null;
+}
+function extractLoginHint(account) {
+    return account.loginHint || account.idTokenClaims?.login_hint || null;
+}
+
+/*! @azure/msal-common v15.13.2 2025-11-19 */
+
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ */
+const skuGroupSeparator = ",";
+const skuValueSeparator = "|";
+function makeExtraSkuString(params) {
+    const { skus, libraryName, libraryVersion, extensionName, extensionVersion, } = params;
+    const skuMap = new Map([
+        [0, [libraryName, libraryVersion]],
+        [2, [extensionName, extensionVersion]],
+    ]);
+    let skuArr = [];
+    if (skus?.length) {
+        skuArr = skus.split(skuGroupSeparator);
+        // Ignore invalid input sku param
+        if (skuArr.length < 4) {
+            return skus;
+        }
+    }
+    else {
+        skuArr = Array.from({ length: 4 }, () => skuValueSeparator);
+    }
+    skuMap.forEach((value, key) => {
+        if (value.length === 2 && value[0]?.length && value[1]?.length) {
+            setSku({
+                skuArr,
+                index: key,
+                skuName: value[0],
+                skuVersion: value[1],
+            });
+        }
+    });
+    return skuArr.join(skuGroupSeparator);
+}
+function setSku(params) {
+    const { skuArr, index, skuName, skuVersion } = params;
+    if (index >= skuArr.length) {
+        return;
+    }
+    skuArr[index] = [skuName, skuVersion].join(skuValueSeparator);
+}
+/** @internal */
+class ServerTelemetryManager {
+    constructor(telemetryRequest, cacheManager) {
+        this.cacheOutcome = CacheOutcome.NOT_APPLICABLE;
+        this.cacheManager = cacheManager;
+        this.apiId = telemetryRequest.apiId;
+        this.correlationId = telemetryRequest.correlationId;
+        this.wrapperSKU = telemetryRequest.wrapperSKU || Constants$1.EMPTY_STRING;
+        this.wrapperVer = telemetryRequest.wrapperVer || Constants$1.EMPTY_STRING;
+        this.telemetryCacheKey =
+            SERVER_TELEM_CONSTANTS.CACHE_KEY +
+                Separators.CACHE_KEY_SEPARATOR +
+                telemetryRequest.clientId;
+    }
+    /**
+     * API to add MSER Telemetry to request
+     */
+    generateCurrentRequestHeaderValue() {
+        const request = `${this.apiId}${SERVER_TELEM_CONSTANTS.VALUE_SEPARATOR}${this.cacheOutcome}`;
+        const platformFieldsArr = [this.wrapperSKU, this.wrapperVer];
+        const nativeBrokerErrorCode = this.getNativeBrokerErrorCode();
+        if (nativeBrokerErrorCode?.length) {
+            platformFieldsArr.push(`broker_error=${nativeBrokerErrorCode}`);
+        }
+        const platformFields = platformFieldsArr.join(SERVER_TELEM_CONSTANTS.VALUE_SEPARATOR);
+        const regionDiscoveryFields = this.getRegionDiscoveryFields();
+        const requestWithRegionDiscoveryFields = [
+            request,
+            regionDiscoveryFields,
+        ].join(SERVER_TELEM_CONSTANTS.VALUE_SEPARATOR);
+        return [
+            SERVER_TELEM_CONSTANTS.SCHEMA_VERSION,
+            requestWithRegionDiscoveryFields,
+            platformFields,
+        ].join(SERVER_TELEM_CONSTANTS.CATEGORY_SEPARATOR);
+    }
+    /**
+     * API to add MSER Telemetry for the last failed request
+     */
+    generateLastRequestHeaderValue() {
+        const lastRequests = this.getLastRequests();
+        const maxErrors = ServerTelemetryManager.maxErrorsToSend(lastRequests);
+        const failedRequests = lastRequests.failedRequests
+            .slice(0, 2 * maxErrors)
+            .join(SERVER_TELEM_CONSTANTS.VALUE_SEPARATOR);
+        const errors = lastRequests.errors
+            .slice(0, maxErrors)
+            .join(SERVER_TELEM_CONSTANTS.VALUE_SEPARATOR);
+        const errorCount = lastRequests.errors.length;
+        // Indicate whether this header contains all data or partial data
+        const overflow = maxErrors < errorCount
+            ? SERVER_TELEM_CONSTANTS.OVERFLOW_TRUE
+            : SERVER_TELEM_CONSTANTS.OVERFLOW_FALSE;
+        const platformFields = [errorCount, overflow].join(SERVER_TELEM_CONSTANTS.VALUE_SEPARATOR);
+        return [
+            SERVER_TELEM_CONSTANTS.SCHEMA_VERSION,
+            lastRequests.cacheHits,
+            failedRequests,
+            errors,
+            platformFields,
+        ].join(SERVER_TELEM_CONSTANTS.CATEGORY_SEPARATOR);
+    }
+    /**
+     * API to cache token failures for MSER data capture
+     * @param error
+     */
+    cacheFailedRequest(error) {
+        const lastRequests = this.getLastRequests();
+        if (lastRequests.errors.length >=
+            SERVER_TELEM_CONSTANTS.MAX_CACHED_ERRORS) {
+            // Remove a cached error to make room, first in first out
+            lastRequests.failedRequests.shift(); // apiId
+            lastRequests.failedRequests.shift(); // correlationId
+            lastRequests.errors.shift();
+        }
+        lastRequests.failedRequests.push(this.apiId, this.correlationId);
+        if (error instanceof Error && !!error && error.toString()) {
+            if (error instanceof AuthError) {
+                if (error.subError) {
+                    lastRequests.errors.push(error.subError);
+                }
+                else if (error.errorCode) {
+                    lastRequests.errors.push(error.errorCode);
+                }
+                else {
+                    lastRequests.errors.push(error.toString());
+                }
+            }
+            else {
+                lastRequests.errors.push(error.toString());
+            }
+        }
+        else {
+            lastRequests.errors.push(SERVER_TELEM_CONSTANTS.UNKNOWN_ERROR);
+        }
+        this.cacheManager.setServerTelemetry(this.telemetryCacheKey, lastRequests, this.correlationId);
+        return;
+    }
+    /**
+     * Update server telemetry cache entry by incrementing cache hit counter
+     */
+    incrementCacheHits() {
+        const lastRequests = this.getLastRequests();
+        lastRequests.cacheHits += 1;
+        this.cacheManager.setServerTelemetry(this.telemetryCacheKey, lastRequests, this.correlationId);
+        return lastRequests.cacheHits;
+    }
+    /**
+     * Get the server telemetry entity from cache or initialize a new one
+     */
+    getLastRequests() {
+        const initialValue = {
+            failedRequests: [],
+            errors: [],
+            cacheHits: 0,
+        };
+        const lastRequests = this.cacheManager.getServerTelemetry(this.telemetryCacheKey);
+        return lastRequests || initialValue;
+    }
+    /**
+     * Remove server telemetry cache entry
+     */
+    clearTelemetryCache() {
+        const lastRequests = this.getLastRequests();
+        const numErrorsFlushed = ServerTelemetryManager.maxErrorsToSend(lastRequests);
+        const errorCount = lastRequests.errors.length;
+        if (numErrorsFlushed === errorCount) {
+            // All errors were sent on last request, clear Telemetry cache
+            this.cacheManager.removeItem(this.telemetryCacheKey, this.correlationId);
+        }
+        else {
+            // Partial data was flushed to server, construct a new telemetry cache item with errors that were not flushed
+            const serverTelemEntity = {
+                failedRequests: lastRequests.failedRequests.slice(numErrorsFlushed * 2),
+                errors: lastRequests.errors.slice(numErrorsFlushed),
+                cacheHits: 0,
+            };
+            this.cacheManager.setServerTelemetry(this.telemetryCacheKey, serverTelemEntity, this.correlationId);
+        }
+    }
+    /**
+     * Returns the maximum number of errors that can be flushed to the server in the next network request
+     * @param serverTelemetryEntity
+     */
+    static maxErrorsToSend(serverTelemetryEntity) {
+        let i;
+        let maxErrors = 0;
+        let dataSize = 0;
+        const errorCount = serverTelemetryEntity.errors.length;
+        for (i = 0; i < errorCount; i++) {
+            // failedRequests parameter contains pairs of apiId and correlationId, multiply index by 2 to preserve pairs
+            const apiId = serverTelemetryEntity.failedRequests[2 * i] ||
+                Constants$1.EMPTY_STRING;
+            const correlationId = serverTelemetryEntity.failedRequests[2 * i + 1] ||
+                Constants$1.EMPTY_STRING;
+            const errorCode = serverTelemetryEntity.errors[i] || Constants$1.EMPTY_STRING;
+            // Count number of characters that would be added to header, each character is 1 byte. Add 3 at the end to account for separators
+            dataSize +=
+                apiId.toString().length +
+                    correlationId.toString().length +
+                    errorCode.length +
+                    3;
+            if (dataSize < SERVER_TELEM_CONSTANTS.MAX_LAST_HEADER_BYTES) {
+                // Adding this entry to the header would still keep header size below the limit
+                maxErrors += 1;
+            }
+            else {
+                break;
+            }
+        }
+        return maxErrors;
+    }
+    /**
+     * Get the region discovery fields
+     *
+     * @returns string
+     */
+    getRegionDiscoveryFields() {
+        const regionDiscoveryFields = [];
+        regionDiscoveryFields.push(this.regionUsed || Constants$1.EMPTY_STRING);
+        regionDiscoveryFields.push(this.regionSource || Constants$1.EMPTY_STRING);
+        regionDiscoveryFields.push(this.regionOutcome || Constants$1.EMPTY_STRING);
+        return regionDiscoveryFields.join(",");
+    }
+    /**
+     * Update the region discovery metadata
+     *
+     * @param regionDiscoveryMetadata
+     * @returns void
+     */
+    updateRegionDiscoveryMetadata(regionDiscoveryMetadata) {
+        this.regionUsed = regionDiscoveryMetadata.region_used;
+        this.regionSource = regionDiscoveryMetadata.region_source;
+        this.regionOutcome = regionDiscoveryMetadata.region_outcome;
+    }
+    /**
+     * Set cache outcome
+     */
+    setCacheOutcome(cacheOutcome) {
+        this.cacheOutcome = cacheOutcome;
+    }
+    setNativeBrokerErrorCode(errorCode) {
+        const lastRequests = this.getLastRequests();
+        lastRequests.nativeBrokerErrorCode = errorCode;
+        this.cacheManager.setServerTelemetry(this.telemetryCacheKey, lastRequests, this.correlationId);
+    }
+    getNativeBrokerErrorCode() {
+        return this.getLastRequests().nativeBrokerErrorCode;
+    }
+    clearNativeBrokerErrorCode() {
+        const lastRequests = this.getLastRequests();
+        delete lastRequests.nativeBrokerErrorCode;
+        this.cacheManager.setServerTelemetry(this.telemetryCacheKey, lastRequests, this.correlationId);
+    }
+    static makeExtraSkuString(params) {
+        return makeExtraSkuString(params);
+    }
+}
+
+/*! @azure/msal-node v3.8.3 2025-11-19 */
+
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ */
+/**
+ * This class deserializes cache entities read from the file into in-memory object types defined internally
+ * @internal
+ */
+class Deserializer {
+    /**
+     * Parse the JSON blob in memory and deserialize the content
+     * @param cachedJson - JSON blob cache
+     */
+    static deserializeJSONBlob(jsonFile) {
+        const deserializedCache = !jsonFile ? {} : JSON.parse(jsonFile);
+        return deserializedCache;
+    }
+    /**
+     * Deserializes accounts to AccountEntity objects
+     * @param accounts - accounts of type SerializedAccountEntity
+     */
+    static deserializeAccounts(accounts) {
+        const accountObjects = {};
+        if (accounts) {
+            Object.keys(accounts).map(function (key) {
+                const serializedAcc = accounts[key];
+                const mappedAcc = {
+                    homeAccountId: serializedAcc.home_account_id,
+                    environment: serializedAcc.environment,
+                    realm: serializedAcc.realm,
+                    localAccountId: serializedAcc.local_account_id,
+                    username: serializedAcc.username,
+                    authorityType: serializedAcc.authority_type,
+                    name: serializedAcc.name,
+                    clientInfo: serializedAcc.client_info,
+                    lastModificationTime: serializedAcc.last_modification_time,
+                    lastModificationApp: serializedAcc.last_modification_app,
+                    tenantProfiles: serializedAcc.tenantProfiles?.map((serializedTenantProfile) => {
+                        return JSON.parse(serializedTenantProfile);
+                    }),
+                    lastUpdatedAt: Date.now().toString(),
+                };
+                const account = new AccountEntity();
+                CacheManager.toObject(account, mappedAcc);
+                accountObjects[key] = account;
+            });
+        }
+        return accountObjects;
+    }
+    /**
+     * Deserializes id tokens to IdTokenEntity objects
+     * @param idTokens - credentials of type SerializedIdTokenEntity
+     */
+    static deserializeIdTokens(idTokens) {
+        const idObjects = {};
+        if (idTokens) {
+            Object.keys(idTokens).map(function (key) {
+                const serializedIdT = idTokens[key];
+                const idToken = {
+                    homeAccountId: serializedIdT.home_account_id,
+                    environment: serializedIdT.environment,
+                    credentialType: serializedIdT.credential_type,
+                    clientId: serializedIdT.client_id,
+                    secret: serializedIdT.secret,
+                    realm: serializedIdT.realm,
+                    lastUpdatedAt: Date.now().toString(),
+                };
+                idObjects[key] = idToken;
+            });
+        }
+        return idObjects;
+    }
+    /**
+     * Deserializes access tokens to AccessTokenEntity objects
+     * @param accessTokens - access tokens of type SerializedAccessTokenEntity
+     */
+    static deserializeAccessTokens(accessTokens) {
+        const atObjects = {};
+        if (accessTokens) {
+            Object.keys(accessTokens).map(function (key) {
+                const serializedAT = accessTokens[key];
+                const accessToken = {
+                    homeAccountId: serializedAT.home_account_id,
+                    environment: serializedAT.environment,
+                    credentialType: serializedAT.credential_type,
+                    clientId: serializedAT.client_id,
+                    secret: serializedAT.secret,
+                    realm: serializedAT.realm,
+                    target: serializedAT.target,
+                    cachedAt: serializedAT.cached_at,
+                    expiresOn: serializedAT.expires_on,
+                    extendedExpiresOn: serializedAT.extended_expires_on,
+                    refreshOn: serializedAT.refresh_on,
+                    keyId: serializedAT.key_id,
+                    tokenType: serializedAT.token_type,
+                    requestedClaims: serializedAT.requestedClaims,
+                    requestedClaimsHash: serializedAT.requestedClaimsHash,
+                    userAssertionHash: serializedAT.userAssertionHash,
+                    lastUpdatedAt: Date.now().toString(),
+                };
+                atObjects[key] = accessToken;
+            });
+        }
+        return atObjects;
+    }
+    /**
+     * Deserializes refresh tokens to RefreshTokenEntity objects
+     * @param refreshTokens - refresh tokens of type SerializedRefreshTokenEntity
+     */
+    static deserializeRefreshTokens(refreshTokens) {
+        const rtObjects = {};
+        if (refreshTokens) {
+            Object.keys(refreshTokens).map(function (key) {
+                const serializedRT = refreshTokens[key];
+                const refreshToken = {
+                    homeAccountId: serializedRT.home_account_id,
+                    environment: serializedRT.environment,
+                    credentialType: serializedRT.credential_type,
+                    clientId: serializedRT.client_id,
+                    secret: serializedRT.secret,
+                    familyId: serializedRT.family_id,
+                    target: serializedRT.target,
+                    realm: serializedRT.realm,
+                    lastUpdatedAt: Date.now().toString(),
+                };
+                rtObjects[key] = refreshToken;
+            });
+        }
+        return rtObjects;
+    }
+    /**
+     * Deserializes appMetadata to AppMetaData objects
+     * @param appMetadata - app metadata of type SerializedAppMetadataEntity
+     */
+    static deserializeAppMetadata(appMetadata) {
+        const appMetadataObjects = {};
+        if (appMetadata) {
+            Object.keys(appMetadata).map(function (key) {
+                const serializedAmdt = appMetadata[key];
+                appMetadataObjects[key] = {
+                    clientId: serializedAmdt.client_id,
+                    environment: serializedAmdt.environment,
+                    familyId: serializedAmdt.family_id,
+                };
+            });
+        }
+        return appMetadataObjects;
+    }
+    /**
+     * Deserialize an inMemory Cache
+     * @param jsonCache - JSON blob cache
+     */
+    static deserializeAllCache(jsonCache) {
+        return {
+            accounts: jsonCache.Account
+                ? this.deserializeAccounts(jsonCache.Account)
+                : {},
+            idTokens: jsonCache.IdToken
+                ? this.deserializeIdTokens(jsonCache.IdToken)
+                : {},
+            accessTokens: jsonCache.AccessToken
+                ? this.deserializeAccessTokens(jsonCache.AccessToken)
+                : {},
+            refreshTokens: jsonCache.RefreshToken
+                ? this.deserializeRefreshTokens(jsonCache.RefreshToken)
+                : {},
+            appMetadata: jsonCache.AppMetadata
+                ? this.deserializeAppMetadata(jsonCache.AppMetadata)
+                : {},
+        };
+    }
+}
+
+/*! @azure/msal-node v3.8.3 2025-11-19 */
+/**
+ * http methods
+ */
+const HttpMethod = {
+    GET: "get",
+    POST: "post",
+};
+const ProxyStatus = {
+    SUCCESS_RANGE_START: HttpStatus.SUCCESS_RANGE_START,
+    SUCCESS_RANGE_END: HttpStatus.SUCCESS_RANGE_END,
+    SERVER_ERROR: HttpStatus.SERVER_ERROR,
+};
+/**
+ * Constants used for region discovery
+ */
+const REGION_ENVIRONMENT_VARIABLE = "REGION_NAME";
+const MSAL_FORCE_REGION = "MSAL_FORCE_REGION";
+/**
+ * Constant used for PKCE
+ */
+const RANDOM_OCTET_SIZE = 32;
+/**
+ * Constants used in PKCE
+ */
+const Hash = {
+    SHA256: "sha256",
+};
+/**
+ * Constants for encoding schemes
+ */
+const CharSet = {
+    CV_CHARSET: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~",
+};
+/**
+ * Cache Constants
+ */
+const CACHE = {
+    KEY_SEPARATOR: "-",
+};
+/**
+ * Constants
+ */
+const Constants = {
+    MSAL_SKU: "msal.js.node",
+    JWT_BEARER_ASSERTION_TYPE: "urn:ietf:params:oauth:client-assertion-type:jwt-bearer",
+    AUTHORIZATION_PENDING: "authorization_pending",
+    HTTP_PROTOCOL: "http://",
+    LOCALHOST: "localhost",
+};
+/**
+ * API Codes for Telemetry purposes.
+ * Before adding a new code you must claim it in the MSAL Telemetry tracker as these number spaces are shared across all MSALs
+ * 0-99 Silent Flow
+ * 600-699 Device Code Flow
+ * 800-899 Auth Code Flow
+ */
+const ApiId = {
+    acquireTokenSilent: 62,
+    acquireTokenByUsernamePassword: 371,
+    acquireTokenByDeviceCode: 671,
+    acquireTokenByClientCredential: 771,
+    acquireTokenByCode: 871,
+    acquireTokenByRefreshToken: 872,
+};
+/**
+ * JWT  constants
+ */
+const JwtConstants = {
+    RSA_256: "RS256",
+    PSS_256: "PS256",
+    X5T_256: "x5t#S256",
+    X5T: "x5t",
+    X5C: "x5c",
+    AUDIENCE: "aud",
+    EXPIRATION_TIME: "exp",
+    ISSUER: "iss",
+    SUBJECT: "sub",
+    NOT_BEFORE: "nbf",
+    JWT_ID: "jti",
+};
+const LOOPBACK_SERVER_CONSTANTS = {
+    INTERVAL_MS: 100,
+    TIMEOUT_MS: 5000,
+};
+
+/*! @azure/msal-node v3.8.3 2025-11-19 */
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ */
+class NetworkUtils {
+    static getNetworkResponse(headers, body, statusCode) {
+        return {
+            headers: headers,
+            body: body,
+            status: statusCode,
+        };
+    }
+    /*
+     * Utility function that converts a URL object into an ordinary options object as expected by the
+     * http.request and https.request APIs.
+     * https://github.com/nodejs/node/blob/main/lib/internal/url.js#L1090
+     */
+    static urlToHttpOptions(url) {
+        const options = {
+            protocol: url.protocol,
+            hostname: url.hostname && url.hostname.startsWith("[")
+                ? url.hostname.slice(1, -1)
+                : url.hostname,
+            hash: url.hash,
+            search: url.search,
+            pathname: url.pathname,
+            path: `${url.pathname || ""}${url.search || ""}`,
+            href: url.href,
+        };
+        if (url.port !== "") {
+            options.port = Number(url.port);
+        }
+        if (url.username || url.password) {
+            options.auth = `${decodeURIComponent(url.username)}:${decodeURIComponent(url.password)}`;
+        }
+        return options;
+    }
+}
+
+/*! @azure/msal-node v3.8.3 2025-11-19 */
+/* eslint-disable header/header */
+const name = "@azure/msal-node";
+const version = "3.8.3";
+
+/*! @azure/msal-node v3.8.3 2025-11-19 */
+
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ */
+/**
+ * This class implements the API for network requests.
+ */
+class HttpClient {
+    constructor(proxyUrl, customAgentOptions, loggerOptions) {
+        this.networkRequestViaProxy = (httpMethod, destinationUrlString, options, timeout) => {
+            const destinationUrl = new URL(destinationUrlString);
+            const proxyUrl = new URL(this.proxyUrl);
+            // "method: connect" must be used to establish a connection to the proxy
+            const headers = options?.headers || {};
+            const tunnelRequestOptions = {
+                host: proxyUrl.hostname,
+                port: proxyUrl.port,
+                method: "CONNECT",
+                path: destinationUrl.hostname,
+                headers: headers,
+            };
+            if (this.customAgentOptions &&
+                Object.keys(this.customAgentOptions).length) {
+                tunnelRequestOptions.agent = new http.Agent(this.customAgentOptions);
+            }
+            // compose a request string for the socket
+            let postRequestStringContent = "";
+            if (httpMethod === HttpMethod.POST) {
+                const body = options?.body || "";
+                postRequestStringContent =
+                    "Content-Type: application/x-www-form-urlencoded\r\n" +
+                        `Content-Length: ${body.length}\r\n` +
+                        `\r\n${body}`;
+            }
+            else {
+                // optional timeout is only for get requests (regionDiscovery, for example)
+                if (timeout) {
+                    tunnelRequestOptions.timeout = timeout;
+                }
+            }
+            const outgoingRequestString = `${httpMethod.toUpperCase()} ${destinationUrl.href} HTTP/1.1\r\n` +
+                `Host: ${destinationUrl.host}\r\n` +
+                "Connection: close\r\n" +
+                postRequestStringContent +
+                "\r\n";
+            return new Promise((resolve, reject) => {
+                const request = http.request(tunnelRequestOptions);
+                if (timeout) {
+                    request.on("timeout", () => {
+                        this.logUrlWithPiiAwareness(`Request timeout after ${timeout}ms for URL`, destinationUrlString);
+                        request.destroy();
+                        reject(new Error(`Request time out after ${timeout}ms`));
+                    });
+                }
+                request.end();
+                // establish connection to the proxy
+                request.on("connect", (response, socket) => {
+                    const proxyStatusCode = response?.statusCode || ProxyStatus.SERVER_ERROR;
+                    if (proxyStatusCode < ProxyStatus.SUCCESS_RANGE_START ||
+                        proxyStatusCode > ProxyStatus.SUCCESS_RANGE_END) {
+                        request.destroy();
+                        socket.destroy();
+                        reject(new Error(`Error connecting to proxy. Http status code: ${response.statusCode}. Http status message: ${response?.statusMessage || "Unknown"}`));
+                    }
+                    // make a request over an HTTP tunnel
+                    socket.write(outgoingRequestString);
+                    const data = [];
+                    socket.on("data", (chunk) => {
+                        data.push(chunk);
+                    });
+                    socket.on("end", () => {
+                        // combine all received buffer streams into one buffer, and then into a string
+                        const dataString = Buffer.concat([...data]).toString();
+                        // separate each line into it's own entry in an arry
+                        const dataStringArray = dataString.split("\r\n");
+                        // the first entry will contain the statusCode and statusMessage
+                        const httpStatusCode = parseInt(dataStringArray[0].split(" ")[1]);
+                        // remove "HTTP/1.1" and the status code to get the status message
+                        const statusMessage = dataStringArray[0]
+                            .split(" ")
+                            .slice(2)
+                            .join(" ");
+                        // the last entry will contain the body
+                        const body = dataStringArray[dataStringArray.length - 1];
+                        // everything in between the first and last entries are the headers
+                        const headersArray = dataStringArray.slice(1, dataStringArray.length - 2);
+                        // build an object out of all the headers
+                        const entries = new Map();
+                        headersArray.forEach((header) => {
+                            /**
+                             * the header might look like "Content-Length: 1531", but that is just a string
+                             * it needs to be converted to a key/value pair
+                             * split the string at the first instance of ":"
+                             * there may be more than one ":" if the value of the header is supposed to be a JSON object
+                             */
+                            const headerKeyValue = header.split(new RegExp(/:\s(.*)/s));
+                            const headerKey = headerKeyValue[0];
+                            let headerValue = headerKeyValue[1];
+                            // check if the value of the header is supposed to be a JSON object
+                            try {
+                                const object = JSON.parse(headerValue);
+                                // if it is, then convert it from a string to a JSON object
+                                if (object && typeof object === "object") {
+                                    headerValue = object;
+                                }
+                            }
+                            catch (e) {
+                                // otherwise, leave it as a string
+                            }
+                            entries.set(headerKey, headerValue);
+                        });
+                        const headers = Object.fromEntries(entries);
+                        const parsedHeaders = headers;
+                        const networkResponse = NetworkUtils.getNetworkResponse(parsedHeaders, this.parseBody(httpStatusCode, statusMessage, parsedHeaders, body), httpStatusCode);
+                        if (this.shouldDestroyRequest(httpStatusCode, networkResponse)) {
+                            request.destroy();
+                        }
+                        resolve(networkResponse);
+                    });
+                    socket.on("error", (chunk) => {
+                        request.destroy();
+                        socket.destroy();
+                        reject(new Error(chunk.toString()));
+                    });
+                });
+                request.on("error", (chunk) => {
+                    this.logger.error(`HttpClient - Proxy request error: ${chunk.toString()}`, "");
+                    this.logUrlWithPiiAwareness("Destination URL", destinationUrlString);
+                    this.logUrlWithPiiAwareness("Proxy URL", this.proxyUrl);
+                    this.logger.error(`HttpClient - Method: ${httpMethod}`, "");
+                    this.logger.errorPii(`HttpClient - Headers: ${JSON.stringify(headers)}`, "");
+                    request.destroy();
+                    reject(new Error(chunk.toString()));
+                });
+            });
+        };
+        this.networkRequestViaHttps = (httpMethod, urlString, options, timeout) => {
+            const isPostRequest = httpMethod === HttpMethod.POST;
+            const body = options?.body || "";
+            const url = new URL(urlString);
+            const headers = options?.headers || {};
+            const customOptions = {
+                method: httpMethod,
+                headers: headers,
+                ...NetworkUtils.urlToHttpOptions(url),
+            };
+            if (this.customAgentOptions &&
+                Object.keys(this.customAgentOptions).length) {
+                customOptions.agent = new https.Agent(this.customAgentOptions);
+            }
+            if (isPostRequest) {
+                // needed for post request to work
+                customOptions.headers = {
+                    ...customOptions.headers,
+                    "Content-Length": body.length,
+                };
+            }
+            else {
+                // optional timeout is only for get requests (regionDiscovery, for example)
+                if (timeout) {
+                    customOptions.timeout = timeout;
+                }
+            }
+            return new Promise((resolve, reject) => {
+                let request;
+                // managed identity sources use http instead of https
+                if (customOptions.protocol === "http:") {
+                    request = http.request(customOptions);
+                }
+                else {
+                    request = https.request(customOptions);
+                }
+                if (isPostRequest) {
+                    request.write(body);
+                }
+                if (timeout) {
+                    request.on("timeout", () => {
+                        this.logUrlWithPiiAwareness(`HTTPS request timeout after ${timeout}ms for URL`, urlString);
+                        request.destroy();
+                        reject(new Error(`Request time out after ${timeout}ms`));
+                    });
+                }
+                request.end();
+                request.on("response", (response) => {
+                    const headers = response.headers;
+                    const statusCode = response.statusCode;
+                    const statusMessage = response.statusMessage;
+                    const data = [];
+                    response.on("data", (chunk) => {
+                        data.push(chunk);
+                    });
+                    response.on("end", () => {
+                        // combine all received buffer streams into one buffer, and then into a string
+                        const body = Buffer.concat([...data]).toString();
+                        const parsedHeaders = headers;
+                        const networkResponse = NetworkUtils.getNetworkResponse(parsedHeaders, this.parseBody(statusCode, statusMessage, parsedHeaders, body), statusCode);
+                        if (this.shouldDestroyRequest(statusCode, networkResponse)) {
+                            request.destroy();
+                        }
+                        resolve(networkResponse);
+                    });
+                });
+                request.on("error", (chunk) => {
+                    this.logger.error(`HttpClient - HTTPS request error: ${chunk.toString()}`, "");
+                    this.logUrlWithPiiAwareness("URL", urlString);
+                    this.logger.error(`HttpClient - Method: ${httpMethod}`, "");
+                    this.logger.errorPii(`HttpClient - Headers: ${JSON.stringify(headers)}`, "");
+                    request.destroy();
+                    reject(new Error(chunk.toString()));
+                });
+            });
+        };
+        /**
+         * Check if extra parsing is needed on the repsonse from the server
+         * @param statusCode {number} the status code of the response from the server
+         * @param statusMessage {string | undefined} the status message of the response from the server
+         * @param headers {Record<string, string>} the headers of the response from the server
+         * @param body {string} the body from the response of the server
+         * @returns {Object} JSON parsed body or error object
+         */
+        this.parseBody = (statusCode, statusMessage, headers, body) => {
+            /*
+             * Informational responses (100 – 199)
+             * Successful responses (200 – 299)
+             * Redirection messages (300 – 399)
+             * Client error responses (400 – 499)
+             * Server error responses (500 – 599)
+             */
+            let parsedBody;
+            try {
+                parsedBody = JSON.parse(body);
+            }
+            catch (error) {
+                let errorType;
+                let errorDescriptionHelper;
+                if (statusCode >= HttpStatus.CLIENT_ERROR_RANGE_START &&
+                    statusCode <= HttpStatus.CLIENT_ERROR_RANGE_END) {
+                    errorType = "client_error";
+                    errorDescriptionHelper = "A client";
+                }
+                else if (statusCode >= HttpStatus.SERVER_ERROR_RANGE_START &&
+                    statusCode <= HttpStatus.SERVER_ERROR_RANGE_END) {
+                    errorType = "server_error";
+                    errorDescriptionHelper = "A server";
+                }
+                else {
+                    errorType = "unknown_error";
+                    errorDescriptionHelper = "An unknown";
+                }
+                parsedBody = {
+                    error: errorType,
+                    error_description: `${errorDescriptionHelper} error occured.\nHttp status code: ${statusCode}\nHttp status message: ${statusMessage || "Unknown"}\nHeaders: ${JSON.stringify(headers)}`,
+                };
+            }
+            return parsedBody;
+        };
+        /**
+         * Helper function to log a formatted message containing URLs, with PII-aware sanitization
+         * @param label {string} the label for the log message
+         * @param urlString {string} the URL to log
+         */
+        this.logUrlWithPiiAwareness = (label, urlString) => {
+            if (this.isPiiEnabled) {
+                this.logger.errorPii(`HttpClient - ${label}: ${urlString}`, "");
+            }
+            else {
+                let urlHelper;
+                try {
+                    const url = new URL(urlString);
+                    urlHelper = `${url.protocol}//${url.host}${url.pathname}`;
+                }
+                catch {
+                    urlHelper = urlString.split("?")[0] || "unknown";
+                }
+                this.logger.error(`HttpClient - ${label}: ${urlHelper} [Enable PII logging to see additional details]`, "");
+            }
+        };
+        /**
+         * Helper function to determine if a request should be destroyed based on status code and response body.
+         * Checks if the response is an error and not part of the device code flow (authorization_pending).
+         * @param statusCode {number} the status code of the response
+         * @param networkResponse {NetworkResponse<T>} the network response object
+         * @returns {boolean} true if the request should be destroyed, false otherwise
+         */
+        this.shouldDestroyRequest = (statusCode, networkResponse) => {
+            return ((statusCode < HttpStatus.SUCCESS_RANGE_START ||
+                statusCode > HttpStatus.SUCCESS_RANGE_END) &&
+                // do not destroy the request for the device code flow
+                !(networkResponse.body &&
+                    typeof networkResponse.body === "object" &&
+                    "error" in networkResponse.body &&
+                    networkResponse.body.error ===
+                        Constants.AUTHORIZATION_PENDING));
+        };
+        this.proxyUrl = proxyUrl || "";
+        this.customAgentOptions = customAgentOptions || {};
+        this.logger = new Logger(loggerOptions || {}, name, version);
+        this.isPiiEnabled = this.logger.isPiiLoggingEnabled();
+    }
+    /**
+     * Http Get request
+     * @param url
+     * @param options
+     */
+    async sendGetRequestAsync(url, options, timeout) {
+        if (this.proxyUrl) {
+            return this.networkRequestViaProxy(HttpMethod.GET, url, options, timeout);
+        }
+        else {
+            return this.networkRequestViaHttps(HttpMethod.GET, url, options, timeout);
+        }
+    }
+    /**
+     * Http Post request
+     * @param url
+     * @param options
+     */
+    async sendPostRequestAsync(url, options) {
+        if (this.proxyUrl) {
+            return this.networkRequestViaProxy(HttpMethod.POST, url, options);
+        }
+        else {
+            return this.networkRequestViaHttps(HttpMethod.POST, url, options);
+        }
+    }
+}
+
+/*! @azure/msal-node v3.8.3 2025-11-19 */
+
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ */
+/**
+ * NodeAuthErrorMessage class containing string constants used by error codes and messages.
+ */
+const NodeAuthErrorMessage = {
+    invalidLoopbackAddressType: {
+        code: "invalid_loopback_server_address_type",
+        desc: "Loopback server address is not type string. This is unexpected.",
+    },
+    unableToLoadRedirectUri: {
+        code: "unable_to_load_redirectUrl",
+        desc: "Loopback server callback was invoked without a url. This is unexpected.",
+    },
+    noAuthCodeInResponse: {
+        code: "no_auth_code_in_response",
+        desc: "No auth code found in the server response. Please check your network trace to determine what happened.",
+    },
+    noLoopbackServerExists: {
+        code: "no_loopback_server_exists",
+        desc: "No loopback server exists yet.",
+    },
+    loopbackServerAlreadyExists: {
+        code: "loopback_server_already_exists",
+        desc: "Loopback server already exists. Cannot create another.",
+    },
+    loopbackServerTimeout: {
+        code: "loopback_server_timeout",
+        desc: "Timed out waiting for auth code listener to be registered.",
+    },
+    stateNotFoundError: {
+        code: "state_not_found",
+        desc: "State not found. Please verify that the request originated from msal.",
+    },
+    thumbprintMissing: {
+        code: "thumbprint_missing_from_client_certificate",
+        desc: "Client certificate does not contain a SHA-1 or SHA-256 thumbprint.",
+    },
+    redirectUriNotSupported: {
+        code: "redirect_uri_not_supported",
+        desc: "RedirectUri is not supported in this scenario. Please remove redirectUri from the request.",
+    },
+};
+class NodeAuthError extends AuthError {
+    constructor(errorCode, errorMessage) {
+        super(errorCode, errorMessage);
+        this.name = "NodeAuthError";
+    }
+    /**
+     * Creates an error thrown if loopback server address is of type string.
+     */
+    static createInvalidLoopbackAddressTypeError() {
+        return new NodeAuthError(NodeAuthErrorMessage.invalidLoopbackAddressType.code, `${NodeAuthErrorMessage.invalidLoopbackAddressType.desc}`);
+    }
+    /**
+     * Creates an error thrown if the loopback server is unable to get a url.
+     */
+    static createUnableToLoadRedirectUrlError() {
+        return new NodeAuthError(NodeAuthErrorMessage.unableToLoadRedirectUri.code, `${NodeAuthErrorMessage.unableToLoadRedirectUri.desc}`);
+    }
+    /**
+     * Creates an error thrown if the server response does not contain an auth code.
+     */
+    static createNoAuthCodeInResponseError() {
+        return new NodeAuthError(NodeAuthErrorMessage.noAuthCodeInResponse.code, `${NodeAuthErrorMessage.noAuthCodeInResponse.desc}`);
+    }
+    /**
+     * Creates an error thrown if the loopback server has not been spun up yet.
+     */
+    static createNoLoopbackServerExistsError() {
+        return new NodeAuthError(NodeAuthErrorMessage.noLoopbackServerExists.code, `${NodeAuthErrorMessage.noLoopbackServerExists.desc}`);
+    }
+    /**
+     * Creates an error thrown if a loopback server already exists when attempting to create another one.
+     */
+    static createLoopbackServerAlreadyExistsError() {
+        return new NodeAuthError(NodeAuthErrorMessage.loopbackServerAlreadyExists.code, `${NodeAuthErrorMessage.loopbackServerAlreadyExists.desc}`);
+    }
+    /**
+     * Creates an error thrown if the loopback server times out registering the auth code listener.
+     */
+    static createLoopbackServerTimeoutError() {
+        return new NodeAuthError(NodeAuthErrorMessage.loopbackServerTimeout.code, `${NodeAuthErrorMessage.loopbackServerTimeout.desc}`);
+    }
+    /**
+     * Creates an error thrown when the state is not present.
+     */
+    static createStateNotFoundError() {
+        return new NodeAuthError(NodeAuthErrorMessage.stateNotFoundError.code, NodeAuthErrorMessage.stateNotFoundError.desc);
+    }
+    /**
+     * Creates an error thrown when client certificate was provided, but neither the SHA-1 or SHA-256 thumbprints were provided
+     */
+    static createThumbprintMissingError() {
+        return new NodeAuthError(NodeAuthErrorMessage.thumbprintMissing.code, NodeAuthErrorMessage.thumbprintMissing.desc);
+    }
+    /**
+     * Creates an error thrown when redirectUri is provided in an unsupported scenario
+     */
+    static createRedirectUriNotSupportedError() {
+        return new NodeAuthError(NodeAuthErrorMessage.redirectUriNotSupported.code, NodeAuthErrorMessage.redirectUriNotSupported.desc);
+    }
+}
+
+/*! @azure/msal-node v3.8.3 2025-11-19 */
+
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ */
+const DEFAULT_AUTH_OPTIONS = {
+    clientId: Constants$1.EMPTY_STRING,
+    authority: Constants$1.DEFAULT_AUTHORITY,
+    clientSecret: Constants$1.EMPTY_STRING,
+    clientAssertion: Constants$1.EMPTY_STRING,
+    clientCertificate: {
+        thumbprint: Constants$1.EMPTY_STRING,
+        thumbprintSha256: Constants$1.EMPTY_STRING,
+        privateKey: Constants$1.EMPTY_STRING,
+        x5c: Constants$1.EMPTY_STRING,
+    },
+    knownAuthorities: [],
+    cloudDiscoveryMetadata: Constants$1.EMPTY_STRING,
+    authorityMetadata: Constants$1.EMPTY_STRING,
+    clientCapabilities: [],
+    protocolMode: ProtocolMode.AAD,
+    azureCloudOptions: {
+        azureCloudInstance: AzureCloudInstance.None,
+        tenant: Constants$1.EMPTY_STRING,
+    },
+    skipAuthorityMetadataCache: false,
+    encodeExtraQueryParams: false,
+};
+const DEFAULT_CACHE_OPTIONS = {
+    claimsBasedCachingEnabled: false,
+};
+const DEFAULT_LOGGER_OPTIONS = {
+    loggerCallback: () => {
+        // allow users to not set logger call back
+    },
+    piiLoggingEnabled: false,
+    logLevel: LogLevel.Info,
+};
+const DEFAULT_SYSTEM_OPTIONS = {
+    loggerOptions: DEFAULT_LOGGER_OPTIONS,
+    networkClient: new HttpClient(),
+    proxyUrl: Constants$1.EMPTY_STRING,
+    customAgentOptions: {},
+    disableInternalRetries: false,
+};
+const DEFAULT_TELEMETRY_OPTIONS = {
+    application: {
+        appName: Constants$1.EMPTY_STRING,
+        appVersion: Constants$1.EMPTY_STRING,
+    },
+};
+/**
+ * Sets the default options when not explicitly configured from app developer
+ *
+ * @param auth - Authentication options
+ * @param cache - Cache options
+ * @param system - System options
+ * @param telemetry - Telemetry options
+ *
+ * @returns Configuration
+ * @internal
+ */
+function buildAppConfiguration({ auth, broker, cache, system, telemetry, }) {
+    const systemOptions = {
+        ...DEFAULT_SYSTEM_OPTIONS,
+        networkClient: new HttpClient(system?.proxyUrl, system?.customAgentOptions),
+        loggerOptions: system?.loggerOptions || DEFAULT_LOGGER_OPTIONS,
+        disableInternalRetries: system?.disableInternalRetries || false,
+    };
+    // if client certificate was provided, ensure that at least one of the SHA-1 or SHA-256 thumbprints were provided
+    if (!!auth.clientCertificate &&
+        !!!auth.clientCertificate.thumbprint &&
+        !!!auth.clientCertificate.thumbprintSha256) {
+        throw NodeAuthError.createStateNotFoundError();
+    }
+    return {
+        auth: { ...DEFAULT_AUTH_OPTIONS, ...auth },
+        broker: { ...broker },
+        cache: { ...DEFAULT_CACHE_OPTIONS, ...cache },
+        system: { ...systemOptions, ...system },
+        telemetry: { ...DEFAULT_TELEMETRY_OPTIONS, ...telemetry },
+    };
+}
+
+// Unique ID creation requires a high quality random # generator. In the browser we therefore
+// require the crypto API and do not support built-in fallback to lower quality random number
+// generators (like Math.random()).
+var getRandomValues;
+var rnds8 = new Uint8Array(16);
+function rng() {
+  // lazy load so that environments that need to polyfill have a chance to do so
+  if (!getRandomValues) {
+    // getRandomValues needs to be invoked in a context where "this" is a Crypto implementation. Also,
+    // find the complete implementation of crypto (msCrypto) on IE11.
+    getRandomValues = typeof crypto !== 'undefined' && crypto.getRandomValues && crypto.getRandomValues.bind(crypto) || typeof msCrypto !== 'undefined' && typeof msCrypto.getRandomValues === 'function' && msCrypto.getRandomValues.bind(msCrypto);
+
+    if (!getRandomValues) {
+      throw new Error('crypto.getRandomValues() not supported. See https://github.com/uuidjs/uuid#getrandomvalues-not-supported');
+    }
+  }
+
+  return getRandomValues(rnds8);
+}
+
+var REGEX = /^(?:[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}|00000000-0000-0000-0000-000000000000)$/i;
+
+function validate$1(uuid) {
+  return typeof uuid === 'string' && REGEX.test(uuid);
+}
+
+/**
+ * Convert array of 16 byte values to UUID string format of the form:
+ * XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
+ */
+
+var byteToHex = [];
+
+for (var i = 0; i < 256; ++i) {
+  byteToHex.push((i + 0x100).toString(16).substr(1));
+}
+
+function stringify(arr) {
+  var offset = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
+  // Note: Be careful editing this code!  It's been tuned for performance
+  // and works in ways you may not expect. See https://github.com/uuidjs/uuid/pull/434
+  var uuid = (byteToHex[arr[offset + 0]] + byteToHex[arr[offset + 1]] + byteToHex[arr[offset + 2]] + byteToHex[arr[offset + 3]] + '-' + byteToHex[arr[offset + 4]] + byteToHex[arr[offset + 5]] + '-' + byteToHex[arr[offset + 6]] + byteToHex[arr[offset + 7]] + '-' + byteToHex[arr[offset + 8]] + byteToHex[arr[offset + 9]] + '-' + byteToHex[arr[offset + 10]] + byteToHex[arr[offset + 11]] + byteToHex[arr[offset + 12]] + byteToHex[arr[offset + 13]] + byteToHex[arr[offset + 14]] + byteToHex[arr[offset + 15]]).toLowerCase(); // Consistency check for valid UUID.  If this throws, it's likely due to one
+  // of the following:
+  // - One or more input array values don't map to a hex octet (leading to
+  // "undefined" in the uuid)
+  // - Invalid input values for the RFC `version` or `variant` fields
+
+  if (!validate$1(uuid)) {
+    throw TypeError('Stringified UUID is invalid');
+  }
+
+  return uuid;
+}
+
+function v4(options, buf, offset) {
+  options = options || {};
+  var rnds = options.random || (options.rng || rng)(); // Per 4.4, set bits for version and `clock_seq_hi_and_reserved`
+
+  rnds[6] = rnds[6] & 0x0f | 0x40;
+  rnds[8] = rnds[8] & 0x3f | 0x80; // Copy bytes to buffer, if provided
+
+  return stringify(rnds);
+}
+
+/*! @azure/msal-node v3.8.3 2025-11-19 */
+
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ */
+class GuidGenerator {
+    /**
+     *
+     * RFC4122: The version 4 UUID is meant for generating UUIDs from truly-random or pseudo-random numbers.
+     * uuidv4 generates guids from cryprtographically-string random
+     */
+    generateGuid() {
+        return v4();
+    }
+    /**
+     * verifies if a string is  GUID
+     * @param guid
+     */
+    isGuid(guid) {
+        const regexGuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+        return regexGuid.test(guid);
+    }
+}
+
+/*! @azure/msal-node v3.8.3 2025-11-19 */
+
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ */
+class EncodingUtils {
+    /**
+     * 'utf8': Multibyte encoded Unicode characters. Many web pages and other document formats use UTF-8.
+     * 'base64': Base64 encoding.
+     *
+     * @param str text
+     */
+    static base64Encode(str, encoding) {
+        return Buffer.from(str, encoding).toString(EncodingTypes.BASE64);
+    }
+    /**
+     * encode a URL
+     * @param str
+     */
+    static base64EncodeUrl(str, encoding) {
+        return EncodingUtils.base64Encode(str, encoding)
+            .replace(/=/g, Constants$1.EMPTY_STRING)
+            .replace(/\+/g, "-")
+            .replace(/\//g, "_");
+    }
+    /**
+     * 'utf8': Multibyte encoded Unicode characters. Many web pages and other document formats use UTF-8.
+     * 'base64': Base64 encoding.
+     *
+     * @param base64Str Base64 encoded text
+     */
+    static base64Decode(base64Str) {
+        return Buffer.from(base64Str, EncodingTypes.BASE64).toString("utf8");
+    }
+    /**
+     * @param base64Str Base64 encoded Url
+     */
+    static base64DecodeUrl(base64Str) {
+        let str = base64Str.replace(/-/g, "+").replace(/_/g, "/");
+        while (str.length % 4) {
+            str += "=";
+        }
+        return EncodingUtils.base64Decode(str);
+    }
+}
+
+/*! @azure/msal-node v3.8.3 2025-11-19 */
+
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ */
+class HashUtils {
+    /**
+     * generate 'SHA256' hash
+     * @param buffer
+     */
+    sha256(buffer) {
+        return crypto$1.createHash(Hash.SHA256).update(buffer).digest();
+    }
+}
+
+/*! @azure/msal-node v3.8.3 2025-11-19 */
+
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ */
+/**
+ * https://tools.ietf.org/html/rfc7636#page-8
+ */
+class PkceGenerator {
+    constructor() {
+        this.hashUtils = new HashUtils();
+    }
+    /**
+     * generates the codeVerfier and the challenge from the codeVerfier
+     * reference: https://tools.ietf.org/html/rfc7636#section-4.1 and https://tools.ietf.org/html/rfc7636#section-4.2
+     */
+    async generatePkceCodes() {
+        const verifier = this.generateCodeVerifier();
+        const challenge = this.generateCodeChallengeFromVerifier(verifier);
+        return { verifier, challenge };
+    }
+    /**
+     * generates the codeVerfier; reference: https://tools.ietf.org/html/rfc7636#section-4.1
+     */
+    generateCodeVerifier() {
+        const charArr = [];
+        const maxNumber = 256 - (256 % CharSet.CV_CHARSET.length);
+        while (charArr.length <= RANDOM_OCTET_SIZE) {
+            const byte = crypto$1.randomBytes(1)[0];
+            if (byte >= maxNumber) {
+                /*
+                 * Ignore this number to maintain randomness.
+                 * Including it would result in an unequal distribution of characters after doing the modulo
+                 */
+                continue;
+            }
+            const index = byte % CharSet.CV_CHARSET.length;
+            charArr.push(CharSet.CV_CHARSET[index]);
+        }
+        const verifier = charArr.join(Constants$1.EMPTY_STRING);
+        return EncodingUtils.base64EncodeUrl(verifier);
+    }
+    /**
+     * generate the challenge from the codeVerfier; reference: https://tools.ietf.org/html/rfc7636#section-4.2
+     * @param codeVerifier
+     */
+    generateCodeChallengeFromVerifier(codeVerifier) {
+        return EncodingUtils.base64EncodeUrl(this.hashUtils.sha256(codeVerifier).toString(EncodingTypes.BASE64), EncodingTypes.BASE64);
+    }
+}
+
+/*! @azure/msal-node v3.8.3 2025-11-19 */
+
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ */
+/**
+ * This class implements MSAL node's crypto interface, which allows it to perform base64 encoding and decoding, generating cryptographically random GUIDs and
+ * implementing Proof Key for Code Exchange specs for the OAuth Authorization Code Flow using PKCE (rfc here: https://tools.ietf.org/html/rfc7636).
+ * @public
+ */
+class CryptoProvider {
+    constructor() {
+        // Browser crypto needs to be validated first before any other classes can be set.
+        this.pkceGenerator = new PkceGenerator();
+        this.guidGenerator = new GuidGenerator();
+        this.hashUtils = new HashUtils();
+    }
+    /**
+     * base64 URL safe encoded string
+     */
+    base64UrlEncode() {
+        throw new Error("Method not implemented.");
+    }
+    /**
+     * Stringifies and base64Url encodes input public key
+     * @param inputKid - public key id
+     * @returns Base64Url encoded public key
+     */
+    encodeKid() {
+        throw new Error("Method not implemented.");
+    }
+    /**
+     * Creates a new random GUID - used to populate state and nonce.
+     * @returns string (GUID)
+     */
+    createNewGuid() {
+        return this.guidGenerator.generateGuid();
+    }
+    /**
+     * Encodes input string to base64.
+     * @param input - string to be encoded
+     */
+    base64Encode(input) {
+        return EncodingUtils.base64Encode(input);
+    }
+    /**
+     * Decodes input string from base64.
+     * @param input - string to be decoded
+     */
+    base64Decode(input) {
+        return EncodingUtils.base64Decode(input);
+    }
+    /**
+     * Generates PKCE codes used in Authorization Code Flow.
+     */
+    generatePkceCodes() {
+        return this.pkceGenerator.generatePkceCodes();
+    }
+    /**
+     * Generates a keypair, stores it and returns a thumbprint - not yet implemented for node
+     */
+    getPublicKeyThumbprint() {
+        throw new Error("Method not implemented.");
+    }
+    /**
+     * Removes cryptographic keypair from key store matching the keyId passed in
+     * @param kid - public key id
+     */
+    removeTokenBindingKey() {
+        throw new Error("Method not implemented.");
+    }
+    /**
+     * Removes all cryptographic keys from Keystore
+     */
+    clearKeystore() {
+        throw new Error("Method not implemented.");
+    }
+    /**
+     * Signs the given object as a jwt payload with private key retrieved by given kid - currently not implemented for node
+     */
+    signJwt() {
+        throw new Error("Method not implemented.");
+    }
+    /**
+     * Returns the SHA-256 hash of an input string
+     */
+    async hashString(plainText) {
+        return EncodingUtils.base64EncodeUrl(this.hashUtils.sha256(plainText).toString(EncodingTypes.BASE64), EncodingTypes.BASE64);
+    }
+}
+
+/*! @azure/msal-node v3.8.3 2025-11-19 */
+
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ */
+function generateCredentialKey(credential) {
+    const familyId = (credential.credentialType === CredentialType.REFRESH_TOKEN &&
+        credential.familyId) ||
+        credential.clientId;
+    const scheme = credential.tokenType &&
+        credential.tokenType.toLowerCase() !==
+            AuthenticationScheme.BEARER.toLowerCase()
+        ? credential.tokenType.toLowerCase()
+        : "";
+    const credentialKey = [
+        credential.homeAccountId,
+        credential.environment,
+        credential.credentialType,
+        familyId,
+        credential.realm || "",
+        credential.target || "",
+        credential.requestedClaimsHash || "",
+        scheme,
+    ];
+    return credentialKey.join(CACHE.KEY_SEPARATOR).toLowerCase();
+}
+function generateAccountKey(account) {
+    const homeTenantId = account.homeAccountId.split(".")[1];
+    const accountKey = [
+        account.homeAccountId,
+        account.environment,
+        homeTenantId || account.tenantId || "",
+    ];
+    return accountKey.join(CACHE.KEY_SEPARATOR).toLowerCase();
+}
+
+/*! @azure/msal-node v3.8.3 2025-11-19 */
+
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ */
+/**
+ * This class implements Storage for node, reading cache from user specified storage location or an  extension library
+ * @public
+ */
+class NodeStorage extends CacheManager {
+    constructor(logger, clientId, cryptoImpl, staticAuthorityOptions) {
+        super(clientId, cryptoImpl, logger, new StubPerformanceClient(), staticAuthorityOptions);
+        this.cache = {};
+        this.changeEmitters = [];
+        this.logger = logger;
+    }
+    /**
+     * Queue up callbacks
+     * @param func - a callback function for cache change indication
+     */
+    registerChangeEmitter(func) {
+        this.changeEmitters.push(func);
+    }
+    /**
+     * Invoke the callback when cache changes
+     */
+    emitChange() {
+        this.changeEmitters.forEach((func) => func.call(null));
+    }
+    /**
+     * Converts cacheKVStore to InMemoryCache
+     * @param cache - key value store
+     */
+    cacheToInMemoryCache(cache) {
+        const inMemoryCache = {
+            accounts: {},
+            idTokens: {},
+            accessTokens: {},
+            refreshTokens: {},
+            appMetadata: {},
+        };
+        for (const key in cache) {
+            const value = cache[key];
+            if (typeof value !== "object") {
+                continue;
+            }
+            if (value instanceof AccountEntity) {
+                inMemoryCache.accounts[key] = value;
+            }
+            else if (isIdTokenEntity(value)) {
+                inMemoryCache.idTokens[key] = value;
+            }
+            else if (isAccessTokenEntity(value)) {
+                inMemoryCache.accessTokens[key] = value;
+            }
+            else if (isRefreshTokenEntity(value)) {
+                inMemoryCache.refreshTokens[key] = value;
+            }
+            else if (isAppMetadataEntity(key, value)) {
+                inMemoryCache.appMetadata[key] = value;
+            }
+            else {
+                continue;
+            }
+        }
+        return inMemoryCache;
+    }
+    /**
+     * converts inMemoryCache to CacheKVStore
+     * @param inMemoryCache - kvstore map for inmemory
+     */
+    inMemoryCacheToCache(inMemoryCache) {
+        // convert in memory cache to a flat Key-Value map
+        let cache = this.getCache();
+        cache = {
+            ...cache,
+            ...inMemoryCache.accounts,
+            ...inMemoryCache.idTokens,
+            ...inMemoryCache.accessTokens,
+            ...inMemoryCache.refreshTokens,
+            ...inMemoryCache.appMetadata,
+        };
+        // convert in memory cache to a flat Key-Value map
+        return cache;
+    }
+    /**
+     * gets the current in memory cache for the client
+     */
+    getInMemoryCache() {
+        this.logger.trace("Getting in-memory cache");
+        // convert the cache key value store to inMemoryCache
+        const inMemoryCache = this.cacheToInMemoryCache(this.getCache());
+        return inMemoryCache;
+    }
+    /**
+     * sets the current in memory cache for the client
+     * @param inMemoryCache - key value map in memory
+     */
+    setInMemoryCache(inMemoryCache) {
+        this.logger.trace("Setting in-memory cache");
+        // convert and append the inMemoryCache to cacheKVStore
+        const cache = this.inMemoryCacheToCache(inMemoryCache);
+        this.setCache(cache);
+        this.emitChange();
+    }
+    /**
+     * get the current cache key-value store
+     */
+    getCache() {
+        this.logger.trace("Getting cache key-value store");
+        return this.cache;
+    }
+    /**
+     * sets the current cache (key value store)
+     * @param cacheMap - key value map
+     */
+    setCache(cache) {
+        this.logger.trace("Setting cache key value store");
+        this.cache = cache;
+        // mark change in cache
+        this.emitChange();
+    }
+    /**
+     * Gets cache item with given key.
+     * @param key - lookup key for the cache entry
+     */
+    getItem(key) {
+        this.logger.tracePii(`Item key: ${key}`);
+        // read cache
+        const cache = this.getCache();
+        return cache[key];
+    }
+    /**
+     * Gets cache item with given key-value
+     * @param key - lookup key for the cache entry
+     * @param value - value of the cache entry
+     */
+    setItem(key, value) {
+        this.logger.tracePii(`Item key: ${key}`);
+        // read cache
+        const cache = this.getCache();
+        cache[key] = value;
+        // write to cache
+        this.setCache(cache);
+    }
+    generateCredentialKey(credential) {
+        return generateCredentialKey(credential);
+    }
+    generateAccountKey(account) {
+        return generateAccountKey(account);
+    }
+    getAccountKeys() {
+        const inMemoryCache = this.getInMemoryCache();
+        const accountKeys = Object.keys(inMemoryCache.accounts);
+        return accountKeys;
+    }
+    getTokenKeys() {
+        const inMemoryCache = this.getInMemoryCache();
+        const tokenKeys = {
+            idToken: Object.keys(inMemoryCache.idTokens),
+            accessToken: Object.keys(inMemoryCache.accessTokens),
+            refreshToken: Object.keys(inMemoryCache.refreshTokens),
+        };
+        return tokenKeys;
+    }
+    /**
+     * Reads account from cache, builds it into an account entity and returns it.
+     * @param accountKey - lookup key to fetch cache type AccountEntity
+     * @returns
+     */
+    getAccount(accountKey) {
+        const cachedAccount = this.getItem(accountKey);
+        return cachedAccount
+            ? Object.assign(new AccountEntity(), this.getItem(accountKey))
+            : null;
+    }
+    /**
+     * set account entity
+     * @param account - cache value to be set of type AccountEntity
+     */
+    async setAccount(account) {
+        const accountKey = this.generateAccountKey(AccountEntity.getAccountInfo(account));
+        this.setItem(accountKey, account);
+    }
+    /**
+     * fetch the idToken credential
+     * @param idTokenKey - lookup key to fetch cache type IdTokenEntity
+     */
+    getIdTokenCredential(idTokenKey) {
+        const idToken = this.getItem(idTokenKey);
+        if (isIdTokenEntity(idToken)) {
+            return idToken;
+        }
+        return null;
+    }
+    /**
+     * set idToken credential
+     * @param idToken - cache value to be set of type IdTokenEntity
+     */
+    async setIdTokenCredential(idToken) {
+        const idTokenKey = this.generateCredentialKey(idToken);
+        this.setItem(idTokenKey, idToken);
+    }
+    /**
+     * fetch the accessToken credential
+     * @param accessTokenKey - lookup key to fetch cache type AccessTokenEntity
+     */
+    getAccessTokenCredential(accessTokenKey) {
+        const accessToken = this.getItem(accessTokenKey);
+        if (isAccessTokenEntity(accessToken)) {
+            return accessToken;
+        }
+        return null;
+    }
+    /**
+     * set accessToken credential
+     * @param accessToken -  cache value to be set of type AccessTokenEntity
+     */
+    async setAccessTokenCredential(accessToken) {
+        const accessTokenKey = this.generateCredentialKey(accessToken);
+        this.setItem(accessTokenKey, accessToken);
+    }
+    /**
+     * fetch the refreshToken credential
+     * @param refreshTokenKey - lookup key to fetch cache type RefreshTokenEntity
+     */
+    getRefreshTokenCredential(refreshTokenKey) {
+        const refreshToken = this.getItem(refreshTokenKey);
+        if (isRefreshTokenEntity(refreshToken)) {
+            return refreshToken;
+        }
+        return null;
+    }
+    /**
+     * set refreshToken credential
+     * @param refreshToken - cache value to be set of type RefreshTokenEntity
+     */
+    async setRefreshTokenCredential(refreshToken) {
+        const refreshTokenKey = this.generateCredentialKey(refreshToken);
+        this.setItem(refreshTokenKey, refreshToken);
+    }
+    /**
+     * fetch appMetadata entity from the platform cache
+     * @param appMetadataKey - lookup key to fetch cache type AppMetadataEntity
+     */
+    getAppMetadata(appMetadataKey) {
+        const appMetadata = this.getItem(appMetadataKey);
+        if (isAppMetadataEntity(appMetadataKey, appMetadata)) {
+            return appMetadata;
+        }
+        return null;
+    }
+    /**
+     * set appMetadata entity to the platform cache
+     * @param appMetadata - cache value to be set of type AppMetadataEntity
+     */
+    setAppMetadata(appMetadata) {
+        const appMetadataKey = generateAppMetadataKey(appMetadata);
+        this.setItem(appMetadataKey, appMetadata);
+    }
+    /**
+     * fetch server telemetry entity from the platform cache
+     * @param serverTelemetrykey - lookup key to fetch cache type ServerTelemetryEntity
+     */
+    getServerTelemetry(serverTelemetrykey) {
+        const serverTelemetryEntity = this.getItem(serverTelemetrykey);
+        if (serverTelemetryEntity &&
+            isServerTelemetryEntity(serverTelemetrykey, serverTelemetryEntity)) {
+            return serverTelemetryEntity;
+        }
+        return null;
+    }
+    /**
+     * set server telemetry entity to the platform cache
+     * @param serverTelemetryKey - lookup key to fetch cache type ServerTelemetryEntity
+     * @param serverTelemetry - cache value to be set of type ServerTelemetryEntity
+     */
+    setServerTelemetry(serverTelemetryKey, serverTelemetry) {
+        this.setItem(serverTelemetryKey, serverTelemetry);
+    }
+    /**
+     * fetch authority metadata entity from the platform cache
+     * @param key - lookup key to fetch cache type AuthorityMetadataEntity
+     */
+    getAuthorityMetadata(key) {
+        const authorityMetadataEntity = this.getItem(key);
+        if (authorityMetadataEntity &&
+            isAuthorityMetadataEntity(key, authorityMetadataEntity)) {
+            return authorityMetadataEntity;
+        }
+        return null;
+    }
+    /**
+     * Get all authority metadata keys
+     */
+    getAuthorityMetadataKeys() {
+        return this.getKeys().filter((key) => {
+            return this.isAuthorityMetadata(key);
+        });
+    }
+    /**
+     * set authority metadata entity to the platform cache
+     * @param key - lookup key to fetch cache type AuthorityMetadataEntity
+     * @param metadata - cache value to be set of type AuthorityMetadataEntity
+     */
+    setAuthorityMetadata(key, metadata) {
+        this.setItem(key, metadata);
+    }
+    /**
+     * fetch throttling entity from the platform cache
+     * @param throttlingCacheKey - lookup key to fetch cache type ThrottlingEntity
+     */
+    getThrottlingCache(throttlingCacheKey) {
+        const throttlingCache = this.getItem(throttlingCacheKey);
+        if (throttlingCache &&
+            isThrottlingEntity(throttlingCacheKey, throttlingCache)) {
+            return throttlingCache;
+        }
+        return null;
+    }
+    /**
+     * set throttling entity to the platform cache
+     * @param throttlingCacheKey - lookup key to fetch cache type ThrottlingEntity
+     * @param throttlingCache - cache value to be set of type ThrottlingEntity
+     */
+    setThrottlingCache(throttlingCacheKey, throttlingCache) {
+        this.setItem(throttlingCacheKey, throttlingCache);
+    }
+    /**
+     * Removes the cache item from memory with the given key.
+     * @param key - lookup key to remove a cache entity
+     * @param inMemory - key value map of the cache
+     */
+    removeItem(key) {
+        this.logger.tracePii(`Item key: ${key}`);
+        // read inMemoryCache
+        let result = false;
+        const cache = this.getCache();
+        if (!!cache[key]) {
+            delete cache[key];
+            result = true;
+        }
+        // write to the cache after removal
+        if (result) {
+            this.setCache(cache);
+            this.emitChange();
+        }
+        return result;
+    }
+    /**
+     * Remove account entity from the platform cache if it's outdated
+     * @param accountKey - lookup key to fetch cache type AccountEntity
+     */
+    removeOutdatedAccount(accountKey) {
+        this.removeItem(accountKey);
+    }
+    /**
+     * Checks whether key is in cache.
+     * @param key - look up key for a cache entity
+     */
+    containsKey(key) {
+        return this.getKeys().includes(key);
+    }
+    /**
+     * Gets all keys in window.
+     */
+    getKeys() {
+        this.logger.trace("Retrieving all cache keys");
+        // read cache
+        const cache = this.getCache();
+        return [...Object.keys(cache)];
+    }
+    /**
+     * Clears all cache entries created by MSAL (except tokens).
+     */
+    clear() {
+        this.logger.trace("Clearing cache entries created by MSAL");
+        // read inMemoryCache
+        const cacheKeys = this.getKeys();
+        // delete each element
+        cacheKeys.forEach((key) => {
+            this.removeItem(key);
+        });
+        this.emitChange();
+    }
+    /**
+     * Initialize in memory cache from an exisiting cache vault
+     * @param cache - blob formatted cache (JSON)
+     */
+    static generateInMemoryCache(cache) {
+        return Deserializer.deserializeAllCache(Deserializer.deserializeJSONBlob(cache));
+    }
+    /**
+     * retrieves the final JSON
+     * @param inMemoryCache - itemised cache read from the JSON
+     */
+    static generateJsonCache(inMemoryCache) {
+        return Serializer.serializeAllCache(inMemoryCache);
+    }
+    /**
+     * Updates a credential's cache key if the current cache key is outdated
+     */
+    updateCredentialCacheKey(currentCacheKey, credential) {
+        const updatedCacheKey = this.generateCredentialKey(credential);
+        if (currentCacheKey !== updatedCacheKey) {
+            const cacheItem = this.getItem(currentCacheKey);
+            if (cacheItem) {
+                this.removeItem(currentCacheKey);
+                this.setItem(updatedCacheKey, cacheItem);
+                this.logger.verbose(`Updated an outdated ${credential.credentialType} cache key`);
+                return updatedCacheKey;
+            }
+            else {
+                this.logger.error(`Attempted to update an outdated ${credential.credentialType} cache key but no item matching the outdated key was found in storage`);
+            }
+        }
+        return currentCacheKey;
+    }
+}
+
+/*! @azure/msal-node v3.8.3 2025-11-19 */
+
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ */
+const defaultSerializedCache = {
+    Account: {},
+    IdToken: {},
+    AccessToken: {},
+    RefreshToken: {},
+    AppMetadata: {},
+};
+/**
+ * In-memory token cache manager
+ * @public
+ */
+class TokenCache {
+    constructor(storage, logger, cachePlugin) {
+        this.cacheHasChanged = false;
+        this.storage = storage;
+        this.storage.registerChangeEmitter(this.handleChangeEvent.bind(this));
+        if (cachePlugin) {
+            this.persistence = cachePlugin;
+        }
+        this.logger = logger;
+    }
+    /**
+     * Set to true if cache state has changed since last time serialize or writeToPersistence was called
+     */
+    hasChanged() {
+        return this.cacheHasChanged;
+    }
+    /**
+     * Serializes in memory cache to JSON
+     */
+    serialize() {
+        this.logger.trace("Serializing in-memory cache");
+        let finalState = Serializer.serializeAllCache(this.storage.getInMemoryCache());
+        // if cacheSnapshot not null or empty, merge
+        if (this.cacheSnapshot) {
+            this.logger.trace("Reading cache snapshot from disk");
+            finalState = this.mergeState(JSON.parse(this.cacheSnapshot), finalState);
+        }
+        else {
+            this.logger.trace("No cache snapshot to merge");
+        }
+        this.cacheHasChanged = false;
+        return JSON.stringify(finalState);
+    }
+    /**
+     * Deserializes JSON to in-memory cache. JSON should be in MSAL cache schema format
+     * @param cache - blob formatted cache
+     */
+    deserialize(cache) {
+        this.logger.trace("Deserializing JSON to in-memory cache");
+        this.cacheSnapshot = cache;
+        if (this.cacheSnapshot) {
+            this.logger.trace("Reading cache snapshot from disk");
+            const deserializedCache = Deserializer.deserializeAllCache(this.overlayDefaults(JSON.parse(this.cacheSnapshot)));
+            this.storage.setInMemoryCache(deserializedCache);
+        }
+        else {
+            this.logger.trace("No cache snapshot to deserialize");
+        }
+    }
+    /**
+     * Fetches the cache key-value map
+     */
+    getKVStore() {
+        return this.storage.getCache();
+    }
+    /**
+     * Gets cache snapshot in CacheKVStore format
+     */
+    getCacheSnapshot() {
+        const deserializedPersistentStorage = NodeStorage.generateInMemoryCache(this.cacheSnapshot);
+        return this.storage.inMemoryCacheToCache(deserializedPersistentStorage);
+    }
+    /**
+     * API that retrieves all accounts currently in cache to the user
+     */
+    async getAllAccounts(correlationId = new CryptoProvider().createNewGuid()) {
+        this.logger.trace("getAllAccounts called");
+        let cacheContext;
+        try {
+            if (this.persistence) {
+                cacheContext = new TokenCacheContext(this, false);
+                await this.persistence.beforeCacheAccess(cacheContext);
+            }
+            return this.storage.getAllAccounts({}, correlationId);
+        }
+        finally {
+            if (this.persistence && cacheContext) {
+                await this.persistence.afterCacheAccess(cacheContext);
+            }
+        }
+    }
+    /**
+     * Returns the signed in account matching homeAccountId.
+     * (the account object is created at the time of successful login)
+     * or null when no matching account is found
+     * @param homeAccountId - unique identifier for an account (uid.utid)
+     */
+    async getAccountByHomeId(homeAccountId) {
+        const allAccounts = await this.getAllAccounts();
+        if (homeAccountId && allAccounts && allAccounts.length) {
+            return (allAccounts.filter((accountObj) => accountObj.homeAccountId === homeAccountId)[0] || null);
+        }
+        else {
+            return null;
+        }
+    }
+    /**
+     * Returns the signed in account matching localAccountId.
+     * (the account object is created at the time of successful login)
+     * or null when no matching account is found
+     * @param localAccountId - unique identifier of an account (sub/obj when homeAccountId cannot be populated)
+     */
+    async getAccountByLocalId(localAccountId) {
+        const allAccounts = await this.getAllAccounts();
+        if (localAccountId && allAccounts && allAccounts.length) {
+            return (allAccounts.filter((accountObj) => accountObj.localAccountId === localAccountId)[0] || null);
+        }
+        else {
+            return null;
+        }
+    }
+    /**
+     * API to remove a specific account and the relevant data from cache
+     * @param account - AccountInfo passed by the user
+     */
+    async removeAccount(account, correlationId) {
+        this.logger.trace("removeAccount called");
+        let cacheContext;
+        try {
+            if (this.persistence) {
+                cacheContext = new TokenCacheContext(this, true);
+                await this.persistence.beforeCacheAccess(cacheContext);
+            }
+            this.storage.removeAccount(account, correlationId || new GuidGenerator().generateGuid());
+        }
+        finally {
+            if (this.persistence && cacheContext) {
+                await this.persistence.afterCacheAccess(cacheContext);
+            }
+        }
+    }
+    /**
+     * Overwrites in-memory cache with persistent cache
+     */
+    async overwriteCache() {
+        if (!this.persistence) {
+            this.logger.info("No persistence layer specified, cache cannot be overwritten");
+            return;
+        }
+        this.logger.info("Overwriting in-memory cache with persistent cache");
+        this.storage.clear();
+        const cacheContext = new TokenCacheContext(this, false);
+        await this.persistence.beforeCacheAccess(cacheContext);
+        const cacheSnapshot = this.getCacheSnapshot();
+        this.storage.setCache(cacheSnapshot);
+        await this.persistence.afterCacheAccess(cacheContext);
+    }
+    /**
+     * Called when the cache has changed state.
+     */
+    handleChangeEvent() {
+        this.cacheHasChanged = true;
+    }
+    /**
+     * Merge in memory cache with the cache snapshot.
+     * @param oldState - cache before changes
+     * @param currentState - current cache state in the library
+     */
+    mergeState(oldState, currentState) {
+        this.logger.trace("Merging in-memory cache with cache snapshot");
+        const stateAfterRemoval = this.mergeRemovals(oldState, currentState);
+        return this.mergeUpdates(stateAfterRemoval, currentState);
+    }
+    /**
+     * Deep update of oldState based on newState values
+     * @param oldState - cache before changes
+     * @param newState - updated cache
+     */
+    mergeUpdates(oldState, newState) {
+        Object.keys(newState).forEach((newKey) => {
+            const newValue = newState[newKey];
+            // if oldState does not contain value but newValue does, add it
+            if (!oldState.hasOwnProperty(newKey)) {
+                if (newValue !== null) {
+                    oldState[newKey] = newValue;
+                }
+            }
+            else {
+                // both oldState and newState contain the key, do deep update
+                const newValueNotNull = newValue !== null;
+                const newValueIsObject = typeof newValue === "object";
+                const newValueIsNotArray = !Array.isArray(newValue);
+                const oldStateNotUndefinedOrNull = typeof oldState[newKey] !== "undefined" &&
+                    oldState[newKey] !== null;
+                if (newValueNotNull &&
+                    newValueIsObject &&
+                    newValueIsNotArray &&
+                    oldStateNotUndefinedOrNull) {
+                    this.mergeUpdates(oldState[newKey], newValue);
+                }
+                else {
+                    oldState[newKey] = newValue;
+                }
+            }
+        });
+        return oldState;
+    }
+    /**
+     * Removes entities in oldState that the were removed from newState. If there are any unknown values in root of
+     * oldState that are not recognized, they are left untouched.
+     * @param oldState - cache before changes
+     * @param newState - updated cache
+     */
+    mergeRemovals(oldState, newState) {
+        this.logger.trace("Remove updated entries in cache");
+        const accounts = oldState.Account
+            ? this.mergeRemovalsDict(oldState.Account, newState.Account)
+            : oldState.Account;
+        const accessTokens = oldState.AccessToken
+            ? this.mergeRemovalsDict(oldState.AccessToken, newState.AccessToken)
+            : oldState.AccessToken;
+        const refreshTokens = oldState.RefreshToken
+            ? this.mergeRemovalsDict(oldState.RefreshToken, newState.RefreshToken)
+            : oldState.RefreshToken;
+        const idTokens = oldState.IdToken
+            ? this.mergeRemovalsDict(oldState.IdToken, newState.IdToken)
+            : oldState.IdToken;
+        const appMetadata = oldState.AppMetadata
+            ? this.mergeRemovalsDict(oldState.AppMetadata, newState.AppMetadata)
+            : oldState.AppMetadata;
+        return {
+            ...oldState,
+            Account: accounts,
+            AccessToken: accessTokens,
+            RefreshToken: refreshTokens,
+            IdToken: idTokens,
+            AppMetadata: appMetadata,
+        };
+    }
+    /**
+     * Helper to merge new cache with the old one
+     * @param oldState - cache before changes
+     * @param newState - updated cache
+     */
+    mergeRemovalsDict(oldState, newState) {
+        const finalState = { ...oldState };
+        Object.keys(oldState).forEach((oldKey) => {
+            if (!newState || !newState.hasOwnProperty(oldKey)) {
+                delete finalState[oldKey];
+            }
+        });
+        return finalState;
+    }
+    /**
+     * Helper to overlay as a part of cache merge
+     * @param passedInCache - cache read from the blob
+     */
+    overlayDefaults(passedInCache) {
+        this.logger.trace("Overlaying input cache with the default cache");
+        return {
+            Account: {
+                ...defaultSerializedCache.Account,
+                ...passedInCache.Account,
+            },
+            IdToken: {
+                ...defaultSerializedCache.IdToken,
+                ...passedInCache.IdToken,
+            },
+            AccessToken: {
+                ...defaultSerializedCache.AccessToken,
+                ...passedInCache.AccessToken,
+            },
+            RefreshToken: {
+                ...defaultSerializedCache.RefreshToken,
+                ...passedInCache.RefreshToken,
+            },
+            AppMetadata: {
+                ...defaultSerializedCache.AppMetadata,
+                ...passedInCache.AppMetadata,
+            },
+        };
+    }
+}
+
+var jws = {};
+
+var safeBuffer = {exports: {}};
+
+/*! safe-buffer. MIT License. Feross Aboukhadijeh <https://feross.org/opensource> */
+
+var hasRequiredSafeBuffer;
+
+function requireSafeBuffer () {
+	if (hasRequiredSafeBuffer) return safeBuffer.exports;
+	hasRequiredSafeBuffer = 1;
+	(function (module, exports$1) {
+		/* eslint-disable node/no-deprecated-api */
+		var buffer = require$$0$2;
+		var Buffer = buffer.Buffer;
+
+		// alternative to using Object.keys for old browsers
+		function copyProps (src, dst) {
+		  for (var key in src) {
+		    dst[key] = src[key];
+		  }
+		}
+		if (Buffer.from && Buffer.alloc && Buffer.allocUnsafe && Buffer.allocUnsafeSlow) {
+		  module.exports = buffer;
+		} else {
+		  // Copy properties from require('buffer')
+		  copyProps(buffer, exports$1);
+		  exports$1.Buffer = SafeBuffer;
+		}
+
+		function SafeBuffer (arg, encodingOrOffset, length) {
+		  return Buffer(arg, encodingOrOffset, length)
+		}
+
+		SafeBuffer.prototype = Object.create(Buffer.prototype);
+
+		// Copy static methods from Buffer
+		copyProps(Buffer, SafeBuffer);
+
+		SafeBuffer.from = function (arg, encodingOrOffset, length) {
+		  if (typeof arg === 'number') {
+		    throw new TypeError('Argument must not be a number')
+		  }
+		  return Buffer(arg, encodingOrOffset, length)
+		};
+
+		SafeBuffer.alloc = function (size, fill, encoding) {
+		  if (typeof size !== 'number') {
+		    throw new TypeError('Argument must be a number')
+		  }
+		  var buf = Buffer(size);
+		  if (fill !== undefined) {
+		    if (typeof encoding === 'string') {
+		      buf.fill(fill, encoding);
+		    } else {
+		      buf.fill(fill);
+		    }
+		  } else {
+		    buf.fill(0);
+		  }
+		  return buf
+		};
+
+		SafeBuffer.allocUnsafe = function (size) {
+		  if (typeof size !== 'number') {
+		    throw new TypeError('Argument must be a number')
+		  }
+		  return Buffer(size)
+		};
+
+		SafeBuffer.allocUnsafeSlow = function (size) {
+		  if (typeof size !== 'number') {
+		    throw new TypeError('Argument must be a number')
+		  }
+		  return buffer.SlowBuffer(size)
+		}; 
+	} (safeBuffer, safeBuffer.exports));
+	return safeBuffer.exports;
+}
+
+/*global module, process*/
+
+var dataStream;
+var hasRequiredDataStream;
+
+function requireDataStream () {
+	if (hasRequiredDataStream) return dataStream;
+	hasRequiredDataStream = 1;
+	var Buffer = requireSafeBuffer().Buffer;
+	var Stream = require$$0$5;
+	var util = require$$0$1;
+
+	function DataStream(data) {
+	  this.buffer = null;
+	  this.writable = true;
+	  this.readable = true;
+
+	  // No input
+	  if (!data) {
+	    this.buffer = Buffer.alloc(0);
+	    return this;
+	  }
+
+	  // Stream
+	  if (typeof data.pipe === 'function') {
+	    this.buffer = Buffer.alloc(0);
+	    data.pipe(this);
+	    return this;
+	  }
+
+	  // Buffer or String
+	  // or Object (assumedly a passworded key)
+	  if (data.length || typeof data === 'object') {
+	    this.buffer = data;
+	    this.writable = false;
+	    process.nextTick(function () {
+	      this.emit('end', data);
+	      this.readable = false;
+	      this.emit('close');
+	    }.bind(this));
+	    return this;
+	  }
+
+	  throw new TypeError('Unexpected data type ('+ typeof data + ')');
+	}
+	util.inherits(DataStream, Stream);
+
+	DataStream.prototype.write = function write(data) {
+	  this.buffer = Buffer.concat([this.buffer, Buffer.from(data)]);
+	  this.emit('data', data);
+	};
+
+	DataStream.prototype.end = function end(data) {
+	  if (data)
+	    this.write(data);
+	  this.emit('end', data);
+	  this.emit('close');
+	  this.writable = false;
+	  this.readable = false;
+	};
+
+	dataStream = DataStream;
+	return dataStream;
+}
+
+var paramBytesForAlg_1;
+var hasRequiredParamBytesForAlg;
+
+function requireParamBytesForAlg () {
+	if (hasRequiredParamBytesForAlg) return paramBytesForAlg_1;
+	hasRequiredParamBytesForAlg = 1;
+
+	function getParamSize(keySize) {
+		var result = ((keySize / 8) | 0) + (keySize % 8 === 0 ? 0 : 1);
+		return result;
+	}
+
+	var paramBytesForAlg = {
+		ES256: getParamSize(256),
+		ES384: getParamSize(384),
+		ES512: getParamSize(521)
+	};
+
+	function getParamBytesForAlg(alg) {
+		var paramBytes = paramBytesForAlg[alg];
+		if (paramBytes) {
+			return paramBytes;
+		}
+
+		throw new Error('Unknown algorithm "' + alg + '"');
+	}
+
+	paramBytesForAlg_1 = getParamBytesForAlg;
+	return paramBytesForAlg_1;
+}
+
+var ecdsaSigFormatter;
+var hasRequiredEcdsaSigFormatter;
+
+function requireEcdsaSigFormatter () {
+	if (hasRequiredEcdsaSigFormatter) return ecdsaSigFormatter;
+	hasRequiredEcdsaSigFormatter = 1;
+
+	var Buffer = requireSafeBuffer().Buffer;
+
+	var getParamBytesForAlg = requireParamBytesForAlg();
+
+	var MAX_OCTET = 0x80,
+		CLASS_UNIVERSAL = 0,
+		PRIMITIVE_BIT = 0x20,
+		TAG_SEQ = 0x10,
+		TAG_INT = 0x02,
+		ENCODED_TAG_SEQ = (TAG_SEQ | PRIMITIVE_BIT) | (CLASS_UNIVERSAL << 6),
+		ENCODED_TAG_INT = TAG_INT | (CLASS_UNIVERSAL << 6);
+
+	function base64Url(base64) {
+		return base64
+			.replace(/=/g, '')
+			.replace(/\+/g, '-')
+			.replace(/\//g, '_');
+	}
+
+	function signatureAsBuffer(signature) {
+		if (Buffer.isBuffer(signature)) {
+			return signature;
+		} else if ('string' === typeof signature) {
+			return Buffer.from(signature, 'base64');
+		}
+
+		throw new TypeError('ECDSA signature must be a Base64 string or a Buffer');
+	}
+
+	function derToJose(signature, alg) {
+		signature = signatureAsBuffer(signature);
+		var paramBytes = getParamBytesForAlg(alg);
+
+		// the DER encoded param should at most be the param size, plus a padding
+		// zero, since due to being a signed integer
+		var maxEncodedParamLength = paramBytes + 1;
+
+		var inputLength = signature.length;
+
+		var offset = 0;
+		if (signature[offset++] !== ENCODED_TAG_SEQ) {
+			throw new Error('Could not find expected "seq"');
+		}
+
+		var seqLength = signature[offset++];
+		if (seqLength === (MAX_OCTET | 1)) {
+			seqLength = signature[offset++];
+		}
+
+		if (inputLength - offset < seqLength) {
+			throw new Error('"seq" specified length of "' + seqLength + '", only "' + (inputLength - offset) + '" remaining');
+		}
+
+		if (signature[offset++] !== ENCODED_TAG_INT) {
+			throw new Error('Could not find expected "int" for "r"');
+		}
+
+		var rLength = signature[offset++];
+
+		if (inputLength - offset - 2 < rLength) {
+			throw new Error('"r" specified length of "' + rLength + '", only "' + (inputLength - offset - 2) + '" available');
+		}
+
+		if (maxEncodedParamLength < rLength) {
+			throw new Error('"r" specified length of "' + rLength + '", max of "' + maxEncodedParamLength + '" is acceptable');
+		}
+
+		var rOffset = offset;
+		offset += rLength;
+
+		if (signature[offset++] !== ENCODED_TAG_INT) {
+			throw new Error('Could not find expected "int" for "s"');
+		}
+
+		var sLength = signature[offset++];
+
+		if (inputLength - offset !== sLength) {
+			throw new Error('"s" specified length of "' + sLength + '", expected "' + (inputLength - offset) + '"');
+		}
+
+		if (maxEncodedParamLength < sLength) {
+			throw new Error('"s" specified length of "' + sLength + '", max of "' + maxEncodedParamLength + '" is acceptable');
+		}
+
+		var sOffset = offset;
+		offset += sLength;
+
+		if (offset !== inputLength) {
+			throw new Error('Expected to consume entire buffer, but "' + (inputLength - offset) + '" bytes remain');
+		}
+
+		var rPadding = paramBytes - rLength,
+			sPadding = paramBytes - sLength;
+
+		var dst = Buffer.allocUnsafe(rPadding + rLength + sPadding + sLength);
+
+		for (offset = 0; offset < rPadding; ++offset) {
+			dst[offset] = 0;
+		}
+		signature.copy(dst, offset, rOffset + Math.max(-rPadding, 0), rOffset + rLength);
+
+		offset = paramBytes;
+
+		for (var o = offset; offset < o + sPadding; ++offset) {
+			dst[offset] = 0;
+		}
+		signature.copy(dst, offset, sOffset + Math.max(-sPadding, 0), sOffset + sLength);
+
+		dst = dst.toString('base64');
+		dst = base64Url(dst);
+
+		return dst;
+	}
+
+	function countPadding(buf, start, stop) {
+		var padding = 0;
+		while (start + padding < stop && buf[start + padding] === 0) {
+			++padding;
+		}
+
+		var needsSign = buf[start + padding] >= MAX_OCTET;
+		if (needsSign) {
+			--padding;
+		}
+
+		return padding;
+	}
+
+	function joseToDer(signature, alg) {
+		signature = signatureAsBuffer(signature);
+		var paramBytes = getParamBytesForAlg(alg);
+
+		var signatureBytes = signature.length;
+		if (signatureBytes !== paramBytes * 2) {
+			throw new TypeError('"' + alg + '" signatures must be "' + paramBytes * 2 + '" bytes, saw "' + signatureBytes + '"');
+		}
+
+		var rPadding = countPadding(signature, 0, paramBytes);
+		var sPadding = countPadding(signature, paramBytes, signature.length);
+		var rLength = paramBytes - rPadding;
+		var sLength = paramBytes - sPadding;
+
+		var rsBytes = 1 + 1 + rLength + 1 + 1 + sLength;
+
+		var shortLength = rsBytes < MAX_OCTET;
+
+		var dst = Buffer.allocUnsafe((shortLength ? 2 : 3) + rsBytes);
+
+		var offset = 0;
+		dst[offset++] = ENCODED_TAG_SEQ;
+		if (shortLength) {
+			// Bit 8 has value "0"
+			// bits 7-1 give the length.
+			dst[offset++] = rsBytes;
+		} else {
+			// Bit 8 of first octet has value "1"
+			// bits 7-1 give the number of additional length octets.
+			dst[offset++] = MAX_OCTET	| 1;
+			// length, base 256
+			dst[offset++] = rsBytes & 0xff;
+		}
+		dst[offset++] = ENCODED_TAG_INT;
+		dst[offset++] = rLength;
+		if (rPadding < 0) {
+			dst[offset++] = 0;
+			offset += signature.copy(dst, offset, 0, paramBytes);
+		} else {
+			offset += signature.copy(dst, offset, rPadding, paramBytes);
+		}
+		dst[offset++] = ENCODED_TAG_INT;
+		dst[offset++] = sLength;
+		if (sPadding < 0) {
+			dst[offset++] = 0;
+			signature.copy(dst, offset, paramBytes);
+		} else {
+			signature.copy(dst, offset, paramBytes + sPadding);
+		}
+
+		return dst;
+	}
+
+	ecdsaSigFormatter = {
+		derToJose: derToJose,
+		joseToDer: joseToDer
+	};
+	return ecdsaSigFormatter;
+}
+
+/*jshint node:true */
+
+var bufferEqualConstantTime;
+var hasRequiredBufferEqualConstantTime;
+
+function requireBufferEqualConstantTime () {
+	if (hasRequiredBufferEqualConstantTime) return bufferEqualConstantTime;
+	hasRequiredBufferEqualConstantTime = 1;
+	var Buffer = require$$0$2.Buffer; // browserify
+	var SlowBuffer = require$$0$2.SlowBuffer;
+
+	bufferEqualConstantTime = bufferEq;
+
+	function bufferEq(a, b) {
+
+	  // shortcutting on type is necessary for correctness
+	  if (!Buffer.isBuffer(a) || !Buffer.isBuffer(b)) {
+	    return false;
+	  }
+
+	  // buffer sizes should be well-known information, so despite this
+	  // shortcutting, it doesn't leak any information about the *contents* of the
+	  // buffers.
+	  if (a.length !== b.length) {
+	    return false;
+	  }
+
+	  var c = 0;
+	  for (var i = 0; i < a.length; i++) {
+	    /*jshint bitwise:false */
+	    c |= a[i] ^ b[i]; // XOR
+	  }
+	  return c === 0;
+	}
+
+	bufferEq.install = function() {
+	  Buffer.prototype.equal = SlowBuffer.prototype.equal = function equal(that) {
+	    return bufferEq(this, that);
+	  };
+	};
+
+	var origBufEqual = Buffer.prototype.equal;
+	var origSlowBufEqual = SlowBuffer.prototype.equal;
+	bufferEq.restore = function() {
+	  Buffer.prototype.equal = origBufEqual;
+	  SlowBuffer.prototype.equal = origSlowBufEqual;
+	};
+	return bufferEqualConstantTime;
+}
+
+var jwa;
+var hasRequiredJwa;
+
+function requireJwa () {
+	if (hasRequiredJwa) return jwa;
+	hasRequiredJwa = 1;
+	var Buffer = requireSafeBuffer().Buffer;
+	var crypto = crypto$1;
+	var formatEcdsa = requireEcdsaSigFormatter();
+	var util = require$$0$1;
+
+	var MSG_INVALID_ALGORITHM = '"%s" is not a valid algorithm.\n  Supported algorithms are:\n  "HS256", "HS384", "HS512", "RS256", "RS384", "RS512", "PS256", "PS384", "PS512", "ES256", "ES384", "ES512" and "none".';
+	var MSG_INVALID_SECRET = 'secret must be a string or buffer';
+	var MSG_INVALID_VERIFIER_KEY = 'key must be a string or a buffer';
+	var MSG_INVALID_SIGNER_KEY = 'key must be a string, a buffer or an object';
+
+	var supportsKeyObjects = typeof crypto.createPublicKey === 'function';
+	if (supportsKeyObjects) {
+	  MSG_INVALID_VERIFIER_KEY += ' or a KeyObject';
+	  MSG_INVALID_SECRET += 'or a KeyObject';
+	}
+
+	function checkIsPublicKey(key) {
+	  if (Buffer.isBuffer(key)) {
+	    return;
+	  }
+
+	  if (typeof key === 'string') {
+	    return;
+	  }
+
+	  if (!supportsKeyObjects) {
+	    throw typeError(MSG_INVALID_VERIFIER_KEY);
+	  }
+
+	  if (typeof key !== 'object') {
+	    throw typeError(MSG_INVALID_VERIFIER_KEY);
+	  }
+
+	  if (typeof key.type !== 'string') {
+	    throw typeError(MSG_INVALID_VERIFIER_KEY);
+	  }
+
+	  if (typeof key.asymmetricKeyType !== 'string') {
+	    throw typeError(MSG_INVALID_VERIFIER_KEY);
+	  }
+
+	  if (typeof key.export !== 'function') {
+	    throw typeError(MSG_INVALID_VERIFIER_KEY);
+	  }
+	}
+	function checkIsPrivateKey(key) {
+	  if (Buffer.isBuffer(key)) {
+	    return;
+	  }
+
+	  if (typeof key === 'string') {
+	    return;
+	  }
+
+	  if (typeof key === 'object') {
+	    return;
+	  }
+
+	  throw typeError(MSG_INVALID_SIGNER_KEY);
+	}
+	function checkIsSecretKey(key) {
+	  if (Buffer.isBuffer(key)) {
+	    return;
+	  }
+
+	  if (typeof key === 'string') {
+	    return key;
+	  }
+
+	  if (!supportsKeyObjects) {
+	    throw typeError(MSG_INVALID_SECRET);
+	  }
+
+	  if (typeof key !== 'object') {
+	    throw typeError(MSG_INVALID_SECRET);
+	  }
+
+	  if (key.type !== 'secret') {
+	    throw typeError(MSG_INVALID_SECRET);
+	  }
+
+	  if (typeof key.export !== 'function') {
+	    throw typeError(MSG_INVALID_SECRET);
+	  }
+	}
+
+	function fromBase64(base64) {
+	  return base64
+	    .replace(/=/g, '')
+	    .replace(/\+/g, '-')
+	    .replace(/\//g, '_');
+	}
+
+	function toBase64(base64url) {
+	  base64url = base64url.toString();
+
+	  var padding = 4 - base64url.length % 4;
+	  if (padding !== 4) {
+	    for (var i = 0; i < padding; ++i) {
+	      base64url += '=';
+	    }
+	  }
+
+	  return base64url
+	    .replace(/\-/g, '+')
+	    .replace(/_/g, '/');
+	}
+
+	function typeError(template) {
+	  var args = [].slice.call(arguments, 1);
+	  var errMsg = util.format.bind(util, template).apply(null, args);
+	  return new TypeError(errMsg);
+	}
+
+	function bufferOrString(obj) {
+	  return Buffer.isBuffer(obj) || typeof obj === 'string';
+	}
+
+	function normalizeInput(thing) {
+	  if (!bufferOrString(thing))
+	    thing = JSON.stringify(thing);
+	  return thing;
+	}
+
+	function createHmacSigner(bits) {
+	  return function sign(thing, secret) {
+	    checkIsSecretKey(secret);
+	    thing = normalizeInput(thing);
+	    var hmac = crypto.createHmac('sha' + bits, secret);
+	    var sig = (hmac.update(thing), hmac.digest('base64'));
+	    return fromBase64(sig);
+	  }
+	}
+
+	var bufferEqual;
+	var timingSafeEqual = 'timingSafeEqual' in crypto ? function timingSafeEqual(a, b) {
+	  if (a.byteLength !== b.byteLength) {
+	    return false;
+	  }
+
+	  return crypto.timingSafeEqual(a, b)
+	} : function timingSafeEqual(a, b) {
+	  if (!bufferEqual) {
+	    bufferEqual = requireBufferEqualConstantTime();
+	  }
+
+	  return bufferEqual(a, b)
+	};
+
+	function createHmacVerifier(bits) {
+	  return function verify(thing, signature, secret) {
+	    var computedSig = createHmacSigner(bits)(thing, secret);
+	    return timingSafeEqual(Buffer.from(signature), Buffer.from(computedSig));
+	  }
+	}
+
+	function createKeySigner(bits) {
+	 return function sign(thing, privateKey) {
+	    checkIsPrivateKey(privateKey);
+	    thing = normalizeInput(thing);
+	    // Even though we are specifying "RSA" here, this works with ECDSA
+	    // keys as well.
+	    var signer = crypto.createSign('RSA-SHA' + bits);
+	    var sig = (signer.update(thing), signer.sign(privateKey, 'base64'));
+	    return fromBase64(sig);
+	  }
+	}
+
+	function createKeyVerifier(bits) {
+	  return function verify(thing, signature, publicKey) {
+	    checkIsPublicKey(publicKey);
+	    thing = normalizeInput(thing);
+	    signature = toBase64(signature);
+	    var verifier = crypto.createVerify('RSA-SHA' + bits);
+	    verifier.update(thing);
+	    return verifier.verify(publicKey, signature, 'base64');
+	  }
+	}
+
+	function createPSSKeySigner(bits) {
+	  return function sign(thing, privateKey) {
+	    checkIsPrivateKey(privateKey);
+	    thing = normalizeInput(thing);
+	    var signer = crypto.createSign('RSA-SHA' + bits);
+	    var sig = (signer.update(thing), signer.sign({
+	      key: privateKey,
+	      padding: crypto.constants.RSA_PKCS1_PSS_PADDING,
+	      saltLength: crypto.constants.RSA_PSS_SALTLEN_DIGEST
+	    }, 'base64'));
+	    return fromBase64(sig);
+	  }
+	}
+
+	function createPSSKeyVerifier(bits) {
+	  return function verify(thing, signature, publicKey) {
+	    checkIsPublicKey(publicKey);
+	    thing = normalizeInput(thing);
+	    signature = toBase64(signature);
+	    var verifier = crypto.createVerify('RSA-SHA' + bits);
+	    verifier.update(thing);
+	    return verifier.verify({
+	      key: publicKey,
+	      padding: crypto.constants.RSA_PKCS1_PSS_PADDING,
+	      saltLength: crypto.constants.RSA_PSS_SALTLEN_DIGEST
+	    }, signature, 'base64');
+	  }
+	}
+
+	function createECDSASigner(bits) {
+	  var inner = createKeySigner(bits);
+	  return function sign() {
+	    var signature = inner.apply(null, arguments);
+	    signature = formatEcdsa.derToJose(signature, 'ES' + bits);
+	    return signature;
+	  };
+	}
+
+	function createECDSAVerifer(bits) {
+	  var inner = createKeyVerifier(bits);
+	  return function verify(thing, signature, publicKey) {
+	    signature = formatEcdsa.joseToDer(signature, 'ES' + bits).toString('base64');
+	    var result = inner(thing, signature, publicKey);
+	    return result;
+	  };
+	}
+
+	function createNoneSigner() {
+	  return function sign() {
+	    return '';
+	  }
+	}
+
+	function createNoneVerifier() {
+	  return function verify(thing, signature) {
+	    return signature === '';
+	  }
+	}
+
+	jwa = function jwa(algorithm) {
+	  var signerFactories = {
+	    hs: createHmacSigner,
+	    rs: createKeySigner,
+	    ps: createPSSKeySigner,
+	    es: createECDSASigner,
+	    none: createNoneSigner,
+	  };
+	  var verifierFactories = {
+	    hs: createHmacVerifier,
+	    rs: createKeyVerifier,
+	    ps: createPSSKeyVerifier,
+	    es: createECDSAVerifer,
+	    none: createNoneVerifier,
+	  };
+	  var match = algorithm.match(/^(RS|PS|ES|HS)(256|384|512)$|^(none)$/i);
+	  if (!match)
+	    throw typeError(MSG_INVALID_ALGORITHM, algorithm);
+	  var algo = (match[1] || match[3]).toLowerCase();
+	  var bits = match[2];
+
+	  return {
+	    sign: signerFactories[algo](bits),
+	    verify: verifierFactories[algo](bits),
+	  }
+	};
+	return jwa;
+}
+
+/*global module*/
+
+var tostring;
+var hasRequiredTostring;
+
+function requireTostring () {
+	if (hasRequiredTostring) return tostring;
+	hasRequiredTostring = 1;
+	var Buffer = require$$0$2.Buffer;
+
+	tostring = function toString(obj) {
+	  if (typeof obj === 'string')
+	    return obj;
+	  if (typeof obj === 'number' || Buffer.isBuffer(obj))
+	    return obj.toString();
+	  return JSON.stringify(obj);
+	};
+	return tostring;
+}
+
+/*global module*/
+
+var signStream;
+var hasRequiredSignStream;
+
+function requireSignStream () {
+	if (hasRequiredSignStream) return signStream;
+	hasRequiredSignStream = 1;
+	var Buffer = requireSafeBuffer().Buffer;
+	var DataStream = requireDataStream();
+	var jwa = requireJwa();
+	var Stream = require$$0$5;
+	var toString = requireTostring();
+	var util = require$$0$1;
+
+	function base64url(string, encoding) {
+	  return Buffer
+	    .from(string, encoding)
+	    .toString('base64')
+	    .replace(/=/g, '')
+	    .replace(/\+/g, '-')
+	    .replace(/\//g, '_');
+	}
+
+	function jwsSecuredInput(header, payload, encoding) {
+	  encoding = encoding || 'utf8';
+	  var encodedHeader = base64url(toString(header), 'binary');
+	  var encodedPayload = base64url(toString(payload), encoding);
+	  return util.format('%s.%s', encodedHeader, encodedPayload);
+	}
+
+	function jwsSign(opts) {
+	  var header = opts.header;
+	  var payload = opts.payload;
+	  var secretOrKey = opts.secret || opts.privateKey;
+	  var encoding = opts.encoding;
+	  var algo = jwa(header.alg);
+	  var securedInput = jwsSecuredInput(header, payload, encoding);
+	  var signature = algo.sign(securedInput, secretOrKey);
+	  return util.format('%s.%s', securedInput, signature);
+	}
+
+	function SignStream(opts) {
+	  var secret = opts.secret||opts.privateKey||opts.key;
+	  var secretStream = new DataStream(secret);
+	  this.readable = true;
+	  this.header = opts.header;
+	  this.encoding = opts.encoding;
+	  this.secret = this.privateKey = this.key = secretStream;
+	  this.payload = new DataStream(opts.payload);
+	  this.secret.once('close', function () {
+	    if (!this.payload.writable && this.readable)
+	      this.sign();
+	  }.bind(this));
+
+	  this.payload.once('close', function () {
+	    if (!this.secret.writable && this.readable)
+	      this.sign();
+	  }.bind(this));
+	}
+	util.inherits(SignStream, Stream);
+
+	SignStream.prototype.sign = function sign() {
+	  try {
+	    var signature = jwsSign({
+	      header: this.header,
+	      payload: this.payload.buffer,
+	      secret: this.secret.buffer,
+	      encoding: this.encoding
+	    });
+	    this.emit('done', signature);
+	    this.emit('data', signature);
+	    this.emit('end');
+	    this.readable = false;
+	    return signature;
+	  } catch (e) {
+	    this.readable = false;
+	    this.emit('error', e);
+	    this.emit('close');
+	  }
+	};
+
+	SignStream.sign = jwsSign;
+
+	signStream = SignStream;
+	return signStream;
+}
+
+/*global module*/
+
+var verifyStream;
+var hasRequiredVerifyStream;
+
+function requireVerifyStream () {
+	if (hasRequiredVerifyStream) return verifyStream;
+	hasRequiredVerifyStream = 1;
+	var Buffer = requireSafeBuffer().Buffer;
+	var DataStream = requireDataStream();
+	var jwa = requireJwa();
+	var Stream = require$$0$5;
+	var toString = requireTostring();
+	var util = require$$0$1;
+	var JWS_REGEX = /^[a-zA-Z0-9\-_]+?\.[a-zA-Z0-9\-_]+?\.([a-zA-Z0-9\-_]+)?$/;
+
+	function isObject(thing) {
+	  return Object.prototype.toString.call(thing) === '[object Object]';
+	}
+
+	function safeJsonParse(thing) {
+	  if (isObject(thing))
+	    return thing;
+	  try { return JSON.parse(thing); }
+	  catch (e) { return undefined; }
+	}
+
+	function headerFromJWS(jwsSig) {
+	  var encodedHeader = jwsSig.split('.', 1)[0];
+	  return safeJsonParse(Buffer.from(encodedHeader, 'base64').toString('binary'));
+	}
+
+	function securedInputFromJWS(jwsSig) {
+	  return jwsSig.split('.', 2).join('.');
+	}
+
+	function signatureFromJWS(jwsSig) {
+	  return jwsSig.split('.')[2];
+	}
+
+	function payloadFromJWS(jwsSig, encoding) {
+	  encoding = encoding || 'utf8';
+	  var payload = jwsSig.split('.')[1];
+	  return Buffer.from(payload, 'base64').toString(encoding);
+	}
+
+	function isValidJws(string) {
+	  return JWS_REGEX.test(string) && !!headerFromJWS(string);
+	}
+
+	function jwsVerify(jwsSig, algorithm, secretOrKey) {
+	  if (!algorithm) {
+	    var err = new Error("Missing algorithm parameter for jws.verify");
+	    err.code = "MISSING_ALGORITHM";
+	    throw err;
+	  }
+	  jwsSig = toString(jwsSig);
+	  var signature = signatureFromJWS(jwsSig);
+	  var securedInput = securedInputFromJWS(jwsSig);
+	  var algo = jwa(algorithm);
+	  return algo.verify(securedInput, signature, secretOrKey);
+	}
+
+	function jwsDecode(jwsSig, opts) {
+	  opts = opts || {};
+	  jwsSig = toString(jwsSig);
+
+	  if (!isValidJws(jwsSig))
+	    return null;
+
+	  var header = headerFromJWS(jwsSig);
+
+	  if (!header)
+	    return null;
+
+	  var payload = payloadFromJWS(jwsSig);
+	  if (header.typ === 'JWT' || opts.json)
+	    payload = JSON.parse(payload, opts.encoding);
+
+	  return {
+	    header: header,
+	    payload: payload,
+	    signature: signatureFromJWS(jwsSig)
+	  };
+	}
+
+	function VerifyStream(opts) {
+	  opts = opts || {};
+	  var secretOrKey = opts.secret||opts.publicKey||opts.key;
+	  var secretStream = new DataStream(secretOrKey);
+	  this.readable = true;
+	  this.algorithm = opts.algorithm;
+	  this.encoding = opts.encoding;
+	  this.secret = this.publicKey = this.key = secretStream;
+	  this.signature = new DataStream(opts.signature);
+	  this.secret.once('close', function () {
+	    if (!this.signature.writable && this.readable)
+	      this.verify();
+	  }.bind(this));
+
+	  this.signature.once('close', function () {
+	    if (!this.secret.writable && this.readable)
+	      this.verify();
+	  }.bind(this));
+	}
+	util.inherits(VerifyStream, Stream);
+	VerifyStream.prototype.verify = function verify() {
+	  try {
+	    var valid = jwsVerify(this.signature.buffer, this.algorithm, this.key.buffer);
+	    var obj = jwsDecode(this.signature.buffer, this.encoding);
+	    this.emit('done', valid, obj);
+	    this.emit('data', valid);
+	    this.emit('end');
+	    this.readable = false;
+	    return valid;
+	  } catch (e) {
+	    this.readable = false;
+	    this.emit('error', e);
+	    this.emit('close');
+	  }
+	};
+
+	VerifyStream.decode = jwsDecode;
+	VerifyStream.isValid = isValidJws;
+	VerifyStream.verify = jwsVerify;
+
+	verifyStream = VerifyStream;
+	return verifyStream;
+}
+
+/*global exports*/
+
+var hasRequiredJws;
+
+function requireJws () {
+	if (hasRequiredJws) return jws;
+	hasRequiredJws = 1;
+	var SignStream = requireSignStream();
+	var VerifyStream = requireVerifyStream();
+
+	var ALGORITHMS = [
+	  'HS256', 'HS384', 'HS512',
+	  'RS256', 'RS384', 'RS512',
+	  'PS256', 'PS384', 'PS512',
+	  'ES256', 'ES384', 'ES512'
+	];
+
+	jws.ALGORITHMS = ALGORITHMS;
+	jws.sign = SignStream.sign;
+	jws.verify = VerifyStream.verify;
+	jws.decode = VerifyStream.decode;
+	jws.isValid = VerifyStream.isValid;
+	jws.createSign = function createSign(opts) {
+	  return new SignStream(opts);
+	};
+	jws.createVerify = function createVerify(opts) {
+	  return new VerifyStream(opts);
+	};
+	return jws;
+}
+
+var decode;
+var hasRequiredDecode;
+
+function requireDecode () {
+	if (hasRequiredDecode) return decode;
+	hasRequiredDecode = 1;
+	var jws = requireJws();
+
+	decode = function (jwt, options) {
+	  options = options || {};
+	  var decoded = jws.decode(jwt, options);
+	  if (!decoded) { return null; }
+	  var payload = decoded.payload;
+
+	  //try parse the payload
+	  if(typeof payload === 'string') {
+	    try {
+	      var obj = JSON.parse(payload);
+	      if(obj !== null && typeof obj === 'object') {
+	        payload = obj;
+	      }
+	    } catch (e) { }
+	  }
+
+	  //return header if `complete` option is enabled.  header includes claims
+	  //such as `kid` and `alg` used to select the key within a JWKS needed to
+	  //verify the signature
+	  if (options.complete === true) {
+	    return {
+	      header: decoded.header,
+	      payload: payload,
+	      signature: decoded.signature
+	    };
+	  }
+	  return payload;
+	};
+	return decode;
+}
+
+var JsonWebTokenError_1;
+var hasRequiredJsonWebTokenError;
+
+function requireJsonWebTokenError () {
+	if (hasRequiredJsonWebTokenError) return JsonWebTokenError_1;
+	hasRequiredJsonWebTokenError = 1;
+	var JsonWebTokenError = function (message, error) {
+	  Error.call(this, message);
+	  if(Error.captureStackTrace) {
+	    Error.captureStackTrace(this, this.constructor);
+	  }
+	  this.name = 'JsonWebTokenError';
+	  this.message = message;
+	  if (error) this.inner = error;
+	};
+
+	JsonWebTokenError.prototype = Object.create(Error.prototype);
+	JsonWebTokenError.prototype.constructor = JsonWebTokenError;
+
+	JsonWebTokenError_1 = JsonWebTokenError;
+	return JsonWebTokenError_1;
+}
+
+var NotBeforeError_1;
+var hasRequiredNotBeforeError;
+
+function requireNotBeforeError () {
+	if (hasRequiredNotBeforeError) return NotBeforeError_1;
+	hasRequiredNotBeforeError = 1;
+	var JsonWebTokenError = requireJsonWebTokenError();
+
+	var NotBeforeError = function (message, date) {
+	  JsonWebTokenError.call(this, message);
+	  this.name = 'NotBeforeError';
+	  this.date = date;
+	};
+
+	NotBeforeError.prototype = Object.create(JsonWebTokenError.prototype);
+
+	NotBeforeError.prototype.constructor = NotBeforeError;
+
+	NotBeforeError_1 = NotBeforeError;
+	return NotBeforeError_1;
+}
+
+var TokenExpiredError_1;
+var hasRequiredTokenExpiredError;
+
+function requireTokenExpiredError () {
+	if (hasRequiredTokenExpiredError) return TokenExpiredError_1;
+	hasRequiredTokenExpiredError = 1;
+	var JsonWebTokenError = requireJsonWebTokenError();
+
+	var TokenExpiredError = function (message, expiredAt) {
+	  JsonWebTokenError.call(this, message);
+	  this.name = 'TokenExpiredError';
+	  this.expiredAt = expiredAt;
+	};
+
+	TokenExpiredError.prototype = Object.create(JsonWebTokenError.prototype);
+
+	TokenExpiredError.prototype.constructor = TokenExpiredError;
+
+	TokenExpiredError_1 = TokenExpiredError;
+	return TokenExpiredError_1;
+}
+
+/**
+ * Helpers.
+ */
+
+var ms;
+var hasRequiredMs;
+
+function requireMs () {
+	if (hasRequiredMs) return ms;
+	hasRequiredMs = 1;
+	var s = 1000;
+	var m = s * 60;
+	var h = m * 60;
+	var d = h * 24;
+	var w = d * 7;
+	var y = d * 365.25;
+
+	/**
+	 * Parse or format the given `val`.
+	 *
+	 * Options:
+	 *
+	 *  - `long` verbose formatting [false]
+	 *
+	 * @param {String|Number} val
+	 * @param {Object} [options]
+	 * @throws {Error} throw an error if val is not a non-empty string or a number
+	 * @return {String|Number}
+	 * @api public
+	 */
+
+	ms = function (val, options) {
+	  options = options || {};
+	  var type = typeof val;
+	  if (type === 'string' && val.length > 0) {
+	    return parse(val);
+	  } else if (type === 'number' && isFinite(val)) {
+	    return options.long ? fmtLong(val) : fmtShort(val);
+	  }
+	  throw new Error(
+	    'val is not a non-empty string or a valid number. val=' +
+	      JSON.stringify(val)
+	  );
+	};
+
+	/**
+	 * Parse the given `str` and return milliseconds.
+	 *
+	 * @param {String} str
+	 * @return {Number}
+	 * @api private
+	 */
+
+	function parse(str) {
+	  str = String(str);
+	  if (str.length > 100) {
+	    return;
+	  }
+	  var match = /^(-?(?:\d+)?\.?\d+) *(milliseconds?|msecs?|ms|seconds?|secs?|s|minutes?|mins?|m|hours?|hrs?|h|days?|d|weeks?|w|years?|yrs?|y)?$/i.exec(
+	    str
+	  );
+	  if (!match) {
+	    return;
+	  }
+	  var n = parseFloat(match[1]);
+	  var type = (match[2] || 'ms').toLowerCase();
+	  switch (type) {
+	    case 'years':
+	    case 'year':
+	    case 'yrs':
+	    case 'yr':
+	    case 'y':
+	      return n * y;
+	    case 'weeks':
+	    case 'week':
+	    case 'w':
+	      return n * w;
+	    case 'days':
+	    case 'day':
+	    case 'd':
+	      return n * d;
+	    case 'hours':
+	    case 'hour':
+	    case 'hrs':
+	    case 'hr':
+	    case 'h':
+	      return n * h;
+	    case 'minutes':
+	    case 'minute':
+	    case 'mins':
+	    case 'min':
+	    case 'm':
+	      return n * m;
+	    case 'seconds':
+	    case 'second':
+	    case 'secs':
+	    case 'sec':
+	    case 's':
+	      return n * s;
+	    case 'milliseconds':
+	    case 'millisecond':
+	    case 'msecs':
+	    case 'msec':
+	    case 'ms':
+	      return n;
+	    default:
+	      return undefined;
+	  }
+	}
+
+	/**
+	 * Short format for `ms`.
+	 *
+	 * @param {Number} ms
+	 * @return {String}
+	 * @api private
+	 */
+
+	function fmtShort(ms) {
+	  var msAbs = Math.abs(ms);
+	  if (msAbs >= d) {
+	    return Math.round(ms / d) + 'd';
+	  }
+	  if (msAbs >= h) {
+	    return Math.round(ms / h) + 'h';
+	  }
+	  if (msAbs >= m) {
+	    return Math.round(ms / m) + 'm';
+	  }
+	  if (msAbs >= s) {
+	    return Math.round(ms / s) + 's';
+	  }
+	  return ms + 'ms';
+	}
+
+	/**
+	 * Long format for `ms`.
+	 *
+	 * @param {Number} ms
+	 * @return {String}
+	 * @api private
+	 */
+
+	function fmtLong(ms) {
+	  var msAbs = Math.abs(ms);
+	  if (msAbs >= d) {
+	    return plural(ms, msAbs, d, 'day');
+	  }
+	  if (msAbs >= h) {
+	    return plural(ms, msAbs, h, 'hour');
+	  }
+	  if (msAbs >= m) {
+	    return plural(ms, msAbs, m, 'minute');
+	  }
+	  if (msAbs >= s) {
+	    return plural(ms, msAbs, s, 'second');
+	  }
+	  return ms + ' ms';
+	}
+
+	/**
+	 * Pluralization helper.
+	 */
+
+	function plural(ms, msAbs, n, name) {
+	  var isPlural = msAbs >= n * 1.5;
+	  return Math.round(ms / n) + ' ' + name + (isPlural ? 's' : '');
+	}
+	return ms;
+}
+
+var timespan;
+var hasRequiredTimespan;
+
+function requireTimespan () {
+	if (hasRequiredTimespan) return timespan;
+	hasRequiredTimespan = 1;
+	var ms = requireMs();
+
+	timespan = function (time, iat) {
+	  var timestamp = iat || Math.floor(Date.now() / 1000);
+
+	  if (typeof time === 'string') {
+	    var milliseconds = ms(time);
+	    if (typeof milliseconds === 'undefined') {
+	      return;
+	    }
+	    return Math.floor(timestamp + milliseconds / 1000);
+	  } else if (typeof time === 'number') {
+	    return timestamp + time;
+	  } else {
+	    return;
+	  }
+
+	};
+	return timespan;
+}
+
+var re = {exports: {}};
+
+var constants;
+var hasRequiredConstants;
+
+function requireConstants () {
+	if (hasRequiredConstants) return constants;
+	hasRequiredConstants = 1;
+
+	// Note: this is the semver.org version of the spec that it implements
+	// Not necessarily the package version of this code.
+	const SEMVER_SPEC_VERSION = '2.0.0';
+
+	const MAX_LENGTH = 256;
+	const MAX_SAFE_INTEGER = Number.MAX_SAFE_INTEGER ||
+	/* istanbul ignore next */ 9007199254740991;
+
+	// Max safe segment length for coercion.
+	const MAX_SAFE_COMPONENT_LENGTH = 16;
+
+	// Max safe length for a build identifier. The max length minus 6 characters for
+	// the shortest version with a build 0.0.0+BUILD.
+	const MAX_SAFE_BUILD_LENGTH = MAX_LENGTH - 6;
+
+	const RELEASE_TYPES = [
+	  'major',
+	  'premajor',
+	  'minor',
+	  'preminor',
+	  'patch',
+	  'prepatch',
+	  'prerelease',
+	];
+
+	constants = {
+	  MAX_LENGTH,
+	  MAX_SAFE_COMPONENT_LENGTH,
+	  MAX_SAFE_BUILD_LENGTH,
+	  MAX_SAFE_INTEGER,
+	  RELEASE_TYPES,
+	  SEMVER_SPEC_VERSION,
+	  FLAG_INCLUDE_PRERELEASE: 0b001,
+	  FLAG_LOOSE: 0b010,
+	};
+	return constants;
+}
+
+var debug_1;
+var hasRequiredDebug;
+
+function requireDebug () {
+	if (hasRequiredDebug) return debug_1;
+	hasRequiredDebug = 1;
+
+	const debug = (
+	  typeof process === 'object' &&
+	  process.env &&
+	  process.env.NODE_DEBUG &&
+	  /\bsemver\b/i.test(process.env.NODE_DEBUG)
+	) ? (...args) => console.error('SEMVER', ...args)
+	  : () => {};
+
+	debug_1 = debug;
+	return debug_1;
+}
+
+var hasRequiredRe;
+
+function requireRe () {
+	if (hasRequiredRe) return re.exports;
+	hasRequiredRe = 1;
+	(function (module, exports$1) {
+
+		const {
+		  MAX_SAFE_COMPONENT_LENGTH,
+		  MAX_SAFE_BUILD_LENGTH,
+		  MAX_LENGTH,
+		} = requireConstants();
+		const debug = requireDebug();
+		exports$1 = module.exports = {};
+
+		// The actual regexps go on exports.re
+		const re = exports$1.re = [];
+		const safeRe = exports$1.safeRe = [];
+		const src = exports$1.src = [];
+		const safeSrc = exports$1.safeSrc = [];
+		const t = exports$1.t = {};
+		let R = 0;
+
+		const LETTERDASHNUMBER = '[a-zA-Z0-9-]';
+
+		// Replace some greedy regex tokens to prevent regex dos issues. These regex are
+		// used internally via the safeRe object since all inputs in this library get
+		// normalized first to trim and collapse all extra whitespace. The original
+		// regexes are exported for userland consumption and lower level usage. A
+		// future breaking change could export the safer regex only with a note that
+		// all input should have extra whitespace removed.
+		const safeRegexReplacements = [
+		  ['\\s', 1],
+		  ['\\d', MAX_LENGTH],
+		  [LETTERDASHNUMBER, MAX_SAFE_BUILD_LENGTH],
+		];
+
+		const makeSafeRegex = (value) => {
+		  for (const [token, max] of safeRegexReplacements) {
+		    value = value
+		      .split(`${token}*`).join(`${token}{0,${max}}`)
+		      .split(`${token}+`).join(`${token}{1,${max}}`);
+		  }
+		  return value
+		};
+
+		const createToken = (name, value, isGlobal) => {
+		  const safe = makeSafeRegex(value);
+		  const index = R++;
+		  debug(name, index, value);
+		  t[name] = index;
+		  src[index] = value;
+		  safeSrc[index] = safe;
+		  re[index] = new RegExp(value, isGlobal ? 'g' : undefined);
+		  safeRe[index] = new RegExp(safe, isGlobal ? 'g' : undefined);
+		};
+
+		// The following Regular Expressions can be used for tokenizing,
+		// validating, and parsing SemVer version strings.
+
+		// ## Numeric Identifier
+		// A single `0`, or a non-zero digit followed by zero or more digits.
+
+		createToken('NUMERICIDENTIFIER', '0|[1-9]\\d*');
+		createToken('NUMERICIDENTIFIERLOOSE', '\\d+');
+
+		// ## Non-numeric Identifier
+		// Zero or more digits, followed by a letter or hyphen, and then zero or
+		// more letters, digits, or hyphens.
+
+		createToken('NONNUMERICIDENTIFIER', `\\d*[a-zA-Z-]${LETTERDASHNUMBER}*`);
+
+		// ## Main Version
+		// Three dot-separated numeric identifiers.
+
+		createToken('MAINVERSION', `(${src[t.NUMERICIDENTIFIER]})\\.` +
+		                   `(${src[t.NUMERICIDENTIFIER]})\\.` +
+		                   `(${src[t.NUMERICIDENTIFIER]})`);
+
+		createToken('MAINVERSIONLOOSE', `(${src[t.NUMERICIDENTIFIERLOOSE]})\\.` +
+		                        `(${src[t.NUMERICIDENTIFIERLOOSE]})\\.` +
+		                        `(${src[t.NUMERICIDENTIFIERLOOSE]})`);
+
+		// ## Pre-release Version Identifier
+		// A numeric identifier, or a non-numeric identifier.
+		// Non-numberic identifiers include numberic identifiers but can be longer.
+		// Therefore non-numberic identifiers must go first.
+
+		createToken('PRERELEASEIDENTIFIER', `(?:${src[t.NONNUMERICIDENTIFIER]
+		}|${src[t.NUMERICIDENTIFIER]})`);
+
+		createToken('PRERELEASEIDENTIFIERLOOSE', `(?:${src[t.NONNUMERICIDENTIFIER]
+		}|${src[t.NUMERICIDENTIFIERLOOSE]})`);
+
+		// ## Pre-release Version
+		// Hyphen, followed by one or more dot-separated pre-release version
+		// identifiers.
+
+		createToken('PRERELEASE', `(?:-(${src[t.PRERELEASEIDENTIFIER]
+		}(?:\\.${src[t.PRERELEASEIDENTIFIER]})*))`);
+
+		createToken('PRERELEASELOOSE', `(?:-?(${src[t.PRERELEASEIDENTIFIERLOOSE]
+		}(?:\\.${src[t.PRERELEASEIDENTIFIERLOOSE]})*))`);
+
+		// ## Build Metadata Identifier
+		// Any combination of digits, letters, or hyphens.
+
+		createToken('BUILDIDENTIFIER', `${LETTERDASHNUMBER}+`);
+
+		// ## Build Metadata
+		// Plus sign, followed by one or more period-separated build metadata
+		// identifiers.
+
+		createToken('BUILD', `(?:\\+(${src[t.BUILDIDENTIFIER]
+		}(?:\\.${src[t.BUILDIDENTIFIER]})*))`);
+
+		// ## Full Version String
+		// A main version, followed optionally by a pre-release version and
+		// build metadata.
+
+		// Note that the only major, minor, patch, and pre-release sections of
+		// the version string are capturing groups.  The build metadata is not a
+		// capturing group, because it should not ever be used in version
+		// comparison.
+
+		createToken('FULLPLAIN', `v?${src[t.MAINVERSION]
+		}${src[t.PRERELEASE]}?${
+		  src[t.BUILD]}?`);
+
+		createToken('FULL', `^${src[t.FULLPLAIN]}$`);
+
+		// like full, but allows v1.2.3 and =1.2.3, which people do sometimes.
+		// also, 1.0.0alpha1 (prerelease without the hyphen) which is pretty
+		// common in the npm registry.
+		createToken('LOOSEPLAIN', `[v=\\s]*${src[t.MAINVERSIONLOOSE]
+		}${src[t.PRERELEASELOOSE]}?${
+		  src[t.BUILD]}?`);
+
+		createToken('LOOSE', `^${src[t.LOOSEPLAIN]}$`);
+
+		createToken('GTLT', '((?:<|>)?=?)');
+
+		// Something like "2.*" or "1.2.x".
+		// Note that "x.x" is a valid xRange identifer, meaning "any version"
+		// Only the first item is strictly required.
+		createToken('XRANGEIDENTIFIERLOOSE', `${src[t.NUMERICIDENTIFIERLOOSE]}|x|X|\\*`);
+		createToken('XRANGEIDENTIFIER', `${src[t.NUMERICIDENTIFIER]}|x|X|\\*`);
+
+		createToken('XRANGEPLAIN', `[v=\\s]*(${src[t.XRANGEIDENTIFIER]})` +
+		                   `(?:\\.(${src[t.XRANGEIDENTIFIER]})` +
+		                   `(?:\\.(${src[t.XRANGEIDENTIFIER]})` +
+		                   `(?:${src[t.PRERELEASE]})?${
+		                     src[t.BUILD]}?` +
+		                   `)?)?`);
+
+		createToken('XRANGEPLAINLOOSE', `[v=\\s]*(${src[t.XRANGEIDENTIFIERLOOSE]})` +
+		                        `(?:\\.(${src[t.XRANGEIDENTIFIERLOOSE]})` +
+		                        `(?:\\.(${src[t.XRANGEIDENTIFIERLOOSE]})` +
+		                        `(?:${src[t.PRERELEASELOOSE]})?${
+		                          src[t.BUILD]}?` +
+		                        `)?)?`);
+
+		createToken('XRANGE', `^${src[t.GTLT]}\\s*${src[t.XRANGEPLAIN]}$`);
+		createToken('XRANGELOOSE', `^${src[t.GTLT]}\\s*${src[t.XRANGEPLAINLOOSE]}$`);
+
+		// Coercion.
+		// Extract anything that could conceivably be a part of a valid semver
+		createToken('COERCEPLAIN', `${'(^|[^\\d])' +
+		              '(\\d{1,'}${MAX_SAFE_COMPONENT_LENGTH}})` +
+		              `(?:\\.(\\d{1,${MAX_SAFE_COMPONENT_LENGTH}}))?` +
+		              `(?:\\.(\\d{1,${MAX_SAFE_COMPONENT_LENGTH}}))?`);
+		createToken('COERCE', `${src[t.COERCEPLAIN]}(?:$|[^\\d])`);
+		createToken('COERCEFULL', src[t.COERCEPLAIN] +
+		              `(?:${src[t.PRERELEASE]})?` +
+		              `(?:${src[t.BUILD]})?` +
+		              `(?:$|[^\\d])`);
+		createToken('COERCERTL', src[t.COERCE], true);
+		createToken('COERCERTLFULL', src[t.COERCEFULL], true);
+
+		// Tilde ranges.
+		// Meaning is "reasonably at or greater than"
+		createToken('LONETILDE', '(?:~>?)');
+
+		createToken('TILDETRIM', `(\\s*)${src[t.LONETILDE]}\\s+`, true);
+		exports$1.tildeTrimReplace = '$1~';
+
+		createToken('TILDE', `^${src[t.LONETILDE]}${src[t.XRANGEPLAIN]}$`);
+		createToken('TILDELOOSE', `^${src[t.LONETILDE]}${src[t.XRANGEPLAINLOOSE]}$`);
+
+		// Caret ranges.
+		// Meaning is "at least and backwards compatible with"
+		createToken('LONECARET', '(?:\\^)');
+
+		createToken('CARETTRIM', `(\\s*)${src[t.LONECARET]}\\s+`, true);
+		exports$1.caretTrimReplace = '$1^';
+
+		createToken('CARET', `^${src[t.LONECARET]}${src[t.XRANGEPLAIN]}$`);
+		createToken('CARETLOOSE', `^${src[t.LONECARET]}${src[t.XRANGEPLAINLOOSE]}$`);
+
+		// A simple gt/lt/eq thing, or just "" to indicate "any version"
+		createToken('COMPARATORLOOSE', `^${src[t.GTLT]}\\s*(${src[t.LOOSEPLAIN]})$|^$`);
+		createToken('COMPARATOR', `^${src[t.GTLT]}\\s*(${src[t.FULLPLAIN]})$|^$`);
+
+		// An expression to strip any whitespace between the gtlt and the thing
+		// it modifies, so that `> 1.2.3` ==> `>1.2.3`
+		createToken('COMPARATORTRIM', `(\\s*)${src[t.GTLT]
+		}\\s*(${src[t.LOOSEPLAIN]}|${src[t.XRANGEPLAIN]})`, true);
+		exports$1.comparatorTrimReplace = '$1$2$3';
+
+		// Something like `1.2.3 - 1.2.4`
+		// Note that these all use the loose form, because they'll be
+		// checked against either the strict or loose comparator form
+		// later.
+		createToken('HYPHENRANGE', `^\\s*(${src[t.XRANGEPLAIN]})` +
+		                   `\\s+-\\s+` +
+		                   `(${src[t.XRANGEPLAIN]})` +
+		                   `\\s*$`);
+
+		createToken('HYPHENRANGELOOSE', `^\\s*(${src[t.XRANGEPLAINLOOSE]})` +
+		                        `\\s+-\\s+` +
+		                        `(${src[t.XRANGEPLAINLOOSE]})` +
+		                        `\\s*$`);
+
+		// Star ranges basically just allow anything at all.
+		createToken('STAR', '(<|>)?=?\\s*\\*');
+		// >=0.0.0 is like a star
+		createToken('GTE0', '^\\s*>=\\s*0\\.0\\.0\\s*$');
+		createToken('GTE0PRE', '^\\s*>=\\s*0\\.0\\.0-0\\s*$'); 
+	} (re, re.exports));
+	return re.exports;
+}
+
+var parseOptions_1;
+var hasRequiredParseOptions;
+
+function requireParseOptions () {
+	if (hasRequiredParseOptions) return parseOptions_1;
+	hasRequiredParseOptions = 1;
+
+	// parse out just the options we care about
+	const looseOption = Object.freeze({ loose: true });
+	const emptyOpts = Object.freeze({ });
+	const parseOptions = options => {
+	  if (!options) {
+	    return emptyOpts
+	  }
+
+	  if (typeof options !== 'object') {
+	    return looseOption
+	  }
+
+	  return options
+	};
+	parseOptions_1 = parseOptions;
+	return parseOptions_1;
+}
+
+var identifiers;
+var hasRequiredIdentifiers;
+
+function requireIdentifiers () {
+	if (hasRequiredIdentifiers) return identifiers;
+	hasRequiredIdentifiers = 1;
+
+	const numeric = /^[0-9]+$/;
+	const compareIdentifiers = (a, b) => {
+	  if (typeof a === 'number' && typeof b === 'number') {
+	    return a === b ? 0 : a < b ? -1 : 1
+	  }
+
+	  const anum = numeric.test(a);
+	  const bnum = numeric.test(b);
+
+	  if (anum && bnum) {
+	    a = +a;
+	    b = +b;
+	  }
+
+	  return a === b ? 0
+	    : (anum && !bnum) ? -1
+	    : (bnum && !anum) ? 1
+	    : a < b ? -1
+	    : 1
+	};
+
+	const rcompareIdentifiers = (a, b) => compareIdentifiers(b, a);
+
+	identifiers = {
+	  compareIdentifiers,
+	  rcompareIdentifiers,
+	};
+	return identifiers;
+}
+
+var semver$1;
+var hasRequiredSemver$1;
+
+function requireSemver$1 () {
+	if (hasRequiredSemver$1) return semver$1;
+	hasRequiredSemver$1 = 1;
+
+	const debug = requireDebug();
+	const { MAX_LENGTH, MAX_SAFE_INTEGER } = requireConstants();
+	const { safeRe: re, t } = requireRe();
+
+	const parseOptions = requireParseOptions();
+	const { compareIdentifiers } = requireIdentifiers();
+	class SemVer {
+	  constructor (version, options) {
+	    options = parseOptions(options);
+
+	    if (version instanceof SemVer) {
+	      if (version.loose === !!options.loose &&
+	        version.includePrerelease === !!options.includePrerelease) {
+	        return version
+	      } else {
+	        version = version.version;
+	      }
+	    } else if (typeof version !== 'string') {
+	      throw new TypeError(`Invalid version. Must be a string. Got type "${typeof version}".`)
+	    }
+
+	    if (version.length > MAX_LENGTH) {
+	      throw new TypeError(
+	        `version is longer than ${MAX_LENGTH} characters`
+	      )
+	    }
+
+	    debug('SemVer', version, options);
+	    this.options = options;
+	    this.loose = !!options.loose;
+	    // this isn't actually relevant for versions, but keep it so that we
+	    // don't run into trouble passing this.options around.
+	    this.includePrerelease = !!options.includePrerelease;
+
+	    const m = version.trim().match(options.loose ? re[t.LOOSE] : re[t.FULL]);
+
+	    if (!m) {
+	      throw new TypeError(`Invalid Version: ${version}`)
+	    }
+
+	    this.raw = version;
+
+	    // these are actually numbers
+	    this.major = +m[1];
+	    this.minor = +m[2];
+	    this.patch = +m[3];
+
+	    if (this.major > MAX_SAFE_INTEGER || this.major < 0) {
+	      throw new TypeError('Invalid major version')
+	    }
+
+	    if (this.minor > MAX_SAFE_INTEGER || this.minor < 0) {
+	      throw new TypeError('Invalid minor version')
+	    }
+
+	    if (this.patch > MAX_SAFE_INTEGER || this.patch < 0) {
+	      throw new TypeError('Invalid patch version')
+	    }
+
+	    // numberify any prerelease numeric ids
+	    if (!m[4]) {
+	      this.prerelease = [];
+	    } else {
+	      this.prerelease = m[4].split('.').map((id) => {
+	        if (/^[0-9]+$/.test(id)) {
+	          const num = +id;
+	          if (num >= 0 && num < MAX_SAFE_INTEGER) {
+	            return num
+	          }
+	        }
+	        return id
+	      });
+	    }
+
+	    this.build = m[5] ? m[5].split('.') : [];
+	    this.format();
+	  }
+
+	  format () {
+	    this.version = `${this.major}.${this.minor}.${this.patch}`;
+	    if (this.prerelease.length) {
+	      this.version += `-${this.prerelease.join('.')}`;
+	    }
+	    return this.version
+	  }
+
+	  toString () {
+	    return this.version
+	  }
+
+	  compare (other) {
+	    debug('SemVer.compare', this.version, this.options, other);
+	    if (!(other instanceof SemVer)) {
+	      if (typeof other === 'string' && other === this.version) {
+	        return 0
+	      }
+	      other = new SemVer(other, this.options);
+	    }
+
+	    if (other.version === this.version) {
+	      return 0
+	    }
+
+	    return this.compareMain(other) || this.comparePre(other)
+	  }
+
+	  compareMain (other) {
+	    if (!(other instanceof SemVer)) {
+	      other = new SemVer(other, this.options);
+	    }
+
+	    if (this.major < other.major) {
+	      return -1
+	    }
+	    if (this.major > other.major) {
+	      return 1
+	    }
+	    if (this.minor < other.minor) {
+	      return -1
+	    }
+	    if (this.minor > other.minor) {
+	      return 1
+	    }
+	    if (this.patch < other.patch) {
+	      return -1
+	    }
+	    if (this.patch > other.patch) {
+	      return 1
+	    }
+	    return 0
+	  }
+
+	  comparePre (other) {
+	    if (!(other instanceof SemVer)) {
+	      other = new SemVer(other, this.options);
+	    }
+
+	    // NOT having a prerelease is > having one
+	    if (this.prerelease.length && !other.prerelease.length) {
+	      return -1
+	    } else if (!this.prerelease.length && other.prerelease.length) {
+	      return 1
+	    } else if (!this.prerelease.length && !other.prerelease.length) {
+	      return 0
+	    }
+
+	    let i = 0;
+	    do {
+	      const a = this.prerelease[i];
+	      const b = other.prerelease[i];
+	      debug('prerelease compare', i, a, b);
+	      if (a === undefined && b === undefined) {
+	        return 0
+	      } else if (b === undefined) {
+	        return 1
+	      } else if (a === undefined) {
+	        return -1
+	      } else if (a === b) {
+	        continue
+	      } else {
+	        return compareIdentifiers(a, b)
+	      }
+	    } while (++i)
+	  }
+
+	  compareBuild (other) {
+	    if (!(other instanceof SemVer)) {
+	      other = new SemVer(other, this.options);
+	    }
+
+	    let i = 0;
+	    do {
+	      const a = this.build[i];
+	      const b = other.build[i];
+	      debug('build compare', i, a, b);
+	      if (a === undefined && b === undefined) {
+	        return 0
+	      } else if (b === undefined) {
+	        return 1
+	      } else if (a === undefined) {
+	        return -1
+	      } else if (a === b) {
+	        continue
+	      } else {
+	        return compareIdentifiers(a, b)
+	      }
+	    } while (++i)
+	  }
+
+	  // preminor will bump the version up to the next minor release, and immediately
+	  // down to pre-release. premajor and prepatch work the same way.
+	  inc (release, identifier, identifierBase) {
+	    if (release.startsWith('pre')) {
+	      if (!identifier && identifierBase === false) {
+	        throw new Error('invalid increment argument: identifier is empty')
+	      }
+	      // Avoid an invalid semver results
+	      if (identifier) {
+	        const match = `-${identifier}`.match(this.options.loose ? re[t.PRERELEASELOOSE] : re[t.PRERELEASE]);
+	        if (!match || match[1] !== identifier) {
+	          throw new Error(`invalid identifier: ${identifier}`)
+	        }
+	      }
+	    }
+
+	    switch (release) {
+	      case 'premajor':
+	        this.prerelease.length = 0;
+	        this.patch = 0;
+	        this.minor = 0;
+	        this.major++;
+	        this.inc('pre', identifier, identifierBase);
+	        break
+	      case 'preminor':
+	        this.prerelease.length = 0;
+	        this.patch = 0;
+	        this.minor++;
+	        this.inc('pre', identifier, identifierBase);
+	        break
+	      case 'prepatch':
+	        // If this is already a prerelease, it will bump to the next version
+	        // drop any prereleases that might already exist, since they are not
+	        // relevant at this point.
+	        this.prerelease.length = 0;
+	        this.inc('patch', identifier, identifierBase);
+	        this.inc('pre', identifier, identifierBase);
+	        break
+	      // If the input is a non-prerelease version, this acts the same as
+	      // prepatch.
+	      case 'prerelease':
+	        if (this.prerelease.length === 0) {
+	          this.inc('patch', identifier, identifierBase);
+	        }
+	        this.inc('pre', identifier, identifierBase);
+	        break
+	      case 'release':
+	        if (this.prerelease.length === 0) {
+	          throw new Error(`version ${this.raw} is not a prerelease`)
+	        }
+	        this.prerelease.length = 0;
+	        break
+
+	      case 'major':
+	        // If this is a pre-major version, bump up to the same major version.
+	        // Otherwise increment major.
+	        // 1.0.0-5 bumps to 1.0.0
+	        // 1.1.0 bumps to 2.0.0
+	        if (
+	          this.minor !== 0 ||
+	          this.patch !== 0 ||
+	          this.prerelease.length === 0
+	        ) {
+	          this.major++;
+	        }
+	        this.minor = 0;
+	        this.patch = 0;
+	        this.prerelease = [];
+	        break
+	      case 'minor':
+	        // If this is a pre-minor version, bump up to the same minor version.
+	        // Otherwise increment minor.
+	        // 1.2.0-5 bumps to 1.2.0
+	        // 1.2.1 bumps to 1.3.0
+	        if (this.patch !== 0 || this.prerelease.length === 0) {
+	          this.minor++;
+	        }
+	        this.patch = 0;
+	        this.prerelease = [];
+	        break
+	      case 'patch':
+	        // If this is not a pre-release version, it will increment the patch.
+	        // If it is a pre-release it will bump up to the same patch version.
+	        // 1.2.0-5 patches to 1.2.0
+	        // 1.2.0 patches to 1.2.1
+	        if (this.prerelease.length === 0) {
+	          this.patch++;
+	        }
+	        this.prerelease = [];
+	        break
+	      // This probably shouldn't be used publicly.
+	      // 1.0.0 'pre' would become 1.0.0-0 which is the wrong direction.
+	      case 'pre': {
+	        const base = Number(identifierBase) ? 1 : 0;
+
+	        if (this.prerelease.length === 0) {
+	          this.prerelease = [base];
+	        } else {
+	          let i = this.prerelease.length;
+	          while (--i >= 0) {
+	            if (typeof this.prerelease[i] === 'number') {
+	              this.prerelease[i]++;
+	              i = -2;
+	            }
+	          }
+	          if (i === -1) {
+	            // didn't increment anything
+	            if (identifier === this.prerelease.join('.') && identifierBase === false) {
+	              throw new Error('invalid increment argument: identifier already exists')
+	            }
+	            this.prerelease.push(base);
+	          }
+	        }
+	        if (identifier) {
+	          // 1.2.0-beta.1 bumps to 1.2.0-beta.2,
+	          // 1.2.0-beta.fooblz or 1.2.0-beta bumps to 1.2.0-beta.0
+	          let prerelease = [identifier, base];
+	          if (identifierBase === false) {
+	            prerelease = [identifier];
+	          }
+	          if (compareIdentifiers(this.prerelease[0], identifier) === 0) {
+	            if (isNaN(this.prerelease[1])) {
+	              this.prerelease = prerelease;
+	            }
+	          } else {
+	            this.prerelease = prerelease;
+	          }
+	        }
+	        break
+	      }
+	      default:
+	        throw new Error(`invalid increment argument: ${release}`)
+	    }
+	    this.raw = this.format();
+	    if (this.build.length) {
+	      this.raw += `+${this.build.join('.')}`;
+	    }
+	    return this
+	  }
+	}
+
+	semver$1 = SemVer;
+	return semver$1;
+}
+
+var parse_1;
+var hasRequiredParse;
+
+function requireParse () {
+	if (hasRequiredParse) return parse_1;
+	hasRequiredParse = 1;
+
+	const SemVer = requireSemver$1();
+	const parse = (version, options, throwErrors = false) => {
+	  if (version instanceof SemVer) {
+	    return version
+	  }
+	  try {
+	    return new SemVer(version, options)
+	  } catch (er) {
+	    if (!throwErrors) {
+	      return null
+	    }
+	    throw er
+	  }
+	};
+
+	parse_1 = parse;
+	return parse_1;
+}
+
+var valid_1;
+var hasRequiredValid$1;
+
+function requireValid$1 () {
+	if (hasRequiredValid$1) return valid_1;
+	hasRequiredValid$1 = 1;
+
+	const parse = requireParse();
+	const valid = (version, options) => {
+	  const v = parse(version, options);
+	  return v ? v.version : null
+	};
+	valid_1 = valid;
+	return valid_1;
+}
+
+var clean_1;
+var hasRequiredClean;
+
+function requireClean () {
+	if (hasRequiredClean) return clean_1;
+	hasRequiredClean = 1;
+
+	const parse = requireParse();
+	const clean = (version, options) => {
+	  const s = parse(version.trim().replace(/^[=v]+/, ''), options);
+	  return s ? s.version : null
+	};
+	clean_1 = clean;
+	return clean_1;
+}
+
+var inc_1;
+var hasRequiredInc;
+
+function requireInc () {
+	if (hasRequiredInc) return inc_1;
+	hasRequiredInc = 1;
+
+	const SemVer = requireSemver$1();
+
+	const inc = (version, release, options, identifier, identifierBase) => {
+	  if (typeof (options) === 'string') {
+	    identifierBase = identifier;
+	    identifier = options;
+	    options = undefined;
+	  }
+
+	  try {
+	    return new SemVer(
+	      version instanceof SemVer ? version.version : version,
+	      options
+	    ).inc(release, identifier, identifierBase).version
+	  } catch (er) {
+	    return null
+	  }
+	};
+	inc_1 = inc;
+	return inc_1;
+}
+
+var diff_1;
+var hasRequiredDiff;
+
+function requireDiff () {
+	if (hasRequiredDiff) return diff_1;
+	hasRequiredDiff = 1;
+
+	const parse = requireParse();
+
+	const diff = (version1, version2) => {
+	  const v1 = parse(version1, null, true);
+	  const v2 = parse(version2, null, true);
+	  const comparison = v1.compare(v2);
+
+	  if (comparison === 0) {
+	    return null
+	  }
+
+	  const v1Higher = comparison > 0;
+	  const highVersion = v1Higher ? v1 : v2;
+	  const lowVersion = v1Higher ? v2 : v1;
+	  const highHasPre = !!highVersion.prerelease.length;
+	  const lowHasPre = !!lowVersion.prerelease.length;
+
+	  if (lowHasPre && !highHasPre) {
+	    // Going from prerelease -> no prerelease requires some special casing
+
+	    // If the low version has only a major, then it will always be a major
+	    // Some examples:
+	    // 1.0.0-1 -> 1.0.0
+	    // 1.0.0-1 -> 1.1.1
+	    // 1.0.0-1 -> 2.0.0
+	    if (!lowVersion.patch && !lowVersion.minor) {
+	      return 'major'
+	    }
+
+	    // If the main part has no difference
+	    if (lowVersion.compareMain(highVersion) === 0) {
+	      if (lowVersion.minor && !lowVersion.patch) {
+	        return 'minor'
+	      }
+	      return 'patch'
+	    }
+	  }
+
+	  // add the `pre` prefix if we are going to a prerelease version
+	  const prefix = highHasPre ? 'pre' : '';
+
+	  if (v1.major !== v2.major) {
+	    return prefix + 'major'
+	  }
+
+	  if (v1.minor !== v2.minor) {
+	    return prefix + 'minor'
+	  }
+
+	  if (v1.patch !== v2.patch) {
+	    return prefix + 'patch'
+	  }
+
+	  // high and low are preleases
+	  return 'prerelease'
+	};
+
+	diff_1 = diff;
+	return diff_1;
+}
+
+var major_1;
+var hasRequiredMajor;
+
+function requireMajor () {
+	if (hasRequiredMajor) return major_1;
+	hasRequiredMajor = 1;
+
+	const SemVer = requireSemver$1();
+	const major = (a, loose) => new SemVer(a, loose).major;
+	major_1 = major;
+	return major_1;
+}
+
+var minor_1;
+var hasRequiredMinor;
+
+function requireMinor () {
+	if (hasRequiredMinor) return minor_1;
+	hasRequiredMinor = 1;
+
+	const SemVer = requireSemver$1();
+	const minor = (a, loose) => new SemVer(a, loose).minor;
+	minor_1 = minor;
+	return minor_1;
+}
+
+var patch_1;
+var hasRequiredPatch;
+
+function requirePatch () {
+	if (hasRequiredPatch) return patch_1;
+	hasRequiredPatch = 1;
+
+	const SemVer = requireSemver$1();
+	const patch = (a, loose) => new SemVer(a, loose).patch;
+	patch_1 = patch;
+	return patch_1;
+}
+
+var prerelease_1;
+var hasRequiredPrerelease;
+
+function requirePrerelease () {
+	if (hasRequiredPrerelease) return prerelease_1;
+	hasRequiredPrerelease = 1;
+
+	const parse = requireParse();
+	const prerelease = (version, options) => {
+	  const parsed = parse(version, options);
+	  return (parsed && parsed.prerelease.length) ? parsed.prerelease : null
+	};
+	prerelease_1 = prerelease;
+	return prerelease_1;
+}
+
+var compare_1;
+var hasRequiredCompare;
+
+function requireCompare () {
+	if (hasRequiredCompare) return compare_1;
+	hasRequiredCompare = 1;
+
+	const SemVer = requireSemver$1();
+	const compare = (a, b, loose) =>
+	  new SemVer(a, loose).compare(new SemVer(b, loose));
+
+	compare_1 = compare;
+	return compare_1;
+}
+
+var rcompare_1;
+var hasRequiredRcompare;
+
+function requireRcompare () {
+	if (hasRequiredRcompare) return rcompare_1;
+	hasRequiredRcompare = 1;
+
+	const compare = requireCompare();
+	const rcompare = (a, b, loose) => compare(b, a, loose);
+	rcompare_1 = rcompare;
+	return rcompare_1;
+}
+
+var compareLoose_1;
+var hasRequiredCompareLoose;
+
+function requireCompareLoose () {
+	if (hasRequiredCompareLoose) return compareLoose_1;
+	hasRequiredCompareLoose = 1;
+
+	const compare = requireCompare();
+	const compareLoose = (a, b) => compare(a, b, true);
+	compareLoose_1 = compareLoose;
+	return compareLoose_1;
+}
+
+var compareBuild_1;
+var hasRequiredCompareBuild;
+
+function requireCompareBuild () {
+	if (hasRequiredCompareBuild) return compareBuild_1;
+	hasRequiredCompareBuild = 1;
+
+	const SemVer = requireSemver$1();
+	const compareBuild = (a, b, loose) => {
+	  const versionA = new SemVer(a, loose);
+	  const versionB = new SemVer(b, loose);
+	  return versionA.compare(versionB) || versionA.compareBuild(versionB)
+	};
+	compareBuild_1 = compareBuild;
+	return compareBuild_1;
+}
+
+var sort_1;
+var hasRequiredSort;
+
+function requireSort () {
+	if (hasRequiredSort) return sort_1;
+	hasRequiredSort = 1;
+
+	const compareBuild = requireCompareBuild();
+	const sort = (list, loose) => list.sort((a, b) => compareBuild(a, b, loose));
+	sort_1 = sort;
+	return sort_1;
+}
+
+var rsort_1;
+var hasRequiredRsort;
+
+function requireRsort () {
+	if (hasRequiredRsort) return rsort_1;
+	hasRequiredRsort = 1;
+
+	const compareBuild = requireCompareBuild();
+	const rsort = (list, loose) => list.sort((a, b) => compareBuild(b, a, loose));
+	rsort_1 = rsort;
+	return rsort_1;
+}
+
+var gt_1;
+var hasRequiredGt;
+
+function requireGt () {
+	if (hasRequiredGt) return gt_1;
+	hasRequiredGt = 1;
+
+	const compare = requireCompare();
+	const gt = (a, b, loose) => compare(a, b, loose) > 0;
+	gt_1 = gt;
+	return gt_1;
+}
+
+var lt_1;
+var hasRequiredLt;
+
+function requireLt () {
+	if (hasRequiredLt) return lt_1;
+	hasRequiredLt = 1;
+
+	const compare = requireCompare();
+	const lt = (a, b, loose) => compare(a, b, loose) < 0;
+	lt_1 = lt;
+	return lt_1;
+}
+
+var eq_1;
+var hasRequiredEq;
+
+function requireEq () {
+	if (hasRequiredEq) return eq_1;
+	hasRequiredEq = 1;
+
+	const compare = requireCompare();
+	const eq = (a, b, loose) => compare(a, b, loose) === 0;
+	eq_1 = eq;
+	return eq_1;
+}
+
+var neq_1;
+var hasRequiredNeq;
+
+function requireNeq () {
+	if (hasRequiredNeq) return neq_1;
+	hasRequiredNeq = 1;
+
+	const compare = requireCompare();
+	const neq = (a, b, loose) => compare(a, b, loose) !== 0;
+	neq_1 = neq;
+	return neq_1;
+}
+
+var gte_1;
+var hasRequiredGte;
+
+function requireGte () {
+	if (hasRequiredGte) return gte_1;
+	hasRequiredGte = 1;
+
+	const compare = requireCompare();
+	const gte = (a, b, loose) => compare(a, b, loose) >= 0;
+	gte_1 = gte;
+	return gte_1;
+}
+
+var lte_1;
+var hasRequiredLte;
+
+function requireLte () {
+	if (hasRequiredLte) return lte_1;
+	hasRequiredLte = 1;
+
+	const compare = requireCompare();
+	const lte = (a, b, loose) => compare(a, b, loose) <= 0;
+	lte_1 = lte;
+	return lte_1;
+}
+
+var cmp_1;
+var hasRequiredCmp;
+
+function requireCmp () {
+	if (hasRequiredCmp) return cmp_1;
+	hasRequiredCmp = 1;
+
+	const eq = requireEq();
+	const neq = requireNeq();
+	const gt = requireGt();
+	const gte = requireGte();
+	const lt = requireLt();
+	const lte = requireLte();
+
+	const cmp = (a, op, b, loose) => {
+	  switch (op) {
+	    case '===':
+	      if (typeof a === 'object') {
+	        a = a.version;
+	      }
+	      if (typeof b === 'object') {
+	        b = b.version;
+	      }
+	      return a === b
+
+	    case '!==':
+	      if (typeof a === 'object') {
+	        a = a.version;
+	      }
+	      if (typeof b === 'object') {
+	        b = b.version;
+	      }
+	      return a !== b
+
+	    case '':
+	    case '=':
+	    case '==':
+	      return eq(a, b, loose)
+
+	    case '!=':
+	      return neq(a, b, loose)
+
+	    case '>':
+	      return gt(a, b, loose)
+
+	    case '>=':
+	      return gte(a, b, loose)
+
+	    case '<':
+	      return lt(a, b, loose)
+
+	    case '<=':
+	      return lte(a, b, loose)
+
+	    default:
+	      throw new TypeError(`Invalid operator: ${op}`)
+	  }
+	};
+	cmp_1 = cmp;
+	return cmp_1;
+}
+
+var coerce_1;
+var hasRequiredCoerce;
+
+function requireCoerce () {
+	if (hasRequiredCoerce) return coerce_1;
+	hasRequiredCoerce = 1;
+
+	const SemVer = requireSemver$1();
+	const parse = requireParse();
+	const { safeRe: re, t } = requireRe();
+
+	const coerce = (version, options) => {
+	  if (version instanceof SemVer) {
+	    return version
+	  }
+
+	  if (typeof version === 'number') {
+	    version = String(version);
+	  }
+
+	  if (typeof version !== 'string') {
+	    return null
+	  }
+
+	  options = options || {};
+
+	  let match = null;
+	  if (!options.rtl) {
+	    match = version.match(options.includePrerelease ? re[t.COERCEFULL] : re[t.COERCE]);
+	  } else {
+	    // Find the right-most coercible string that does not share
+	    // a terminus with a more left-ward coercible string.
+	    // Eg, '1.2.3.4' wants to coerce '2.3.4', not '3.4' or '4'
+	    // With includePrerelease option set, '1.2.3.4-rc' wants to coerce '2.3.4-rc', not '2.3.4'
+	    //
+	    // Walk through the string checking with a /g regexp
+	    // Manually set the index so as to pick up overlapping matches.
+	    // Stop when we get a match that ends at the string end, since no
+	    // coercible string can be more right-ward without the same terminus.
+	    const coerceRtlRegex = options.includePrerelease ? re[t.COERCERTLFULL] : re[t.COERCERTL];
+	    let next;
+	    while ((next = coerceRtlRegex.exec(version)) &&
+	        (!match || match.index + match[0].length !== version.length)
+	    ) {
+	      if (!match ||
+	            next.index + next[0].length !== match.index + match[0].length) {
+	        match = next;
+	      }
+	      coerceRtlRegex.lastIndex = next.index + next[1].length + next[2].length;
+	    }
+	    // leave it in a clean state
+	    coerceRtlRegex.lastIndex = -1;
+	  }
+
+	  if (match === null) {
+	    return null
+	  }
+
+	  const major = match[2];
+	  const minor = match[3] || '0';
+	  const patch = match[4] || '0';
+	  const prerelease = options.includePrerelease && match[5] ? `-${match[5]}` : '';
+	  const build = options.includePrerelease && match[6] ? `+${match[6]}` : '';
+
+	  return parse(`${major}.${minor}.${patch}${prerelease}${build}`, options)
+	};
+	coerce_1 = coerce;
+	return coerce_1;
+}
+
+var lrucache;
+var hasRequiredLrucache;
+
+function requireLrucache () {
+	if (hasRequiredLrucache) return lrucache;
+	hasRequiredLrucache = 1;
+
+	class LRUCache {
+	  constructor () {
+	    this.max = 1000;
+	    this.map = new Map();
+	  }
+
+	  get (key) {
+	    const value = this.map.get(key);
+	    if (value === undefined) {
+	      return undefined
+	    } else {
+	      // Remove the key from the map and add it to the end
+	      this.map.delete(key);
+	      this.map.set(key, value);
+	      return value
+	    }
+	  }
+
+	  delete (key) {
+	    return this.map.delete(key)
+	  }
+
+	  set (key, value) {
+	    const deleted = this.delete(key);
+
+	    if (!deleted && value !== undefined) {
+	      // If cache is full, delete the least recently used item
+	      if (this.map.size >= this.max) {
+	        const firstKey = this.map.keys().next().value;
+	        this.delete(firstKey);
+	      }
+
+	      this.map.set(key, value);
+	    }
+
+	    return this
+	  }
+	}
+
+	lrucache = LRUCache;
+	return lrucache;
+}
+
+var range;
+var hasRequiredRange;
+
+function requireRange () {
+	if (hasRequiredRange) return range;
+	hasRequiredRange = 1;
+
+	const SPACE_CHARACTERS = /\s+/g;
+
+	// hoisted class for cyclic dependency
+	class Range {
+	  constructor (range, options) {
+	    options = parseOptions(options);
+
+	    if (range instanceof Range) {
+	      if (
+	        range.loose === !!options.loose &&
+	        range.includePrerelease === !!options.includePrerelease
+	      ) {
+	        return range
+	      } else {
+	        return new Range(range.raw, options)
+	      }
+	    }
+
+	    if (range instanceof Comparator) {
+	      // just put it in the set and return
+	      this.raw = range.value;
+	      this.set = [[range]];
+	      this.formatted = undefined;
+	      return this
+	    }
+
+	    this.options = options;
+	    this.loose = !!options.loose;
+	    this.includePrerelease = !!options.includePrerelease;
+
+	    // First reduce all whitespace as much as possible so we do not have to rely
+	    // on potentially slow regexes like \s*. This is then stored and used for
+	    // future error messages as well.
+	    this.raw = range.trim().replace(SPACE_CHARACTERS, ' ');
+
+	    // First, split on ||
+	    this.set = this.raw
+	      .split('||')
+	      // map the range to a 2d array of comparators
+	      .map(r => this.parseRange(r.trim()))
+	      // throw out any comparator lists that are empty
+	      // this generally means that it was not a valid range, which is allowed
+	      // in loose mode, but will still throw if the WHOLE range is invalid.
+	      .filter(c => c.length);
+
+	    if (!this.set.length) {
+	      throw new TypeError(`Invalid SemVer Range: ${this.raw}`)
+	    }
+
+	    // if we have any that are not the null set, throw out null sets.
+	    if (this.set.length > 1) {
+	      // keep the first one, in case they're all null sets
+	      const first = this.set[0];
+	      this.set = this.set.filter(c => !isNullSet(c[0]));
+	      if (this.set.length === 0) {
+	        this.set = [first];
+	      } else if (this.set.length > 1) {
+	        // if we have any that are *, then the range is just *
+	        for (const c of this.set) {
+	          if (c.length === 1 && isAny(c[0])) {
+	            this.set = [c];
+	            break
+	          }
+	        }
+	      }
+	    }
+
+	    this.formatted = undefined;
+	  }
+
+	  get range () {
+	    if (this.formatted === undefined) {
+	      this.formatted = '';
+	      for (let i = 0; i < this.set.length; i++) {
+	        if (i > 0) {
+	          this.formatted += '||';
+	        }
+	        const comps = this.set[i];
+	        for (let k = 0; k < comps.length; k++) {
+	          if (k > 0) {
+	            this.formatted += ' ';
+	          }
+	          this.formatted += comps[k].toString().trim();
+	        }
+	      }
+	    }
+	    return this.formatted
+	  }
+
+	  format () {
+	    return this.range
+	  }
+
+	  toString () {
+	    return this.range
+	  }
+
+	  parseRange (range) {
+	    // memoize range parsing for performance.
+	    // this is a very hot path, and fully deterministic.
+	    const memoOpts =
+	      (this.options.includePrerelease && FLAG_INCLUDE_PRERELEASE) |
+	      (this.options.loose && FLAG_LOOSE);
+	    const memoKey = memoOpts + ':' + range;
+	    const cached = cache.get(memoKey);
+	    if (cached) {
+	      return cached
+	    }
+
+	    const loose = this.options.loose;
+	    // `1.2.3 - 1.2.4` => `>=1.2.3 <=1.2.4`
+	    const hr = loose ? re[t.HYPHENRANGELOOSE] : re[t.HYPHENRANGE];
+	    range = range.replace(hr, hyphenReplace(this.options.includePrerelease));
+	    debug('hyphen replace', range);
+
+	    // `> 1.2.3 < 1.2.5` => `>1.2.3 <1.2.5`
+	    range = range.replace(re[t.COMPARATORTRIM], comparatorTrimReplace);
+	    debug('comparator trim', range);
+
+	    // `~ 1.2.3` => `~1.2.3`
+	    range = range.replace(re[t.TILDETRIM], tildeTrimReplace);
+	    debug('tilde trim', range);
+
+	    // `^ 1.2.3` => `^1.2.3`
+	    range = range.replace(re[t.CARETTRIM], caretTrimReplace);
+	    debug('caret trim', range);
+
+	    // At this point, the range is completely trimmed and
+	    // ready to be split into comparators.
+
+	    let rangeList = range
+	      .split(' ')
+	      .map(comp => parseComparator(comp, this.options))
+	      .join(' ')
+	      .split(/\s+/)
+	      // >=0.0.0 is equivalent to *
+	      .map(comp => replaceGTE0(comp, this.options));
+
+	    if (loose) {
+	      // in loose mode, throw out any that are not valid comparators
+	      rangeList = rangeList.filter(comp => {
+	        debug('loose invalid filter', comp, this.options);
+	        return !!comp.match(re[t.COMPARATORLOOSE])
+	      });
+	    }
+	    debug('range list', rangeList);
+
+	    // if any comparators are the null set, then replace with JUST null set
+	    // if more than one comparator, remove any * comparators
+	    // also, don't include the same comparator more than once
+	    const rangeMap = new Map();
+	    const comparators = rangeList.map(comp => new Comparator(comp, this.options));
+	    for (const comp of comparators) {
+	      if (isNullSet(comp)) {
+	        return [comp]
+	      }
+	      rangeMap.set(comp.value, comp);
+	    }
+	    if (rangeMap.size > 1 && rangeMap.has('')) {
+	      rangeMap.delete('');
+	    }
+
+	    const result = [...rangeMap.values()];
+	    cache.set(memoKey, result);
+	    return result
+	  }
+
+	  intersects (range, options) {
+	    if (!(range instanceof Range)) {
+	      throw new TypeError('a Range is required')
+	    }
+
+	    return this.set.some((thisComparators) => {
+	      return (
+	        isSatisfiable(thisComparators, options) &&
+	        range.set.some((rangeComparators) => {
+	          return (
+	            isSatisfiable(rangeComparators, options) &&
+	            thisComparators.every((thisComparator) => {
+	              return rangeComparators.every((rangeComparator) => {
+	                return thisComparator.intersects(rangeComparator, options)
+	              })
+	            })
+	          )
+	        })
+	      )
+	    })
+	  }
+
+	  // if ANY of the sets match ALL of its comparators, then pass
+	  test (version) {
+	    if (!version) {
+	      return false
+	    }
+
+	    if (typeof version === 'string') {
+	      try {
+	        version = new SemVer(version, this.options);
+	      } catch (er) {
+	        return false
+	      }
+	    }
+
+	    for (let i = 0; i < this.set.length; i++) {
+	      if (testSet(this.set[i], version, this.options)) {
+	        return true
+	      }
+	    }
+	    return false
+	  }
+	}
+
+	range = Range;
+
+	const LRU = requireLrucache();
+	const cache = new LRU();
+
+	const parseOptions = requireParseOptions();
+	const Comparator = requireComparator();
+	const debug = requireDebug();
+	const SemVer = requireSemver$1();
+	const {
+	  safeRe: re,
+	  t,
+	  comparatorTrimReplace,
+	  tildeTrimReplace,
+	  caretTrimReplace,
+	} = requireRe();
+	const { FLAG_INCLUDE_PRERELEASE, FLAG_LOOSE } = requireConstants();
+
+	const isNullSet = c => c.value === '<0.0.0-0';
+	const isAny = c => c.value === '';
+
+	// take a set of comparators and determine whether there
+	// exists a version which can satisfy it
+	const isSatisfiable = (comparators, options) => {
+	  let result = true;
+	  const remainingComparators = comparators.slice();
+	  let testComparator = remainingComparators.pop();
+
+	  while (result && remainingComparators.length) {
+	    result = remainingComparators.every((otherComparator) => {
+	      return testComparator.intersects(otherComparator, options)
+	    });
+
+	    testComparator = remainingComparators.pop();
+	  }
+
+	  return result
+	};
+
+	// comprised of xranges, tildes, stars, and gtlt's at this point.
+	// already replaced the hyphen ranges
+	// turn into a set of JUST comparators.
+	const parseComparator = (comp, options) => {
+	  comp = comp.replace(re[t.BUILD], '');
+	  debug('comp', comp, options);
+	  comp = replaceCarets(comp, options);
+	  debug('caret', comp);
+	  comp = replaceTildes(comp, options);
+	  debug('tildes', comp);
+	  comp = replaceXRanges(comp, options);
+	  debug('xrange', comp);
+	  comp = replaceStars(comp, options);
+	  debug('stars', comp);
+	  return comp
+	};
+
+	const isX = id => !id || id.toLowerCase() === 'x' || id === '*';
+
+	// ~, ~> --> * (any, kinda silly)
+	// ~2, ~2.x, ~2.x.x, ~>2, ~>2.x ~>2.x.x --> >=2.0.0 <3.0.0-0
+	// ~2.0, ~2.0.x, ~>2.0, ~>2.0.x --> >=2.0.0 <2.1.0-0
+	// ~1.2, ~1.2.x, ~>1.2, ~>1.2.x --> >=1.2.0 <1.3.0-0
+	// ~1.2.3, ~>1.2.3 --> >=1.2.3 <1.3.0-0
+	// ~1.2.0, ~>1.2.0 --> >=1.2.0 <1.3.0-0
+	// ~0.0.1 --> >=0.0.1 <0.1.0-0
+	const replaceTildes = (comp, options) => {
+	  return comp
+	    .trim()
+	    .split(/\s+/)
+	    .map((c) => replaceTilde(c, options))
+	    .join(' ')
+	};
+
+	const replaceTilde = (comp, options) => {
+	  const r = options.loose ? re[t.TILDELOOSE] : re[t.TILDE];
+	  return comp.replace(r, (_, M, m, p, pr) => {
+	    debug('tilde', comp, _, M, m, p, pr);
+	    let ret;
+
+	    if (isX(M)) {
+	      ret = '';
+	    } else if (isX(m)) {
+	      ret = `>=${M}.0.0 <${+M + 1}.0.0-0`;
+	    } else if (isX(p)) {
+	      // ~1.2 == >=1.2.0 <1.3.0-0
+	      ret = `>=${M}.${m}.0 <${M}.${+m + 1}.0-0`;
+	    } else if (pr) {
+	      debug('replaceTilde pr', pr);
+	      ret = `>=${M}.${m}.${p}-${pr
+	      } <${M}.${+m + 1}.0-0`;
+	    } else {
+	      // ~1.2.3 == >=1.2.3 <1.3.0-0
+	      ret = `>=${M}.${m}.${p
+	      } <${M}.${+m + 1}.0-0`;
+	    }
+
+	    debug('tilde return', ret);
+	    return ret
+	  })
+	};
+
+	// ^ --> * (any, kinda silly)
+	// ^2, ^2.x, ^2.x.x --> >=2.0.0 <3.0.0-0
+	// ^2.0, ^2.0.x --> >=2.0.0 <3.0.0-0
+	// ^1.2, ^1.2.x --> >=1.2.0 <2.0.0-0
+	// ^1.2.3 --> >=1.2.3 <2.0.0-0
+	// ^1.2.0 --> >=1.2.0 <2.0.0-0
+	// ^0.0.1 --> >=0.0.1 <0.0.2-0
+	// ^0.1.0 --> >=0.1.0 <0.2.0-0
+	const replaceCarets = (comp, options) => {
+	  return comp
+	    .trim()
+	    .split(/\s+/)
+	    .map((c) => replaceCaret(c, options))
+	    .join(' ')
+	};
+
+	const replaceCaret = (comp, options) => {
+	  debug('caret', comp, options);
+	  const r = options.loose ? re[t.CARETLOOSE] : re[t.CARET];
+	  const z = options.includePrerelease ? '-0' : '';
+	  return comp.replace(r, (_, M, m, p, pr) => {
+	    debug('caret', comp, _, M, m, p, pr);
+	    let ret;
+
+	    if (isX(M)) {
+	      ret = '';
+	    } else if (isX(m)) {
+	      ret = `>=${M}.0.0${z} <${+M + 1}.0.0-0`;
+	    } else if (isX(p)) {
+	      if (M === '0') {
+	        ret = `>=${M}.${m}.0${z} <${M}.${+m + 1}.0-0`;
+	      } else {
+	        ret = `>=${M}.${m}.0${z} <${+M + 1}.0.0-0`;
+	      }
+	    } else if (pr) {
+	      debug('replaceCaret pr', pr);
+	      if (M === '0') {
+	        if (m === '0') {
+	          ret = `>=${M}.${m}.${p}-${pr
+	          } <${M}.${m}.${+p + 1}-0`;
+	        } else {
+	          ret = `>=${M}.${m}.${p}-${pr
+	          } <${M}.${+m + 1}.0-0`;
+	        }
+	      } else {
+	        ret = `>=${M}.${m}.${p}-${pr
+	        } <${+M + 1}.0.0-0`;
+	      }
+	    } else {
+	      debug('no pr');
+	      if (M === '0') {
+	        if (m === '0') {
+	          ret = `>=${M}.${m}.${p
+	          }${z} <${M}.${m}.${+p + 1}-0`;
+	        } else {
+	          ret = `>=${M}.${m}.${p
+	          }${z} <${M}.${+m + 1}.0-0`;
+	        }
+	      } else {
+	        ret = `>=${M}.${m}.${p
+	        } <${+M + 1}.0.0-0`;
+	      }
+	    }
+
+	    debug('caret return', ret);
+	    return ret
+	  })
+	};
+
+	const replaceXRanges = (comp, options) => {
+	  debug('replaceXRanges', comp, options);
+	  return comp
+	    .split(/\s+/)
+	    .map((c) => replaceXRange(c, options))
+	    .join(' ')
+	};
+
+	const replaceXRange = (comp, options) => {
+	  comp = comp.trim();
+	  const r = options.loose ? re[t.XRANGELOOSE] : re[t.XRANGE];
+	  return comp.replace(r, (ret, gtlt, M, m, p, pr) => {
+	    debug('xRange', comp, ret, gtlt, M, m, p, pr);
+	    const xM = isX(M);
+	    const xm = xM || isX(m);
+	    const xp = xm || isX(p);
+	    const anyX = xp;
+
+	    if (gtlt === '=' && anyX) {
+	      gtlt = '';
+	    }
+
+	    // if we're including prereleases in the match, then we need
+	    // to fix this to -0, the lowest possible prerelease value
+	    pr = options.includePrerelease ? '-0' : '';
+
+	    if (xM) {
+	      if (gtlt === '>' || gtlt === '<') {
+	        // nothing is allowed
+	        ret = '<0.0.0-0';
+	      } else {
+	        // nothing is forbidden
+	        ret = '*';
+	      }
+	    } else if (gtlt && anyX) {
+	      // we know patch is an x, because we have any x at all.
+	      // replace X with 0
+	      if (xm) {
+	        m = 0;
+	      }
+	      p = 0;
+
+	      if (gtlt === '>') {
+	        // >1 => >=2.0.0
+	        // >1.2 => >=1.3.0
+	        gtlt = '>=';
+	        if (xm) {
+	          M = +M + 1;
+	          m = 0;
+	          p = 0;
+	        } else {
+	          m = +m + 1;
+	          p = 0;
+	        }
+	      } else if (gtlt === '<=') {
+	        // <=0.7.x is actually <0.8.0, since any 0.7.x should
+	        // pass.  Similarly, <=7.x is actually <8.0.0, etc.
+	        gtlt = '<';
+	        if (xm) {
+	          M = +M + 1;
+	        } else {
+	          m = +m + 1;
+	        }
+	      }
+
+	      if (gtlt === '<') {
+	        pr = '-0';
+	      }
+
+	      ret = `${gtlt + M}.${m}.${p}${pr}`;
+	    } else if (xm) {
+	      ret = `>=${M}.0.0${pr} <${+M + 1}.0.0-0`;
+	    } else if (xp) {
+	      ret = `>=${M}.${m}.0${pr
+	      } <${M}.${+m + 1}.0-0`;
+	    }
+
+	    debug('xRange return', ret);
+
+	    return ret
+	  })
+	};
+
+	// Because * is AND-ed with everything else in the comparator,
+	// and '' means "any version", just remove the *s entirely.
+	const replaceStars = (comp, options) => {
+	  debug('replaceStars', comp, options);
+	  // Looseness is ignored here.  star is always as loose as it gets!
+	  return comp
+	    .trim()
+	    .replace(re[t.STAR], '')
+	};
+
+	const replaceGTE0 = (comp, options) => {
+	  debug('replaceGTE0', comp, options);
+	  return comp
+	    .trim()
+	    .replace(re[options.includePrerelease ? t.GTE0PRE : t.GTE0], '')
+	};
+
+	// This function is passed to string.replace(re[t.HYPHENRANGE])
+	// M, m, patch, prerelease, build
+	// 1.2 - 3.4.5 => >=1.2.0 <=3.4.5
+	// 1.2.3 - 3.4 => >=1.2.0 <3.5.0-0 Any 3.4.x will do
+	// 1.2 - 3.4 => >=1.2.0 <3.5.0-0
+	// TODO build?
+	const hyphenReplace = incPr => ($0,
+	  from, fM, fm, fp, fpr, fb,
+	  to, tM, tm, tp, tpr) => {
+	  if (isX(fM)) {
+	    from = '';
+	  } else if (isX(fm)) {
+	    from = `>=${fM}.0.0${incPr ? '-0' : ''}`;
+	  } else if (isX(fp)) {
+	    from = `>=${fM}.${fm}.0${incPr ? '-0' : ''}`;
+	  } else if (fpr) {
+	    from = `>=${from}`;
+	  } else {
+	    from = `>=${from}${incPr ? '-0' : ''}`;
+	  }
+
+	  if (isX(tM)) {
+	    to = '';
+	  } else if (isX(tm)) {
+	    to = `<${+tM + 1}.0.0-0`;
+	  } else if (isX(tp)) {
+	    to = `<${tM}.${+tm + 1}.0-0`;
+	  } else if (tpr) {
+	    to = `<=${tM}.${tm}.${tp}-${tpr}`;
+	  } else if (incPr) {
+	    to = `<${tM}.${tm}.${+tp + 1}-0`;
+	  } else {
+	    to = `<=${to}`;
+	  }
+
+	  return `${from} ${to}`.trim()
+	};
+
+	const testSet = (set, version, options) => {
+	  for (let i = 0; i < set.length; i++) {
+	    if (!set[i].test(version)) {
+	      return false
+	    }
+	  }
+
+	  if (version.prerelease.length && !options.includePrerelease) {
+	    // Find the set of versions that are allowed to have prereleases
+	    // For example, ^1.2.3-pr.1 desugars to >=1.2.3-pr.1 <2.0.0
+	    // That should allow `1.2.3-pr.2` to pass.
+	    // However, `1.2.4-alpha.notready` should NOT be allowed,
+	    // even though it's within the range set by the comparators.
+	    for (let i = 0; i < set.length; i++) {
+	      debug(set[i].semver);
+	      if (set[i].semver === Comparator.ANY) {
+	        continue
+	      }
+
+	      if (set[i].semver.prerelease.length > 0) {
+	        const allowed = set[i].semver;
+	        if (allowed.major === version.major &&
+	            allowed.minor === version.minor &&
+	            allowed.patch === version.patch) {
+	          return true
+	        }
+	      }
+	    }
+
+	    // Version has a -pre, but it's not one of the ones we like.
+	    return false
+	  }
+
+	  return true
+	};
+	return range;
+}
+
+var comparator;
+var hasRequiredComparator;
+
+function requireComparator () {
+	if (hasRequiredComparator) return comparator;
+	hasRequiredComparator = 1;
+
+	const ANY = Symbol('SemVer ANY');
+	// hoisted class for cyclic dependency
+	class Comparator {
+	  static get ANY () {
+	    return ANY
+	  }
+
+	  constructor (comp, options) {
+	    options = parseOptions(options);
+
+	    if (comp instanceof Comparator) {
+	      if (comp.loose === !!options.loose) {
+	        return comp
+	      } else {
+	        comp = comp.value;
+	      }
+	    }
+
+	    comp = comp.trim().split(/\s+/).join(' ');
+	    debug('comparator', comp, options);
+	    this.options = options;
+	    this.loose = !!options.loose;
+	    this.parse(comp);
+
+	    if (this.semver === ANY) {
+	      this.value = '';
+	    } else {
+	      this.value = this.operator + this.semver.version;
+	    }
+
+	    debug('comp', this);
+	  }
+
+	  parse (comp) {
+	    const r = this.options.loose ? re[t.COMPARATORLOOSE] : re[t.COMPARATOR];
+	    const m = comp.match(r);
+
+	    if (!m) {
+	      throw new TypeError(`Invalid comparator: ${comp}`)
+	    }
+
+	    this.operator = m[1] !== undefined ? m[1] : '';
+	    if (this.operator === '=') {
+	      this.operator = '';
+	    }
+
+	    // if it literally is just '>' or '' then allow anything.
+	    if (!m[2]) {
+	      this.semver = ANY;
+	    } else {
+	      this.semver = new SemVer(m[2], this.options.loose);
+	    }
+	  }
+
+	  toString () {
+	    return this.value
+	  }
+
+	  test (version) {
+	    debug('Comparator.test', version, this.options.loose);
+
+	    if (this.semver === ANY || version === ANY) {
+	      return true
+	    }
+
+	    if (typeof version === 'string') {
+	      try {
+	        version = new SemVer(version, this.options);
+	      } catch (er) {
+	        return false
+	      }
+	    }
+
+	    return cmp(version, this.operator, this.semver, this.options)
+	  }
+
+	  intersects (comp, options) {
+	    if (!(comp instanceof Comparator)) {
+	      throw new TypeError('a Comparator is required')
+	    }
+
+	    if (this.operator === '') {
+	      if (this.value === '') {
+	        return true
+	      }
+	      return new Range(comp.value, options).test(this.value)
+	    } else if (comp.operator === '') {
+	      if (comp.value === '') {
+	        return true
+	      }
+	      return new Range(this.value, options).test(comp.semver)
+	    }
+
+	    options = parseOptions(options);
+
+	    // Special cases where nothing can possibly be lower
+	    if (options.includePrerelease &&
+	      (this.value === '<0.0.0-0' || comp.value === '<0.0.0-0')) {
+	      return false
+	    }
+	    if (!options.includePrerelease &&
+	      (this.value.startsWith('<0.0.0') || comp.value.startsWith('<0.0.0'))) {
+	      return false
+	    }
+
+	    // Same direction increasing (> or >=)
+	    if (this.operator.startsWith('>') && comp.operator.startsWith('>')) {
+	      return true
+	    }
+	    // Same direction decreasing (< or <=)
+	    if (this.operator.startsWith('<') && comp.operator.startsWith('<')) {
+	      return true
+	    }
+	    // same SemVer and both sides are inclusive (<= or >=)
+	    if (
+	      (this.semver.version === comp.semver.version) &&
+	      this.operator.includes('=') && comp.operator.includes('=')) {
+	      return true
+	    }
+	    // opposite directions less than
+	    if (cmp(this.semver, '<', comp.semver, options) &&
+	      this.operator.startsWith('>') && comp.operator.startsWith('<')) {
+	      return true
+	    }
+	    // opposite directions greater than
+	    if (cmp(this.semver, '>', comp.semver, options) &&
+	      this.operator.startsWith('<') && comp.operator.startsWith('>')) {
+	      return true
+	    }
+	    return false
+	  }
+	}
+
+	comparator = Comparator;
+
+	const parseOptions = requireParseOptions();
+	const { safeRe: re, t } = requireRe();
+	const cmp = requireCmp();
+	const debug = requireDebug();
+	const SemVer = requireSemver$1();
+	const Range = requireRange();
+	return comparator;
+}
+
+var satisfies_1;
+var hasRequiredSatisfies;
+
+function requireSatisfies () {
+	if (hasRequiredSatisfies) return satisfies_1;
+	hasRequiredSatisfies = 1;
+
+	const Range = requireRange();
+	const satisfies = (version, range, options) => {
+	  try {
+	    range = new Range(range, options);
+	  } catch (er) {
+	    return false
+	  }
+	  return range.test(version)
+	};
+	satisfies_1 = satisfies;
+	return satisfies_1;
+}
+
+var toComparators_1;
+var hasRequiredToComparators;
+
+function requireToComparators () {
+	if (hasRequiredToComparators) return toComparators_1;
+	hasRequiredToComparators = 1;
+
+	const Range = requireRange();
+
+	// Mostly just for testing and legacy API reasons
+	const toComparators = (range, options) =>
+	  new Range(range, options).set
+	    .map(comp => comp.map(c => c.value).join(' ').trim().split(' '));
+
+	toComparators_1 = toComparators;
+	return toComparators_1;
+}
+
+var maxSatisfying_1;
+var hasRequiredMaxSatisfying;
+
+function requireMaxSatisfying () {
+	if (hasRequiredMaxSatisfying) return maxSatisfying_1;
+	hasRequiredMaxSatisfying = 1;
+
+	const SemVer = requireSemver$1();
+	const Range = requireRange();
+
+	const maxSatisfying = (versions, range, options) => {
+	  let max = null;
+	  let maxSV = null;
+	  let rangeObj = null;
+	  try {
+	    rangeObj = new Range(range, options);
+	  } catch (er) {
+	    return null
+	  }
+	  versions.forEach((v) => {
+	    if (rangeObj.test(v)) {
+	      // satisfies(v, range, options)
+	      if (!max || maxSV.compare(v) === -1) {
+	        // compare(max, v, true)
+	        max = v;
+	        maxSV = new SemVer(max, options);
+	      }
+	    }
+	  });
+	  return max
+	};
+	maxSatisfying_1 = maxSatisfying;
+	return maxSatisfying_1;
+}
+
+var minSatisfying_1;
+var hasRequiredMinSatisfying;
+
+function requireMinSatisfying () {
+	if (hasRequiredMinSatisfying) return minSatisfying_1;
+	hasRequiredMinSatisfying = 1;
+
+	const SemVer = requireSemver$1();
+	const Range = requireRange();
+	const minSatisfying = (versions, range, options) => {
+	  let min = null;
+	  let minSV = null;
+	  let rangeObj = null;
+	  try {
+	    rangeObj = new Range(range, options);
+	  } catch (er) {
+	    return null
+	  }
+	  versions.forEach((v) => {
+	    if (rangeObj.test(v)) {
+	      // satisfies(v, range, options)
+	      if (!min || minSV.compare(v) === 1) {
+	        // compare(min, v, true)
+	        min = v;
+	        minSV = new SemVer(min, options);
+	      }
+	    }
+	  });
+	  return min
+	};
+	minSatisfying_1 = minSatisfying;
+	return minSatisfying_1;
+}
+
+var minVersion_1;
+var hasRequiredMinVersion;
+
+function requireMinVersion () {
+	if (hasRequiredMinVersion) return minVersion_1;
+	hasRequiredMinVersion = 1;
+
+	const SemVer = requireSemver$1();
+	const Range = requireRange();
+	const gt = requireGt();
+
+	const minVersion = (range, loose) => {
+	  range = new Range(range, loose);
+
+	  let minver = new SemVer('0.0.0');
+	  if (range.test(minver)) {
+	    return minver
+	  }
+
+	  minver = new SemVer('0.0.0-0');
+	  if (range.test(minver)) {
+	    return minver
+	  }
+
+	  minver = null;
+	  for (let i = 0; i < range.set.length; ++i) {
+	    const comparators = range.set[i];
+
+	    let setMin = null;
+	    comparators.forEach((comparator) => {
+	      // Clone to avoid manipulating the comparator's semver object.
+	      const compver = new SemVer(comparator.semver.version);
+	      switch (comparator.operator) {
+	        case '>':
+	          if (compver.prerelease.length === 0) {
+	            compver.patch++;
+	          } else {
+	            compver.prerelease.push(0);
+	          }
+	          compver.raw = compver.format();
+	          /* fallthrough */
+	        case '':
+	        case '>=':
+	          if (!setMin || gt(compver, setMin)) {
+	            setMin = compver;
+	          }
+	          break
+	        case '<':
+	        case '<=':
+	          /* Ignore maximum versions */
+	          break
+	        /* istanbul ignore next */
+	        default:
+	          throw new Error(`Unexpected operation: ${comparator.operator}`)
+	      }
+	    });
+	    if (setMin && (!minver || gt(minver, setMin))) {
+	      minver = setMin;
+	    }
+	  }
+
+	  if (minver && range.test(minver)) {
+	    return minver
+	  }
+
+	  return null
+	};
+	minVersion_1 = minVersion;
+	return minVersion_1;
+}
+
+var valid;
+var hasRequiredValid;
+
+function requireValid () {
+	if (hasRequiredValid) return valid;
+	hasRequiredValid = 1;
+
+	const Range = requireRange();
+	const validRange = (range, options) => {
+	  try {
+	    // Return '*' instead of '' so that truthiness works.
+	    // This will throw if it's invalid anyway
+	    return new Range(range, options).range || '*'
+	  } catch (er) {
+	    return null
+	  }
+	};
+	valid = validRange;
+	return valid;
+}
+
+var outside_1;
+var hasRequiredOutside;
+
+function requireOutside () {
+	if (hasRequiredOutside) return outside_1;
+	hasRequiredOutside = 1;
+
+	const SemVer = requireSemver$1();
+	const Comparator = requireComparator();
+	const { ANY } = Comparator;
+	const Range = requireRange();
+	const satisfies = requireSatisfies();
+	const gt = requireGt();
+	const lt = requireLt();
+	const lte = requireLte();
+	const gte = requireGte();
+
+	const outside = (version, range, hilo, options) => {
+	  version = new SemVer(version, options);
+	  range = new Range(range, options);
+
+	  let gtfn, ltefn, ltfn, comp, ecomp;
+	  switch (hilo) {
+	    case '>':
+	      gtfn = gt;
+	      ltefn = lte;
+	      ltfn = lt;
+	      comp = '>';
+	      ecomp = '>=';
+	      break
+	    case '<':
+	      gtfn = lt;
+	      ltefn = gte;
+	      ltfn = gt;
+	      comp = '<';
+	      ecomp = '<=';
+	      break
+	    default:
+	      throw new TypeError('Must provide a hilo val of "<" or ">"')
+	  }
+
+	  // If it satisfies the range it is not outside
+	  if (satisfies(version, range, options)) {
+	    return false
+	  }
+
+	  // From now on, variable terms are as if we're in "gtr" mode.
+	  // but note that everything is flipped for the "ltr" function.
+
+	  for (let i = 0; i < range.set.length; ++i) {
+	    const comparators = range.set[i];
+
+	    let high = null;
+	    let low = null;
+
+	    comparators.forEach((comparator) => {
+	      if (comparator.semver === ANY) {
+	        comparator = new Comparator('>=0.0.0');
+	      }
+	      high = high || comparator;
+	      low = low || comparator;
+	      if (gtfn(comparator.semver, high.semver, options)) {
+	        high = comparator;
+	      } else if (ltfn(comparator.semver, low.semver, options)) {
+	        low = comparator;
+	      }
+	    });
+
+	    // If the edge version comparator has a operator then our version
+	    // isn't outside it
+	    if (high.operator === comp || high.operator === ecomp) {
+	      return false
+	    }
+
+	    // If the lowest version comparator has an operator and our version
+	    // is less than it then it isn't higher than the range
+	    if ((!low.operator || low.operator === comp) &&
+	        ltefn(version, low.semver)) {
+	      return false
+	    } else if (low.operator === ecomp && ltfn(version, low.semver)) {
+	      return false
+	    }
+	  }
+	  return true
+	};
+
+	outside_1 = outside;
+	return outside_1;
+}
+
+var gtr_1;
+var hasRequiredGtr;
+
+function requireGtr () {
+	if (hasRequiredGtr) return gtr_1;
+	hasRequiredGtr = 1;
+
+	// Determine if version is greater than all the versions possible in the range.
+	const outside = requireOutside();
+	const gtr = (version, range, options) => outside(version, range, '>', options);
+	gtr_1 = gtr;
+	return gtr_1;
+}
+
+var ltr_1;
+var hasRequiredLtr;
+
+function requireLtr () {
+	if (hasRequiredLtr) return ltr_1;
+	hasRequiredLtr = 1;
+
+	const outside = requireOutside();
+	// Determine if version is less than all the versions possible in the range
+	const ltr = (version, range, options) => outside(version, range, '<', options);
+	ltr_1 = ltr;
+	return ltr_1;
+}
+
+var intersects_1;
+var hasRequiredIntersects;
+
+function requireIntersects () {
+	if (hasRequiredIntersects) return intersects_1;
+	hasRequiredIntersects = 1;
+
+	const Range = requireRange();
+	const intersects = (r1, r2, options) => {
+	  r1 = new Range(r1, options);
+	  r2 = new Range(r2, options);
+	  return r1.intersects(r2, options)
+	};
+	intersects_1 = intersects;
+	return intersects_1;
+}
+
+var simplify;
+var hasRequiredSimplify;
+
+function requireSimplify () {
+	if (hasRequiredSimplify) return simplify;
+	hasRequiredSimplify = 1;
+
+	// given a set of versions and a range, create a "simplified" range
+	// that includes the same versions that the original range does
+	// If the original range is shorter than the simplified one, return that.
+	const satisfies = requireSatisfies();
+	const compare = requireCompare();
+	simplify = (versions, range, options) => {
+	  const set = [];
+	  let first = null;
+	  let prev = null;
+	  const v = versions.sort((a, b) => compare(a, b, options));
+	  for (const version of v) {
+	    const included = satisfies(version, range, options);
+	    if (included) {
+	      prev = version;
+	      if (!first) {
+	        first = version;
+	      }
+	    } else {
+	      if (prev) {
+	        set.push([first, prev]);
+	      }
+	      prev = null;
+	      first = null;
+	    }
+	  }
+	  if (first) {
+	    set.push([first, null]);
+	  }
+
+	  const ranges = [];
+	  for (const [min, max] of set) {
+	    if (min === max) {
+	      ranges.push(min);
+	    } else if (!max && min === v[0]) {
+	      ranges.push('*');
+	    } else if (!max) {
+	      ranges.push(`>=${min}`);
+	    } else if (min === v[0]) {
+	      ranges.push(`<=${max}`);
+	    } else {
+	      ranges.push(`${min} - ${max}`);
+	    }
+	  }
+	  const simplified = ranges.join(' || ');
+	  const original = typeof range.raw === 'string' ? range.raw : String(range);
+	  return simplified.length < original.length ? simplified : range
+	};
+	return simplify;
+}
+
+var subset_1;
+var hasRequiredSubset;
+
+function requireSubset () {
+	if (hasRequiredSubset) return subset_1;
+	hasRequiredSubset = 1;
+
+	const Range = requireRange();
+	const Comparator = requireComparator();
+	const { ANY } = Comparator;
+	const satisfies = requireSatisfies();
+	const compare = requireCompare();
+
+	// Complex range `r1 || r2 || ...` is a subset of `R1 || R2 || ...` iff:
+	// - Every simple range `r1, r2, ...` is a null set, OR
+	// - Every simple range `r1, r2, ...` which is not a null set is a subset of
+	//   some `R1, R2, ...`
+	//
+	// Simple range `c1 c2 ...` is a subset of simple range `C1 C2 ...` iff:
+	// - If c is only the ANY comparator
+	//   - If C is only the ANY comparator, return true
+	//   - Else if in prerelease mode, return false
+	//   - else replace c with `[>=0.0.0]`
+	// - If C is only the ANY comparator
+	//   - if in prerelease mode, return true
+	//   - else replace C with `[>=0.0.0]`
+	// - Let EQ be the set of = comparators in c
+	// - If EQ is more than one, return true (null set)
+	// - Let GT be the highest > or >= comparator in c
+	// - Let LT be the lowest < or <= comparator in c
+	// - If GT and LT, and GT.semver > LT.semver, return true (null set)
+	// - If any C is a = range, and GT or LT are set, return false
+	// - If EQ
+	//   - If GT, and EQ does not satisfy GT, return true (null set)
+	//   - If LT, and EQ does not satisfy LT, return true (null set)
+	//   - If EQ satisfies every C, return true
+	//   - Else return false
+	// - If GT
+	//   - If GT.semver is lower than any > or >= comp in C, return false
+	//   - If GT is >=, and GT.semver does not satisfy every C, return false
+	//   - If GT.semver has a prerelease, and not in prerelease mode
+	//     - If no C has a prerelease and the GT.semver tuple, return false
+	// - If LT
+	//   - If LT.semver is greater than any < or <= comp in C, return false
+	//   - If LT is <=, and LT.semver does not satisfy every C, return false
+	//   - If GT.semver has a prerelease, and not in prerelease mode
+	//     - If no C has a prerelease and the LT.semver tuple, return false
+	// - Else return true
+
+	const subset = (sub, dom, options = {}) => {
+	  if (sub === dom) {
+	    return true
+	  }
+
+	  sub = new Range(sub, options);
+	  dom = new Range(dom, options);
+	  let sawNonNull = false;
+
+	  OUTER: for (const simpleSub of sub.set) {
+	    for (const simpleDom of dom.set) {
+	      const isSub = simpleSubset(simpleSub, simpleDom, options);
+	      sawNonNull = sawNonNull || isSub !== null;
+	      if (isSub) {
+	        continue OUTER
+	      }
+	    }
+	    // the null set is a subset of everything, but null simple ranges in
+	    // a complex range should be ignored.  so if we saw a non-null range,
+	    // then we know this isn't a subset, but if EVERY simple range was null,
+	    // then it is a subset.
+	    if (sawNonNull) {
+	      return false
+	    }
+	  }
+	  return true
+	};
+
+	const minimumVersionWithPreRelease = [new Comparator('>=0.0.0-0')];
+	const minimumVersion = [new Comparator('>=0.0.0')];
+
+	const simpleSubset = (sub, dom, options) => {
+	  if (sub === dom) {
+	    return true
+	  }
+
+	  if (sub.length === 1 && sub[0].semver === ANY) {
+	    if (dom.length === 1 && dom[0].semver === ANY) {
+	      return true
+	    } else if (options.includePrerelease) {
+	      sub = minimumVersionWithPreRelease;
+	    } else {
+	      sub = minimumVersion;
+	    }
+	  }
+
+	  if (dom.length === 1 && dom[0].semver === ANY) {
+	    if (options.includePrerelease) {
+	      return true
+	    } else {
+	      dom = minimumVersion;
+	    }
+	  }
+
+	  const eqSet = new Set();
+	  let gt, lt;
+	  for (const c of sub) {
+	    if (c.operator === '>' || c.operator === '>=') {
+	      gt = higherGT(gt, c, options);
+	    } else if (c.operator === '<' || c.operator === '<=') {
+	      lt = lowerLT(lt, c, options);
+	    } else {
+	      eqSet.add(c.semver);
+	    }
+	  }
+
+	  if (eqSet.size > 1) {
+	    return null
+	  }
+
+	  let gtltComp;
+	  if (gt && lt) {
+	    gtltComp = compare(gt.semver, lt.semver, options);
+	    if (gtltComp > 0) {
+	      return null
+	    } else if (gtltComp === 0 && (gt.operator !== '>=' || lt.operator !== '<=')) {
+	      return null
+	    }
+	  }
+
+	  // will iterate one or zero times
+	  for (const eq of eqSet) {
+	    if (gt && !satisfies(eq, String(gt), options)) {
+	      return null
+	    }
+
+	    if (lt && !satisfies(eq, String(lt), options)) {
+	      return null
+	    }
+
+	    for (const c of dom) {
+	      if (!satisfies(eq, String(c), options)) {
+	        return false
+	      }
+	    }
+
+	    return true
+	  }
+
+	  let higher, lower;
+	  let hasDomLT, hasDomGT;
+	  // if the subset has a prerelease, we need a comparator in the superset
+	  // with the same tuple and a prerelease, or it's not a subset
+	  let needDomLTPre = lt &&
+	    !options.includePrerelease &&
+	    lt.semver.prerelease.length ? lt.semver : false;
+	  let needDomGTPre = gt &&
+	    !options.includePrerelease &&
+	    gt.semver.prerelease.length ? gt.semver : false;
+	  // exception: <1.2.3-0 is the same as <1.2.3
+	  if (needDomLTPre && needDomLTPre.prerelease.length === 1 &&
+	      lt.operator === '<' && needDomLTPre.prerelease[0] === 0) {
+	    needDomLTPre = false;
+	  }
+
+	  for (const c of dom) {
+	    hasDomGT = hasDomGT || c.operator === '>' || c.operator === '>=';
+	    hasDomLT = hasDomLT || c.operator === '<' || c.operator === '<=';
+	    if (gt) {
+	      if (needDomGTPre) {
+	        if (c.semver.prerelease && c.semver.prerelease.length &&
+	            c.semver.major === needDomGTPre.major &&
+	            c.semver.minor === needDomGTPre.minor &&
+	            c.semver.patch === needDomGTPre.patch) {
+	          needDomGTPre = false;
+	        }
+	      }
+	      if (c.operator === '>' || c.operator === '>=') {
+	        higher = higherGT(gt, c, options);
+	        if (higher === c && higher !== gt) {
+	          return false
+	        }
+	      } else if (gt.operator === '>=' && !satisfies(gt.semver, String(c), options)) {
+	        return false
+	      }
+	    }
+	    if (lt) {
+	      if (needDomLTPre) {
+	        if (c.semver.prerelease && c.semver.prerelease.length &&
+	            c.semver.major === needDomLTPre.major &&
+	            c.semver.minor === needDomLTPre.minor &&
+	            c.semver.patch === needDomLTPre.patch) {
+	          needDomLTPre = false;
+	        }
+	      }
+	      if (c.operator === '<' || c.operator === '<=') {
+	        lower = lowerLT(lt, c, options);
+	        if (lower === c && lower !== lt) {
+	          return false
+	        }
+	      } else if (lt.operator === '<=' && !satisfies(lt.semver, String(c), options)) {
+	        return false
+	      }
+	    }
+	    if (!c.operator && (lt || gt) && gtltComp !== 0) {
+	      return false
+	    }
+	  }
+
+	  // if there was a < or >, and nothing in the dom, then must be false
+	  // UNLESS it was limited by another range in the other direction.
+	  // Eg, >1.0.0 <1.0.1 is still a subset of <2.0.0
+	  if (gt && hasDomLT && !lt && gtltComp !== 0) {
+	    return false
+	  }
+
+	  if (lt && hasDomGT && !gt && gtltComp !== 0) {
+	    return false
+	  }
+
+	  // we needed a prerelease range in a specific tuple, but didn't get one
+	  // then this isn't a subset.  eg >=1.2.3-pre is not a subset of >=1.0.0,
+	  // because it includes prereleases in the 1.2.3 tuple
+	  if (needDomGTPre || needDomLTPre) {
+	    return false
+	  }
+
+	  return true
+	};
+
+	// >=1.2.3 is lower than >1.2.3
+	const higherGT = (a, b, options) => {
+	  if (!a) {
+	    return b
+	  }
+	  const comp = compare(a.semver, b.semver, options);
+	  return comp > 0 ? a
+	    : comp < 0 ? b
+	    : b.operator === '>' && a.operator === '>=' ? b
+	    : a
+	};
+
+	// <=1.2.3 is higher than <1.2.3
+	const lowerLT = (a, b, options) => {
+	  if (!a) {
+	    return b
+	  }
+	  const comp = compare(a.semver, b.semver, options);
+	  return comp < 0 ? a
+	    : comp > 0 ? b
+	    : b.operator === '<' && a.operator === '<=' ? b
+	    : a
+	};
+
+	subset_1 = subset;
+	return subset_1;
+}
+
+var semver;
+var hasRequiredSemver;
+
+function requireSemver () {
+	if (hasRequiredSemver) return semver;
+	hasRequiredSemver = 1;
+
+	// just pre-load all the stuff that index.js lazily exports
+	const internalRe = requireRe();
+	const constants = requireConstants();
+	const SemVer = requireSemver$1();
+	const identifiers = requireIdentifiers();
+	const parse = requireParse();
+	const valid = requireValid$1();
+	const clean = requireClean();
+	const inc = requireInc();
+	const diff = requireDiff();
+	const major = requireMajor();
+	const minor = requireMinor();
+	const patch = requirePatch();
+	const prerelease = requirePrerelease();
+	const compare = requireCompare();
+	const rcompare = requireRcompare();
+	const compareLoose = requireCompareLoose();
+	const compareBuild = requireCompareBuild();
+	const sort = requireSort();
+	const rsort = requireRsort();
+	const gt = requireGt();
+	const lt = requireLt();
+	const eq = requireEq();
+	const neq = requireNeq();
+	const gte = requireGte();
+	const lte = requireLte();
+	const cmp = requireCmp();
+	const coerce = requireCoerce();
+	const Comparator = requireComparator();
+	const Range = requireRange();
+	const satisfies = requireSatisfies();
+	const toComparators = requireToComparators();
+	const maxSatisfying = requireMaxSatisfying();
+	const minSatisfying = requireMinSatisfying();
+	const minVersion = requireMinVersion();
+	const validRange = requireValid();
+	const outside = requireOutside();
+	const gtr = requireGtr();
+	const ltr = requireLtr();
+	const intersects = requireIntersects();
+	const simplifyRange = requireSimplify();
+	const subset = requireSubset();
+	semver = {
+	  parse,
+	  valid,
+	  clean,
+	  inc,
+	  diff,
+	  major,
+	  minor,
+	  patch,
+	  prerelease,
+	  compare,
+	  rcompare,
+	  compareLoose,
+	  compareBuild,
+	  sort,
+	  rsort,
+	  gt,
+	  lt,
+	  eq,
+	  neq,
+	  gte,
+	  lte,
+	  cmp,
+	  coerce,
+	  Comparator,
+	  Range,
+	  satisfies,
+	  toComparators,
+	  maxSatisfying,
+	  minSatisfying,
+	  minVersion,
+	  validRange,
+	  outside,
+	  gtr,
+	  ltr,
+	  intersects,
+	  simplifyRange,
+	  subset,
+	  SemVer,
+	  re: internalRe.re,
+	  src: internalRe.src,
+	  tokens: internalRe.t,
+	  SEMVER_SPEC_VERSION: constants.SEMVER_SPEC_VERSION,
+	  RELEASE_TYPES: constants.RELEASE_TYPES,
+	  compareIdentifiers: identifiers.compareIdentifiers,
+	  rcompareIdentifiers: identifiers.rcompareIdentifiers,
+	};
+	return semver;
+}
+
+var asymmetricKeyDetailsSupported;
+var hasRequiredAsymmetricKeyDetailsSupported;
+
+function requireAsymmetricKeyDetailsSupported () {
+	if (hasRequiredAsymmetricKeyDetailsSupported) return asymmetricKeyDetailsSupported;
+	hasRequiredAsymmetricKeyDetailsSupported = 1;
+	const semver = requireSemver();
+
+	asymmetricKeyDetailsSupported = semver.satisfies(process.version, '>=15.7.0');
+	return asymmetricKeyDetailsSupported;
+}
+
+var rsaPssKeyDetailsSupported;
+var hasRequiredRsaPssKeyDetailsSupported;
+
+function requireRsaPssKeyDetailsSupported () {
+	if (hasRequiredRsaPssKeyDetailsSupported) return rsaPssKeyDetailsSupported;
+	hasRequiredRsaPssKeyDetailsSupported = 1;
+	const semver = requireSemver();
+
+	rsaPssKeyDetailsSupported = semver.satisfies(process.version, '>=16.9.0');
+	return rsaPssKeyDetailsSupported;
+}
+
+var validateAsymmetricKey;
+var hasRequiredValidateAsymmetricKey;
+
+function requireValidateAsymmetricKey () {
+	if (hasRequiredValidateAsymmetricKey) return validateAsymmetricKey;
+	hasRequiredValidateAsymmetricKey = 1;
+	const ASYMMETRIC_KEY_DETAILS_SUPPORTED = requireAsymmetricKeyDetailsSupported();
+	const RSA_PSS_KEY_DETAILS_SUPPORTED = requireRsaPssKeyDetailsSupported();
+
+	const allowedAlgorithmsForKeys = {
+	  'ec': ['ES256', 'ES384', 'ES512'],
+	  'rsa': ['RS256', 'PS256', 'RS384', 'PS384', 'RS512', 'PS512'],
+	  'rsa-pss': ['PS256', 'PS384', 'PS512']
+	};
+
+	const allowedCurves = {
+	  ES256: 'prime256v1',
+	  ES384: 'secp384r1',
+	  ES512: 'secp521r1',
+	};
+
+	validateAsymmetricKey = function(algorithm, key) {
+	  if (!algorithm || !key) return;
+
+	  const keyType = key.asymmetricKeyType;
+	  if (!keyType) return;
+
+	  const allowedAlgorithms = allowedAlgorithmsForKeys[keyType];
+
+	  if (!allowedAlgorithms) {
+	    throw new Error(`Unknown key type "${keyType}".`);
+	  }
+
+	  if (!allowedAlgorithms.includes(algorithm)) {
+	    throw new Error(`"alg" parameter for "${keyType}" key type must be one of: ${allowedAlgorithms.join(', ')}.`)
+	  }
+
+	  /*
+	   * Ignore the next block from test coverage because it gets executed
+	   * conditionally depending on the Node version. Not ignoring it would
+	   * prevent us from reaching the target % of coverage for versions of
+	   * Node under 15.7.0.
+	   */
+	  /* istanbul ignore next */
+	  if (ASYMMETRIC_KEY_DETAILS_SUPPORTED) {
+	    switch (keyType) {
+	    case 'ec':
+	      const keyCurve = key.asymmetricKeyDetails.namedCurve;
+	      const allowedCurve = allowedCurves[algorithm];
+
+	      if (keyCurve !== allowedCurve) {
+	        throw new Error(`"alg" parameter "${algorithm}" requires curve "${allowedCurve}".`);
+	      }
+	      break;
+
+	    case 'rsa-pss':
+	      if (RSA_PSS_KEY_DETAILS_SUPPORTED) {
+	        const length = parseInt(algorithm.slice(-3), 10);
+	        const { hashAlgorithm, mgf1HashAlgorithm, saltLength } = key.asymmetricKeyDetails;
+
+	        if (hashAlgorithm !== `sha${length}` || mgf1HashAlgorithm !== hashAlgorithm) {
+	          throw new Error(`Invalid key for this operation, its RSA-PSS parameters do not meet the requirements of "alg" ${algorithm}.`);
+	        }
+
+	        if (saltLength !== undefined && saltLength > length >> 3) {
+	          throw new Error(`Invalid key for this operation, its RSA-PSS parameter saltLength does not meet the requirements of "alg" ${algorithm}.`)
+	        }
+	      }
+	      break;
+	    }
+	  }
+	};
+	return validateAsymmetricKey;
+}
+
+var psSupported;
+var hasRequiredPsSupported;
+
+function requirePsSupported () {
+	if (hasRequiredPsSupported) return psSupported;
+	hasRequiredPsSupported = 1;
+	var semver = requireSemver();
+
+	psSupported = semver.satisfies(process.version, '^6.12.0 || >=8.0.0');
+	return psSupported;
+}
+
+var verify;
+var hasRequiredVerify;
+
+function requireVerify () {
+	if (hasRequiredVerify) return verify;
+	hasRequiredVerify = 1;
+	const JsonWebTokenError = requireJsonWebTokenError();
+	const NotBeforeError = requireNotBeforeError();
+	const TokenExpiredError = requireTokenExpiredError();
+	const decode = requireDecode();
+	const timespan = requireTimespan();
+	const validateAsymmetricKey = requireValidateAsymmetricKey();
+	const PS_SUPPORTED = requirePsSupported();
+	const jws = requireJws();
+	const {KeyObject, createSecretKey, createPublicKey} = crypto$1;
+
+	const PUB_KEY_ALGS = ['RS256', 'RS384', 'RS512'];
+	const EC_KEY_ALGS = ['ES256', 'ES384', 'ES512'];
+	const RSA_KEY_ALGS = ['RS256', 'RS384', 'RS512'];
+	const HS_ALGS = ['HS256', 'HS384', 'HS512'];
+
+	if (PS_SUPPORTED) {
+	  PUB_KEY_ALGS.splice(PUB_KEY_ALGS.length, 0, 'PS256', 'PS384', 'PS512');
+	  RSA_KEY_ALGS.splice(RSA_KEY_ALGS.length, 0, 'PS256', 'PS384', 'PS512');
+	}
+
+	verify = function (jwtString, secretOrPublicKey, options, callback) {
+	  if ((typeof options === 'function') && !callback) {
+	    callback = options;
+	    options = {};
+	  }
+
+	  if (!options) {
+	    options = {};
+	  }
+
+	  //clone this object since we are going to mutate it.
+	  options = Object.assign({}, options);
+
+	  let done;
+
+	  if (callback) {
+	    done = callback;
+	  } else {
+	    done = function(err, data) {
+	      if (err) throw err;
+	      return data;
+	    };
+	  }
+
+	  if (options.clockTimestamp && typeof options.clockTimestamp !== 'number') {
+	    return done(new JsonWebTokenError('clockTimestamp must be a number'));
+	  }
+
+	  if (options.nonce !== undefined && (typeof options.nonce !== 'string' || options.nonce.trim() === '')) {
+	    return done(new JsonWebTokenError('nonce must be a non-empty string'));
+	  }
+
+	  if (options.allowInvalidAsymmetricKeyTypes !== undefined && typeof options.allowInvalidAsymmetricKeyTypes !== 'boolean') {
+	    return done(new JsonWebTokenError('allowInvalidAsymmetricKeyTypes must be a boolean'));
+	  }
+
+	  const clockTimestamp = options.clockTimestamp || Math.floor(Date.now() / 1000);
+
+	  if (!jwtString){
+	    return done(new JsonWebTokenError('jwt must be provided'));
+	  }
+
+	  if (typeof jwtString !== 'string') {
+	    return done(new JsonWebTokenError('jwt must be a string'));
+	  }
+
+	  const parts = jwtString.split('.');
+
+	  if (parts.length !== 3){
+	    return done(new JsonWebTokenError('jwt malformed'));
+	  }
+
+	  let decodedToken;
+
+	  try {
+	    decodedToken = decode(jwtString, { complete: true });
+	  } catch(err) {
+	    return done(err);
+	  }
+
+	  if (!decodedToken) {
+	    return done(new JsonWebTokenError('invalid token'));
+	  }
+
+	  const header = decodedToken.header;
+	  let getSecret;
+
+	  if(typeof secretOrPublicKey === 'function') {
+	    if(!callback) {
+	      return done(new JsonWebTokenError('verify must be called asynchronous if secret or public key is provided as a callback'));
+	    }
+
+	    getSecret = secretOrPublicKey;
+	  }
+	  else {
+	    getSecret = function(header, secretCallback) {
+	      return secretCallback(null, secretOrPublicKey);
+	    };
+	  }
+
+	  return getSecret(header, function(err, secretOrPublicKey) {
+	    if(err) {
+	      return done(new JsonWebTokenError('error in secret or public key callback: ' + err.message));
+	    }
+
+	    const hasSignature = parts[2].trim() !== '';
+
+	    if (!hasSignature && secretOrPublicKey){
+	      return done(new JsonWebTokenError('jwt signature is required'));
+	    }
+
+	    if (hasSignature && !secretOrPublicKey) {
+	      return done(new JsonWebTokenError('secret or public key must be provided'));
+	    }
+
+	    if (!hasSignature && !options.algorithms) {
+	      return done(new JsonWebTokenError('please specify "none" in "algorithms" to verify unsigned tokens'));
+	    }
+
+	    if (secretOrPublicKey != null && !(secretOrPublicKey instanceof KeyObject)) {
+	      try {
+	        secretOrPublicKey = createPublicKey(secretOrPublicKey);
+	      } catch (_) {
+	        try {
+	          secretOrPublicKey = createSecretKey(typeof secretOrPublicKey === 'string' ? Buffer.from(secretOrPublicKey) : secretOrPublicKey);
+	        } catch (_) {
+	          return done(new JsonWebTokenError('secretOrPublicKey is not valid key material'))
+	        }
+	      }
+	    }
+
+	    if (!options.algorithms) {
+	      if (secretOrPublicKey.type === 'secret') {
+	        options.algorithms = HS_ALGS;
+	      } else if (['rsa', 'rsa-pss'].includes(secretOrPublicKey.asymmetricKeyType)) {
+	        options.algorithms = RSA_KEY_ALGS;
+	      } else if (secretOrPublicKey.asymmetricKeyType === 'ec') {
+	        options.algorithms = EC_KEY_ALGS;
+	      } else {
+	        options.algorithms = PUB_KEY_ALGS;
+	      }
+	    }
+
+	    if (options.algorithms.indexOf(decodedToken.header.alg) === -1) {
+	      return done(new JsonWebTokenError('invalid algorithm'));
+	    }
+
+	    if (header.alg.startsWith('HS') && secretOrPublicKey.type !== 'secret') {
+	      return done(new JsonWebTokenError((`secretOrPublicKey must be a symmetric key when using ${header.alg}`)))
+	    } else if (/^(?:RS|PS|ES)/.test(header.alg) && secretOrPublicKey.type !== 'public') {
+	      return done(new JsonWebTokenError((`secretOrPublicKey must be an asymmetric key when using ${header.alg}`)))
+	    }
+
+	    if (!options.allowInvalidAsymmetricKeyTypes) {
+	      try {
+	        validateAsymmetricKey(header.alg, secretOrPublicKey);
+	      } catch (e) {
+	        return done(e);
+	      }
+	    }
+
+	    let valid;
+
+	    try {
+	      valid = jws.verify(jwtString, decodedToken.header.alg, secretOrPublicKey);
+	    } catch (e) {
+	      return done(e);
+	    }
+
+	    if (!valid) {
+	      return done(new JsonWebTokenError('invalid signature'));
+	    }
+
+	    const payload = decodedToken.payload;
+
+	    if (typeof payload.nbf !== 'undefined' && !options.ignoreNotBefore) {
+	      if (typeof payload.nbf !== 'number') {
+	        return done(new JsonWebTokenError('invalid nbf value'));
+	      }
+	      if (payload.nbf > clockTimestamp + (options.clockTolerance || 0)) {
+	        return done(new NotBeforeError('jwt not active', new Date(payload.nbf * 1000)));
+	      }
+	    }
+
+	    if (typeof payload.exp !== 'undefined' && !options.ignoreExpiration) {
+	      if (typeof payload.exp !== 'number') {
+	        return done(new JsonWebTokenError('invalid exp value'));
+	      }
+	      if (clockTimestamp >= payload.exp + (options.clockTolerance || 0)) {
+	        return done(new TokenExpiredError('jwt expired', new Date(payload.exp * 1000)));
+	      }
+	    }
+
+	    if (options.audience) {
+	      const audiences = Array.isArray(options.audience) ? options.audience : [options.audience];
+	      const target = Array.isArray(payload.aud) ? payload.aud : [payload.aud];
+
+	      const match = target.some(function (targetAudience) {
+	        return audiences.some(function (audience) {
+	          return audience instanceof RegExp ? audience.test(targetAudience) : audience === targetAudience;
+	        });
+	      });
+
+	      if (!match) {
+	        return done(new JsonWebTokenError('jwt audience invalid. expected: ' + audiences.join(' or ')));
+	      }
+	    }
+
+	    if (options.issuer) {
+	      const invalid_issuer =
+	              (typeof options.issuer === 'string' && payload.iss !== options.issuer) ||
+	              (Array.isArray(options.issuer) && options.issuer.indexOf(payload.iss) === -1);
+
+	      if (invalid_issuer) {
+	        return done(new JsonWebTokenError('jwt issuer invalid. expected: ' + options.issuer));
+	      }
+	    }
+
+	    if (options.subject) {
+	      if (payload.sub !== options.subject) {
+	        return done(new JsonWebTokenError('jwt subject invalid. expected: ' + options.subject));
+	      }
+	    }
+
+	    if (options.jwtid) {
+	      if (payload.jti !== options.jwtid) {
+	        return done(new JsonWebTokenError('jwt jwtid invalid. expected: ' + options.jwtid));
+	      }
+	    }
+
+	    if (options.nonce) {
+	      if (payload.nonce !== options.nonce) {
+	        return done(new JsonWebTokenError('jwt nonce invalid. expected: ' + options.nonce));
+	      }
+	    }
+
+	    if (options.maxAge) {
+	      if (typeof payload.iat !== 'number') {
+	        return done(new JsonWebTokenError('iat required when maxAge is specified'));
+	      }
+
+	      const maxAgeTimestamp = timespan(options.maxAge, payload.iat);
+	      if (typeof maxAgeTimestamp === 'undefined') {
+	        return done(new JsonWebTokenError('"maxAge" should be a number of seconds or string representing a timespan eg: "1d", "20h", 60'));
+	      }
+	      if (clockTimestamp >= maxAgeTimestamp + (options.clockTolerance || 0)) {
+	        return done(new TokenExpiredError('maxAge exceeded', new Date(maxAgeTimestamp * 1000)));
+	      }
+	    }
+
+	    if (options.complete === true) {
+	      const signature = decodedToken.signature;
+
+	      return done(null, {
+	        header: header,
+	        payload: payload,
+	        signature: signature
+	      });
+	    }
+
+	    return done(null, payload);
+	  });
+	};
+	return verify;
+}
+
+/**
+ * lodash (Custom Build) <https://lodash.com/>
+ * Build: `lodash modularize exports="npm" -o ./`
+ * Copyright jQuery Foundation and other contributors <https://jquery.org/>
+ * Released under MIT license <https://lodash.com/license>
+ * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+ * Copyright Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+ */
+
+var lodash_includes;
+var hasRequiredLodash_includes;
+
+function requireLodash_includes () {
+	if (hasRequiredLodash_includes) return lodash_includes;
+	hasRequiredLodash_includes = 1;
+	/** Used as references for various `Number` constants. */
+	var INFINITY = 1 / 0,
+	    MAX_SAFE_INTEGER = 9007199254740991,
+	    MAX_INTEGER = 1.7976931348623157e+308,
+	    NAN = 0 / 0;
+
+	/** `Object#toString` result references. */
+	var argsTag = '[object Arguments]',
+	    funcTag = '[object Function]',
+	    genTag = '[object GeneratorFunction]',
+	    stringTag = '[object String]',
+	    symbolTag = '[object Symbol]';
+
+	/** Used to match leading and trailing whitespace. */
+	var reTrim = /^\s+|\s+$/g;
+
+	/** Used to detect bad signed hexadecimal string values. */
+	var reIsBadHex = /^[-+]0x[0-9a-f]+$/i;
+
+	/** Used to detect binary string values. */
+	var reIsBinary = /^0b[01]+$/i;
+
+	/** Used to detect octal string values. */
+	var reIsOctal = /^0o[0-7]+$/i;
+
+	/** Used to detect unsigned integer values. */
+	var reIsUint = /^(?:0|[1-9]\d*)$/;
+
+	/** Built-in method references without a dependency on `root`. */
+	var freeParseInt = parseInt;
+
+	/**
+	 * A specialized version of `_.map` for arrays without support for iteratee
+	 * shorthands.
+	 *
+	 * @private
+	 * @param {Array} [array] The array to iterate over.
+	 * @param {Function} iteratee The function invoked per iteration.
+	 * @returns {Array} Returns the new mapped array.
+	 */
+	function arrayMap(array, iteratee) {
+	  var index = -1,
+	      length = array ? array.length : 0,
+	      result = Array(length);
+
+	  while (++index < length) {
+	    result[index] = iteratee(array[index], index, array);
+	  }
+	  return result;
+	}
+
+	/**
+	 * The base implementation of `_.findIndex` and `_.findLastIndex` without
+	 * support for iteratee shorthands.
+	 *
+	 * @private
+	 * @param {Array} array The array to inspect.
+	 * @param {Function} predicate The function invoked per iteration.
+	 * @param {number} fromIndex The index to search from.
+	 * @param {boolean} [fromRight] Specify iterating from right to left.
+	 * @returns {number} Returns the index of the matched value, else `-1`.
+	 */
+	function baseFindIndex(array, predicate, fromIndex, fromRight) {
+	  var length = array.length,
+	      index = fromIndex + (-1);
+
+	  while ((++index < length)) {
+	    if (predicate(array[index], index, array)) {
+	      return index;
+	    }
+	  }
+	  return -1;
+	}
+
+	/**
+	 * The base implementation of `_.indexOf` without `fromIndex` bounds checks.
+	 *
+	 * @private
+	 * @param {Array} array The array to inspect.
+	 * @param {*} value The value to search for.
+	 * @param {number} fromIndex The index to search from.
+	 * @returns {number} Returns the index of the matched value, else `-1`.
+	 */
+	function baseIndexOf(array, value, fromIndex) {
+	  if (value !== value) {
+	    return baseFindIndex(array, baseIsNaN, fromIndex);
+	  }
+	  var index = fromIndex - 1,
+	      length = array.length;
+
+	  while (++index < length) {
+	    if (array[index] === value) {
+	      return index;
+	    }
+	  }
+	  return -1;
+	}
+
+	/**
+	 * The base implementation of `_.isNaN` without support for number objects.
+	 *
+	 * @private
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is `NaN`, else `false`.
+	 */
+	function baseIsNaN(value) {
+	  return value !== value;
+	}
+
+	/**
+	 * The base implementation of `_.times` without support for iteratee shorthands
+	 * or max array length checks.
+	 *
+	 * @private
+	 * @param {number} n The number of times to invoke `iteratee`.
+	 * @param {Function} iteratee The function invoked per iteration.
+	 * @returns {Array} Returns the array of results.
+	 */
+	function baseTimes(n, iteratee) {
+	  var index = -1,
+	      result = Array(n);
+
+	  while (++index < n) {
+	    result[index] = iteratee(index);
+	  }
+	  return result;
+	}
+
+	/**
+	 * The base implementation of `_.values` and `_.valuesIn` which creates an
+	 * array of `object` property values corresponding to the property names
+	 * of `props`.
+	 *
+	 * @private
+	 * @param {Object} object The object to query.
+	 * @param {Array} props The property names to get values for.
+	 * @returns {Object} Returns the array of property values.
+	 */
+	function baseValues(object, props) {
+	  return arrayMap(props, function(key) {
+	    return object[key];
+	  });
+	}
+
+	/**
+	 * Creates a unary function that invokes `func` with its argument transformed.
+	 *
+	 * @private
+	 * @param {Function} func The function to wrap.
+	 * @param {Function} transform The argument transform.
+	 * @returns {Function} Returns the new function.
+	 */
+	function overArg(func, transform) {
+	  return function(arg) {
+	    return func(transform(arg));
+	  };
+	}
+
+	/** Used for built-in method references. */
+	var objectProto = Object.prototype;
+
+	/** Used to check objects for own properties. */
+	var hasOwnProperty = objectProto.hasOwnProperty;
+
+	/**
+	 * Used to resolve the
+	 * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
+	 * of values.
+	 */
+	var objectToString = objectProto.toString;
+
+	/** Built-in value references. */
+	var propertyIsEnumerable = objectProto.propertyIsEnumerable;
+
+	/* Built-in method references for those with the same name as other `lodash` methods. */
+	var nativeKeys = overArg(Object.keys, Object),
+	    nativeMax = Math.max;
+
+	/**
+	 * Creates an array of the enumerable property names of the array-like `value`.
+	 *
+	 * @private
+	 * @param {*} value The value to query.
+	 * @param {boolean} inherited Specify returning inherited property names.
+	 * @returns {Array} Returns the array of property names.
+	 */
+	function arrayLikeKeys(value, inherited) {
+	  // Safari 8.1 makes `arguments.callee` enumerable in strict mode.
+	  // Safari 9 makes `arguments.length` enumerable in strict mode.
+	  var result = (isArray(value) || isArguments(value))
+	    ? baseTimes(value.length, String)
+	    : [];
+
+	  var length = result.length,
+	      skipIndexes = !!length;
+
+	  for (var key in value) {
+	    if ((hasOwnProperty.call(value, key)) &&
+	        !(skipIndexes && (key == 'length' || isIndex(key, length)))) {
+	      result.push(key);
+	    }
+	  }
+	  return result;
+	}
+
+	/**
+	 * The base implementation of `_.keys` which doesn't treat sparse arrays as dense.
+	 *
+	 * @private
+	 * @param {Object} object The object to query.
+	 * @returns {Array} Returns the array of property names.
+	 */
+	function baseKeys(object) {
+	  if (!isPrototype(object)) {
+	    return nativeKeys(object);
+	  }
+	  var result = [];
+	  for (var key in Object(object)) {
+	    if (hasOwnProperty.call(object, key) && key != 'constructor') {
+	      result.push(key);
+	    }
+	  }
+	  return result;
+	}
+
+	/**
+	 * Checks if `value` is a valid array-like index.
+	 *
+	 * @private
+	 * @param {*} value The value to check.
+	 * @param {number} [length=MAX_SAFE_INTEGER] The upper bounds of a valid index.
+	 * @returns {boolean} Returns `true` if `value` is a valid index, else `false`.
+	 */
+	function isIndex(value, length) {
+	  length = length == null ? MAX_SAFE_INTEGER : length;
+	  return !!length &&
+	    (typeof value == 'number' || reIsUint.test(value)) &&
+	    (value > -1 && value % 1 == 0 && value < length);
+	}
+
+	/**
+	 * Checks if `value` is likely a prototype object.
+	 *
+	 * @private
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is a prototype, else `false`.
+	 */
+	function isPrototype(value) {
+	  var Ctor = value && value.constructor,
+	      proto = (typeof Ctor == 'function' && Ctor.prototype) || objectProto;
+
+	  return value === proto;
+	}
+
+	/**
+	 * Checks if `value` is in `collection`. If `collection` is a string, it's
+	 * checked for a substring of `value`, otherwise
+	 * [`SameValueZero`](http://ecma-international.org/ecma-262/7.0/#sec-samevaluezero)
+	 * is used for equality comparisons. If `fromIndex` is negative, it's used as
+	 * the offset from the end of `collection`.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 0.1.0
+	 * @category Collection
+	 * @param {Array|Object|string} collection The collection to inspect.
+	 * @param {*} value The value to search for.
+	 * @param {number} [fromIndex=0] The index to search from.
+	 * @param- {Object} [guard] Enables use as an iteratee for methods like `_.reduce`.
+	 * @returns {boolean} Returns `true` if `value` is found, else `false`.
+	 * @example
+	 *
+	 * _.includes([1, 2, 3], 1);
+	 * // => true
+	 *
+	 * _.includes([1, 2, 3], 1, 2);
+	 * // => false
+	 *
+	 * _.includes({ 'a': 1, 'b': 2 }, 1);
+	 * // => true
+	 *
+	 * _.includes('abcd', 'bc');
+	 * // => true
+	 */
+	function includes(collection, value, fromIndex, guard) {
+	  collection = isArrayLike(collection) ? collection : values(collection);
+	  fromIndex = (fromIndex && !guard) ? toInteger(fromIndex) : 0;
+
+	  var length = collection.length;
+	  if (fromIndex < 0) {
+	    fromIndex = nativeMax(length + fromIndex, 0);
+	  }
+	  return isString(collection)
+	    ? (fromIndex <= length && collection.indexOf(value, fromIndex) > -1)
+	    : (!!length && baseIndexOf(collection, value, fromIndex) > -1);
+	}
+
+	/**
+	 * Checks if `value` is likely an `arguments` object.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 0.1.0
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is an `arguments` object,
+	 *  else `false`.
+	 * @example
+	 *
+	 * _.isArguments(function() { return arguments; }());
+	 * // => true
+	 *
+	 * _.isArguments([1, 2, 3]);
+	 * // => false
+	 */
+	function isArguments(value) {
+	  // Safari 8.1 makes `arguments.callee` enumerable in strict mode.
+	  return isArrayLikeObject(value) && hasOwnProperty.call(value, 'callee') &&
+	    (!propertyIsEnumerable.call(value, 'callee') || objectToString.call(value) == argsTag);
+	}
+
+	/**
+	 * Checks if `value` is classified as an `Array` object.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 0.1.0
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is an array, else `false`.
+	 * @example
+	 *
+	 * _.isArray([1, 2, 3]);
+	 * // => true
+	 *
+	 * _.isArray(document.body.children);
+	 * // => false
+	 *
+	 * _.isArray('abc');
+	 * // => false
+	 *
+	 * _.isArray(_.noop);
+	 * // => false
+	 */
+	var isArray = Array.isArray;
+
+	/**
+	 * Checks if `value` is array-like. A value is considered array-like if it's
+	 * not a function and has a `value.length` that's an integer greater than or
+	 * equal to `0` and less than or equal to `Number.MAX_SAFE_INTEGER`.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 4.0.0
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is array-like, else `false`.
+	 * @example
+	 *
+	 * _.isArrayLike([1, 2, 3]);
+	 * // => true
+	 *
+	 * _.isArrayLike(document.body.children);
+	 * // => true
+	 *
+	 * _.isArrayLike('abc');
+	 * // => true
+	 *
+	 * _.isArrayLike(_.noop);
+	 * // => false
+	 */
+	function isArrayLike(value) {
+	  return value != null && isLength(value.length) && !isFunction(value);
+	}
+
+	/**
+	 * This method is like `_.isArrayLike` except that it also checks if `value`
+	 * is an object.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 4.0.0
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is an array-like object,
+	 *  else `false`.
+	 * @example
+	 *
+	 * _.isArrayLikeObject([1, 2, 3]);
+	 * // => true
+	 *
+	 * _.isArrayLikeObject(document.body.children);
+	 * // => true
+	 *
+	 * _.isArrayLikeObject('abc');
+	 * // => false
+	 *
+	 * _.isArrayLikeObject(_.noop);
+	 * // => false
+	 */
+	function isArrayLikeObject(value) {
+	  return isObjectLike(value) && isArrayLike(value);
+	}
+
+	/**
+	 * Checks if `value` is classified as a `Function` object.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 0.1.0
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is a function, else `false`.
+	 * @example
+	 *
+	 * _.isFunction(_);
+	 * // => true
+	 *
+	 * _.isFunction(/abc/);
+	 * // => false
+	 */
+	function isFunction(value) {
+	  // The use of `Object#toString` avoids issues with the `typeof` operator
+	  // in Safari 8-9 which returns 'object' for typed array and other constructors.
+	  var tag = isObject(value) ? objectToString.call(value) : '';
+	  return tag == funcTag || tag == genTag;
+	}
+
+	/**
+	 * Checks if `value` is a valid array-like length.
+	 *
+	 * **Note:** This method is loosely based on
+	 * [`ToLength`](http://ecma-international.org/ecma-262/7.0/#sec-tolength).
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 4.0.0
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is a valid length, else `false`.
+	 * @example
+	 *
+	 * _.isLength(3);
+	 * // => true
+	 *
+	 * _.isLength(Number.MIN_VALUE);
+	 * // => false
+	 *
+	 * _.isLength(Infinity);
+	 * // => false
+	 *
+	 * _.isLength('3');
+	 * // => false
+	 */
+	function isLength(value) {
+	  return typeof value == 'number' &&
+	    value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER;
+	}
+
+	/**
+	 * Checks if `value` is the
+	 * [language type](http://www.ecma-international.org/ecma-262/7.0/#sec-ecmascript-language-types)
+	 * of `Object`. (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 0.1.0
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is an object, else `false`.
+	 * @example
+	 *
+	 * _.isObject({});
+	 * // => true
+	 *
+	 * _.isObject([1, 2, 3]);
+	 * // => true
+	 *
+	 * _.isObject(_.noop);
+	 * // => true
+	 *
+	 * _.isObject(null);
+	 * // => false
+	 */
+	function isObject(value) {
+	  var type = typeof value;
+	  return !!value && (type == 'object' || type == 'function');
+	}
+
+	/**
+	 * Checks if `value` is object-like. A value is object-like if it's not `null`
+	 * and has a `typeof` result of "object".
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 4.0.0
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
+	 * @example
+	 *
+	 * _.isObjectLike({});
+	 * // => true
+	 *
+	 * _.isObjectLike([1, 2, 3]);
+	 * // => true
+	 *
+	 * _.isObjectLike(_.noop);
+	 * // => false
+	 *
+	 * _.isObjectLike(null);
+	 * // => false
+	 */
+	function isObjectLike(value) {
+	  return !!value && typeof value == 'object';
+	}
+
+	/**
+	 * Checks if `value` is classified as a `String` primitive or object.
+	 *
+	 * @static
+	 * @since 0.1.0
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is a string, else `false`.
+	 * @example
+	 *
+	 * _.isString('abc');
+	 * // => true
+	 *
+	 * _.isString(1);
+	 * // => false
+	 */
+	function isString(value) {
+	  return typeof value == 'string' ||
+	    (!isArray(value) && isObjectLike(value) && objectToString.call(value) == stringTag);
+	}
+
+	/**
+	 * Checks if `value` is classified as a `Symbol` primitive or object.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 4.0.0
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is a symbol, else `false`.
+	 * @example
+	 *
+	 * _.isSymbol(Symbol.iterator);
+	 * // => true
+	 *
+	 * _.isSymbol('abc');
+	 * // => false
+	 */
+	function isSymbol(value) {
+	  return typeof value == 'symbol' ||
+	    (isObjectLike(value) && objectToString.call(value) == symbolTag);
+	}
+
+	/**
+	 * Converts `value` to a finite number.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 4.12.0
+	 * @category Lang
+	 * @param {*} value The value to convert.
+	 * @returns {number} Returns the converted number.
+	 * @example
+	 *
+	 * _.toFinite(3.2);
+	 * // => 3.2
+	 *
+	 * _.toFinite(Number.MIN_VALUE);
+	 * // => 5e-324
+	 *
+	 * _.toFinite(Infinity);
+	 * // => 1.7976931348623157e+308
+	 *
+	 * _.toFinite('3.2');
+	 * // => 3.2
+	 */
+	function toFinite(value) {
+	  if (!value) {
+	    return value === 0 ? value : 0;
+	  }
+	  value = toNumber(value);
+	  if (value === INFINITY || value === -INFINITY) {
+	    var sign = (value < 0 ? -1 : 1);
+	    return sign * MAX_INTEGER;
+	  }
+	  return value === value ? value : 0;
+	}
+
+	/**
+	 * Converts `value` to an integer.
+	 *
+	 * **Note:** This method is loosely based on
+	 * [`ToInteger`](http://www.ecma-international.org/ecma-262/7.0/#sec-tointeger).
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 4.0.0
+	 * @category Lang
+	 * @param {*} value The value to convert.
+	 * @returns {number} Returns the converted integer.
+	 * @example
+	 *
+	 * _.toInteger(3.2);
+	 * // => 3
+	 *
+	 * _.toInteger(Number.MIN_VALUE);
+	 * // => 0
+	 *
+	 * _.toInteger(Infinity);
+	 * // => 1.7976931348623157e+308
+	 *
+	 * _.toInteger('3.2');
+	 * // => 3
+	 */
+	function toInteger(value) {
+	  var result = toFinite(value),
+	      remainder = result % 1;
+
+	  return result === result ? (remainder ? result - remainder : result) : 0;
+	}
+
+	/**
+	 * Converts `value` to a number.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 4.0.0
+	 * @category Lang
+	 * @param {*} value The value to process.
+	 * @returns {number} Returns the number.
+	 * @example
+	 *
+	 * _.toNumber(3.2);
+	 * // => 3.2
+	 *
+	 * _.toNumber(Number.MIN_VALUE);
+	 * // => 5e-324
+	 *
+	 * _.toNumber(Infinity);
+	 * // => Infinity
+	 *
+	 * _.toNumber('3.2');
+	 * // => 3.2
+	 */
+	function toNumber(value) {
+	  if (typeof value == 'number') {
+	    return value;
+	  }
+	  if (isSymbol(value)) {
+	    return NAN;
+	  }
+	  if (isObject(value)) {
+	    var other = typeof value.valueOf == 'function' ? value.valueOf() : value;
+	    value = isObject(other) ? (other + '') : other;
+	  }
+	  if (typeof value != 'string') {
+	    return value === 0 ? value : +value;
+	  }
+	  value = value.replace(reTrim, '');
+	  var isBinary = reIsBinary.test(value);
+	  return (isBinary || reIsOctal.test(value))
+	    ? freeParseInt(value.slice(2), isBinary ? 2 : 8)
+	    : (reIsBadHex.test(value) ? NAN : +value);
+	}
+
+	/**
+	 * Creates an array of the own enumerable property names of `object`.
+	 *
+	 * **Note:** Non-object values are coerced to objects. See the
+	 * [ES spec](http://ecma-international.org/ecma-262/7.0/#sec-object.keys)
+	 * for more details.
+	 *
+	 * @static
+	 * @since 0.1.0
+	 * @memberOf _
+	 * @category Object
+	 * @param {Object} object The object to query.
+	 * @returns {Array} Returns the array of property names.
+	 * @example
+	 *
+	 * function Foo() {
+	 *   this.a = 1;
+	 *   this.b = 2;
+	 * }
+	 *
+	 * Foo.prototype.c = 3;
+	 *
+	 * _.keys(new Foo);
+	 * // => ['a', 'b'] (iteration order is not guaranteed)
+	 *
+	 * _.keys('hi');
+	 * // => ['0', '1']
+	 */
+	function keys(object) {
+	  return isArrayLike(object) ? arrayLikeKeys(object) : baseKeys(object);
+	}
+
+	/**
+	 * Creates an array of the own enumerable string keyed property values of `object`.
+	 *
+	 * **Note:** Non-object values are coerced to objects.
+	 *
+	 * @static
+	 * @since 0.1.0
+	 * @memberOf _
+	 * @category Object
+	 * @param {Object} object The object to query.
+	 * @returns {Array} Returns the array of property values.
+	 * @example
+	 *
+	 * function Foo() {
+	 *   this.a = 1;
+	 *   this.b = 2;
+	 * }
+	 *
+	 * Foo.prototype.c = 3;
+	 *
+	 * _.values(new Foo);
+	 * // => [1, 2] (iteration order is not guaranteed)
+	 *
+	 * _.values('hi');
+	 * // => ['h', 'i']
+	 */
+	function values(object) {
+	  return object ? baseValues(object, keys(object)) : [];
+	}
+
+	lodash_includes = includes;
+	return lodash_includes;
+}
+
+/**
+ * lodash 3.0.3 (Custom Build) <https://lodash.com/>
+ * Build: `lodash modularize exports="npm" -o ./`
+ * Copyright 2012-2016 The Dojo Foundation <http://dojofoundation.org/>
+ * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+ * Copyright 2009-2016 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+ * Available under MIT license <https://lodash.com/license>
+ */
+
+var lodash_isboolean;
+var hasRequiredLodash_isboolean;
+
+function requireLodash_isboolean () {
+	if (hasRequiredLodash_isboolean) return lodash_isboolean;
+	hasRequiredLodash_isboolean = 1;
+	/** `Object#toString` result references. */
+	var boolTag = '[object Boolean]';
+
+	/** Used for built-in method references. */
+	var objectProto = Object.prototype;
+
+	/**
+	 * Used to resolve the [`toStringTag`](http://ecma-international.org/ecma-262/6.0/#sec-object.prototype.tostring)
+	 * of values.
+	 */
+	var objectToString = objectProto.toString;
+
+	/**
+	 * Checks if `value` is classified as a boolean primitive or object.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
+	 * @example
+	 *
+	 * _.isBoolean(false);
+	 * // => true
+	 *
+	 * _.isBoolean(null);
+	 * // => false
+	 */
+	function isBoolean(value) {
+	  return value === true || value === false ||
+	    (isObjectLike(value) && objectToString.call(value) == boolTag);
+	}
+
+	/**
+	 * Checks if `value` is object-like. A value is object-like if it's not `null`
+	 * and has a `typeof` result of "object".
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
+	 * @example
+	 *
+	 * _.isObjectLike({});
+	 * // => true
+	 *
+	 * _.isObjectLike([1, 2, 3]);
+	 * // => true
+	 *
+	 * _.isObjectLike(_.noop);
+	 * // => false
+	 *
+	 * _.isObjectLike(null);
+	 * // => false
+	 */
+	function isObjectLike(value) {
+	  return !!value && typeof value == 'object';
+	}
+
+	lodash_isboolean = isBoolean;
+	return lodash_isboolean;
+}
+
+/**
+ * lodash (Custom Build) <https://lodash.com/>
+ * Build: `lodash modularize exports="npm" -o ./`
+ * Copyright jQuery Foundation and other contributors <https://jquery.org/>
+ * Released under MIT license <https://lodash.com/license>
+ * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+ * Copyright Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+ */
+
+var lodash_isinteger;
+var hasRequiredLodash_isinteger;
+
+function requireLodash_isinteger () {
+	if (hasRequiredLodash_isinteger) return lodash_isinteger;
+	hasRequiredLodash_isinteger = 1;
+	/** Used as references for various `Number` constants. */
+	var INFINITY = 1 / 0,
+	    MAX_INTEGER = 1.7976931348623157e+308,
+	    NAN = 0 / 0;
+
+	/** `Object#toString` result references. */
+	var symbolTag = '[object Symbol]';
+
+	/** Used to match leading and trailing whitespace. */
+	var reTrim = /^\s+|\s+$/g;
+
+	/** Used to detect bad signed hexadecimal string values. */
+	var reIsBadHex = /^[-+]0x[0-9a-f]+$/i;
+
+	/** Used to detect binary string values. */
+	var reIsBinary = /^0b[01]+$/i;
+
+	/** Used to detect octal string values. */
+	var reIsOctal = /^0o[0-7]+$/i;
+
+	/** Built-in method references without a dependency on `root`. */
+	var freeParseInt = parseInt;
+
+	/** Used for built-in method references. */
+	var objectProto = Object.prototype;
+
+	/**
+	 * Used to resolve the
+	 * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
+	 * of values.
+	 */
+	var objectToString = objectProto.toString;
+
+	/**
+	 * Checks if `value` is an integer.
+	 *
+	 * **Note:** This method is based on
+	 * [`Number.isInteger`](https://mdn.io/Number/isInteger).
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 4.0.0
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is an integer, else `false`.
+	 * @example
+	 *
+	 * _.isInteger(3);
+	 * // => true
+	 *
+	 * _.isInteger(Number.MIN_VALUE);
+	 * // => false
+	 *
+	 * _.isInteger(Infinity);
+	 * // => false
+	 *
+	 * _.isInteger('3');
+	 * // => false
+	 */
+	function isInteger(value) {
+	  return typeof value == 'number' && value == toInteger(value);
+	}
+
+	/**
+	 * Checks if `value` is the
+	 * [language type](http://www.ecma-international.org/ecma-262/7.0/#sec-ecmascript-language-types)
+	 * of `Object`. (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 0.1.0
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is an object, else `false`.
+	 * @example
+	 *
+	 * _.isObject({});
+	 * // => true
+	 *
+	 * _.isObject([1, 2, 3]);
+	 * // => true
+	 *
+	 * _.isObject(_.noop);
+	 * // => true
+	 *
+	 * _.isObject(null);
+	 * // => false
+	 */
+	function isObject(value) {
+	  var type = typeof value;
+	  return !!value && (type == 'object' || type == 'function');
+	}
+
+	/**
+	 * Checks if `value` is object-like. A value is object-like if it's not `null`
+	 * and has a `typeof` result of "object".
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 4.0.0
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
+	 * @example
+	 *
+	 * _.isObjectLike({});
+	 * // => true
+	 *
+	 * _.isObjectLike([1, 2, 3]);
+	 * // => true
+	 *
+	 * _.isObjectLike(_.noop);
+	 * // => false
+	 *
+	 * _.isObjectLike(null);
+	 * // => false
+	 */
+	function isObjectLike(value) {
+	  return !!value && typeof value == 'object';
+	}
+
+	/**
+	 * Checks if `value` is classified as a `Symbol` primitive or object.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 4.0.0
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is a symbol, else `false`.
+	 * @example
+	 *
+	 * _.isSymbol(Symbol.iterator);
+	 * // => true
+	 *
+	 * _.isSymbol('abc');
+	 * // => false
+	 */
+	function isSymbol(value) {
+	  return typeof value == 'symbol' ||
+	    (isObjectLike(value) && objectToString.call(value) == symbolTag);
+	}
+
+	/**
+	 * Converts `value` to a finite number.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 4.12.0
+	 * @category Lang
+	 * @param {*} value The value to convert.
+	 * @returns {number} Returns the converted number.
+	 * @example
+	 *
+	 * _.toFinite(3.2);
+	 * // => 3.2
+	 *
+	 * _.toFinite(Number.MIN_VALUE);
+	 * // => 5e-324
+	 *
+	 * _.toFinite(Infinity);
+	 * // => 1.7976931348623157e+308
+	 *
+	 * _.toFinite('3.2');
+	 * // => 3.2
+	 */
+	function toFinite(value) {
+	  if (!value) {
+	    return value === 0 ? value : 0;
+	  }
+	  value = toNumber(value);
+	  if (value === INFINITY || value === -INFINITY) {
+	    var sign = (value < 0 ? -1 : 1);
+	    return sign * MAX_INTEGER;
+	  }
+	  return value === value ? value : 0;
+	}
+
+	/**
+	 * Converts `value` to an integer.
+	 *
+	 * **Note:** This method is loosely based on
+	 * [`ToInteger`](http://www.ecma-international.org/ecma-262/7.0/#sec-tointeger).
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 4.0.0
+	 * @category Lang
+	 * @param {*} value The value to convert.
+	 * @returns {number} Returns the converted integer.
+	 * @example
+	 *
+	 * _.toInteger(3.2);
+	 * // => 3
+	 *
+	 * _.toInteger(Number.MIN_VALUE);
+	 * // => 0
+	 *
+	 * _.toInteger(Infinity);
+	 * // => 1.7976931348623157e+308
+	 *
+	 * _.toInteger('3.2');
+	 * // => 3
+	 */
+	function toInteger(value) {
+	  var result = toFinite(value),
+	      remainder = result % 1;
+
+	  return result === result ? (remainder ? result - remainder : result) : 0;
+	}
+
+	/**
+	 * Converts `value` to a number.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 4.0.0
+	 * @category Lang
+	 * @param {*} value The value to process.
+	 * @returns {number} Returns the number.
+	 * @example
+	 *
+	 * _.toNumber(3.2);
+	 * // => 3.2
+	 *
+	 * _.toNumber(Number.MIN_VALUE);
+	 * // => 5e-324
+	 *
+	 * _.toNumber(Infinity);
+	 * // => Infinity
+	 *
+	 * _.toNumber('3.2');
+	 * // => 3.2
+	 */
+	function toNumber(value) {
+	  if (typeof value == 'number') {
+	    return value;
+	  }
+	  if (isSymbol(value)) {
+	    return NAN;
+	  }
+	  if (isObject(value)) {
+	    var other = typeof value.valueOf == 'function' ? value.valueOf() : value;
+	    value = isObject(other) ? (other + '') : other;
+	  }
+	  if (typeof value != 'string') {
+	    return value === 0 ? value : +value;
+	  }
+	  value = value.replace(reTrim, '');
+	  var isBinary = reIsBinary.test(value);
+	  return (isBinary || reIsOctal.test(value))
+	    ? freeParseInt(value.slice(2), isBinary ? 2 : 8)
+	    : (reIsBadHex.test(value) ? NAN : +value);
+	}
+
+	lodash_isinteger = isInteger;
+	return lodash_isinteger;
+}
+
+/**
+ * lodash 3.0.3 (Custom Build) <https://lodash.com/>
+ * Build: `lodash modularize exports="npm" -o ./`
+ * Copyright 2012-2016 The Dojo Foundation <http://dojofoundation.org/>
+ * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+ * Copyright 2009-2016 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+ * Available under MIT license <https://lodash.com/license>
+ */
+
+var lodash_isnumber;
+var hasRequiredLodash_isnumber;
+
+function requireLodash_isnumber () {
+	if (hasRequiredLodash_isnumber) return lodash_isnumber;
+	hasRequiredLodash_isnumber = 1;
+	/** `Object#toString` result references. */
+	var numberTag = '[object Number]';
+
+	/** Used for built-in method references. */
+	var objectProto = Object.prototype;
+
+	/**
+	 * Used to resolve the [`toStringTag`](http://ecma-international.org/ecma-262/6.0/#sec-object.prototype.tostring)
+	 * of values.
+	 */
+	var objectToString = objectProto.toString;
+
+	/**
+	 * Checks if `value` is object-like. A value is object-like if it's not `null`
+	 * and has a `typeof` result of "object".
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
+	 * @example
+	 *
+	 * _.isObjectLike({});
+	 * // => true
+	 *
+	 * _.isObjectLike([1, 2, 3]);
+	 * // => true
+	 *
+	 * _.isObjectLike(_.noop);
+	 * // => false
+	 *
+	 * _.isObjectLike(null);
+	 * // => false
+	 */
+	function isObjectLike(value) {
+	  return !!value && typeof value == 'object';
+	}
+
+	/**
+	 * Checks if `value` is classified as a `Number` primitive or object.
+	 *
+	 * **Note:** To exclude `Infinity`, `-Infinity`, and `NaN`, which are classified
+	 * as numbers, use the `_.isFinite` method.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
+	 * @example
+	 *
+	 * _.isNumber(3);
+	 * // => true
+	 *
+	 * _.isNumber(Number.MIN_VALUE);
+	 * // => true
+	 *
+	 * _.isNumber(Infinity);
+	 * // => true
+	 *
+	 * _.isNumber('3');
+	 * // => false
+	 */
+	function isNumber(value) {
+	  return typeof value == 'number' ||
+	    (isObjectLike(value) && objectToString.call(value) == numberTag);
+	}
+
+	lodash_isnumber = isNumber;
+	return lodash_isnumber;
+}
+
+/**
+ * lodash (Custom Build) <https://lodash.com/>
+ * Build: `lodash modularize exports="npm" -o ./`
+ * Copyright jQuery Foundation and other contributors <https://jquery.org/>
+ * Released under MIT license <https://lodash.com/license>
+ * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+ * Copyright Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+ */
+
+var lodash_isplainobject;
+var hasRequiredLodash_isplainobject;
+
+function requireLodash_isplainobject () {
+	if (hasRequiredLodash_isplainobject) return lodash_isplainobject;
+	hasRequiredLodash_isplainobject = 1;
+	/** `Object#toString` result references. */
+	var objectTag = '[object Object]';
+
+	/**
+	 * Checks if `value` is a host object in IE < 9.
+	 *
+	 * @private
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is a host object, else `false`.
+	 */
+	function isHostObject(value) {
+	  // Many host objects are `Object` objects that can coerce to strings
+	  // despite having improperly defined `toString` methods.
+	  var result = false;
+	  if (value != null && typeof value.toString != 'function') {
+	    try {
+	      result = !!(value + '');
+	    } catch (e) {}
+	  }
+	  return result;
+	}
+
+	/**
+	 * Creates a unary function that invokes `func` with its argument transformed.
+	 *
+	 * @private
+	 * @param {Function} func The function to wrap.
+	 * @param {Function} transform The argument transform.
+	 * @returns {Function} Returns the new function.
+	 */
+	function overArg(func, transform) {
+	  return function(arg) {
+	    return func(transform(arg));
+	  };
+	}
+
+	/** Used for built-in method references. */
+	var funcProto = Function.prototype,
+	    objectProto = Object.prototype;
+
+	/** Used to resolve the decompiled source of functions. */
+	var funcToString = funcProto.toString;
+
+	/** Used to check objects for own properties. */
+	var hasOwnProperty = objectProto.hasOwnProperty;
+
+	/** Used to infer the `Object` constructor. */
+	var objectCtorString = funcToString.call(Object);
+
+	/**
+	 * Used to resolve the
+	 * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
+	 * of values.
+	 */
+	var objectToString = objectProto.toString;
+
+	/** Built-in value references. */
+	var getPrototype = overArg(Object.getPrototypeOf, Object);
+
+	/**
+	 * Checks if `value` is object-like. A value is object-like if it's not `null`
+	 * and has a `typeof` result of "object".
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 4.0.0
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
+	 * @example
+	 *
+	 * _.isObjectLike({});
+	 * // => true
+	 *
+	 * _.isObjectLike([1, 2, 3]);
+	 * // => true
+	 *
+	 * _.isObjectLike(_.noop);
+	 * // => false
+	 *
+	 * _.isObjectLike(null);
+	 * // => false
+	 */
+	function isObjectLike(value) {
+	  return !!value && typeof value == 'object';
+	}
+
+	/**
+	 * Checks if `value` is a plain object, that is, an object created by the
+	 * `Object` constructor or one with a `[[Prototype]]` of `null`.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 0.8.0
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is a plain object, else `false`.
+	 * @example
+	 *
+	 * function Foo() {
+	 *   this.a = 1;
+	 * }
+	 *
+	 * _.isPlainObject(new Foo);
+	 * // => false
+	 *
+	 * _.isPlainObject([1, 2, 3]);
+	 * // => false
+	 *
+	 * _.isPlainObject({ 'x': 0, 'y': 0 });
+	 * // => true
+	 *
+	 * _.isPlainObject(Object.create(null));
+	 * // => true
+	 */
+	function isPlainObject(value) {
+	  if (!isObjectLike(value) ||
+	      objectToString.call(value) != objectTag || isHostObject(value)) {
+	    return false;
+	  }
+	  var proto = getPrototype(value);
+	  if (proto === null) {
+	    return true;
+	  }
+	  var Ctor = hasOwnProperty.call(proto, 'constructor') && proto.constructor;
+	  return (typeof Ctor == 'function' &&
+	    Ctor instanceof Ctor && funcToString.call(Ctor) == objectCtorString);
+	}
+
+	lodash_isplainobject = isPlainObject;
+	return lodash_isplainobject;
+}
+
+/**
+ * lodash 4.0.1 (Custom Build) <https://lodash.com/>
+ * Build: `lodash modularize exports="npm" -o ./`
+ * Copyright 2012-2016 The Dojo Foundation <http://dojofoundation.org/>
+ * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+ * Copyright 2009-2016 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+ * Available under MIT license <https://lodash.com/license>
+ */
+
+var lodash_isstring;
+var hasRequiredLodash_isstring;
+
+function requireLodash_isstring () {
+	if (hasRequiredLodash_isstring) return lodash_isstring;
+	hasRequiredLodash_isstring = 1;
+	/** `Object#toString` result references. */
+	var stringTag = '[object String]';
+
+	/** Used for built-in method references. */
+	var objectProto = Object.prototype;
+
+	/**
+	 * Used to resolve the [`toStringTag`](http://ecma-international.org/ecma-262/6.0/#sec-object.prototype.tostring)
+	 * of values.
+	 */
+	var objectToString = objectProto.toString;
+
+	/**
+	 * Checks if `value` is classified as an `Array` object.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @type Function
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
+	 * @example
+	 *
+	 * _.isArray([1, 2, 3]);
+	 * // => true
+	 *
+	 * _.isArray(document.body.children);
+	 * // => false
+	 *
+	 * _.isArray('abc');
+	 * // => false
+	 *
+	 * _.isArray(_.noop);
+	 * // => false
+	 */
+	var isArray = Array.isArray;
+
+	/**
+	 * Checks if `value` is object-like. A value is object-like if it's not `null`
+	 * and has a `typeof` result of "object".
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
+	 * @example
+	 *
+	 * _.isObjectLike({});
+	 * // => true
+	 *
+	 * _.isObjectLike([1, 2, 3]);
+	 * // => true
+	 *
+	 * _.isObjectLike(_.noop);
+	 * // => false
+	 *
+	 * _.isObjectLike(null);
+	 * // => false
+	 */
+	function isObjectLike(value) {
+	  return !!value && typeof value == 'object';
+	}
+
+	/**
+	 * Checks if `value` is classified as a `String` primitive or object.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
+	 * @example
+	 *
+	 * _.isString('abc');
+	 * // => true
+	 *
+	 * _.isString(1);
+	 * // => false
+	 */
+	function isString(value) {
+	  return typeof value == 'string' ||
+	    (!isArray(value) && isObjectLike(value) && objectToString.call(value) == stringTag);
+	}
+
+	lodash_isstring = isString;
+	return lodash_isstring;
+}
+
+/**
+ * lodash (Custom Build) <https://lodash.com/>
+ * Build: `lodash modularize exports="npm" -o ./`
+ * Copyright jQuery Foundation and other contributors <https://jquery.org/>
+ * Released under MIT license <https://lodash.com/license>
+ * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+ * Copyright Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+ */
+
+var lodash_once;
+var hasRequiredLodash_once;
+
+function requireLodash_once () {
+	if (hasRequiredLodash_once) return lodash_once;
+	hasRequiredLodash_once = 1;
+	/** Used as the `TypeError` message for "Functions" methods. */
+	var FUNC_ERROR_TEXT = 'Expected a function';
+
+	/** Used as references for various `Number` constants. */
+	var INFINITY = 1 / 0,
+	    MAX_INTEGER = 1.7976931348623157e+308,
+	    NAN = 0 / 0;
+
+	/** `Object#toString` result references. */
+	var symbolTag = '[object Symbol]';
+
+	/** Used to match leading and trailing whitespace. */
+	var reTrim = /^\s+|\s+$/g;
+
+	/** Used to detect bad signed hexadecimal string values. */
+	var reIsBadHex = /^[-+]0x[0-9a-f]+$/i;
+
+	/** Used to detect binary string values. */
+	var reIsBinary = /^0b[01]+$/i;
+
+	/** Used to detect octal string values. */
+	var reIsOctal = /^0o[0-7]+$/i;
+
+	/** Built-in method references without a dependency on `root`. */
+	var freeParseInt = parseInt;
+
+	/** Used for built-in method references. */
+	var objectProto = Object.prototype;
+
+	/**
+	 * Used to resolve the
+	 * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
+	 * of values.
+	 */
+	var objectToString = objectProto.toString;
+
+	/**
+	 * Creates a function that invokes `func`, with the `this` binding and arguments
+	 * of the created function, while it's called less than `n` times. Subsequent
+	 * calls to the created function return the result of the last `func` invocation.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 3.0.0
+	 * @category Function
+	 * @param {number} n The number of calls at which `func` is no longer invoked.
+	 * @param {Function} func The function to restrict.
+	 * @returns {Function} Returns the new restricted function.
+	 * @example
+	 *
+	 * jQuery(element).on('click', _.before(5, addContactToList));
+	 * // => Allows adding up to 4 contacts to the list.
+	 */
+	function before(n, func) {
+	  var result;
+	  if (typeof func != 'function') {
+	    throw new TypeError(FUNC_ERROR_TEXT);
+	  }
+	  n = toInteger(n);
+	  return function() {
+	    if (--n > 0) {
+	      result = func.apply(this, arguments);
+	    }
+	    if (n <= 1) {
+	      func = undefined;
+	    }
+	    return result;
+	  };
+	}
+
+	/**
+	 * Creates a function that is restricted to invoking `func` once. Repeat calls
+	 * to the function return the value of the first invocation. The `func` is
+	 * invoked with the `this` binding and arguments of the created function.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 0.1.0
+	 * @category Function
+	 * @param {Function} func The function to restrict.
+	 * @returns {Function} Returns the new restricted function.
+	 * @example
+	 *
+	 * var initialize = _.once(createApplication);
+	 * initialize();
+	 * initialize();
+	 * // => `createApplication` is invoked once
+	 */
+	function once(func) {
+	  return before(2, func);
+	}
+
+	/**
+	 * Checks if `value` is the
+	 * [language type](http://www.ecma-international.org/ecma-262/7.0/#sec-ecmascript-language-types)
+	 * of `Object`. (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 0.1.0
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is an object, else `false`.
+	 * @example
+	 *
+	 * _.isObject({});
+	 * // => true
+	 *
+	 * _.isObject([1, 2, 3]);
+	 * // => true
+	 *
+	 * _.isObject(_.noop);
+	 * // => true
+	 *
+	 * _.isObject(null);
+	 * // => false
+	 */
+	function isObject(value) {
+	  var type = typeof value;
+	  return !!value && (type == 'object' || type == 'function');
+	}
+
+	/**
+	 * Checks if `value` is object-like. A value is object-like if it's not `null`
+	 * and has a `typeof` result of "object".
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 4.0.0
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
+	 * @example
+	 *
+	 * _.isObjectLike({});
+	 * // => true
+	 *
+	 * _.isObjectLike([1, 2, 3]);
+	 * // => true
+	 *
+	 * _.isObjectLike(_.noop);
+	 * // => false
+	 *
+	 * _.isObjectLike(null);
+	 * // => false
+	 */
+	function isObjectLike(value) {
+	  return !!value && typeof value == 'object';
+	}
+
+	/**
+	 * Checks if `value` is classified as a `Symbol` primitive or object.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 4.0.0
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is a symbol, else `false`.
+	 * @example
+	 *
+	 * _.isSymbol(Symbol.iterator);
+	 * // => true
+	 *
+	 * _.isSymbol('abc');
+	 * // => false
+	 */
+	function isSymbol(value) {
+	  return typeof value == 'symbol' ||
+	    (isObjectLike(value) && objectToString.call(value) == symbolTag);
+	}
+
+	/**
+	 * Converts `value` to a finite number.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 4.12.0
+	 * @category Lang
+	 * @param {*} value The value to convert.
+	 * @returns {number} Returns the converted number.
+	 * @example
+	 *
+	 * _.toFinite(3.2);
+	 * // => 3.2
+	 *
+	 * _.toFinite(Number.MIN_VALUE);
+	 * // => 5e-324
+	 *
+	 * _.toFinite(Infinity);
+	 * // => 1.7976931348623157e+308
+	 *
+	 * _.toFinite('3.2');
+	 * // => 3.2
+	 */
+	function toFinite(value) {
+	  if (!value) {
+	    return value === 0 ? value : 0;
+	  }
+	  value = toNumber(value);
+	  if (value === INFINITY || value === -INFINITY) {
+	    var sign = (value < 0 ? -1 : 1);
+	    return sign * MAX_INTEGER;
+	  }
+	  return value === value ? value : 0;
+	}
+
+	/**
+	 * Converts `value` to an integer.
+	 *
+	 * **Note:** This method is loosely based on
+	 * [`ToInteger`](http://www.ecma-international.org/ecma-262/7.0/#sec-tointeger).
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 4.0.0
+	 * @category Lang
+	 * @param {*} value The value to convert.
+	 * @returns {number} Returns the converted integer.
+	 * @example
+	 *
+	 * _.toInteger(3.2);
+	 * // => 3
+	 *
+	 * _.toInteger(Number.MIN_VALUE);
+	 * // => 0
+	 *
+	 * _.toInteger(Infinity);
+	 * // => 1.7976931348623157e+308
+	 *
+	 * _.toInteger('3.2');
+	 * // => 3
+	 */
+	function toInteger(value) {
+	  var result = toFinite(value),
+	      remainder = result % 1;
+
+	  return result === result ? (remainder ? result - remainder : result) : 0;
+	}
+
+	/**
+	 * Converts `value` to a number.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 4.0.0
+	 * @category Lang
+	 * @param {*} value The value to process.
+	 * @returns {number} Returns the number.
+	 * @example
+	 *
+	 * _.toNumber(3.2);
+	 * // => 3.2
+	 *
+	 * _.toNumber(Number.MIN_VALUE);
+	 * // => 5e-324
+	 *
+	 * _.toNumber(Infinity);
+	 * // => Infinity
+	 *
+	 * _.toNumber('3.2');
+	 * // => 3.2
+	 */
+	function toNumber(value) {
+	  if (typeof value == 'number') {
+	    return value;
+	  }
+	  if (isSymbol(value)) {
+	    return NAN;
+	  }
+	  if (isObject(value)) {
+	    var other = typeof value.valueOf == 'function' ? value.valueOf() : value;
+	    value = isObject(other) ? (other + '') : other;
+	  }
+	  if (typeof value != 'string') {
+	    return value === 0 ? value : +value;
+	  }
+	  value = value.replace(reTrim, '');
+	  var isBinary = reIsBinary.test(value);
+	  return (isBinary || reIsOctal.test(value))
+	    ? freeParseInt(value.slice(2), isBinary ? 2 : 8)
+	    : (reIsBadHex.test(value) ? NAN : +value);
+	}
+
+	lodash_once = once;
+	return lodash_once;
+}
+
+var sign;
+var hasRequiredSign;
+
+function requireSign () {
+	if (hasRequiredSign) return sign;
+	hasRequiredSign = 1;
+	const timespan = requireTimespan();
+	const PS_SUPPORTED = requirePsSupported();
+	const validateAsymmetricKey = requireValidateAsymmetricKey();
+	const jws = requireJws();
+	const includes = requireLodash_includes();
+	const isBoolean = requireLodash_isboolean();
+	const isInteger = requireLodash_isinteger();
+	const isNumber = requireLodash_isnumber();
+	const isPlainObject = requireLodash_isplainobject();
+	const isString = requireLodash_isstring();
+	const once = requireLodash_once();
+	const { KeyObject, createSecretKey, createPrivateKey } = crypto$1;
+
+	const SUPPORTED_ALGS = ['RS256', 'RS384', 'RS512', 'ES256', 'ES384', 'ES512', 'HS256', 'HS384', 'HS512', 'none'];
+	if (PS_SUPPORTED) {
+	  SUPPORTED_ALGS.splice(3, 0, 'PS256', 'PS384', 'PS512');
+	}
+
+	const sign_options_schema = {
+	  expiresIn: { isValid: function(value) { return isInteger(value) || (isString(value) && value); }, message: '"expiresIn" should be a number of seconds or string representing a timespan' },
+	  notBefore: { isValid: function(value) { return isInteger(value) || (isString(value) && value); }, message: '"notBefore" should be a number of seconds or string representing a timespan' },
+	  audience: { isValid: function(value) { return isString(value) || Array.isArray(value); }, message: '"audience" must be a string or array' },
+	  algorithm: { isValid: includes.bind(null, SUPPORTED_ALGS), message: '"algorithm" must be a valid string enum value' },
+	  header: { isValid: isPlainObject, message: '"header" must be an object' },
+	  encoding: { isValid: isString, message: '"encoding" must be a string' },
+	  issuer: { isValid: isString, message: '"issuer" must be a string' },
+	  subject: { isValid: isString, message: '"subject" must be a string' },
+	  jwtid: { isValid: isString, message: '"jwtid" must be a string' },
+	  noTimestamp: { isValid: isBoolean, message: '"noTimestamp" must be a boolean' },
+	  keyid: { isValid: isString, message: '"keyid" must be a string' },
+	  mutatePayload: { isValid: isBoolean, message: '"mutatePayload" must be a boolean' },
+	  allowInsecureKeySizes: { isValid: isBoolean, message: '"allowInsecureKeySizes" must be a boolean'},
+	  allowInvalidAsymmetricKeyTypes: { isValid: isBoolean, message: '"allowInvalidAsymmetricKeyTypes" must be a boolean'}
+	};
+
+	const registered_claims_schema = {
+	  iat: { isValid: isNumber, message: '"iat" should be a number of seconds' },
+	  exp: { isValid: isNumber, message: '"exp" should be a number of seconds' },
+	  nbf: { isValid: isNumber, message: '"nbf" should be a number of seconds' }
+	};
+
+	function validate(schema, allowUnknown, object, parameterName) {
+	  if (!isPlainObject(object)) {
+	    throw new Error('Expected "' + parameterName + '" to be a plain object.');
+	  }
+	  Object.keys(object)
+	    .forEach(function(key) {
+	      const validator = schema[key];
+	      if (!validator) {
+	        if (!allowUnknown) {
+	          throw new Error('"' + key + '" is not allowed in "' + parameterName + '"');
+	        }
+	        return;
+	      }
+	      if (!validator.isValid(object[key])) {
+	        throw new Error(validator.message);
+	      }
+	    });
+	}
+
+	function validateOptions(options) {
+	  return validate(sign_options_schema, false, options, 'options');
+	}
+
+	function validatePayload(payload) {
+	  return validate(registered_claims_schema, true, payload, 'payload');
+	}
+
+	const options_to_payload = {
+	  'audience': 'aud',
+	  'issuer': 'iss',
+	  'subject': 'sub',
+	  'jwtid': 'jti'
+	};
+
+	const options_for_objects = [
+	  'expiresIn',
+	  'notBefore',
+	  'noTimestamp',
+	  'audience',
+	  'issuer',
+	  'subject',
+	  'jwtid',
+	];
+
+	sign = function (payload, secretOrPrivateKey, options, callback) {
+	  if (typeof options === 'function') {
+	    callback = options;
+	    options = {};
+	  } else {
+	    options = options || {};
+	  }
+
+	  const isObjectPayload = typeof payload === 'object' &&
+	                        !Buffer.isBuffer(payload);
+
+	  const header = Object.assign({
+	    alg: options.algorithm || 'HS256',
+	    typ: isObjectPayload ? 'JWT' : undefined,
+	    kid: options.keyid
+	  }, options.header);
+
+	  function failure(err) {
+	    if (callback) {
+	      return callback(err);
+	    }
+	    throw err;
+	  }
+
+	  if (!secretOrPrivateKey && options.algorithm !== 'none') {
+	    return failure(new Error('secretOrPrivateKey must have a value'));
+	  }
+
+	  if (secretOrPrivateKey != null && !(secretOrPrivateKey instanceof KeyObject)) {
+	    try {
+	      secretOrPrivateKey = createPrivateKey(secretOrPrivateKey);
+	    } catch (_) {
+	      try {
+	        secretOrPrivateKey = createSecretKey(typeof secretOrPrivateKey === 'string' ? Buffer.from(secretOrPrivateKey) : secretOrPrivateKey);
+	      } catch (_) {
+	        return failure(new Error('secretOrPrivateKey is not valid key material'));
+	      }
+	    }
+	  }
+
+	  if (header.alg.startsWith('HS') && secretOrPrivateKey.type !== 'secret') {
+	    return failure(new Error((`secretOrPrivateKey must be a symmetric key when using ${header.alg}`)))
+	  } else if (/^(?:RS|PS|ES)/.test(header.alg)) {
+	    if (secretOrPrivateKey.type !== 'private') {
+	      return failure(new Error((`secretOrPrivateKey must be an asymmetric key when using ${header.alg}`)))
+	    }
+	    if (!options.allowInsecureKeySizes &&
+	      !header.alg.startsWith('ES') &&
+	      secretOrPrivateKey.asymmetricKeyDetails !== undefined && //KeyObject.asymmetricKeyDetails is supported in Node 15+
+	      secretOrPrivateKey.asymmetricKeyDetails.modulusLength < 2048) {
+	      return failure(new Error(`secretOrPrivateKey has a minimum key size of 2048 bits for ${header.alg}`));
+	    }
+	  }
+
+	  if (typeof payload === 'undefined') {
+	    return failure(new Error('payload is required'));
+	  } else if (isObjectPayload) {
+	    try {
+	      validatePayload(payload);
+	    }
+	    catch (error) {
+	      return failure(error);
+	    }
+	    if (!options.mutatePayload) {
+	      payload = Object.assign({},payload);
+	    }
+	  } else {
+	    const invalid_options = options_for_objects.filter(function (opt) {
+	      return typeof options[opt] !== 'undefined';
+	    });
+
+	    if (invalid_options.length > 0) {
+	      return failure(new Error('invalid ' + invalid_options.join(',') + ' option for ' + (typeof payload ) + ' payload'));
+	    }
+	  }
+
+	  if (typeof payload.exp !== 'undefined' && typeof options.expiresIn !== 'undefined') {
+	    return failure(new Error('Bad "options.expiresIn" option the payload already has an "exp" property.'));
+	  }
+
+	  if (typeof payload.nbf !== 'undefined' && typeof options.notBefore !== 'undefined') {
+	    return failure(new Error('Bad "options.notBefore" option the payload already has an "nbf" property.'));
+	  }
+
+	  try {
+	    validateOptions(options);
+	  }
+	  catch (error) {
+	    return failure(error);
+	  }
+
+	  if (!options.allowInvalidAsymmetricKeyTypes) {
+	    try {
+	      validateAsymmetricKey(header.alg, secretOrPrivateKey);
+	    } catch (error) {
+	      return failure(error);
+	    }
+	  }
+
+	  const timestamp = payload.iat || Math.floor(Date.now() / 1000);
+
+	  if (options.noTimestamp) {
+	    delete payload.iat;
+	  } else if (isObjectPayload) {
+	    payload.iat = timestamp;
+	  }
+
+	  if (typeof options.notBefore !== 'undefined') {
+	    try {
+	      payload.nbf = timespan(options.notBefore, timestamp);
+	    }
+	    catch (err) {
+	      return failure(err);
+	    }
+	    if (typeof payload.nbf === 'undefined') {
+	      return failure(new Error('"notBefore" should be a number of seconds or string representing a timespan eg: "1d", "20h", 60'));
+	    }
+	  }
+
+	  if (typeof options.expiresIn !== 'undefined' && typeof payload === 'object') {
+	    try {
+	      payload.exp = timespan(options.expiresIn, timestamp);
+	    }
+	    catch (err) {
+	      return failure(err);
+	    }
+	    if (typeof payload.exp === 'undefined') {
+	      return failure(new Error('"expiresIn" should be a number of seconds or string representing a timespan eg: "1d", "20h", 60'));
+	    }
+	  }
+
+	  Object.keys(options_to_payload).forEach(function (key) {
+	    const claim = options_to_payload[key];
+	    if (typeof options[key] !== 'undefined') {
+	      if (typeof payload[claim] !== 'undefined') {
+	        return failure(new Error('Bad "options.' + key + '" option. The payload already has an "' + claim + '" property.'));
+	      }
+	      payload[claim] = options[key];
+	    }
+	  });
+
+	  const encoding = options.encoding || 'utf8';
+
+	  if (typeof callback === 'function') {
+	    callback = callback && once(callback);
+
+	    jws.createSign({
+	      header: header,
+	      privateKey: secretOrPrivateKey,
+	      payload: payload,
+	      encoding: encoding
+	    }).once('error', callback)
+	      .once('done', function (signature) {
+	        // TODO: Remove in favor of the modulus length check before signing once node 15+ is the minimum supported version
+	        if(!options.allowInsecureKeySizes && /^(?:RS|PS)/.test(header.alg) && signature.length < 256) {
+	          return callback(new Error(`secretOrPrivateKey has a minimum key size of 2048 bits for ${header.alg}`))
+	        }
+	        callback(null, signature);
+	      });
+	  } else {
+	    let signature = jws.sign({header: header, payload: payload, secret: secretOrPrivateKey, encoding: encoding});
+	    // TODO: Remove in favor of the modulus length check before signing once node 15+ is the minimum supported version
+	    if(!options.allowInsecureKeySizes && /^(?:RS|PS)/.test(header.alg) && signature.length < 256) {
+	      throw new Error(`secretOrPrivateKey has a minimum key size of 2048 bits for ${header.alg}`)
+	    }
+	    return signature
+	  }
+	};
+	return sign;
+}
+
+var jsonwebtoken;
+var hasRequiredJsonwebtoken;
+
+function requireJsonwebtoken () {
+	if (hasRequiredJsonwebtoken) return jsonwebtoken;
+	hasRequiredJsonwebtoken = 1;
+	jsonwebtoken = {
+	  decode: requireDecode(),
+	  verify: requireVerify(),
+	  sign: requireSign(),
+	  JsonWebTokenError: requireJsonWebTokenError(),
+	  NotBeforeError: requireNotBeforeError(),
+	  TokenExpiredError: requireTokenExpiredError(),
+	};
+	return jsonwebtoken;
+}
+
+var jsonwebtokenExports = requireJsonwebtoken();
+var jwt = /*@__PURE__*/getDefaultExportFromCjs(jsonwebtokenExports);
+
+/*! @azure/msal-node v3.8.3 2025-11-19 */
+
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ */
+/**
+ * Client assertion of type jwt-bearer used in confidential client flows
+ * @public
+ */
+class ClientAssertion {
+    /**
+     * Initialize the ClientAssertion class from the clientAssertion passed by the user
+     * @param assertion - refer https://tools.ietf.org/html/rfc7521
+     */
+    static fromAssertion(assertion) {
+        const clientAssertion = new ClientAssertion();
+        clientAssertion.jwt = assertion;
+        return clientAssertion;
+    }
+    /**
+     * @deprecated Use fromCertificateWithSha256Thumbprint instead, with a SHA-256 thumprint
+     * Initialize the ClientAssertion class from the certificate passed by the user
+     * @param thumbprint - identifier of a certificate
+     * @param privateKey - secret key
+     * @param publicCertificate - electronic document provided to prove the ownership of the public key
+     */
+    static fromCertificate(thumbprint, privateKey, publicCertificate) {
+        const clientAssertion = new ClientAssertion();
+        clientAssertion.privateKey = privateKey;
+        clientAssertion.thumbprint = thumbprint;
+        clientAssertion.useSha256 = false;
+        if (publicCertificate) {
+            clientAssertion.publicCertificate =
+                this.parseCertificate(publicCertificate);
+        }
+        return clientAssertion;
+    }
+    /**
+     * Initialize the ClientAssertion class from the certificate passed by the user
+     * @param thumbprint - identifier of a certificate
+     * @param privateKey - secret key
+     * @param publicCertificate - electronic document provided to prove the ownership of the public key
+     */
+    static fromCertificateWithSha256Thumbprint(thumbprint, privateKey, publicCertificate) {
+        const clientAssertion = new ClientAssertion();
+        clientAssertion.privateKey = privateKey;
+        clientAssertion.thumbprint = thumbprint;
+        clientAssertion.useSha256 = true;
+        if (publicCertificate) {
+            clientAssertion.publicCertificate =
+                this.parseCertificate(publicCertificate);
+        }
+        return clientAssertion;
+    }
+    /**
+     * Update JWT for certificate based clientAssertion, if passed by the user, uses it as is
+     * @param cryptoProvider - library's crypto helper
+     * @param issuer - iss claim
+     * @param jwtAudience - aud claim
+     */
+    getJwt(cryptoProvider, issuer, jwtAudience) {
+        // if assertion was created from certificate, check if jwt is expired and create new one.
+        if (this.privateKey && this.thumbprint) {
+            if (this.jwt &&
+                !this.isExpired() &&
+                issuer === this.issuer &&
+                jwtAudience === this.jwtAudience) {
+                return this.jwt;
+            }
+            return this.createJwt(cryptoProvider, issuer, jwtAudience);
+        }
+        /*
+         * if assertion was created by caller, then we just append it. It is up to the caller to
+         * ensure that it contains necessary claims and that it is not expired.
+         */
+        if (this.jwt) {
+            return this.jwt;
+        }
+        throw createClientAuthError(invalidAssertion);
+    }
+    /**
+     * JWT format and required claims specified: https://tools.ietf.org/html/rfc7523#section-3
+     */
+    createJwt(cryptoProvider, issuer, jwtAudience) {
+        this.issuer = issuer;
+        this.jwtAudience = jwtAudience;
+        const issuedAt = nowSeconds();
+        this.expirationTime = issuedAt + 600;
+        const algorithm = this.useSha256
+            ? JwtConstants.PSS_256
+            : JwtConstants.RSA_256;
+        const header = {
+            alg: algorithm,
+        };
+        const thumbprintHeader = this.useSha256
+            ? JwtConstants.X5T_256
+            : JwtConstants.X5T;
+        Object.assign(header, {
+            [thumbprintHeader]: EncodingUtils.base64EncodeUrl(this.thumbprint, EncodingTypes.HEX),
+        });
+        if (this.publicCertificate) {
+            Object.assign(header, {
+                [JwtConstants.X5C]: this.publicCertificate,
+            });
+        }
+        const payload = {
+            [JwtConstants.AUDIENCE]: this.jwtAudience,
+            [JwtConstants.EXPIRATION_TIME]: this.expirationTime,
+            [JwtConstants.ISSUER]: this.issuer,
+            [JwtConstants.SUBJECT]: this.issuer,
+            [JwtConstants.NOT_BEFORE]: issuedAt,
+            [JwtConstants.JWT_ID]: cryptoProvider.createNewGuid(),
+        };
+        this.jwt = jwt.sign(payload, this.privateKey, { header });
+        return this.jwt;
+    }
+    /**
+     * Utility API to check expiration
+     */
+    isExpired() {
+        return this.expirationTime < nowSeconds();
+    }
+    /**
+     * Extracts the raw certs from a given certificate string and returns them in an array.
+     * @param publicCertificate - electronic document provided to prove the ownership of the public key
+     */
+    static parseCertificate(publicCertificate) {
+        /**
+         * This is regex to identify the certs in a given certificate string.
+         * We want to look for the contents between the BEGIN and END certificate strings, without the associated newlines.
+         * The information in parens "(.+?)" is the capture group to represent the cert we want isolated.
+         * "." means any string character, "+" means match 1 or more times, and "?" means the shortest match.
+         * The "g" at the end of the regex means search the string globally, and the "s" enables the "." to match newlines.
+         */
+        const regexToFindCerts = /-----BEGIN CERTIFICATE-----\r*\n(.+?)\r*\n-----END CERTIFICATE-----/gs;
+        const certs = [];
+        let matches;
+        while ((matches = regexToFindCerts.exec(publicCertificate)) !== null) {
+            // matches[1] represents the first parens capture group in the regex.
+            certs.push(matches[1].replace(/\r*\n/g, Constants$1.EMPTY_STRING));
+        }
+        return certs;
+    }
+}
+
+/*! @azure/msal-node v3.8.3 2025-11-19 */
+
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ */
+/**
+ * Oauth2.0 Password grant client
+ * Note: We are only supporting public clients for password grant and for purely testing purposes
+ * @public
+ * @deprecated - Use a more secure flow instead
+ */
+class UsernamePasswordClient extends BaseClient {
+    constructor(configuration) {
+        super(configuration);
+    }
+    /**
+     * API to acquire a token by passing the username and password to the service in exchage of credentials
+     * password_grant
+     * @param request - CommonUsernamePasswordRequest
+     */
+    async acquireToken(request) {
+        this.logger.info("in acquireToken call in username-password client");
+        const reqTimestamp = nowSeconds();
+        const response = await this.executeTokenRequest(this.authority, request);
+        const responseHandler = new ResponseHandler(this.config.authOptions.clientId, this.cacheManager, this.cryptoUtils, this.logger, this.config.serializableCache, this.config.persistencePlugin);
+        // Validate response. This function throws a server error if an error is returned by the server.
+        responseHandler.validateTokenResponse(response.body);
+        const tokenResponse = responseHandler.handleServerTokenResponse(response.body, this.authority, reqTimestamp, request);
+        return tokenResponse;
+    }
+    /**
+     * Executes POST request to token endpoint
+     * @param authority - authority object
+     * @param request - CommonUsernamePasswordRequest provided by the developer
+     */
+    async executeTokenRequest(authority, request) {
+        const queryParametersString = this.createTokenQueryParameters(request);
+        const endpoint = UrlString.appendQueryString(authority.tokenEndpoint, queryParametersString);
+        const requestBody = await this.createTokenRequestBody(request);
+        const headers = this.createTokenRequestHeaders({
+            credential: request.username,
+            type: CcsCredentialType.UPN,
+        });
+        const thumbprint = {
+            clientId: this.config.authOptions.clientId,
+            authority: authority.canonicalAuthority,
+            scopes: request.scopes,
+            claims: request.claims,
+            authenticationScheme: request.authenticationScheme,
+            resourceRequestMethod: request.resourceRequestMethod,
+            resourceRequestUri: request.resourceRequestUri,
+            shrClaims: request.shrClaims,
+            sshKid: request.sshKid,
+        };
+        return this.executePostToTokenEndpoint(endpoint, requestBody, headers, thumbprint, request.correlationId);
+    }
+    /**
+     * Generates a map for all the params to be sent to the service
+     * @param request - CommonUsernamePasswordRequest provided by the developer
+     */
+    async createTokenRequestBody(request) {
+        const parameters = new Map();
+        addClientId(parameters, this.config.authOptions.clientId);
+        addUsername(parameters, request.username);
+        addPassword(parameters, request.password);
+        addScopes(parameters, request.scopes);
+        addResponseType(parameters, OAuthResponseType.IDTOKEN_TOKEN);
+        addGrantType(parameters, GrantType.RESOURCE_OWNER_PASSWORD_GRANT);
+        addClientInfo(parameters);
+        addLibraryInfo(parameters, this.config.libraryInfo);
+        addApplicationTelemetry(parameters, this.config.telemetry.application);
+        addThrottling(parameters);
+        if (this.serverTelemetryManager) {
+            addServerTelemetry(parameters, this.serverTelemetryManager);
+        }
+        const correlationId = request.correlationId ||
+            this.config.cryptoInterface.createNewGuid();
+        addCorrelationId(parameters, correlationId);
+        if (this.config.clientCredentials.clientSecret) {
+            addClientSecret(parameters, this.config.clientCredentials.clientSecret);
+        }
+        const clientAssertion = this.config.clientCredentials.clientAssertion;
+        if (clientAssertion) {
+            addClientAssertion(parameters, await getClientAssertion(clientAssertion.assertion, this.config.authOptions.clientId, request.resourceRequestUri));
+            addClientAssertionType(parameters, clientAssertion.assertionType);
+        }
+        if (!StringUtils.isEmptyObj(request.claims) ||
+            (this.config.authOptions.clientCapabilities &&
+                this.config.authOptions.clientCapabilities.length > 0)) {
+            addClaims(parameters, request.claims, this.config.authOptions.clientCapabilities);
+        }
+        if (this.config.systemOptions.preventCorsPreflight &&
+            request.username) {
+            addCcsUpn(parameters, request.username);
+        }
+        return mapToQueryString(parameters);
+    }
+}
+
+/*! @azure/msal-node v3.8.3 2025-11-19 */
+
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ */
+/**
+ * Constructs the full /authorize URL with request parameters
+ * @param config
+ * @param authority
+ * @param request
+ * @param logger
+ * @returns
+ */
+function getAuthCodeRequestUrl(config, authority, request, logger) {
+    const parameters = getStandardAuthorizeRequestParameters({
+        ...config.auth,
+        authority: authority,
+        redirectUri: request.redirectUri || "",
+    }, request, logger);
+    addLibraryInfo(parameters, {
+        sku: Constants.MSAL_SKU,
+        version: version,
+        cpu: process.arch || "",
+        os: process.platform || "",
+    });
+    if (config.auth.protocolMode !== ProtocolMode.OIDC) {
+        addApplicationTelemetry(parameters, config.telemetry.application);
+    }
+    addResponseType(parameters, OAuthResponseType.CODE);
+    if (request.codeChallenge && request.codeChallengeMethod) {
+        addCodeChallengeParams(parameters, request.codeChallenge, request.codeChallengeMethod);
+    }
+    addExtraQueryParameters(parameters, request.extraQueryParameters || {});
+    return getAuthorizeUrl(authority, parameters, config.auth.encodeExtraQueryParams, request.extraQueryParameters);
+}
+
+/*! @azure/msal-node v3.8.3 2025-11-19 */
+
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ */
+/**
+ * Base abstract class for all ClientApplications - public and confidential
+ * @public
+ */
+class ClientApplication {
+    /**
+     * Constructor for the ClientApplication
+     */
+    constructor(configuration) {
+        this.config = buildAppConfiguration(configuration);
+        this.cryptoProvider = new CryptoProvider();
+        this.logger = new Logger(this.config.system.loggerOptions, name, version);
+        this.storage = new NodeStorage(this.logger, this.config.auth.clientId, this.cryptoProvider, buildStaticAuthorityOptions(this.config.auth));
+        this.tokenCache = new TokenCache(this.storage, this.logger, this.config.cache.cachePlugin);
+    }
+    /**
+     * Creates the URL of the authorization request, letting the user input credentials and consent to the
+     * application. The URL targets the /authorize endpoint of the authority configured in the
+     * application object.
+     *
+     * Once the user inputs their credentials and consents, the authority will send a response to the redirect URI
+     * sent in the request and should contain an authorization code, which can then be used to acquire tokens via
+     * `acquireTokenByCode(AuthorizationCodeRequest)`.
+     */
+    async getAuthCodeUrl(request) {
+        this.logger.info("getAuthCodeUrl called", request.correlationId);
+        const validRequest = {
+            ...request,
+            ...(await this.initializeBaseRequest(request)),
+            responseMode: request.responseMode || ResponseMode.QUERY,
+            authenticationScheme: AuthenticationScheme.BEARER,
+            state: request.state || "",
+            nonce: request.nonce || "",
+        };
+        const discoveredAuthority = await this.createAuthority(validRequest.authority, validRequest.correlationId, undefined, request.azureCloudOptions);
+        return getAuthCodeRequestUrl(this.config, discoveredAuthority, validRequest, this.logger);
+    }
+    /**
+     * Acquires a token by exchanging the Authorization Code received from the first step of OAuth2.0
+     * Authorization Code flow.
+     *
+     * `getAuthCodeUrl(AuthorizationCodeUrlRequest)` can be used to create the URL for the first step of OAuth2.0
+     * Authorization Code flow. Ensure that values for redirectUri and scopes in AuthorizationCodeUrlRequest and
+     * AuthorizationCodeRequest are the same.
+     */
+    async acquireTokenByCode(request, authCodePayLoad) {
+        this.logger.info("acquireTokenByCode called");
+        if (request.state && authCodePayLoad) {
+            this.logger.info("acquireTokenByCode - validating state");
+            this.validateState(request.state, authCodePayLoad.state || "");
+            // eslint-disable-next-line no-param-reassign
+            authCodePayLoad = { ...authCodePayLoad, state: "" };
+        }
+        const validRequest = {
+            ...request,
+            ...(await this.initializeBaseRequest(request)),
+            authenticationScheme: AuthenticationScheme.BEARER,
+        };
+        const serverTelemetryManager = this.initializeServerTelemetryManager(ApiId.acquireTokenByCode, validRequest.correlationId);
+        try {
+            const discoveredAuthority = await this.createAuthority(validRequest.authority, validRequest.correlationId, undefined, request.azureCloudOptions);
+            const authClientConfig = await this.buildOauthClientConfiguration(discoveredAuthority, validRequest.correlationId, validRequest.redirectUri, serverTelemetryManager);
+            const authorizationCodeClient = new AuthorizationCodeClient(authClientConfig);
+            this.logger.verbose("Auth code client created", validRequest.correlationId);
+            return await authorizationCodeClient.acquireToken(validRequest, authCodePayLoad);
+        }
+        catch (e) {
+            if (e instanceof AuthError) {
+                e.setCorrelationId(validRequest.correlationId);
+            }
+            serverTelemetryManager.cacheFailedRequest(e);
+            throw e;
+        }
+    }
+    /**
+     * Acquires a token by exchanging the refresh token provided for a new set of tokens.
+     *
+     * This API is provided only for scenarios where you would like to migrate from ADAL to MSAL. Otherwise, it is
+     * recommended that you use `acquireTokenSilent()` for silent scenarios. When using `acquireTokenSilent()`, MSAL will
+     * handle the caching and refreshing of tokens automatically.
+     */
+    async acquireTokenByRefreshToken(request) {
+        this.logger.info("acquireTokenByRefreshToken called", request.correlationId);
+        const validRequest = {
+            ...request,
+            ...(await this.initializeBaseRequest(request)),
+            authenticationScheme: AuthenticationScheme.BEARER,
+        };
+        const serverTelemetryManager = this.initializeServerTelemetryManager(ApiId.acquireTokenByRefreshToken, validRequest.correlationId);
+        try {
+            const discoveredAuthority = await this.createAuthority(validRequest.authority, validRequest.correlationId, undefined, request.azureCloudOptions);
+            const refreshTokenClientConfig = await this.buildOauthClientConfiguration(discoveredAuthority, validRequest.correlationId, validRequest.redirectUri || "", serverTelemetryManager);
+            const refreshTokenClient = new RefreshTokenClient(refreshTokenClientConfig);
+            this.logger.verbose("Refresh token client created", validRequest.correlationId);
+            return await refreshTokenClient.acquireToken(validRequest);
+        }
+        catch (e) {
+            if (e instanceof AuthError) {
+                e.setCorrelationId(validRequest.correlationId);
+            }
+            serverTelemetryManager.cacheFailedRequest(e);
+            throw e;
+        }
+    }
+    /**
+     * Acquires a token silently when a user specifies the account the token is requested for.
+     *
+     * This API expects the user to provide an account object and looks into the cache to retrieve the token if present.
+     * There is also an optional "forceRefresh" boolean the user can send to bypass the cache for access_token and id_token.
+     * In case the refresh_token is expired or not found, an error is thrown
+     * and the guidance is for the user to call any interactive token acquisition API (eg: `acquireTokenByCode()`).
+     */
+    async acquireTokenSilent(request) {
+        const validRequest = {
+            ...request,
+            ...(await this.initializeBaseRequest(request)),
+            forceRefresh: request.forceRefresh || false,
+        };
+        const serverTelemetryManager = this.initializeServerTelemetryManager(ApiId.acquireTokenSilent, validRequest.correlationId, validRequest.forceRefresh);
+        try {
+            const discoveredAuthority = await this.createAuthority(validRequest.authority, validRequest.correlationId, undefined, request.azureCloudOptions);
+            const clientConfiguration = await this.buildOauthClientConfiguration(discoveredAuthority, validRequest.correlationId, validRequest.redirectUri || "", serverTelemetryManager);
+            const silentFlowClient = new SilentFlowClient(clientConfiguration);
+            this.logger.verbose("Silent flow client created", validRequest.correlationId);
+            try {
+                // always overwrite the in-memory cache with the persistence cache (if it exists) before a cache lookup
+                await this.tokenCache.overwriteCache();
+                return await this.acquireCachedTokenSilent(validRequest, silentFlowClient, clientConfiguration);
+            }
+            catch (error) {
+                if (error instanceof ClientAuthError &&
+                    error.errorCode ===
+                        tokenRefreshRequired) {
+                    const refreshTokenClient = new RefreshTokenClient(clientConfiguration);
+                    return refreshTokenClient.acquireTokenByRefreshToken(validRequest);
+                }
+                throw error;
+            }
+        }
+        catch (error) {
+            if (error instanceof AuthError) {
+                error.setCorrelationId(validRequest.correlationId);
+            }
+            serverTelemetryManager.cacheFailedRequest(error);
+            throw error;
+        }
+    }
+    async acquireCachedTokenSilent(validRequest, silentFlowClient, clientConfiguration) {
+        const [authResponse, cacheOutcome] = await silentFlowClient.acquireCachedToken({
+            ...validRequest,
+            scopes: validRequest.scopes?.length
+                ? validRequest.scopes
+                : [...OIDC_DEFAULT_SCOPES],
+        });
+        if (cacheOutcome === CacheOutcome.PROACTIVELY_REFRESHED) {
+            this.logger.info("ClientApplication:acquireCachedTokenSilent - Cached access token's refreshOn property has been exceeded'. It's not expired, but must be refreshed.");
+            // refresh the access token in the background
+            const refreshTokenClient = new RefreshTokenClient(clientConfiguration);
+            try {
+                await refreshTokenClient.acquireTokenByRefreshToken(validRequest);
+            }
+            catch {
+                // do nothing, this is running in the background and no action is to be taken upon success or failure
+            }
+        }
+        // return the cached token
+        return authResponse;
+    }
+    /**
+     * Acquires tokens with password grant by exchanging client applications username and password for credentials
+     *
+     * The latest OAuth 2.0 Security Best Current Practice disallows the password grant entirely.
+     * More details on this recommendation at https://tools.ietf.org/html/draft-ietf-oauth-security-topics-13#section-3.4
+     * Microsoft's documentation and recommendations are at:
+     * https://docs.microsoft.com/en-us/azure/active-directory/develop/msal-authentication-flows#usernamepassword
+     *
+     * @param request - UsenamePasswordRequest
+     * @deprecated - Use a more secure flow instead
+     */
+    async acquireTokenByUsernamePassword(request) {
+        this.logger.info("acquireTokenByUsernamePassword called", request.correlationId);
+        const validRequest = {
+            ...request,
+            ...(await this.initializeBaseRequest(request)),
+        };
+        const serverTelemetryManager = this.initializeServerTelemetryManager(ApiId.acquireTokenByUsernamePassword, validRequest.correlationId);
+        try {
+            const discoveredAuthority = await this.createAuthority(validRequest.authority, validRequest.correlationId, undefined, request.azureCloudOptions);
+            const usernamePasswordClientConfig = await this.buildOauthClientConfiguration(discoveredAuthority, validRequest.correlationId, "", serverTelemetryManager);
+            const usernamePasswordClient = new UsernamePasswordClient(usernamePasswordClientConfig);
+            this.logger.verbose("Username password client created", validRequest.correlationId);
+            return await usernamePasswordClient.acquireToken(validRequest);
+        }
+        catch (e) {
+            if (e instanceof AuthError) {
+                e.setCorrelationId(validRequest.correlationId);
+            }
+            serverTelemetryManager.cacheFailedRequest(e);
+            throw e;
+        }
+    }
+    /**
+     * Gets the token cache for the application.
+     */
+    getTokenCache() {
+        this.logger.info("getTokenCache called");
+        return this.tokenCache;
+    }
+    /**
+     * Validates OIDC state by comparing the user cached state with the state received from the server.
+     *
+     * This API is provided for scenarios where you would use OAuth2.0 state parameter to mitigate against
+     * CSRF attacks.
+     * For more information about state, visit https://datatracker.ietf.org/doc/html/rfc6819#section-3.6.
+     * @param state - Unique GUID generated by the user that is cached by the user and sent to the server during the first leg of the flow
+     * @param cachedState - This string is sent back by the server with the authorization code
+     */
+    validateState(state, cachedState) {
+        if (!state) {
+            throw NodeAuthError.createStateNotFoundError();
+        }
+        if (state !== cachedState) {
+            throw createClientAuthError(stateMismatch);
+        }
+    }
+    /**
+     * Returns the logger instance
+     */
+    getLogger() {
+        return this.logger;
+    }
+    /**
+     * Replaces the default logger set in configurations with new Logger with new configurations
+     * @param logger - Logger instance
+     */
+    setLogger(logger) {
+        this.logger = logger;
+    }
+    /**
+     * Builds the common configuration to be passed to the common component based on the platform configurarion
+     * @param authority - user passed authority in configuration
+     * @param serverTelemetryManager - initializes servertelemetry if passed
+     */
+    async buildOauthClientConfiguration(discoveredAuthority, requestCorrelationId, redirectUri, serverTelemetryManager) {
+        this.logger.verbose("buildOauthClientConfiguration called", requestCorrelationId);
+        this.logger.info(`Building oauth client configuration with the following authority: ${discoveredAuthority.tokenEndpoint}.`, requestCorrelationId);
+        serverTelemetryManager?.updateRegionDiscoveryMetadata(discoveredAuthority.regionDiscoveryMetadata);
+        const clientConfiguration = {
+            authOptions: {
+                clientId: this.config.auth.clientId,
+                authority: discoveredAuthority,
+                clientCapabilities: this.config.auth.clientCapabilities,
+                redirectUri,
+            },
+            loggerOptions: {
+                logLevel: this.config.system.loggerOptions.logLevel,
+                loggerCallback: this.config.system.loggerOptions.loggerCallback,
+                piiLoggingEnabled: this.config.system.loggerOptions.piiLoggingEnabled,
+                correlationId: requestCorrelationId,
+            },
+            cacheOptions: {
+                claimsBasedCachingEnabled: this.config.cache.claimsBasedCachingEnabled,
+            },
+            cryptoInterface: this.cryptoProvider,
+            networkInterface: this.config.system.networkClient,
+            storageInterface: this.storage,
+            serverTelemetryManager: serverTelemetryManager,
+            clientCredentials: {
+                clientSecret: this.clientSecret,
+                clientAssertion: await this.getClientAssertion(discoveredAuthority),
+            },
+            libraryInfo: {
+                sku: Constants.MSAL_SKU,
+                version: version,
+                cpu: process.arch || Constants$1.EMPTY_STRING,
+                os: process.platform || Constants$1.EMPTY_STRING,
+            },
+            telemetry: this.config.telemetry,
+            persistencePlugin: this.config.cache.cachePlugin,
+            serializableCache: this.tokenCache,
+        };
+        return clientConfiguration;
+    }
+    async getClientAssertion(authority) {
+        if (this.developerProvidedClientAssertion) {
+            this.clientAssertion = ClientAssertion.fromAssertion(await getClientAssertion(this.developerProvidedClientAssertion, this.config.auth.clientId, authority.tokenEndpoint));
+        }
+        return (this.clientAssertion && {
+            assertion: this.clientAssertion.getJwt(this.cryptoProvider, this.config.auth.clientId, authority.tokenEndpoint),
+            assertionType: Constants.JWT_BEARER_ASSERTION_TYPE,
+        });
+    }
+    /**
+     * Generates a request with the default scopes & generates a correlationId.
+     * @param authRequest - BaseAuthRequest for initialization
+     */
+    async initializeBaseRequest(authRequest) {
+        this.logger.verbose("initializeRequestScopes called", authRequest.correlationId);
+        // Default authenticationScheme to Bearer, log that POP isn't supported yet
+        if (authRequest.authenticationScheme &&
+            authRequest.authenticationScheme === AuthenticationScheme.POP) {
+            this.logger.verbose("Authentication Scheme 'pop' is not supported yet, setting Authentication Scheme to 'Bearer' for request", authRequest.correlationId);
+        }
+        authRequest.authenticationScheme = AuthenticationScheme.BEARER;
+        // Set requested claims hash if claims-based caching is enabled and claims were requested
+        if (this.config.cache.claimsBasedCachingEnabled &&
+            authRequest.claims &&
+            // Checks for empty stringified object "{}" which doesn't qualify as requested claims
+            !StringUtils.isEmptyObj(authRequest.claims)) {
+            authRequest.requestedClaimsHash =
+                await this.cryptoProvider.hashString(authRequest.claims);
+        }
+        return {
+            ...authRequest,
+            scopes: [
+                ...((authRequest && authRequest.scopes) || []),
+                ...OIDC_DEFAULT_SCOPES,
+            ],
+            correlationId: (authRequest && authRequest.correlationId) ||
+                this.cryptoProvider.createNewGuid(),
+            authority: authRequest.authority || this.config.auth.authority,
+        };
+    }
+    /**
+     * Initializes the server telemetry payload
+     * @param apiId - Id for a specific request
+     * @param correlationId - GUID
+     * @param forceRefresh - boolean to indicate network call
+     */
+    initializeServerTelemetryManager(apiId, correlationId, forceRefresh) {
+        const telemetryPayload = {
+            clientId: this.config.auth.clientId,
+            correlationId: correlationId,
+            apiId: apiId,
+            forceRefresh: forceRefresh || false,
+        };
+        return new ServerTelemetryManager(telemetryPayload, this.storage);
+    }
+    /**
+     * Create authority instance. If authority not passed in request, default to authority set on the application
+     * object. If no authority set in application object, then default to common authority.
+     * @param authorityString - authority from user configuration
+     */
+    async createAuthority(authorityString, requestCorrelationId, azureRegionConfiguration, azureCloudOptions) {
+        this.logger.verbose("createAuthority called", requestCorrelationId);
+        // build authority string based on auth params - azureCloudInstance is prioritized if provided
+        const authorityUrl = Authority.generateAuthority(authorityString, azureCloudOptions || this.config.auth.azureCloudOptions);
+        const authorityOptions = {
+            protocolMode: this.config.auth.protocolMode,
+            knownAuthorities: this.config.auth.knownAuthorities,
+            cloudDiscoveryMetadata: this.config.auth.cloudDiscoveryMetadata,
+            authorityMetadata: this.config.auth.authorityMetadata,
+            azureRegionConfiguration,
+            skipAuthorityMetadataCache: this.config.auth.skipAuthorityMetadataCache,
+        };
+        return createDiscoveredInstance(authorityUrl, this.config.system.networkClient, this.storage, authorityOptions, this.logger, requestCorrelationId);
+    }
+    /**
+     * Clear the cache
+     */
+    clearCache() {
+        this.storage.clear();
+    }
+}
+
+/*! @azure/msal-node v3.8.3 2025-11-19 */
+
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ */
+class LoopbackClient {
+    /**
+     * Spins up a loopback server which returns the server response when the localhost redirectUri is hit
+     * @param successTemplate
+     * @param errorTemplate
+     * @returns
+     */
+    async listenForAuthCode(successTemplate, errorTemplate) {
+        if (this.server) {
+            throw NodeAuthError.createLoopbackServerAlreadyExistsError();
+        }
+        return new Promise((resolve, reject) => {
+            this.server = http.createServer((req, res) => {
+                const url = req.url;
+                if (!url) {
+                    res.end(errorTemplate ||
+                        "Error occurred loading redirectUrl");
+                    reject(NodeAuthError.createUnableToLoadRedirectUrlError());
+                    return;
+                }
+                else if (url === Constants$1.FORWARD_SLASH) {
+                    res.end(successTemplate ||
+                        "Auth code was successfully acquired. You can close this window now.");
+                    return;
+                }
+                const redirectUri = this.getRedirectUri();
+                const parsedUrl = new URL(url, redirectUri);
+                const authCodeResponse = getDeserializedResponse(parsedUrl.search) ||
+                    {};
+                if (authCodeResponse.code) {
+                    res.writeHead(HttpStatus.REDIRECT, {
+                        location: redirectUri,
+                    }); // Prevent auth code from being saved in the browser history
+                    res.end();
+                }
+                if (authCodeResponse.error) {
+                    res.end(errorTemplate ||
+                        `Error occurred: ${authCodeResponse.error}`);
+                }
+                resolve(authCodeResponse);
+            });
+            this.server.listen(0, "127.0.0.1"); // Listen on any available port
+        });
+    }
+    /**
+     * Get the port that the loopback server is running on
+     * @returns
+     */
+    getRedirectUri() {
+        if (!this.server || !this.server.listening) {
+            throw NodeAuthError.createNoLoopbackServerExistsError();
+        }
+        const address = this.server.address();
+        if (!address || typeof address === "string" || !address.port) {
+            this.closeServer();
+            throw NodeAuthError.createInvalidLoopbackAddressTypeError();
+        }
+        const port = address && address.port;
+        return `${Constants.HTTP_PROTOCOL}${Constants.LOCALHOST}:${port}`;
+    }
+    /**
+     * Close the loopback server
+     */
+    closeServer() {
+        if (this.server) {
+            // Only stops accepting new connections, server will close once open/idle connections are closed.
+            this.server.close();
+            if (typeof this.server.closeAllConnections === "function") {
+                /*
+                 * Close open/idle connections. This API is available in Node versions 18.2 and higher
+                 */
+                this.server.closeAllConnections();
+            }
+            this.server.unref();
+            this.server = undefined;
+        }
+    }
+}
+
+/*! @azure/msal-node v3.8.3 2025-11-19 */
+
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ */
+/**
+ * OAuth2.0 Device code client
+ * @public
+ */
+class DeviceCodeClient extends BaseClient {
+    constructor(configuration) {
+        super(configuration);
+    }
+    /**
+     * Gets device code from device code endpoint, calls back to with device code response, and
+     * polls token endpoint to exchange device code for tokens
+     * @param request - developer provided CommonDeviceCodeRequest
+     */
+    async acquireToken(request) {
+        const deviceCodeResponse = await this.getDeviceCode(request);
+        request.deviceCodeCallback(deviceCodeResponse);
+        const reqTimestamp = nowSeconds();
+        const response = await this.acquireTokenWithDeviceCode(request, deviceCodeResponse);
+        const responseHandler = new ResponseHandler(this.config.authOptions.clientId, this.cacheManager, this.cryptoUtils, this.logger, this.config.serializableCache, this.config.persistencePlugin);
+        // Validate response. This function throws a server error if an error is returned by the server.
+        responseHandler.validateTokenResponse(response);
+        return responseHandler.handleServerTokenResponse(response, this.authority, reqTimestamp, request);
+    }
+    /**
+     * Creates device code request and executes http GET
+     * @param request - developer provided CommonDeviceCodeRequest
+     */
+    async getDeviceCode(request) {
+        const queryParametersString = this.createExtraQueryParameters(request);
+        const endpoint = UrlString.appendQueryString(this.authority.deviceCodeEndpoint, queryParametersString);
+        const queryString = this.createQueryString(request);
+        const headers = this.createTokenRequestHeaders();
+        const thumbprint = {
+            clientId: this.config.authOptions.clientId,
+            authority: request.authority,
+            scopes: request.scopes,
+            claims: request.claims,
+            authenticationScheme: request.authenticationScheme,
+            resourceRequestMethod: request.resourceRequestMethod,
+            resourceRequestUri: request.resourceRequestUri,
+            shrClaims: request.shrClaims,
+            sshKid: request.sshKid,
+        };
+        return this.executePostRequestToDeviceCodeEndpoint(endpoint, queryString, headers, thumbprint, request.correlationId);
+    }
+    /**
+     * Creates query string for the device code request
+     * @param request - developer provided CommonDeviceCodeRequest
+     */
+    createExtraQueryParameters(request) {
+        const parameters = new Map();
+        if (request.extraQueryParameters) {
+            addExtraQueryParameters(parameters, request.extraQueryParameters);
+        }
+        return mapToQueryString(parameters);
+    }
+    /**
+     * Executes POST request to device code endpoint
+     * @param deviceCodeEndpoint - token endpoint
+     * @param queryString - string to be used in the body of the request
+     * @param headers - headers for the request
+     * @param thumbprint - unique request thumbprint
+     * @param correlationId - correlation id to be used in the request
+     */
+    async executePostRequestToDeviceCodeEndpoint(deviceCodeEndpoint, queryString, headers, thumbprint, correlationId) {
+        const { body: { user_code: userCode, device_code: deviceCode, verification_uri: verificationUri, expires_in: expiresIn, interval, message, }, } = await this.sendPostRequest(thumbprint, deviceCodeEndpoint, {
+            body: queryString,
+            headers: headers,
+        }, correlationId);
+        return {
+            userCode,
+            deviceCode,
+            verificationUri,
+            expiresIn,
+            interval,
+            message,
+        };
+    }
+    /**
+     * Create device code endpoint query parameters and returns string
+     * @param request - developer provided CommonDeviceCodeRequest
+     */
+    createQueryString(request) {
+        const parameters = new Map();
+        addScopes(parameters, request.scopes);
+        addClientId(parameters, this.config.authOptions.clientId);
+        if (request.extraQueryParameters) {
+            addExtraQueryParameters(parameters, request.extraQueryParameters);
+        }
+        if (request.claims ||
+            (this.config.authOptions.clientCapabilities &&
+                this.config.authOptions.clientCapabilities.length > 0)) {
+            addClaims(parameters, request.claims, this.config.authOptions.clientCapabilities);
+        }
+        return mapToQueryString(parameters);
+    }
+    /**
+     * Breaks the polling with specific conditions
+     * @param deviceCodeExpirationTime - expiration time for the device code request
+     * @param userSpecifiedTimeout - developer provided timeout, to be compared against deviceCodeExpirationTime
+     * @param userSpecifiedCancelFlag - boolean indicating the developer would like to cancel the request
+     */
+    continuePolling(deviceCodeExpirationTime, userSpecifiedTimeout, userSpecifiedCancelFlag) {
+        if (userSpecifiedCancelFlag) {
+            this.logger.error("Token request cancelled by setting DeviceCodeRequest.cancel = true");
+            throw createClientAuthError(deviceCodePollingCancelled);
+        }
+        else if (userSpecifiedTimeout &&
+            userSpecifiedTimeout < deviceCodeExpirationTime &&
+            nowSeconds() > userSpecifiedTimeout) {
+            this.logger.error(`User defined timeout for device code polling reached. The timeout was set for ${userSpecifiedTimeout}`);
+            throw createClientAuthError(userTimeoutReached);
+        }
+        else if (nowSeconds() > deviceCodeExpirationTime) {
+            if (userSpecifiedTimeout) {
+                this.logger.verbose(`User specified timeout ignored as the device code has expired before the timeout elapsed. The user specified timeout was set for ${userSpecifiedTimeout}`);
+            }
+            this.logger.error(`Device code expired. Expiration time of device code was ${deviceCodeExpirationTime}`);
+            throw createClientAuthError(deviceCodeExpired);
+        }
+        return true;
+    }
+    /**
+     * Creates token request with device code response and polls token endpoint at interval set by the device code response
+     * @param request - developer provided CommonDeviceCodeRequest
+     * @param deviceCodeResponse - DeviceCodeResponse returned by the security token service device code endpoint
+     */
+    async acquireTokenWithDeviceCode(request, deviceCodeResponse) {
+        const queryParametersString = this.createTokenQueryParameters(request);
+        const endpoint = UrlString.appendQueryString(this.authority.tokenEndpoint, queryParametersString);
+        const requestBody = this.createTokenRequestBody(request, deviceCodeResponse);
+        const headers = this.createTokenRequestHeaders();
+        const userSpecifiedTimeout = request.timeout
+            ? nowSeconds() + request.timeout
+            : undefined;
+        const deviceCodeExpirationTime = nowSeconds() + deviceCodeResponse.expiresIn;
+        const pollingIntervalMilli = deviceCodeResponse.interval * 1000;
+        /*
+         * Poll token endpoint while (device code is not expired AND operation has not been cancelled by
+         * setting CancellationToken.cancel = true). POST request is sent at interval set by pollingIntervalMilli
+         */
+        while (this.continuePolling(deviceCodeExpirationTime, userSpecifiedTimeout, request.cancel)) {
+            const thumbprint = {
+                clientId: this.config.authOptions.clientId,
+                authority: request.authority,
+                scopes: request.scopes,
+                claims: request.claims,
+                authenticationScheme: request.authenticationScheme,
+                resourceRequestMethod: request.resourceRequestMethod,
+                resourceRequestUri: request.resourceRequestUri,
+                shrClaims: request.shrClaims,
+                sshKid: request.sshKid,
+            };
+            const response = await this.executePostToTokenEndpoint(endpoint, requestBody, headers, thumbprint, request.correlationId);
+            if (response.body && response.body.error) {
+                // user authorization is pending. Sleep for polling interval and try again
+                if (response.body.error === Constants$1.AUTHORIZATION_PENDING) {
+                    this.logger.info("Authorization pending. Continue polling.");
+                    await delay$2(pollingIntervalMilli);
+                }
+                else {
+                    // for any other error, throw
+                    this.logger.info("Unexpected error in polling from the server");
+                    throw createAuthError(postRequestFailed, response.body.error);
+                }
+            }
+            else {
+                this.logger.verbose("Authorization completed successfully. Polling stopped.");
+                return response.body;
+            }
+        }
+        /*
+         * The above code should've thrown by this point, but to satisfy TypeScript,
+         * and in the rare case the conditionals in continuePolling() may not catch everything...
+         */
+        this.logger.error("Polling stopped for unknown reasons.");
+        throw createClientAuthError(deviceCodeUnknownError);
+    }
+    /**
+     * Creates query parameters and converts to string.
+     * @param request - developer provided CommonDeviceCodeRequest
+     * @param deviceCodeResponse - DeviceCodeResponse returned by the security token service device code endpoint
+     */
+    createTokenRequestBody(request, deviceCodeResponse) {
+        const parameters = new Map();
+        addScopes(parameters, request.scopes);
+        addClientId(parameters, this.config.authOptions.clientId);
+        addGrantType(parameters, GrantType.DEVICE_CODE_GRANT);
+        addDeviceCode(parameters, deviceCodeResponse.deviceCode);
+        const correlationId = request.correlationId ||
+            this.config.cryptoInterface.createNewGuid();
+        addCorrelationId(parameters, correlationId);
+        addClientInfo(parameters);
+        addLibraryInfo(parameters, this.config.libraryInfo);
+        addApplicationTelemetry(parameters, this.config.telemetry.application);
+        addThrottling(parameters);
+        if (this.serverTelemetryManager) {
+            addServerTelemetry(parameters, this.serverTelemetryManager);
+        }
+        if (!StringUtils.isEmptyObj(request.claims) ||
+            (this.config.authOptions.clientCapabilities &&
+                this.config.authOptions.clientCapabilities.length > 0)) {
+            addClaims(parameters, request.claims, this.config.authOptions.clientCapabilities);
+        }
+        return mapToQueryString(parameters);
+    }
+}
+
+/*! @azure/msal-node v3.8.3 2025-11-19 */
+
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ */
+/**
+ * This class is to be used to acquire tokens for public client applications (desktop, mobile). Public client applications
+ * are not trusted to safely store application secrets, and therefore can only request tokens in the name of an user.
+ * @public
+ */
+class PublicClientApplication extends ClientApplication {
+    /**
+     * Important attributes in the Configuration object for auth are:
+     * - clientID: the application ID of your application. You can obtain one by registering your application with our Application registration portal.
+     * - authority: the authority URL for your application.
+     *
+     * AAD authorities are of the form https://login.microsoftonline.com/\{Enter_the_Tenant_Info_Here\}.
+     * - If your application supports Accounts in one organizational directory, replace "Enter_the_Tenant_Info_Here" value with the Tenant Id or Tenant name (for example, contoso.microsoft.com).
+     * - If your application supports Accounts in any organizational directory, replace "Enter_the_Tenant_Info_Here" value with organizations.
+     * - If your application supports Accounts in any organizational directory and personal Microsoft accounts, replace "Enter_the_Tenant_Info_Here" value with common.
+     * - To restrict support to Personal Microsoft accounts only, replace "Enter_the_Tenant_Info_Here" value with consumers.
+     *
+     * Azure B2C authorities are of the form https://\{instance\}/\{tenant\}/\{policy\}. Each policy is considered
+     * its own authority. You will have to set the all of the knownAuthorities at the time of the client application
+     * construction.
+     *
+     * ADFS authorities are of the form https://\{instance\}/adfs.
+     */
+    constructor(configuration) {
+        super(configuration);
+        if (this.config.broker.nativeBrokerPlugin) {
+            if (this.config.broker.nativeBrokerPlugin.isBrokerAvailable) {
+                this.nativeBrokerPlugin = this.config.broker.nativeBrokerPlugin;
+                this.nativeBrokerPlugin.setLogger(this.config.system.loggerOptions);
+            }
+            else {
+                this.logger.warning("NativeBroker implementation was provided but the broker is unavailable.");
+            }
+        }
+        this.skus = ServerTelemetryManager.makeExtraSkuString({
+            libraryName: Constants.MSAL_SKU,
+            libraryVersion: version,
+        });
+    }
+    /**
+     * Acquires a token from the authority using OAuth2.0 device code flow.
+     * This flow is designed for devices that do not have access to a browser or have input constraints.
+     * The authorization server issues a DeviceCode object with a verification code, an end-user code,
+     * and the end-user verification URI. The DeviceCode object is provided through a callback, and the end-user should be
+     * instructed to use another device to navigate to the verification URI to input credentials.
+     * Since the client cannot receive incoming requests, it polls the authorization server repeatedly
+     * until the end-user completes input of credentials.
+     */
+    async acquireTokenByDeviceCode(request) {
+        this.logger.info("acquireTokenByDeviceCode called", request.correlationId);
+        const validRequest = Object.assign(request, await this.initializeBaseRequest(request));
+        const serverTelemetryManager = this.initializeServerTelemetryManager(ApiId.acquireTokenByDeviceCode, validRequest.correlationId);
+        try {
+            const discoveredAuthority = await this.createAuthority(validRequest.authority, validRequest.correlationId, undefined, request.azureCloudOptions);
+            const deviceCodeConfig = await this.buildOauthClientConfiguration(discoveredAuthority, validRequest.correlationId, "", serverTelemetryManager);
+            const deviceCodeClient = new DeviceCodeClient(deviceCodeConfig);
+            this.logger.verbose("Device code client created", validRequest.correlationId);
+            return await deviceCodeClient.acquireToken(validRequest);
+        }
+        catch (e) {
+            if (e instanceof AuthError) {
+                e.setCorrelationId(validRequest.correlationId);
+            }
+            serverTelemetryManager.cacheFailedRequest(e);
+            throw e;
+        }
+    }
+    /**
+     * Acquires a token interactively via the browser by requesting an authorization code then exchanging it for a token.
+     */
+    async acquireTokenInteractive(request) {
+        const correlationId = request.correlationId || this.cryptoProvider.createNewGuid();
+        this.logger.trace("acquireTokenInteractive called", correlationId);
+        const { openBrowser, successTemplate, errorTemplate, windowHandle, loopbackClient: customLoopbackClient, ...remainingProperties } = request;
+        if (this.nativeBrokerPlugin) {
+            const brokerRequest = {
+                ...remainingProperties,
+                clientId: this.config.auth.clientId,
+                scopes: request.scopes || OIDC_DEFAULT_SCOPES,
+                redirectUri: request.redirectUri || "",
+                authority: request.authority || this.config.auth.authority,
+                correlationId: correlationId,
+                extraParameters: {
+                    ...remainingProperties.extraQueryParameters,
+                    ...remainingProperties.tokenQueryParameters,
+                    [X_CLIENT_EXTRA_SKU]: this.skus,
+                },
+                accountId: remainingProperties.account?.nativeAccountId,
+            };
+            return this.nativeBrokerPlugin.acquireTokenInteractive(brokerRequest, windowHandle);
+        }
+        if (request.redirectUri) {
+            // If its not a broker fallback scenario, we throw a error
+            if (!this.config.broker.nativeBrokerPlugin) {
+                throw NodeAuthError.createRedirectUriNotSupportedError();
+            }
+            // If a redirect URI is provided for a broker flow but MSAL runtime startup failed, we fall back to the browser flow and will ignore the redirect URI provided for the broker flow
+            request.redirectUri = "";
+        }
+        const { verifier, challenge } = await this.cryptoProvider.generatePkceCodes();
+        const loopbackClient = customLoopbackClient || new LoopbackClient();
+        let authCodeResponse = {};
+        let authCodeListenerError = null;
+        try {
+            const authCodeListener = loopbackClient
+                .listenForAuthCode(successTemplate, errorTemplate)
+                .then((response) => {
+                authCodeResponse = response;
+            })
+                .catch((e) => {
+                // Store the promise instead of throwing so we can control when its thrown
+                authCodeListenerError = e;
+            });
+            // Wait for server to be listening
+            const redirectUri = await this.waitForRedirectUri(loopbackClient);
+            const validRequest = {
+                ...remainingProperties,
+                correlationId: correlationId,
+                scopes: request.scopes || OIDC_DEFAULT_SCOPES,
+                redirectUri: redirectUri,
+                responseMode: ResponseMode.QUERY,
+                codeChallenge: challenge,
+                codeChallengeMethod: CodeChallengeMethodValues.S256,
+            };
+            const authCodeUrl = await this.getAuthCodeUrl(validRequest);
+            await openBrowser(authCodeUrl);
+            await authCodeListener;
+            if (authCodeListenerError) {
+                throw authCodeListenerError;
+            }
+            if (authCodeResponse.error) {
+                throw new ServerError(authCodeResponse.error, authCodeResponse.error_description, authCodeResponse.suberror);
+            }
+            else if (!authCodeResponse.code) {
+                throw NodeAuthError.createNoAuthCodeInResponseError();
+            }
+            const clientInfo = authCodeResponse.client_info;
+            const tokenRequest = {
+                code: authCodeResponse.code,
+                codeVerifier: verifier,
+                clientInfo: clientInfo || Constants$1.EMPTY_STRING,
+                ...validRequest,
+            };
+            return await this.acquireTokenByCode(tokenRequest); // Await this so the server doesn't close prematurely
+        }
+        finally {
+            loopbackClient.closeServer();
+        }
+    }
+    /**
+     * Returns a token retrieved either from the cache or by exchanging the refresh token for a fresh access token. If brokering is enabled the token request will be serviced by the broker.
+     * @param request - developer provided SilentFlowRequest
+     * @returns
+     */
+    async acquireTokenSilent(request) {
+        const correlationId = request.correlationId || this.cryptoProvider.createNewGuid();
+        this.logger.trace("acquireTokenSilent called", correlationId);
+        if (this.nativeBrokerPlugin) {
+            const brokerRequest = {
+                ...request,
+                clientId: this.config.auth.clientId,
+                scopes: request.scopes || OIDC_DEFAULT_SCOPES,
+                redirectUri: request.redirectUri || "",
+                authority: request.authority || this.config.auth.authority,
+                correlationId: correlationId,
+                extraParameters: {
+                    ...request.tokenQueryParameters,
+                    [X_CLIENT_EXTRA_SKU]: this.skus,
+                },
+                accountId: request.account.nativeAccountId,
+                forceRefresh: request.forceRefresh || false,
+            };
+            return this.nativeBrokerPlugin.acquireTokenSilent(brokerRequest);
+        }
+        if (request.redirectUri) {
+            // If its not a broker fallback scenario, we throw a error
+            if (!this.config.broker.nativeBrokerPlugin) {
+                throw NodeAuthError.createRedirectUriNotSupportedError();
+            }
+            request.redirectUri = "";
+        }
+        return super.acquireTokenSilent(request);
+    }
+    /**
+     * Removes cache artifacts associated with the given account
+     * @param request - developer provided SignOutRequest
+     * @returns
+     */
+    async signOut(request) {
+        if (this.nativeBrokerPlugin && request.account.nativeAccountId) {
+            const signoutRequest = {
+                clientId: this.config.auth.clientId,
+                accountId: request.account.nativeAccountId,
+                correlationId: request.correlationId ||
+                    this.cryptoProvider.createNewGuid(),
+            };
+            await this.nativeBrokerPlugin.signOut(signoutRequest);
+        }
+        await this.getTokenCache().removeAccount(request.account, request.correlationId);
+    }
+    /**
+     * Returns all cached accounts for this application. If brokering is enabled this request will be serviced by the broker.
+     * @returns
+     */
+    async getAllAccounts() {
+        if (this.nativeBrokerPlugin) {
+            const correlationId = this.cryptoProvider.createNewGuid();
+            return this.nativeBrokerPlugin.getAllAccounts(this.config.auth.clientId, correlationId);
+        }
+        return this.getTokenCache().getAllAccounts();
+    }
+    /**
+     * Attempts to retrieve the redirectUri from the loopback server. If the loopback server does not start listening for requests within the timeout this will throw.
+     * @param loopbackClient - developer provided custom loopback server implementation
+     * @returns
+     */
+    async waitForRedirectUri(loopbackClient) {
+        return new Promise((resolve, reject) => {
+            let ticks = 0;
+            const id = setInterval(() => {
+                if (LOOPBACK_SERVER_CONSTANTS.TIMEOUT_MS /
+                    LOOPBACK_SERVER_CONSTANTS.INTERVAL_MS <
+                    ticks) {
+                    clearInterval(id);
+                    reject(NodeAuthError.createLoopbackServerTimeoutError());
+                    return;
+                }
+                try {
+                    const r = loopbackClient.getRedirectUri();
+                    clearInterval(id);
+                    resolve(r);
+                    return;
+                }
+                catch (e) {
+                    if (e instanceof AuthError &&
+                        e.errorCode ===
+                            NodeAuthErrorMessage.noLoopbackServerExists.code) {
+                        // Loopback server is not listening yet
+                        ticks++;
+                        return;
+                    }
+                    clearInterval(id);
+                    reject(e);
+                    return;
+                }
+            }, LOOPBACK_SERVER_CONSTANTS.INTERVAL_MS);
+        });
+    }
+}
+
+/*! @azure/msal-node v3.8.3 2025-11-19 */
+
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ */
+/**
+ * OAuth2.0 client credential grant
+ * @public
+ */
+class ClientCredentialClient extends BaseClient {
+    constructor(configuration, appTokenProvider) {
+        super(configuration);
+        this.appTokenProvider = appTokenProvider;
+    }
+    /**
+     * Public API to acquire a token with ClientCredential Flow for Confidential clients
+     * @param request - CommonClientCredentialRequest provided by the developer
+     */
+    async acquireToken(request) {
+        if (request.skipCache || request.claims) {
+            return this.executeTokenRequest(request, this.authority);
+        }
+        const [cachedAuthenticationResult, lastCacheOutcome] = await this.getCachedAuthenticationResult(request, this.config, this.cryptoUtils, this.authority, this.cacheManager, this.serverTelemetryManager);
+        if (cachedAuthenticationResult) {
+            // if the token is not expired but must be refreshed; get a new one in the background
+            if (lastCacheOutcome === CacheOutcome.PROACTIVELY_REFRESHED) {
+                this.logger.info("ClientCredentialClient:getCachedAuthenticationResult - Cached access token's refreshOn property has been exceeded'. It's not expired, but must be refreshed.");
+                // refresh the access token in the background
+                const refreshAccessToken = true;
+                await this.executeTokenRequest(request, this.authority, refreshAccessToken);
+            }
+            // return the cached token
+            return cachedAuthenticationResult;
+        }
+        else {
+            return this.executeTokenRequest(request, this.authority);
+        }
+    }
+    /**
+     * looks up cache if the tokens are cached already
+     */
+    async getCachedAuthenticationResult(request, config, cryptoUtils, authority, cacheManager, serverTelemetryManager) {
+        const clientConfiguration = config;
+        const managedIdentityConfiguration = config;
+        let lastCacheOutcome = CacheOutcome.NOT_APPLICABLE;
+        // read the user-supplied cache into memory, if applicable
+        let cacheContext;
+        if (clientConfiguration.serializableCache &&
+            clientConfiguration.persistencePlugin) {
+            cacheContext = new TokenCacheContext(clientConfiguration.serializableCache, false);
+            await clientConfiguration.persistencePlugin.beforeCacheAccess(cacheContext);
+        }
+        const cachedAccessToken = this.readAccessTokenFromCache(authority, managedIdentityConfiguration.managedIdentityId?.id ||
+            clientConfiguration.authOptions.clientId, new ScopeSet(request.scopes || []), cacheManager, request.correlationId);
+        if (clientConfiguration.serializableCache &&
+            clientConfiguration.persistencePlugin &&
+            cacheContext) {
+            await clientConfiguration.persistencePlugin.afterCacheAccess(cacheContext);
+        }
+        // must refresh due to non-existent access_token
+        if (!cachedAccessToken) {
+            serverTelemetryManager?.setCacheOutcome(CacheOutcome.NO_CACHED_ACCESS_TOKEN);
+            return [null, CacheOutcome.NO_CACHED_ACCESS_TOKEN];
+        }
+        // must refresh due to the expires_in value
+        if (isTokenExpired(cachedAccessToken.expiresOn, clientConfiguration.systemOptions?.tokenRenewalOffsetSeconds ||
+            DEFAULT_TOKEN_RENEWAL_OFFSET_SEC)) {
+            serverTelemetryManager?.setCacheOutcome(CacheOutcome.CACHED_ACCESS_TOKEN_EXPIRED);
+            return [null, CacheOutcome.CACHED_ACCESS_TOKEN_EXPIRED];
+        }
+        // must refresh (in the background) due to the refresh_in value
+        if (cachedAccessToken.refreshOn &&
+            isTokenExpired(cachedAccessToken.refreshOn.toString(), 0)) {
+            lastCacheOutcome = CacheOutcome.PROACTIVELY_REFRESHED;
+            serverTelemetryManager?.setCacheOutcome(CacheOutcome.PROACTIVELY_REFRESHED);
+        }
+        return [
+            await ResponseHandler.generateAuthenticationResult(cryptoUtils, authority, {
+                account: null,
+                idToken: null,
+                accessToken: cachedAccessToken,
+                refreshToken: null,
+                appMetadata: null,
+            }, true, request),
+            lastCacheOutcome,
+        ];
+    }
+    /**
+     * Reads access token from the cache
+     */
+    readAccessTokenFromCache(authority, id, scopeSet, cacheManager, correlationId) {
+        const accessTokenFilter = {
+            homeAccountId: Constants$1.EMPTY_STRING,
+            environment: authority.canonicalAuthorityUrlComponents.HostNameAndPort,
+            credentialType: CredentialType.ACCESS_TOKEN,
+            clientId: id,
+            realm: authority.tenant,
+            target: ScopeSet.createSearchScopes(scopeSet.asArray()),
+        };
+        const accessTokens = cacheManager.getAccessTokensByFilter(accessTokenFilter, correlationId);
+        if (accessTokens.length < 1) {
+            return null;
+        }
+        else if (accessTokens.length > 1) {
+            throw createClientAuthError(multipleMatchingTokens);
+        }
+        return accessTokens[0];
+    }
+    /**
+     * Makes a network call to request the token from the service
+     * @param request - CommonClientCredentialRequest provided by the developer
+     * @param authority - authority object
+     */
+    async executeTokenRequest(request, authority, refreshAccessToken) {
+        let serverTokenResponse;
+        let reqTimestamp;
+        if (this.appTokenProvider) {
+            this.logger.info("Using appTokenProvider extensibility.");
+            const appTokenPropviderParameters = {
+                correlationId: request.correlationId,
+                tenantId: this.config.authOptions.authority.tenant,
+                scopes: request.scopes,
+                claims: request.claims,
+            };
+            reqTimestamp = nowSeconds();
+            const appTokenProviderResult = await this.appTokenProvider(appTokenPropviderParameters);
+            serverTokenResponse = {
+                access_token: appTokenProviderResult.accessToken,
+                expires_in: appTokenProviderResult.expiresInSeconds,
+                refresh_in: appTokenProviderResult.refreshInSeconds,
+                token_type: AuthenticationScheme.BEARER,
+            };
+        }
+        else {
+            const queryParametersString = this.createTokenQueryParameters(request);
+            const endpoint = UrlString.appendQueryString(authority.tokenEndpoint, queryParametersString);
+            const requestBody = await this.createTokenRequestBody(request);
+            const headers = this.createTokenRequestHeaders();
+            const thumbprint = {
+                clientId: this.config.authOptions.clientId,
+                authority: request.authority,
+                scopes: request.scopes,
+                claims: request.claims,
+                authenticationScheme: request.authenticationScheme,
+                resourceRequestMethod: request.resourceRequestMethod,
+                resourceRequestUri: request.resourceRequestUri,
+                shrClaims: request.shrClaims,
+                sshKid: request.sshKid,
+            };
+            this.logger.info("Sending token request to endpoint: " + authority.tokenEndpoint);
+            reqTimestamp = nowSeconds();
+            const response = await this.executePostToTokenEndpoint(endpoint, requestBody, headers, thumbprint, request.correlationId);
+            serverTokenResponse = response.body;
+            serverTokenResponse.status = response.status;
+        }
+        const responseHandler = new ResponseHandler(this.config.authOptions.clientId, this.cacheManager, this.cryptoUtils, this.logger, this.config.serializableCache, this.config.persistencePlugin);
+        responseHandler.validateTokenResponse(serverTokenResponse, refreshAccessToken);
+        const tokenResponse = await responseHandler.handleServerTokenResponse(serverTokenResponse, this.authority, reqTimestamp, request);
+        return tokenResponse;
+    }
+    /**
+     * generate the request to the server in the acceptable format
+     * @param request - CommonClientCredentialRequest provided by the developer
+     */
+    async createTokenRequestBody(request) {
+        const parameters = new Map();
+        addClientId(parameters, this.config.authOptions.clientId);
+        addScopes(parameters, request.scopes, false);
+        addGrantType(parameters, GrantType.CLIENT_CREDENTIALS_GRANT);
+        addLibraryInfo(parameters, this.config.libraryInfo);
+        addApplicationTelemetry(parameters, this.config.telemetry.application);
+        addThrottling(parameters);
+        if (this.serverTelemetryManager) {
+            addServerTelemetry(parameters, this.serverTelemetryManager);
+        }
+        const correlationId = request.correlationId ||
+            this.config.cryptoInterface.createNewGuid();
+        addCorrelationId(parameters, correlationId);
+        if (this.config.clientCredentials.clientSecret) {
+            addClientSecret(parameters, this.config.clientCredentials.clientSecret);
+        }
+        // Use clientAssertion from request, fallback to client assertion in base configuration
+        const clientAssertion = request.clientAssertion ||
+            this.config.clientCredentials.clientAssertion;
+        if (clientAssertion) {
+            addClientAssertion(parameters, await getClientAssertion(clientAssertion.assertion, this.config.authOptions.clientId, request.resourceRequestUri));
+            addClientAssertionType(parameters, clientAssertion.assertionType);
+        }
+        if (!StringUtils.isEmptyObj(request.claims) ||
+            (this.config.authOptions.clientCapabilities &&
+                this.config.authOptions.clientCapabilities.length > 0)) {
+            addClaims(parameters, request.claims, this.config.authOptions.clientCapabilities);
+        }
+        return mapToQueryString(parameters);
+    }
+}
+
+/*! @azure/msal-node v3.8.3 2025-11-19 */
+
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ */
+/**
+ * On-Behalf-Of client
+ * @public
+ */
+class OnBehalfOfClient extends BaseClient {
+    constructor(configuration) {
+        super(configuration);
+    }
+    /**
+     * Public API to acquire tokens with on behalf of flow
+     * @param request - developer provided CommonOnBehalfOfRequest
+     */
+    async acquireToken(request) {
+        this.scopeSet = new ScopeSet(request.scopes || []);
+        // generate the user_assertion_hash for OBOAssertion
+        this.userAssertionHash = await this.cryptoUtils.hashString(request.oboAssertion);
+        if (request.skipCache || request.claims) {
+            return this.executeTokenRequest(request, this.authority, this.userAssertionHash);
+        }
+        try {
+            return await this.getCachedAuthenticationResult(request);
+        }
+        catch (e) {
+            // Any failure falls back to interactive request, once we implement distributed cache, we plan to handle `createRefreshRequiredError` to refresh using the RT
+            return await this.executeTokenRequest(request, this.authority, this.userAssertionHash);
+        }
+    }
+    /**
+     * look up cache for tokens
+     * Find idtoken in the cache
+     * Find accessToken based on user assertion and account info in the cache
+     * Please note we are not yet supported OBO tokens refreshed with long lived RT. User will have to send a new assertion if the current access token expires
+     * This is to prevent security issues when the assertion changes over time, however, longlived RT helps retaining the session
+     * @param request - developer provided CommonOnBehalfOfRequest
+     */
+    async getCachedAuthenticationResult(request) {
+        // look in the cache for the access_token which matches the incoming_assertion
+        const cachedAccessToken = this.readAccessTokenFromCacheForOBO(this.config.authOptions.clientId, request);
+        if (!cachedAccessToken) {
+            // Must refresh due to non-existent access_token.
+            this.serverTelemetryManager?.setCacheOutcome(CacheOutcome.NO_CACHED_ACCESS_TOKEN);
+            this.logger.info("SilentFlowClient:acquireCachedToken - No access token found in cache for the given properties.");
+            throw createClientAuthError(tokenRefreshRequired);
+        }
+        else if (isTokenExpired(cachedAccessToken.expiresOn, this.config.systemOptions.tokenRenewalOffsetSeconds)) {
+            // Access token expired, will need to renewed
+            this.serverTelemetryManager?.setCacheOutcome(CacheOutcome.CACHED_ACCESS_TOKEN_EXPIRED);
+            this.logger.info(`OnbehalfofFlow:getCachedAuthenticationResult - Cached access token is expired or will expire within ${this.config.systemOptions.tokenRenewalOffsetSeconds} seconds.`);
+            throw createClientAuthError(tokenRefreshRequired);
+        }
+        // fetch the idToken from cache
+        const cachedIdToken = this.readIdTokenFromCacheForOBO(cachedAccessToken.homeAccountId, request.correlationId);
+        let idTokenClaims;
+        let cachedAccount = null;
+        if (cachedIdToken) {
+            idTokenClaims = extractTokenClaims(cachedIdToken.secret, EncodingUtils.base64Decode);
+            const localAccountId = idTokenClaims.oid || idTokenClaims.sub;
+            const accountInfo = {
+                homeAccountId: cachedIdToken.homeAccountId,
+                environment: cachedIdToken.environment,
+                tenantId: cachedIdToken.realm,
+                username: Constants$1.EMPTY_STRING,
+                localAccountId: localAccountId || Constants$1.EMPTY_STRING,
+            };
+            cachedAccount = this.cacheManager.getAccount(this.cacheManager.generateAccountKey(accountInfo), request.correlationId);
+        }
+        // increment telemetry cache hit counter
+        if (this.config.serverTelemetryManager) {
+            this.config.serverTelemetryManager.incrementCacheHits();
+        }
+        return ResponseHandler.generateAuthenticationResult(this.cryptoUtils, this.authority, {
+            account: cachedAccount,
+            accessToken: cachedAccessToken,
+            idToken: cachedIdToken,
+            refreshToken: null,
+            appMetadata: null,
+        }, true, request, idTokenClaims);
+    }
+    /**
+     * read idtoken from cache, this is a specific implementation for OBO as the requirements differ from a generic lookup in the cacheManager
+     * Certain use cases of OBO flow do not expect an idToken in the cache/or from the service
+     * @param atHomeAccountId - account id
+     */
+    readIdTokenFromCacheForOBO(atHomeAccountId, correlationId) {
+        const idTokenFilter = {
+            homeAccountId: atHomeAccountId,
+            environment: this.authority.canonicalAuthorityUrlComponents.HostNameAndPort,
+            credentialType: CredentialType.ID_TOKEN,
+            clientId: this.config.authOptions.clientId,
+            realm: this.authority.tenant,
+        };
+        const idTokenMap = this.cacheManager.getIdTokensByFilter(idTokenFilter, correlationId);
+        // When acquiring a token on behalf of an application, there might not be an id token in the cache
+        if (Object.values(idTokenMap).length < 1) {
+            return null;
+        }
+        return Object.values(idTokenMap)[0];
+    }
+    /**
+     * Fetches the cached access token based on incoming assertion
+     * @param clientId - client id
+     * @param request - developer provided CommonOnBehalfOfRequest
+     */
+    readAccessTokenFromCacheForOBO(clientId, request) {
+        const authScheme = request.authenticationScheme || AuthenticationScheme.BEARER;
+        /*
+         * Distinguish between Bearer and PoP/SSH token cache types
+         * Cast to lowercase to handle "bearer" from ADFS
+         */
+        const credentialType = authScheme.toLowerCase() !==
+                AuthenticationScheme.BEARER.toLowerCase()
+            ? CredentialType.ACCESS_TOKEN_WITH_AUTH_SCHEME
+            : CredentialType.ACCESS_TOKEN;
+        const accessTokenFilter = {
+            credentialType: credentialType,
+            clientId,
+            target: ScopeSet.createSearchScopes(this.scopeSet.asArray()),
+            tokenType: authScheme,
+            keyId: request.sshKid,
+            requestedClaimsHash: request.requestedClaimsHash,
+            userAssertionHash: this.userAssertionHash,
+        };
+        const accessTokens = this.cacheManager.getAccessTokensByFilter(accessTokenFilter, request.correlationId);
+        const numAccessTokens = accessTokens.length;
+        if (numAccessTokens < 1) {
+            return null;
+        }
+        else if (numAccessTokens > 1) {
+            throw createClientAuthError(multipleMatchingTokens);
+        }
+        return accessTokens[0];
+    }
+    /**
+     * Make a network call to the server requesting credentials
+     * @param request - developer provided CommonOnBehalfOfRequest
+     * @param authority - authority object
+     */
+    async executeTokenRequest(request, authority, userAssertionHash) {
+        const queryParametersString = this.createTokenQueryParameters(request);
+        const endpoint = UrlString.appendQueryString(authority.tokenEndpoint, queryParametersString);
+        const requestBody = await this.createTokenRequestBody(request);
+        const headers = this.createTokenRequestHeaders();
+        const thumbprint = {
+            clientId: this.config.authOptions.clientId,
+            authority: request.authority,
+            scopes: request.scopes,
+            claims: request.claims,
+            authenticationScheme: request.authenticationScheme,
+            resourceRequestMethod: request.resourceRequestMethod,
+            resourceRequestUri: request.resourceRequestUri,
+            shrClaims: request.shrClaims,
+            sshKid: request.sshKid,
+        };
+        const reqTimestamp = nowSeconds();
+        const response = await this.executePostToTokenEndpoint(endpoint, requestBody, headers, thumbprint, request.correlationId);
+        const responseHandler = new ResponseHandler(this.config.authOptions.clientId, this.cacheManager, this.cryptoUtils, this.logger, this.config.serializableCache, this.config.persistencePlugin);
+        responseHandler.validateTokenResponse(response.body);
+        const tokenResponse = await responseHandler.handleServerTokenResponse(response.body, this.authority, reqTimestamp, request, undefined, userAssertionHash);
+        return tokenResponse;
+    }
+    /**
+     * generate a server request in accepable format
+     * @param request - developer provided CommonOnBehalfOfRequest
+     */
+    async createTokenRequestBody(request) {
+        const parameters = new Map();
+        addClientId(parameters, this.config.authOptions.clientId);
+        addScopes(parameters, request.scopes);
+        addGrantType(parameters, GrantType.JWT_BEARER);
+        addClientInfo(parameters);
+        addLibraryInfo(parameters, this.config.libraryInfo);
+        addApplicationTelemetry(parameters, this.config.telemetry.application);
+        addThrottling(parameters);
+        if (this.serverTelemetryManager) {
+            addServerTelemetry(parameters, this.serverTelemetryManager);
+        }
+        const correlationId = request.correlationId ||
+            this.config.cryptoInterface.createNewGuid();
+        addCorrelationId(parameters, correlationId);
+        addRequestTokenUse(parameters, ON_BEHALF_OF);
+        addOboAssertion(parameters, request.oboAssertion);
+        if (this.config.clientCredentials.clientSecret) {
+            addClientSecret(parameters, this.config.clientCredentials.clientSecret);
+        }
+        const clientAssertion = this.config.clientCredentials.clientAssertion;
+        if (clientAssertion) {
+            addClientAssertion(parameters, await getClientAssertion(clientAssertion.assertion, this.config.authOptions.clientId, request.resourceRequestUri));
+            addClientAssertionType(parameters, clientAssertion.assertionType);
+        }
+        if (request.claims ||
+            (this.config.authOptions.clientCapabilities &&
+                this.config.authOptions.clientCapabilities.length > 0)) {
+            addClaims(parameters, request.claims, this.config.authOptions.clientCapabilities);
+        }
+        return mapToQueryString(parameters);
+    }
+}
+
+/*! @azure/msal-node v3.8.3 2025-11-19 */
+
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License.
+ */
+// AADAuthorityConstants
+/**
+ *  This class is to be used to acquire tokens for confidential client applications (webApp, webAPI). Confidential client applications
+ *  will configure application secrets, client certificates/assertions as applicable
+ * @public
+ */
+class ConfidentialClientApplication extends ClientApplication {
+    /**
+     * Constructor for the ConfidentialClientApplication
+     *
+     * Required attributes in the Configuration object are:
+     * - clientID: the application ID of your application. You can obtain one by registering your application with our application registration portal
+     * - authority: the authority URL for your application.
+     * - client credential: Must set either client secret, certificate, or assertion for confidential clients. You can obtain a client secret from the application registration portal.
+     *
+     * In Azure AD, authority is a URL indicating of the form https://login.microsoftonline.com/\{Enter_the_Tenant_Info_Here\}.
+     * If your application supports Accounts in one organizational directory, replace "Enter_the_Tenant_Info_Here" value with the Tenant Id or Tenant name (for example, contoso.microsoft.com).
+     * If your application supports Accounts in any organizational directory, replace "Enter_the_Tenant_Info_Here" value with organizations.
+     * If your application supports Accounts in any organizational directory and personal Microsoft accounts, replace "Enter_the_Tenant_Info_Here" value with common.
+     * To restrict support to Personal Microsoft accounts only, replace "Enter_the_Tenant_Info_Here" value with consumers.
+     *
+     * In Azure B2C, authority is of the form https://\{instance\}/tfp/\{tenant\}/\{policyName\}/
+     * Full B2C functionality will be available in this library in future versions.
+     *
+     * @param Configuration - configuration object for the MSAL ConfidentialClientApplication instance
+     */
+    constructor(configuration) {
+        super(configuration);
+        const clientSecretNotEmpty = !!this.config.auth.clientSecret;
+        const clientAssertionNotEmpty = !!this.config.auth.clientAssertion;
+        const certificateNotEmpty = (!!this.config.auth.clientCertificate?.thumbprint ||
+            !!this.config.auth.clientCertificate?.thumbprintSha256) &&
+            !!this.config.auth.clientCertificate?.privateKey;
+        /*
+         * If app developer configures this callback, they don't need a credential
+         * i.e. AzureSDK can get token from Managed Identity without a cert / secret
+         */
+        if (this.appTokenProvider) {
+            return;
+        }
+        // Check that at most one credential is set on the application
+        if ((clientSecretNotEmpty && clientAssertionNotEmpty) ||
+            (clientAssertionNotEmpty && certificateNotEmpty) ||
+            (clientSecretNotEmpty && certificateNotEmpty)) {
+            throw createClientAuthError(invalidClientCredential);
+        }
+        if (this.config.auth.clientSecret) {
+            this.clientSecret = this.config.auth.clientSecret;
+            return;
+        }
+        if (this.config.auth.clientAssertion) {
+            this.developerProvidedClientAssertion =
+                this.config.auth.clientAssertion;
+            return;
+        }
+        if (!certificateNotEmpty) {
+            throw createClientAuthError(invalidClientCredential);
+        }
+        else {
+            this.clientAssertion = !!this.config.auth.clientCertificate
+                .thumbprintSha256
+                ? ClientAssertion.fromCertificateWithSha256Thumbprint(this.config.auth.clientCertificate.thumbprintSha256, this.config.auth.clientCertificate.privateKey, this.config.auth.clientCertificate.x5c)
+                : ClientAssertion.fromCertificate(
+                // guaranteed to be a string, due to prior error checking in this function
+                this.config.auth.clientCertificate.thumbprint, this.config.auth.clientCertificate.privateKey, this.config.auth.clientCertificate.x5c);
+        }
+        this.appTokenProvider = undefined;
+    }
+    /**
+     * This extensibility point only works for the client_credential flow, i.e. acquireTokenByClientCredential and
+     * is meant for Azure SDK to enhance Managed Identity support.
+     *
+     * @param IAppTokenProvider  - Extensibility interface, which allows the app developer to return a token from a custom source.
+     */
+    SetAppTokenProvider(provider) {
+        this.appTokenProvider = provider;
+    }
+    /**
+     * Acquires tokens from the authority for the application (not for an end user).
+     */
+    async acquireTokenByClientCredential(request) {
+        this.logger.info("acquireTokenByClientCredential called", request.correlationId);
+        // If there is a client assertion present in the request, it overrides the one present in the client configuration
+        let clientAssertion;
+        if (request.clientAssertion) {
+            clientAssertion = {
+                assertion: await getClientAssertion(request.clientAssertion, this.config.auth.clientId
+                // tokenEndpoint will be undefined. resourceRequestUri is omitted in ClientCredentialRequest
+                ),
+                assertionType: Constants.JWT_BEARER_ASSERTION_TYPE,
+            };
+        }
+        const baseRequest = await this.initializeBaseRequest(request);
+        // valid base request should not contain oidc scopes in this grant type
+        const validBaseRequest = {
+            ...baseRequest,
+            scopes: baseRequest.scopes.filter((scope) => !OIDC_DEFAULT_SCOPES.includes(scope)),
+        };
+        const validRequest = {
+            ...request,
+            ...validBaseRequest,
+            clientAssertion,
+        };
+        /*
+         * valid request should not have "common" or "organizations" in lieu of the tenant_id in the authority in the auth configuration
+         * example authority: "https://login.microsoftonline.com/TenantId",
+         */
+        const authority = new UrlString(validRequest.authority);
+        const tenantId = authority.getUrlComponents().PathSegments[0];
+        if (Object.values(AADAuthorityConstants).includes(tenantId)) {
+            throw createClientAuthError(missingTenantIdError);
+        }
+        /*
+         * if this env variable is set, and the developer provided region isn't defined and isn't "DisableMsalForceRegion",
+         * MSAL shall opt-in to ESTS-R with the value of this variable
+         */
+        const ENV_MSAL_FORCE_REGION = process.env[MSAL_FORCE_REGION];
+        let region;
+        if (validRequest.azureRegion !== "DisableMsalForceRegion") {
+            if (!validRequest.azureRegion && ENV_MSAL_FORCE_REGION) {
+                region = ENV_MSAL_FORCE_REGION;
+            }
+            else {
+                region = validRequest.azureRegion;
+            }
+        }
+        const azureRegionConfiguration = {
+            azureRegion: region,
+            environmentRegion: process.env[REGION_ENVIRONMENT_VARIABLE],
+        };
+        const serverTelemetryManager = this.initializeServerTelemetryManager(ApiId.acquireTokenByClientCredential, validRequest.correlationId, validRequest.skipCache);
+        try {
+            const discoveredAuthority = await this.createAuthority(validRequest.authority, validRequest.correlationId, azureRegionConfiguration, request.azureCloudOptions);
+            const clientCredentialConfig = await this.buildOauthClientConfiguration(discoveredAuthority, validRequest.correlationId, "", serverTelemetryManager);
+            const clientCredentialClient = new ClientCredentialClient(clientCredentialConfig, this.appTokenProvider);
+            this.logger.verbose("Client credential client created", validRequest.correlationId);
+            return await clientCredentialClient.acquireToken(validRequest);
+        }
+        catch (e) {
+            if (e instanceof AuthError) {
+                e.setCorrelationId(validRequest.correlationId);
+            }
+            serverTelemetryManager.cacheFailedRequest(e);
+            throw e;
+        }
+    }
+    /**
+     * Acquires tokens from the authority for the application.
+     *
+     * Used in scenarios where the current app is a middle-tier service which was called with a token
+     * representing an end user. The current app can use the token (oboAssertion) to request another
+     * token to access downstream web API, on behalf of that user.
+     *
+     * The current middle-tier app has no user interaction to obtain consent.
+     * See how to gain consent upfront for your middle-tier app from this article.
+     * https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-oauth2-on-behalf-of-flow#gaining-consent-for-the-middle-tier-application
+     */
+    async acquireTokenOnBehalfOf(request) {
+        this.logger.info("acquireTokenOnBehalfOf called", request.correlationId);
+        const validRequest = {
+            ...request,
+            ...(await this.initializeBaseRequest(request)),
+        };
+        try {
+            const discoveredAuthority = await this.createAuthority(validRequest.authority, validRequest.correlationId, undefined, request.azureCloudOptions);
+            const onBehalfOfConfig = await this.buildOauthClientConfiguration(discoveredAuthority, validRequest.correlationId, "", undefined);
+            const oboClient = new OnBehalfOfClient(onBehalfOfConfig);
+            this.logger.verbose("On behalf of client created", validRequest.correlationId);
+            return await oboClient.acquireToken(validRequest);
+        }
+        catch (e) {
+            if (e instanceof AuthError) {
+                e.setCorrelationId(validRequest.correlationId);
+            }
+            throw e;
+        }
+    }
+}
+
+/*! @azure/msal-node v3.8.3 2025-11-19 */
+({
+    win32: `${process.env["ProgramData"]}\\AzureConnectedMachineAgent\\Tokens\\`});
+({
+    win32: `${process.env["ProgramFiles"]}\\AzureConnectedMachineAgent\\himds.exe`});
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+/**
+ * Returns a random integer value between a lower and upper bound,
+ * inclusive of both bounds.
+ * Note that this uses Math.random and isn't secure. If you need to use
+ * this for any kind of security purpose, find a better source of random.
+ * @param min - The smallest integer value allowed.
+ * @param max - The largest integer value allowed.
+ */
+function getRandomIntegerInclusive(min, max) {
+    // Make sure inputs are integers.
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    // Pick a random offset from zero to the size of the range.
+    // Since Math.random() can never return 1, we have to make the range one larger
+    // in order to be inclusive of the maximum value after we take the floor.
+    const offset = Math.floor(Math.random() * (max - min + 1));
+    return offset + min;
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+/**
+ * Calculates the delay interval for retry attempts using exponential delay with jitter.
+ * @param retryAttempt - The current retry attempt number.
+ * @param config - The exponential retry configuration.
+ * @returns An object containing the calculated retry delay.
+ */
+function calculateRetryDelay(retryAttempt, config) {
+    // Exponentially increase the delay each time
+    const exponentialDelay = config.retryDelayInMs * Math.pow(2, retryAttempt);
+    // Don't let the delay exceed the maximum
+    const clampedDelay = Math.min(config.maxRetryDelayInMs, exponentialDelay);
+    // Allow the final value to have some "jitter" (within 50% of the delay size) so
+    // that retries across multiple clients don't occur simultaneously.
+    const retryAfterInMs = clampedDelay / 2 + getRandomIntegerInclusive(0, clampedDelay / 2);
+    return { retryAfterInMs };
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+/**
+ * Helper to determine when an input is a generic JS object.
+ * @returns true when input is an object type that is not null, Array, RegExp, or Date.
+ */
+function isObject(input) {
+    return (typeof input === "object" &&
+        input !== null &&
+        !Array.isArray(input) &&
+        !(input instanceof RegExp) &&
+        !(input instanceof Date));
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+/**
+ * Typeguard for an error object shape (has name and message)
+ * @param e - Something caught by a catch clause.
+ */
+function isError$1(e) {
+    if (isObject(e)) {
+        const hasName = typeof e.name === "string";
+        const hasMessage = typeof e.message === "string";
+        return hasName && hasMessage;
+    }
+    return false;
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+/**
+ * Generated Universally Unique Identifier
+ *
+ * @returns RFC4122 v4 UUID.
+ */
+function randomUUID() {
+    return crypto.randomUUID();
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+/**
+ * A constant that indicates whether the environment the code is running is a Web Browser.
+ */
+// eslint-disable-next-line @azure/azure-sdk/ts-no-window
+/**
+ * A constant that indicates whether the environment the code is running is Deno.
+ */
+typeof Deno !== "undefined" &&
+    typeof Deno.version !== "undefined" &&
+    typeof Deno.version.deno !== "undefined";
+/**
+ * A constant that indicates whether the environment the code is running is Bun.sh.
+ */
+typeof Bun !== "undefined" && typeof Bun.version !== "undefined";
+/**
+ * A constant that indicates whether the environment the code is running is a Node.js compatible environment.
+ */
+const isNodeLike$1 = typeof globalThis.process !== "undefined" &&
+    Boolean(globalThis.process.version) &&
+    Boolean(globalThis.process.versions?.node);
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+/**
+ * The helper that transforms bytes with specific character encoding into string
+ * @param bytes - the uint8array bytes
+ * @param format - the format we use to encode the byte
+ * @returns a string of the encoded string
+ */
+/**
+ * The helper that transforms string to specific character encoded bytes array.
+ * @param value - the string to be converted
+ * @param format - the format we use to decode the value
+ * @returns a uint8array
+ */
+function stringToUint8Array(value, format) {
+    return Buffer.from(value, format);
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+const RedactedString = "REDACTED";
+// Make sure this list is up-to-date with the one under core/logger/Readme#Keyconcepts
+const defaultAllowedHeaderNames = [
+    "x-ms-client-request-id",
+    "x-ms-return-client-request-id",
+    "x-ms-useragent",
+    "x-ms-correlation-request-id",
+    "x-ms-request-id",
+    "client-request-id",
+    "ms-cv",
+    "return-client-request-id",
+    "traceparent",
+    "Access-Control-Allow-Credentials",
+    "Access-Control-Allow-Headers",
+    "Access-Control-Allow-Methods",
+    "Access-Control-Allow-Origin",
+    "Access-Control-Expose-Headers",
+    "Access-Control-Max-Age",
+    "Access-Control-Request-Headers",
+    "Access-Control-Request-Method",
+    "Origin",
+    "Accept",
+    "Accept-Encoding",
+    "Cache-Control",
+    "Connection",
+    "Content-Length",
+    "Content-Type",
+    "Date",
+    "ETag",
+    "Expires",
+    "If-Match",
+    "If-Modified-Since",
+    "If-None-Match",
+    "If-Unmodified-Since",
+    "Last-Modified",
+    "Pragma",
+    "Request-Id",
+    "Retry-After",
+    "Server",
+    "Transfer-Encoding",
+    "User-Agent",
+    "WWW-Authenticate",
+];
+const defaultAllowedQueryParameters = ["api-version"];
+/**
+ * A utility class to sanitize objects for logging.
+ */
+class Sanitizer {
+    allowedHeaderNames;
+    allowedQueryParameters;
+    constructor({ additionalAllowedHeaderNames: allowedHeaderNames = [], additionalAllowedQueryParameters: allowedQueryParameters = [], } = {}) {
+        allowedHeaderNames = defaultAllowedHeaderNames.concat(allowedHeaderNames);
+        allowedQueryParameters = defaultAllowedQueryParameters.concat(allowedQueryParameters);
+        this.allowedHeaderNames = new Set(allowedHeaderNames.map((n) => n.toLowerCase()));
+        this.allowedQueryParameters = new Set(allowedQueryParameters.map((p) => p.toLowerCase()));
+    }
+    /**
+     * Sanitizes an object for logging.
+     * @param obj - The object to sanitize
+     * @returns - The sanitized object as a string
+     */
+    sanitize(obj) {
+        const seen = new Set();
+        return JSON.stringify(obj, (key, value) => {
+            // Ensure Errors include their interesting non-enumerable members
+            if (value instanceof Error) {
+                return {
+                    ...value,
+                    name: value.name,
+                    message: value.message,
+                };
+            }
+            if (key === "headers") {
+                return this.sanitizeHeaders(value);
+            }
+            else if (key === "url") {
+                return this.sanitizeUrl(value);
+            }
+            else if (key === "query") {
+                return this.sanitizeQuery(value);
+            }
+            else if (key === "body") {
+                // Don't log the request body
+                return undefined;
+            }
+            else if (key === "response") {
+                // Don't log response again
+                return undefined;
+            }
+            else if (key === "operationSpec") {
+                // When using sendOperationRequest, the request carries a massive
+                // field with the autorest spec. No need to log it.
+                return undefined;
+            }
+            else if (Array.isArray(value) || isObject(value)) {
+                if (seen.has(value)) {
+                    return "[Circular]";
+                }
+                seen.add(value);
+            }
+            return value;
+        }, 2);
+    }
+    /**
+     * Sanitizes a URL for logging.
+     * @param value - The URL to sanitize
+     * @returns - The sanitized URL as a string
+     */
+    sanitizeUrl(value) {
+        if (typeof value !== "string" || value === null || value === "") {
+            return value;
+        }
+        const url = new URL(value);
+        if (!url.search) {
+            return value;
+        }
+        for (const [key] of url.searchParams) {
+            if (!this.allowedQueryParameters.has(key.toLowerCase())) {
+                url.searchParams.set(key, RedactedString);
+            }
+        }
+        return url.toString();
+    }
+    sanitizeHeaders(obj) {
+        const sanitized = {};
+        for (const key of Object.keys(obj)) {
+            if (this.allowedHeaderNames.has(key.toLowerCase())) {
+                sanitized[key] = obj[key];
+            }
+            else {
+                sanitized[key] = RedactedString;
+            }
+        }
+        return sanitized;
+    }
+    sanitizeQuery(value) {
+        if (typeof value !== "object" || value === null) {
+            return value;
+        }
+        const sanitized = {};
+        for (const k of Object.keys(value)) {
+            if (this.allowedQueryParameters.has(k.toLowerCase())) {
+                sanitized[k] = value[k];
+            }
+            else {
+                sanitized[k] = RedactedString;
+            }
+        }
+        return sanitized;
+    }
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+/**
+ * This error is thrown when an asynchronous operation has been aborted.
+ * Check for this error by testing the `name` that the name property of the
+ * error matches `"AbortError"`.
+ *
+ * @example
+ * ```ts
+ * const controller = new AbortController();
+ * controller.abort();
+ * try {
+ *   doAsyncWork(controller.signal)
+ * } catch (e) {
+ *   if (e.name === 'AbortError') {
+ *     // handle abort error here.
+ *   }
+ * }
+ * ```
+ */
+let AbortError$1 = class AbortError extends Error {
+    constructor(message) {
+        super(message);
+        this.name = "AbortError";
+    }
+};
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+/**
+ * Creates an abortable promise.
+ * @param buildPromise - A function that takes the resolve and reject functions as parameters.
+ * @param options - The options for the abortable promise.
+ * @returns A promise that can be aborted.
+ */
+function createAbortablePromise(buildPromise, options) {
+    const { cleanupBeforeAbort, abortSignal, abortErrorMsg } = options ?? {};
+    return new Promise((resolve, reject) => {
+        function rejectOnAbort() {
+            reject(new AbortError$1(abortErrorMsg ?? "The operation was aborted."));
+        }
+        function removeListeners() {
+            abortSignal?.removeEventListener("abort", onAbort);
+        }
+        function onAbort() {
+            cleanupBeforeAbort?.();
+            removeListeners();
+            rejectOnAbort();
+        }
+        if (abortSignal?.aborted) {
+            return rejectOnAbort();
+        }
+        try {
+            buildPromise((x) => {
+                removeListeners();
+                resolve(x);
+            }, (x) => {
+                removeListeners();
+                reject(x);
+            });
+        }
+        catch (err) {
+            reject(err);
+        }
+        abortSignal?.addEventListener("abort", onAbort);
+    });
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+const StandardAbortMessage$1 = "The delay was aborted.";
+/**
+ * A wrapper for setTimeout that resolves a promise after timeInMs milliseconds.
+ * @param timeInMs - The number of milliseconds to be delayed.
+ * @param options - The options for delay - currently abort options
+ * @returns Promise that is resolved after timeInMs
+ */
+function delay$1(timeInMs, options) {
+    let token;
+    const { abortSignal, abortErrorMsg } = {};
+    return createAbortablePromise((resolve) => {
+        token = setTimeout(resolve, timeInMs);
+    }, {
+        cleanupBeforeAbort: () => clearTimeout(token),
+        abortSignal,
+        abortErrorMsg: abortErrorMsg ?? StandardAbortMessage$1,
+    });
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+/**
+ * Given what is thought to be an error object, return the message if possible.
+ * If the message is missing, returns a stringified version of the input.
+ * @param e - Something thrown from a try block
+ * @returns The error message or a string of the input
+ */
+function getErrorMessage(e) {
+    if (isError$1(e)) {
+        return e.message;
+    }
+    else {
+        let stringified;
+        try {
+            if (typeof e === "object" && e) {
+                stringified = JSON.stringify(e);
+            }
+            else {
+                stringified = String(e);
+            }
+        }
+        catch (err) {
+            stringified = "[unable to stringify input]";
+        }
+        return `Unknown error ${stringified}`;
+    }
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+/**
+ * Typeguard for an error object shape (has name and message)
+ *
+ * @param e - Something caught by a catch clause.
+ */
+function isError(e) {
+    return isError$1(e);
+}
+/**
+ * A constant that indicates whether the environment the code is running is a Node.js compatible environment.
+ *
+ * @deprecated
+ *
+ * Use `isNodeLike` instead.
+ */
+const isNode = isNodeLike$1;
+/**
+ * A constant that indicates whether the environment the code is running is a Node.js compatible environment.
+ */
+const isNodeLike = isNodeLike$1;
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+const logger$4 = credentialLogger("IdentityUtils");
+/**
+ * Latest AuthenticationRecord version
+ */
+const LatestAuthenticationRecordVersion = "1.0";
+/**
+ * Ensures the validity of the MSAL token
+ * @internal
+ */
+function ensureValidMsalToken(scopes, msalToken, getTokenOptions) {
+    const error = (message) => {
+        logger$4.getToken.info(message);
+        return new AuthenticationRequiredError({
+            scopes: Array.isArray(scopes) ? scopes : [scopes],
+            getTokenOptions,
+            message,
+        });
+    };
+    if (!msalToken) {
+        throw error("No response");
+    }
+    if (!msalToken.expiresOn) {
+        throw error(`Response had no "expiresOn" property.`);
+    }
+    if (!msalToken.accessToken) {
+        throw error(`Response had no "accessToken" property.`);
+    }
+}
+/**
+ * Returns the authority host from either the options bag or the AZURE_AUTHORITY_HOST environment variable.
+ *
+ * Defaults to {@link DefaultAuthorityHost}.
+ * @internal
+ */
+function getAuthorityHost(options) {
+    let authorityHost = options?.authorityHost;
+    if (!authorityHost && isNodeLike) {
+        authorityHost = process.env.AZURE_AUTHORITY_HOST;
+    }
+    return authorityHost ?? DefaultAuthorityHost;
+}
+/**
+ * Generates a valid authority by combining a host with a tenantId.
+ * @internal
+ */
+function getAuthority(tenantId, host) {
+    if (!host) {
+        host = DefaultAuthorityHost;
+    }
+    if (new RegExp(`${tenantId}/?$`).test(host)) {
+        return host;
+    }
+    if (host.endsWith("/")) {
+        return host + tenantId;
+    }
+    else {
+        return `${host}/${tenantId}`;
+    }
+}
+/**
+ * Generates the known authorities.
+ * If the Tenant Id is `adfs`, the authority can't be validated since the format won't match the expected one.
+ * For that reason, we have to force MSAL to disable validating the authority
+ * by sending it within the known authorities in the MSAL configuration.
+ * @internal
+ */
+function getKnownAuthorities(tenantId, authorityHost, disableInstanceDiscovery) {
+    if ((tenantId === "adfs" && authorityHost) || disableInstanceDiscovery) {
+        return [authorityHost];
+    }
+    return [];
+}
+/**
+ * Generates a logger that can be passed to the MSAL clients.
+ * @param credLogger - The logger of the credential.
+ * @internal
+ */
+const defaultLoggerCallback = (credLogger, platform = isNode ? "Node" : "Browser") => (level, message, containsPii) => {
+    if (containsPii) {
+        return;
+    }
+    switch (level) {
+        case LogLevel.Error:
+            credLogger.info(`MSAL ${platform} V2 error: ${message}`);
+            return;
+        case LogLevel.Info:
+            credLogger.info(`MSAL ${platform} V2 info message: ${message}`);
+            return;
+        case LogLevel.Verbose:
+            credLogger.info(`MSAL ${platform} V2 verbose message: ${message}`);
+            return;
+        case LogLevel.Warning:
+            credLogger.info(`MSAL ${platform} V2 warning: ${message}`);
+            return;
+    }
+};
+/**
+ * @internal
+ */
+function getMSALLogLevel(logLevel) {
+    switch (logLevel) {
+        case "error":
+            return LogLevel.Error;
+        case "info":
+            return LogLevel.Info;
+        case "verbose":
+            return LogLevel.Verbose;
+        case "warning":
+            return LogLevel.Warning;
+        default:
+            // default msal logging level should be Info
+            return LogLevel.Info;
+    }
+}
+/**
+ * Handles MSAL errors.
+ */
+function handleMsalError(scopes, error, getTokenOptions) {
+    if (error.name === "AuthError" ||
+        error.name === "ClientAuthError" ||
+        error.name === "BrowserAuthError") {
+        const msalError = error;
+        switch (msalError.errorCode) {
+            case "endpoints_resolution_error":
+                logger$4.info(formatError(scopes, error.message));
+                return new CredentialUnavailableError(error.message);
+            case "device_code_polling_cancelled":
+                return new AbortError$1("The authentication has been aborted by the caller.");
+            case "consent_required":
+            case "interaction_required":
+            case "login_required":
+                logger$4.info(formatError(scopes, `Authentication returned errorCode ${msalError.errorCode}`));
+                break;
+            default:
+                logger$4.info(formatError(scopes, `Failed to acquire token: ${error.message}`));
+                break;
+        }
+    }
+    if (error.name === "ClientConfigurationError" ||
+        error.name === "BrowserConfigurationAuthError" ||
+        error.name === "AbortError" ||
+        error.name === "AuthenticationError") {
+        return error;
+    }
+    if (error.name === "NativeAuthError") {
+        logger$4.info(formatError(scopes, `Error from the native broker: ${error.message} with status code: ${error.statusCode}`));
+        return error;
+    }
+    return new AuthenticationRequiredError({ scopes, getTokenOptions, message: error.message });
+}
+// transformations
+function publicToMsal(account) {
+    return {
+        localAccountId: account.homeAccountId,
+        environment: account.authority,
+        username: account.username,
+        homeAccountId: account.homeAccountId,
+        tenantId: account.tenantId,
+    };
+}
+function msalToPublic(clientId, account) {
+    const record = {
+        authority: account.environment ?? DefaultAuthority,
+        homeAccountId: account.homeAccountId,
+        tenantId: account.tenantId || DefaultTenantId,
+        username: account.username,
+        clientId,
+        version: LatestAuthenticationRecordVersion,
+    };
+    return record;
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+/**
+ * Default key used to access the XML attributes.
+ */
+const XML_ATTRKEY = "$";
+/**
+ * Default key used to access the XML value content.
+ */
+const XML_CHARKEY = "_";
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+/**
+ * A type guard for a primitive response body.
+ * @param value - Value to test
+ *
+ * @internal
+ */
+function isPrimitiveBody(value, mapperTypeName) {
+    return (mapperTypeName !== "Composite" &&
+        mapperTypeName !== "Dictionary" &&
+        (typeof value === "string" ||
+            typeof value === "number" ||
+            typeof value === "boolean" ||
+            mapperTypeName?.match(/^(Date|DateTime|DateTimeRfc1123|UnixTime|ByteArray|Base64Url)$/i) !==
+                null ||
+            value === undefined ||
+            value === null));
+}
+/**
+ * Maps the response as follows:
+ * - wraps the response body if needed (typically if its type is primitive).
+ * - returns null if the combination of the headers and the body is empty.
+ * - otherwise, returns the combination of the headers and the body.
+ *
+ * @param responseObject - a representation of the parsed response
+ * @returns the response that will be returned to the user which can be null and/or wrapped
+ *
+ * @internal
+ */
+function handleNullableResponseAndWrappableBody(responseObject) {
+    const combinedHeadersAndBody = {
+        ...responseObject.headers,
+        ...responseObject.body,
+    };
+    if (responseObject.hasNullableType &&
+        Object.getOwnPropertyNames(combinedHeadersAndBody).length === 0) {
+        return responseObject.shouldWrapBody ? { body: null } : null;
+    }
+    else {
+        return responseObject.shouldWrapBody
+            ? {
+                ...responseObject.headers,
+                body: responseObject.body,
+            }
+            : combinedHeadersAndBody;
+    }
+}
+/**
+ * Take a `FullOperationResponse` and turn it into a flat
+ * response object to hand back to the consumer.
+ * @param fullResponse - The processed response from the operation request
+ * @param responseSpec - The response map from the OperationSpec
+ *
+ * @internal
+ */
+function flattenResponse(fullResponse, responseSpec) {
+    const parsedHeaders = fullResponse.parsedHeaders;
+    // head methods never have a body, but we return a boolean set to body property
+    // to indicate presence/absence of the resource
+    if (fullResponse.request.method === "HEAD") {
+        return {
+            ...parsedHeaders,
+            body: fullResponse.parsedBody,
+        };
+    }
+    const bodyMapper = responseSpec && responseSpec.bodyMapper;
+    const isNullable = Boolean(bodyMapper?.nullable);
+    const expectedBodyTypeName = bodyMapper?.type.name;
+    /** If the body is asked for, we look at the expected body type to handle it */
+    if (expectedBodyTypeName === "Stream") {
+        return {
+            ...parsedHeaders,
+            blobBody: fullResponse.blobBody,
+            readableStreamBody: fullResponse.readableStreamBody,
+        };
+    }
+    const modelProperties = (expectedBodyTypeName === "Composite" &&
+        bodyMapper.type.modelProperties) ||
+        {};
+    const isPageableResponse = Object.keys(modelProperties).some((k) => modelProperties[k].serializedName === "");
+    if (expectedBodyTypeName === "Sequence" || isPageableResponse) {
+        const arrayResponse = fullResponse.parsedBody ?? [];
+        for (const key of Object.keys(modelProperties)) {
+            if (modelProperties[key].serializedName) {
+                arrayResponse[key] = fullResponse.parsedBody?.[key];
+            }
+        }
+        if (parsedHeaders) {
+            for (const key of Object.keys(parsedHeaders)) {
+                arrayResponse[key] = parsedHeaders[key];
+            }
+        }
+        return isNullable &&
+            !fullResponse.parsedBody &&
+            !parsedHeaders &&
+            Object.getOwnPropertyNames(modelProperties).length === 0
+            ? null
+            : arrayResponse;
+    }
+    return handleNullableResponseAndWrappableBody({
+        body: fullResponse.parsedBody,
+        headers: parsedHeaders,
+        hasNullableType: isNullable,
+        shouldWrapBody: isPrimitiveBody(fullResponse.parsedBody, expectedBodyTypeName),
+    });
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+/**
+ * Known types of Mappers
+ */
+const MapperTypeNames = {
+    Base64Url: "Base64Url",
+    Boolean: "Boolean",
+    ByteArray: "ByteArray",
+    Composite: "Composite",
+    Date: "Date",
+    DateTime: "DateTime",
+    DateTimeRfc1123: "DateTimeRfc1123",
+    Dictionary: "Dictionary",
+    Enum: "Enum",
+    Number: "Number",
+    Object: "Object",
+    Sequence: "Sequence",
+    String: "String",
+    Stream: "Stream",
+    TimeSpan: "TimeSpan",
+    UnixTime: "UnixTime",
+};
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+/**
+ * This error is thrown when an asynchronous operation has been aborted.
+ * Check for this error by testing the `name` that the name property of the
+ * error matches `"AbortError"`.
+ *
+ * @example
+ * ```ts snippet:ReadmeSampleAbortError
+ * import { AbortError } from "@typespec/ts-http-runtime";
+ *
+ * async function doAsyncWork(options: { abortSignal: AbortSignal }): Promise<void> {
+ *   if (options.abortSignal.aborted) {
+ *     throw new AbortError();
+ *   }
+ *
+ *   // do async work
+ * }
+ *
+ * const controller = new AbortController();
+ * controller.abort();
+ *
+ * try {
+ *   doAsyncWork({ abortSignal: controller.signal });
+ * } catch (e) {
+ *   if (e instanceof Error && e.name === "AbortError") {
+ *     // handle abort error here.
+ *   }
+ * }
+ * ```
+ */
+class AbortError extends Error {
+    constructor(message) {
+        super(message);
+        this.name = "AbortError";
+    }
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+function normalizeName(name) {
+    return name.toLowerCase();
+}
+function* headerIterator(map) {
+    for (const entry of map.values()) {
+        yield [entry.name, entry.value];
+    }
+}
+class HttpHeadersImpl {
+    _headersMap;
+    constructor(rawHeaders) {
+        this._headersMap = new Map();
+        if (rawHeaders) {
+            for (const headerName of Object.keys(rawHeaders)) {
+                this.set(headerName, rawHeaders[headerName]);
+            }
+        }
+    }
+    /**
+     * Set a header in this collection with the provided name and value. The name is
+     * case-insensitive.
+     * @param name - The name of the header to set. This value is case-insensitive.
+     * @param value - The value of the header to set.
+     */
+    set(name, value) {
+        this._headersMap.set(normalizeName(name), { name, value: String(value).trim() });
+    }
+    /**
+     * Get the header value for the provided header name, or undefined if no header exists in this
+     * collection with the provided name.
+     * @param name - The name of the header. This value is case-insensitive.
+     */
+    get(name) {
+        return this._headersMap.get(normalizeName(name))?.value;
+    }
+    /**
+     * Get whether or not this header collection contains a header entry for the provided header name.
+     * @param name - The name of the header to set. This value is case-insensitive.
+     */
+    has(name) {
+        return this._headersMap.has(normalizeName(name));
+    }
+    /**
+     * Remove the header with the provided headerName.
+     * @param name - The name of the header to remove.
+     */
+    delete(name) {
+        this._headersMap.delete(normalizeName(name));
+    }
+    /**
+     * Get the JSON object representation of this HTTP header collection.
+     */
+    toJSON(options = {}) {
+        const result = {};
+        if (options.preserveCase) {
+            for (const entry of this._headersMap.values()) {
+                result[entry.name] = entry.value;
+            }
+        }
+        else {
+            for (const [normalizedName, entry] of this._headersMap) {
+                result[normalizedName] = entry.value;
+            }
+        }
+        return result;
+    }
+    /**
+     * Get the string representation of this HTTP header collection.
+     */
+    toString() {
+        return JSON.stringify(this.toJSON({ preserveCase: true }));
+    }
+    /**
+     * Iterate over tuples of header [name, value] pairs.
+     */
+    [Symbol.iterator]() {
+        return headerIterator(this._headersMap);
+    }
+}
+/**
+ * Creates an object that satisfies the `HttpHeaders` interface.
+ * @param rawHeaders - A simple object representing initial headers
+ */
+function createHttpHeaders$1(rawHeaders) {
+    return new HttpHeadersImpl(rawHeaders);
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+class PipelineRequestImpl {
+    url;
+    method;
+    headers;
+    timeout;
+    withCredentials;
+    body;
+    multipartBody;
+    formData;
+    streamResponseStatusCodes;
+    enableBrowserStreams;
+    proxySettings;
+    disableKeepAlive;
+    abortSignal;
+    requestId;
+    allowInsecureConnection;
+    onUploadProgress;
+    onDownloadProgress;
+    requestOverrides;
+    authSchemes;
+    constructor(options) {
+        this.url = options.url;
+        this.body = options.body;
+        this.headers = options.headers ?? createHttpHeaders$1();
+        this.method = options.method ?? "GET";
+        this.timeout = options.timeout ?? 0;
+        this.multipartBody = options.multipartBody;
+        this.formData = options.formData;
+        this.disableKeepAlive = options.disableKeepAlive ?? false;
+        this.proxySettings = options.proxySettings;
+        this.streamResponseStatusCodes = options.streamResponseStatusCodes;
+        this.withCredentials = options.withCredentials ?? false;
+        this.abortSignal = options.abortSignal;
+        this.onUploadProgress = options.onUploadProgress;
+        this.onDownloadProgress = options.onDownloadProgress;
+        this.requestId = options.requestId || randomUUID();
+        this.allowInsecureConnection = options.allowInsecureConnection ?? false;
+        this.enableBrowserStreams = options.enableBrowserStreams ?? false;
+        this.requestOverrides = options.requestOverrides;
+        this.authSchemes = options.authSchemes;
+    }
+}
+/**
+ * Creates a new pipeline request with the given options.
+ * This method is to allow for the easy setting of default values and not required.
+ * @param options - The options to create the request with.
+ */
+function createPipelineRequest$1(options) {
+    return new PipelineRequestImpl(options);
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+const ValidPhaseNames = new Set(["Deserialize", "Serialize", "Retry", "Sign"]);
+/**
+ * A private implementation of Pipeline.
+ * Do not export this class from the package.
+ * @internal
+ */
+class HttpPipeline {
+    _policies = [];
+    _orderedPolicies;
+    constructor(policies) {
+        this._policies = policies?.slice(0) ?? [];
+        this._orderedPolicies = undefined;
+    }
+    addPolicy(policy, options = {}) {
+        if (options.phase && options.afterPhase) {
+            throw new Error("Policies inside a phase cannot specify afterPhase.");
+        }
+        if (options.phase && !ValidPhaseNames.has(options.phase)) {
+            throw new Error(`Invalid phase name: ${options.phase}`);
+        }
+        if (options.afterPhase && !ValidPhaseNames.has(options.afterPhase)) {
+            throw new Error(`Invalid afterPhase name: ${options.afterPhase}`);
+        }
+        this._policies.push({
+            policy,
+            options,
+        });
+        this._orderedPolicies = undefined;
+    }
+    removePolicy(options) {
+        const removedPolicies = [];
+        this._policies = this._policies.filter((policyDescriptor) => {
+            if ((options.name && policyDescriptor.policy.name === options.name) ||
+                (options.phase && policyDescriptor.options.phase === options.phase)) {
+                removedPolicies.push(policyDescriptor.policy);
+                return false;
+            }
+            else {
+                return true;
+            }
+        });
+        this._orderedPolicies = undefined;
+        return removedPolicies;
+    }
+    sendRequest(httpClient, request) {
+        const policies = this.getOrderedPolicies();
+        const pipeline = policies.reduceRight((next, policy) => {
+            return (req) => {
+                return policy.sendRequest(req, next);
+            };
+        }, (req) => httpClient.sendRequest(req));
+        return pipeline(request);
+    }
+    getOrderedPolicies() {
+        if (!this._orderedPolicies) {
+            this._orderedPolicies = this.orderPolicies();
+        }
+        return this._orderedPolicies;
+    }
+    clone() {
+        return new HttpPipeline(this._policies);
+    }
+    static create() {
+        return new HttpPipeline();
+    }
+    orderPolicies() {
+        /**
+         * The goal of this method is to reliably order pipeline policies
+         * based on their declared requirements when they were added.
+         *
+         * Order is first determined by phase:
+         *
+         * 1. Serialize Phase
+         * 2. Policies not in a phase
+         * 3. Deserialize Phase
+         * 4. Retry Phase
+         * 5. Sign Phase
+         *
+         * Within each phase, policies are executed in the order
+         * they were added unless they were specified to execute
+         * before/after other policies or after a particular phase.
+         *
+         * To determine the final order, we will walk the policy list
+         * in phase order multiple times until all dependencies are
+         * satisfied.
+         *
+         * `afterPolicies` are the set of policies that must be
+         * executed before a given policy. This requirement is
+         * considered satisfied when each of the listed policies
+         * have been scheduled.
+         *
+         * `beforePolicies` are the set of policies that must be
+         * executed after a given policy. Since this dependency
+         * can be expressed by converting it into a equivalent
+         * `afterPolicies` declarations, they are normalized
+         * into that form for simplicity.
+         *
+         * An `afterPhase` dependency is considered satisfied when all
+         * policies in that phase have scheduled.
+         *
+         */
+        const result = [];
+        // Track all policies we know about.
+        const policyMap = new Map();
+        function createPhase(name) {
+            return {
+                name,
+                policies: new Set(),
+                hasRun: false,
+                hasAfterPolicies: false,
+            };
+        }
+        // Track policies for each phase.
+        const serializePhase = createPhase("Serialize");
+        const noPhase = createPhase("None");
+        const deserializePhase = createPhase("Deserialize");
+        const retryPhase = createPhase("Retry");
+        const signPhase = createPhase("Sign");
+        // a list of phases in order
+        const orderedPhases = [serializePhase, noPhase, deserializePhase, retryPhase, signPhase];
+        // Small helper function to map phase name to each Phase
+        function getPhase(phase) {
+            if (phase === "Retry") {
+                return retryPhase;
+            }
+            else if (phase === "Serialize") {
+                return serializePhase;
+            }
+            else if (phase === "Deserialize") {
+                return deserializePhase;
+            }
+            else if (phase === "Sign") {
+                return signPhase;
+            }
+            else {
+                return noPhase;
+            }
+        }
+        // First walk each policy and create a node to track metadata.
+        for (const descriptor of this._policies) {
+            const policy = descriptor.policy;
+            const options = descriptor.options;
+            const policyName = policy.name;
+            if (policyMap.has(policyName)) {
+                throw new Error("Duplicate policy names not allowed in pipeline");
+            }
+            const node = {
+                policy,
+                dependsOn: new Set(),
+                dependants: new Set(),
+            };
+            if (options.afterPhase) {
+                node.afterPhase = getPhase(options.afterPhase);
+                node.afterPhase.hasAfterPolicies = true;
+            }
+            policyMap.set(policyName, node);
+            const phase = getPhase(options.phase);
+            phase.policies.add(node);
+        }
+        // Now that each policy has a node, connect dependency references.
+        for (const descriptor of this._policies) {
+            const { policy, options } = descriptor;
+            const policyName = policy.name;
+            const node = policyMap.get(policyName);
+            if (!node) {
+                throw new Error(`Missing node for policy ${policyName}`);
+            }
+            if (options.afterPolicies) {
+                for (const afterPolicyName of options.afterPolicies) {
+                    const afterNode = policyMap.get(afterPolicyName);
+                    if (afterNode) {
+                        // Linking in both directions helps later
+                        // when we want to notify dependants.
+                        node.dependsOn.add(afterNode);
+                        afterNode.dependants.add(node);
+                    }
+                }
+            }
+            if (options.beforePolicies) {
+                for (const beforePolicyName of options.beforePolicies) {
+                    const beforeNode = policyMap.get(beforePolicyName);
+                    if (beforeNode) {
+                        // To execute before another node, make it
+                        // depend on the current node.
+                        beforeNode.dependsOn.add(node);
+                        node.dependants.add(beforeNode);
+                    }
+                }
+            }
+        }
+        function walkPhase(phase) {
+            phase.hasRun = true;
+            // Sets iterate in insertion order
+            for (const node of phase.policies) {
+                if (node.afterPhase && (!node.afterPhase.hasRun || node.afterPhase.policies.size)) {
+                    // If this node is waiting on a phase to complete,
+                    // we need to skip it for now.
+                    // Even if the phase is empty, we should wait for it
+                    // to be walked to avoid re-ordering policies.
+                    continue;
+                }
+                if (node.dependsOn.size === 0) {
+                    // If there's nothing else we're waiting for, we can
+                    // add this policy to the result list.
+                    result.push(node.policy);
+                    // Notify anything that depends on this policy that
+                    // the policy has been scheduled.
+                    for (const dependant of node.dependants) {
+                        dependant.dependsOn.delete(node);
+                    }
+                    policyMap.delete(node.policy.name);
+                    phase.policies.delete(node);
+                }
+            }
+        }
+        function walkPhases() {
+            for (const phase of orderedPhases) {
+                walkPhase(phase);
+                // if the phase isn't complete
+                if (phase.policies.size > 0 && phase !== noPhase) {
+                    if (!noPhase.hasRun) {
+                        // Try running noPhase to see if that unblocks this phase next tick.
+                        // This can happen if a phase that happens before noPhase
+                        // is waiting on a noPhase policy to complete.
+                        walkPhase(noPhase);
+                    }
+                    // Don't proceed to the next phase until this phase finishes.
+                    return;
+                }
+                if (phase.hasAfterPolicies) {
+                    // Run any policies unblocked by this phase
+                    walkPhase(noPhase);
+                }
+            }
+        }
+        // Iterate until we've put every node in the result list.
+        let iteration = 0;
+        while (policyMap.size > 0) {
+            iteration++;
+            const initialResultLength = result.length;
+            // Keep walking each phase in order until we can order every node.
+            walkPhases();
+            // The result list *should* get at least one larger each time
+            // after the first full pass.
+            // Otherwise, we're going to loop forever.
+            if (result.length <= initialResultLength && iteration > 1) {
+                throw new Error("Cannot satisfy policy dependencies due to requirements cycle.");
+            }
+        }
+        return result;
+    }
+}
+/**
+ * Creates a totally empty pipeline.
+ * Useful for testing or creating a custom one.
+ */
+function createEmptyPipeline$1() {
+    return HttpPipeline.create();
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+const custom = inspect.custom;
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+const errorSanitizer = new Sanitizer();
+/**
+ * A custom error type for failed pipeline requests.
+ */
+let RestError$1 = class RestError extends Error {
+    /**
+     * Something went wrong when making the request.
+     * This means the actual request failed for some reason,
+     * such as a DNS issue or the connection being lost.
+     */
+    static REQUEST_SEND_ERROR = "REQUEST_SEND_ERROR";
+    /**
+     * This means that parsing the response from the server failed.
+     * It may have been malformed.
+     */
+    static PARSE_ERROR = "PARSE_ERROR";
+    /**
+     * The code of the error itself (use statics on RestError if possible.)
+     */
+    code;
+    /**
+     * The HTTP status code of the request (if applicable.)
+     */
+    statusCode;
+    /**
+     * The request that was made.
+     * This property is non-enumerable.
+     */
+    request;
+    /**
+     * The response received (if any.)
+     * This property is non-enumerable.
+     */
+    response;
+    /**
+     * Bonus property set by the throw site.
+     */
+    details;
+    constructor(message, options = {}) {
+        super(message);
+        this.name = "RestError";
+        this.code = options.code;
+        this.statusCode = options.statusCode;
+        // The request and response may contain sensitive information in the headers or body.
+        // To help prevent this sensitive information being accidentally logged, the request and response
+        // properties are marked as non-enumerable here. This prevents them showing up in the output of
+        // JSON.stringify and console.log.
+        Object.defineProperty(this, "request", { value: options.request, enumerable: false });
+        Object.defineProperty(this, "response", { value: options.response, enumerable: false });
+        // Only include useful agent information in the request for logging, as the full agent object
+        // may contain large binary data.
+        const agent = this.request?.agent
+            ? {
+                maxFreeSockets: this.request.agent.maxFreeSockets,
+                maxSockets: this.request.agent.maxSockets,
+            }
+            : undefined;
+        // Logging method for util.inspect in Node
+        Object.defineProperty(this, custom, {
+            value: () => {
+                // Extract non-enumerable properties and add them back. This is OK since in this output the request and
+                // response get sanitized.
+                return `RestError: ${this.message} \n ${errorSanitizer.sanitize({
+                    ...this,
+                    request: { ...this.request, agent },
+                    response: this.response,
+                })}`;
+            },
+            enumerable: false,
+        });
+        Object.setPrototypeOf(this, RestError.prototype);
+    }
+};
+/**
+ * Typeguard for RestError
+ * @param e - Something caught by a catch clause.
+ */
+function isRestError$1(e) {
+    if (e instanceof RestError$1) {
+        return true;
+    }
+    return isError$1(e) && e.name === "RestError";
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+const logger$3 = createClientLogger$1("ts-http-runtime");
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+const DEFAULT_TLS_SETTINGS = {};
+function isReadableStream(body) {
+    return body && typeof body.pipe === "function";
+}
+function isStreamComplete(stream) {
+    if (stream.readable === false) {
+        return Promise.resolve();
+    }
+    return new Promise((resolve) => {
+        const handler = () => {
+            resolve();
+            stream.removeListener("close", handler);
+            stream.removeListener("end", handler);
+            stream.removeListener("error", handler);
+        };
+        stream.on("close", handler);
+        stream.on("end", handler);
+        stream.on("error", handler);
+    });
+}
+function isArrayBuffer(body) {
+    return body && typeof body.byteLength === "number";
+}
+class ReportTransform extends Transform {
+    loadedBytes = 0;
+    progressCallback;
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
+    _transform(chunk, _encoding, callback) {
+        this.push(chunk);
+        this.loadedBytes += chunk.length;
+        try {
+            this.progressCallback({ loadedBytes: this.loadedBytes });
+            callback();
+        }
+        catch (e) {
+            callback(e);
+        }
+    }
+    constructor(progressCallback) {
+        super();
+        this.progressCallback = progressCallback;
+    }
+}
+/**
+ * A HttpClient implementation that uses Node's "https" module to send HTTPS requests.
+ * @internal
+ */
+class NodeHttpClient {
+    cachedHttpAgent;
+    cachedHttpsAgents = new WeakMap();
+    /**
+     * Makes a request over an underlying transport layer and returns the response.
+     * @param request - The request to be made.
+     */
+    async sendRequest(request) {
+        const abortController = new AbortController();
+        let abortListener;
+        if (request.abortSignal) {
+            if (request.abortSignal.aborted) {
+                throw new AbortError("The operation was aborted. Request has already been canceled.");
+            }
+            abortListener = (event) => {
+                if (event.type === "abort") {
+                    abortController.abort();
+                }
+            };
+            request.abortSignal.addEventListener("abort", abortListener);
+        }
+        let timeoutId;
+        if (request.timeout > 0) {
+            timeoutId = setTimeout(() => {
+                const sanitizer = new Sanitizer();
+                logger$3.info(`request to '${sanitizer.sanitizeUrl(request.url)}' timed out. canceling...`);
+                abortController.abort();
+            }, request.timeout);
+        }
+        const acceptEncoding = request.headers.get("Accept-Encoding");
+        const shouldDecompress = acceptEncoding?.includes("gzip") || acceptEncoding?.includes("deflate");
+        let body = typeof request.body === "function" ? request.body() : request.body;
+        if (body && !request.headers.has("Content-Length")) {
+            const bodyLength = getBodyLength(body);
+            if (bodyLength !== null) {
+                request.headers.set("Content-Length", bodyLength);
+            }
+        }
+        let responseStream;
+        try {
+            if (body && request.onUploadProgress) {
+                const onUploadProgress = request.onUploadProgress;
+                const uploadReportStream = new ReportTransform(onUploadProgress);
+                uploadReportStream.on("error", (e) => {
+                    logger$3.error("Error in upload progress", e);
+                });
+                if (isReadableStream(body)) {
+                    body.pipe(uploadReportStream);
+                }
+                else {
+                    uploadReportStream.end(body);
+                }
+                body = uploadReportStream;
+            }
+            const res = await this.makeRequest(request, abortController, body);
+            if (timeoutId !== undefined) {
+                clearTimeout(timeoutId);
+            }
+            const headers = getResponseHeaders(res);
+            const status = res.statusCode ?? 0;
+            const response = {
+                status,
+                headers,
+                request,
+            };
+            // Responses to HEAD must not have a body.
+            // If they do return a body, that body must be ignored.
+            if (request.method === "HEAD") {
+                // call resume() and not destroy() to avoid closing the socket
+                // and losing keep alive
+                res.resume();
+                return response;
+            }
+            responseStream = shouldDecompress ? getDecodedResponseStream(res, headers) : res;
+            const onDownloadProgress = request.onDownloadProgress;
+            if (onDownloadProgress) {
+                const downloadReportStream = new ReportTransform(onDownloadProgress);
+                downloadReportStream.on("error", (e) => {
+                    logger$3.error("Error in download progress", e);
+                });
+                responseStream.pipe(downloadReportStream);
+                responseStream = downloadReportStream;
+            }
+            if (
+            // Value of POSITIVE_INFINITY in streamResponseStatusCodes is considered as any status code
+            request.streamResponseStatusCodes?.has(Number.POSITIVE_INFINITY) ||
+                request.streamResponseStatusCodes?.has(response.status)) {
+                response.readableStreamBody = responseStream;
+            }
+            else {
+                response.bodyAsText = await streamToText(responseStream);
+            }
+            return response;
+        }
+        finally {
+            // clean up event listener
+            if (request.abortSignal && abortListener) {
+                let uploadStreamDone = Promise.resolve();
+                if (isReadableStream(body)) {
+                    uploadStreamDone = isStreamComplete(body);
+                }
+                let downloadStreamDone = Promise.resolve();
+                if (isReadableStream(responseStream)) {
+                    downloadStreamDone = isStreamComplete(responseStream);
+                }
+                Promise.all([uploadStreamDone, downloadStreamDone])
+                    .then(() => {
+                    // eslint-disable-next-line promise/always-return
+                    if (abortListener) {
+                        request.abortSignal?.removeEventListener("abort", abortListener);
+                    }
+                })
+                    .catch((e) => {
+                    logger$3.warning("Error when cleaning up abortListener on httpRequest", e);
+                });
+            }
+        }
+    }
+    makeRequest(request, abortController, body) {
+        const url = new URL(request.url);
+        const isInsecure = url.protocol !== "https:";
+        if (isInsecure && !request.allowInsecureConnection) {
+            throw new Error(`Cannot connect to ${request.url} while allowInsecureConnection is false.`);
+        }
+        const agent = request.agent ?? this.getOrCreateAgent(request, isInsecure);
+        const options = {
+            agent,
+            hostname: url.hostname,
+            path: `${url.pathname}${url.search}`,
+            port: url.port,
+            method: request.method,
+            headers: request.headers.toJSON({ preserveCase: true }),
+            ...request.requestOverrides,
+        };
+        return new Promise((resolve, reject) => {
+            const req = isInsecure ? http$1.request(options, resolve) : https$1.request(options, resolve);
+            req.once("error", (err) => {
+                reject(new RestError$1(err.message, { code: err.code ?? RestError$1.REQUEST_SEND_ERROR, request }));
+            });
+            abortController.signal.addEventListener("abort", () => {
+                const abortError = new AbortError("The operation was aborted. Rejecting from abort signal callback while making request.");
+                req.destroy(abortError);
+                reject(abortError);
+            });
+            if (body && isReadableStream(body)) {
+                body.pipe(req);
+            }
+            else if (body) {
+                if (typeof body === "string" || Buffer.isBuffer(body)) {
+                    req.end(body);
+                }
+                else if (isArrayBuffer(body)) {
+                    req.end(ArrayBuffer.isView(body) ? Buffer.from(body.buffer) : Buffer.from(body));
+                }
+                else {
+                    logger$3.error("Unrecognized body type", body);
+                    reject(new RestError$1("Unrecognized body type"));
+                }
+            }
+            else {
+                // streams don't like "undefined" being passed as data
+                req.end();
+            }
+        });
+    }
+    getOrCreateAgent(request, isInsecure) {
+        const disableKeepAlive = request.disableKeepAlive;
+        // Handle Insecure requests first
+        if (isInsecure) {
+            if (disableKeepAlive) {
+                // keepAlive:false is the default so we don't need a custom Agent
+                return http$1.globalAgent;
+            }
+            if (!this.cachedHttpAgent) {
+                // If there is no cached agent create a new one and cache it.
+                this.cachedHttpAgent = new http$1.Agent({ keepAlive: true });
+            }
+            return this.cachedHttpAgent;
+        }
+        else {
+            if (disableKeepAlive && !request.tlsSettings) {
+                // When there are no tlsSettings and keepAlive is false
+                // we don't need a custom agent
+                return https$1.globalAgent;
+            }
+            // We use the tlsSettings to index cached clients
+            const tlsSettings = request.tlsSettings ?? DEFAULT_TLS_SETTINGS;
+            // Get the cached agent or create a new one with the
+            // provided values for keepAlive and tlsSettings
+            let agent = this.cachedHttpsAgents.get(tlsSettings);
+            if (agent && agent.options.keepAlive === !disableKeepAlive) {
+                return agent;
+            }
+            logger$3.info("No cached TLS Agent exist, creating a new Agent");
+            agent = new https$1.Agent({
+                // keepAlive is true if disableKeepAlive is false.
+                keepAlive: !disableKeepAlive,
+                // Since we are spreading, if no tslSettings were provided, nothing is added to the agent options.
+                ...tlsSettings,
+            });
+            this.cachedHttpsAgents.set(tlsSettings, agent);
+            return agent;
+        }
+    }
+}
+function getResponseHeaders(res) {
+    const headers = createHttpHeaders$1();
+    for (const header of Object.keys(res.headers)) {
+        const value = res.headers[header];
+        if (Array.isArray(value)) {
+            if (value.length > 0) {
+                headers.set(header, value[0]);
+            }
+        }
+        else if (value) {
+            headers.set(header, value);
+        }
+    }
+    return headers;
+}
+function getDecodedResponseStream(stream, headers) {
+    const contentEncoding = headers.get("Content-Encoding");
+    if (contentEncoding === "gzip") {
+        const unzip = zlib.createGunzip();
+        stream.pipe(unzip);
+        return unzip;
+    }
+    else if (contentEncoding === "deflate") {
+        const inflate = zlib.createInflate();
+        stream.pipe(inflate);
+        return inflate;
+    }
+    return stream;
+}
+function streamToText(stream) {
+    return new Promise((resolve, reject) => {
+        const buffer = [];
+        stream.on("data", (chunk) => {
+            if (Buffer.isBuffer(chunk)) {
+                buffer.push(chunk);
+            }
+            else {
+                buffer.push(Buffer.from(chunk));
+            }
+        });
+        stream.on("end", () => {
+            resolve(Buffer.concat(buffer).toString("utf8"));
+        });
+        stream.on("error", (e) => {
+            if (e && e?.name === "AbortError") {
+                reject(e);
+            }
+            else {
+                reject(new RestError$1(`Error reading response as text: ${e.message}`, {
+                    code: RestError$1.PARSE_ERROR,
+                }));
+            }
+        });
+    });
+}
+/** @internal */
+function getBodyLength(body) {
+    if (!body) {
+        return 0;
+    }
+    else if (Buffer.isBuffer(body)) {
+        return body.length;
+    }
+    else if (isReadableStream(body)) {
+        return null;
+    }
+    else if (isArrayBuffer(body)) {
+        return body.byteLength;
+    }
+    else if (typeof body === "string") {
+        return Buffer.from(body).length;
+    }
+    else {
+        return null;
+    }
+}
+/**
+ * Create a new HttpClient instance for the NodeJS environment.
+ * @internal
+ */
+function createNodeHttpClient() {
+    return new NodeHttpClient();
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+/**
+ * Create the correct HttpClient for the current environment.
+ */
+function createDefaultHttpClient$1() {
+    return createNodeHttpClient();
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+/**
+ * The programmatic identifier of the logPolicy.
+ */
+const logPolicyName = "logPolicy";
+/**
+ * A policy that logs all requests and responses.
+ * @param options - Options to configure logPolicy.
+ */
+function logPolicy$1(options = {}) {
+    const logger = options.logger ?? logger$3.info;
+    const sanitizer = new Sanitizer({
+        additionalAllowedHeaderNames: options.additionalAllowedHeaderNames,
+        additionalAllowedQueryParameters: options.additionalAllowedQueryParameters,
+    });
+    return {
+        name: logPolicyName,
+        async sendRequest(request, next) {
+            if (!logger.enabled) {
+                return next(request);
+            }
+            logger(`Request: ${sanitizer.sanitize(request)}`);
+            const response = await next(request);
+            logger(`Response status code: ${response.status}`);
+            logger(`Headers: ${sanitizer.sanitize(response.headers)}`);
+            return response;
+        },
+    };
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+/**
+ * The programmatic identifier of the redirectPolicy.
+ */
+const redirectPolicyName = "redirectPolicy";
+/**
+ * Methods that are allowed to follow redirects 301 and 302
+ */
+const allowedRedirect = ["GET", "HEAD"];
+/**
+ * A policy to follow Location headers from the server in order
+ * to support server-side redirection.
+ * In the browser, this policy is not used.
+ * @param options - Options to control policy behavior.
+ */
+function redirectPolicy$1(options = {}) {
+    const { maxRetries = 20 } = options;
+    return {
+        name: redirectPolicyName,
+        async sendRequest(request, next) {
+            const response = await next(request);
+            return handleRedirect(next, response, maxRetries);
+        },
+    };
+}
+async function handleRedirect(next, response, maxRetries, currentRetries = 0) {
+    const { request, status, headers } = response;
+    const locationHeader = headers.get("location");
+    if (locationHeader &&
+        (status === 300 ||
+            (status === 301 && allowedRedirect.includes(request.method)) ||
+            (status === 302 && allowedRedirect.includes(request.method)) ||
+            (status === 303 && request.method === "POST") ||
+            status === 307) &&
+        currentRetries < maxRetries) {
+        const url = new URL(locationHeader, request.url);
+        request.url = url.toString();
+        // POST request with Status code 303 should be converted into a
+        // redirected GET request if the redirect url is present in the location header
+        if (status === 303) {
+            request.method = "GET";
+            request.headers.delete("Content-Length");
+            delete request.body;
+        }
+        request.headers.delete("Authorization");
+        const res = await next(request);
+        return handleRedirect(next, res, maxRetries, currentRetries + 1);
+    }
+    return response;
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+const DEFAULT_RETRY_POLICY_COUNT = 3;
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+/**
+ * The programmatic identifier of the decompressResponsePolicy.
+ */
+const decompressResponsePolicyName = "decompressResponsePolicy";
+/**
+ * A policy to enable response decompression according to Accept-Encoding header
+ * https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Accept-Encoding
+ */
+function decompressResponsePolicy$1() {
+    return {
+        name: decompressResponsePolicyName,
+        async sendRequest(request, next) {
+            // HEAD requests have no body
+            if (request.method !== "HEAD") {
+                request.headers.set("Accept-Encoding", "gzip,deflate");
+            }
+            return next(request);
+        },
+    };
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+const StandardAbortMessage = "The operation was aborted.";
+/**
+ * A wrapper for setTimeout that resolves a promise after delayInMs milliseconds.
+ * @param delayInMs - The number of milliseconds to be delayed.
+ * @param value - The value to be resolved with after a timeout of t milliseconds.
+ * @param options - The options for delay - currently abort options
+ *                  - abortSignal - The abortSignal associated with containing operation.
+ *                  - abortErrorMsg - The abort error message associated with containing operation.
+ * @returns Resolved promise
+ */
+function delay(delayInMs, value, options) {
+    return new Promise((resolve, reject) => {
+        let timer = undefined;
+        let onAborted = undefined;
+        const rejectOnAbort = () => {
+            return reject(new AbortError(options?.abortErrorMsg ? options?.abortErrorMsg : StandardAbortMessage));
+        };
+        const removeListeners = () => {
+            if (options?.abortSignal && onAborted) {
+                options.abortSignal.removeEventListener("abort", onAborted);
+            }
+        };
+        onAborted = () => {
+            if (timer) {
+                clearTimeout(timer);
+            }
+            removeListeners();
+            return rejectOnAbort();
+        };
+        if (options?.abortSignal && options.abortSignal.aborted) {
+            return rejectOnAbort();
+        }
+        timer = setTimeout(() => {
+            removeListeners();
+            resolve(value);
+        }, delayInMs);
+        if (options?.abortSignal) {
+            options.abortSignal.addEventListener("abort", onAborted);
+        }
+    });
+}
+/**
+ * @internal
+ * @returns the parsed value or undefined if the parsed value is invalid.
+ */
+function parseHeaderValueAsNumber(response, headerName) {
+    const value = response.headers.get(headerName);
+    if (!value)
+        return;
+    const valueAsNum = Number(value);
+    if (Number.isNaN(valueAsNum))
+        return;
+    return valueAsNum;
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+/**
+ * The header that comes back from services representing
+ * the amount of time (minimum) to wait to retry (in seconds or timestamp after which we can retry).
+ */
+const RetryAfterHeader = "Retry-After";
+/**
+ * The headers that come back from services representing
+ * the amount of time (minimum) to wait to retry.
+ *
+ * "retry-after-ms", "x-ms-retry-after-ms" : milliseconds
+ * "Retry-After" : seconds or timestamp
+ */
+const AllRetryAfterHeaders = ["retry-after-ms", "x-ms-retry-after-ms", RetryAfterHeader];
+/**
+ * A response is a throttling retry response if it has a throttling status code (429 or 503),
+ * as long as one of the [ "Retry-After" or "retry-after-ms" or "x-ms-retry-after-ms" ] headers has a valid value.
+ *
+ * Returns the `retryAfterInMs` value if the response is a throttling retry response.
+ * If not throttling retry response, returns `undefined`.
+ *
+ * @internal
+ */
+function getRetryAfterInMs(response) {
+    if (!(response && [429, 503].includes(response.status)))
+        return undefined;
+    try {
+        // Headers: "retry-after-ms", "x-ms-retry-after-ms", "Retry-After"
+        for (const header of AllRetryAfterHeaders) {
+            const retryAfterValue = parseHeaderValueAsNumber(response, header);
+            if (retryAfterValue === 0 || retryAfterValue) {
+                // "Retry-After" header ==> seconds
+                // "retry-after-ms", "x-ms-retry-after-ms" headers ==> milli-seconds
+                const multiplyingFactor = header === RetryAfterHeader ? 1000 : 1;
+                return retryAfterValue * multiplyingFactor; // in milli-seconds
+            }
+        }
+        // RetryAfterHeader ("Retry-After") has a special case where it might be formatted as a date instead of a number of seconds
+        const retryAfterHeader = response.headers.get(RetryAfterHeader);
+        if (!retryAfterHeader)
+            return;
+        const date = Date.parse(retryAfterHeader);
+        const diff = date - Date.now();
+        // negative diff would mean a date in the past, so retry asap with 0 milliseconds
+        return Number.isFinite(diff) ? Math.max(0, diff) : undefined;
+    }
+    catch {
+        return undefined;
+    }
+}
+/**
+ * A response is a retry response if it has a throttling status code (429 or 503),
+ * as long as one of the [ "Retry-After" or "retry-after-ms" or "x-ms-retry-after-ms" ] headers has a valid value.
+ */
+function isThrottlingRetryResponse(response) {
+    return Number.isFinite(getRetryAfterInMs(response));
+}
+function throttlingRetryStrategy() {
+    return {
+        name: "throttlingRetryStrategy",
+        retry({ response }) {
+            const retryAfterInMs = getRetryAfterInMs(response);
+            if (!Number.isFinite(retryAfterInMs)) {
+                return { skipStrategy: true };
+            }
+            return {
+                retryAfterInMs,
+            };
+        },
+    };
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+// intervals are in milliseconds
+const DEFAULT_CLIENT_RETRY_INTERVAL = 1000;
+const DEFAULT_CLIENT_MAX_RETRY_INTERVAL = 1000 * 64;
+/**
+ * A retry strategy that retries with an exponentially increasing delay in these two cases:
+ * - When there are errors in the underlying transport layer (e.g. DNS lookup failures).
+ * - Or otherwise if the outgoing request fails (408, greater or equal than 500, except for 501 and 505).
+ */
+function exponentialRetryStrategy(options = {}) {
+    const retryInterval = options.retryDelayInMs ?? DEFAULT_CLIENT_RETRY_INTERVAL;
+    const maxRetryInterval = options.maxRetryDelayInMs ?? DEFAULT_CLIENT_MAX_RETRY_INTERVAL;
+    return {
+        name: "exponentialRetryStrategy",
+        retry({ retryCount, response, responseError }) {
+            const matchedSystemError = isSystemError(responseError);
+            const ignoreSystemErrors = matchedSystemError && options.ignoreSystemErrors;
+            const isExponential = isExponentialRetryResponse(response);
+            const ignoreExponentialResponse = isExponential && options.ignoreHttpStatusCodes;
+            const unknownResponse = response && (isThrottlingRetryResponse(response) || !isExponential);
+            if (unknownResponse || ignoreExponentialResponse || ignoreSystemErrors) {
+                return { skipStrategy: true };
+            }
+            if (responseError && !matchedSystemError && !isExponential) {
+                return { errorToThrow: responseError };
+            }
+            return calculateRetryDelay(retryCount, {
+                retryDelayInMs: retryInterval,
+                maxRetryDelayInMs: maxRetryInterval,
+            });
+        },
+    };
+}
+/**
+ * A response is a retry response if it has status codes:
+ * - 408, or
+ * - Greater or equal than 500, except for 501 and 505.
+ */
+function isExponentialRetryResponse(response) {
+    return Boolean(response &&
+        response.status !== undefined &&
+        (response.status >= 500 || response.status === 408) &&
+        response.status !== 501 &&
+        response.status !== 505);
+}
+/**
+ * Determines whether an error from a pipeline response was triggered in the network layer.
+ */
+function isSystemError(err) {
+    if (!err) {
+        return false;
+    }
+    return (err.code === "ETIMEDOUT" ||
+        err.code === "ESOCKETTIMEDOUT" ||
+        err.code === "ECONNREFUSED" ||
+        err.code === "ECONNRESET" ||
+        err.code === "ENOENT" ||
+        err.code === "ENOTFOUND");
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+const retryPolicyLogger = createClientLogger$1("ts-http-runtime retryPolicy");
+/**
+ * The programmatic identifier of the retryPolicy.
+ */
+const retryPolicyName = "retryPolicy";
+/**
+ * retryPolicy is a generic policy to enable retrying requests when certain conditions are met
+ */
+function retryPolicy(strategies, options = { maxRetries: DEFAULT_RETRY_POLICY_COUNT }) {
+    const logger = options.logger || retryPolicyLogger;
+    return {
+        name: retryPolicyName,
+        async sendRequest(request, next) {
+            let response;
+            let responseError;
+            let retryCount = -1;
+            retryRequest: while (true) {
+                retryCount += 1;
+                response = undefined;
+                responseError = undefined;
+                try {
+                    logger.info(`Retry ${retryCount}: Attempting to send request`, request.requestId);
+                    response = await next(request);
+                    logger.info(`Retry ${retryCount}: Received a response from request`, request.requestId);
+                }
+                catch (e) {
+                    logger.error(`Retry ${retryCount}: Received an error from request`, request.requestId);
+                    // RestErrors are valid targets for the retry strategies.
+                    // If none of the retry strategies can work with them, they will be thrown later in this policy.
+                    // If the received error is not a RestError, it is immediately thrown.
+                    responseError = e;
+                    if (!e || responseError.name !== "RestError") {
+                        throw e;
+                    }
+                    response = responseError.response;
+                }
+                if (request.abortSignal?.aborted) {
+                    logger.error(`Retry ${retryCount}: Request aborted.`);
+                    const abortError = new AbortError();
+                    throw abortError;
+                }
+                if (retryCount >= (options.maxRetries ?? DEFAULT_RETRY_POLICY_COUNT)) {
+                    logger.info(`Retry ${retryCount}: Maximum retries reached. Returning the last received response, or throwing the last received error.`);
+                    if (responseError) {
+                        throw responseError;
+                    }
+                    else if (response) {
+                        return response;
+                    }
+                    else {
+                        throw new Error("Maximum retries reached with no response or error to throw");
+                    }
+                }
+                logger.info(`Retry ${retryCount}: Processing ${strategies.length} retry strategies.`);
+                strategiesLoop: for (const strategy of strategies) {
+                    const strategyLogger = strategy.logger || logger;
+                    strategyLogger.info(`Retry ${retryCount}: Processing retry strategy ${strategy.name}.`);
+                    const modifiers = strategy.retry({
+                        retryCount,
+                        response,
+                        responseError,
+                    });
+                    if (modifiers.skipStrategy) {
+                        strategyLogger.info(`Retry ${retryCount}: Skipped.`);
+                        continue strategiesLoop;
+                    }
+                    const { errorToThrow, retryAfterInMs, redirectTo } = modifiers;
+                    if (errorToThrow) {
+                        strategyLogger.error(`Retry ${retryCount}: Retry strategy ${strategy.name} throws error:`, errorToThrow);
+                        throw errorToThrow;
+                    }
+                    if (retryAfterInMs || retryAfterInMs === 0) {
+                        strategyLogger.info(`Retry ${retryCount}: Retry strategy ${strategy.name} retries after ${retryAfterInMs}`);
+                        await delay(retryAfterInMs, undefined, { abortSignal: request.abortSignal });
+                        continue retryRequest;
+                    }
+                    if (redirectTo) {
+                        strategyLogger.info(`Retry ${retryCount}: Retry strategy ${strategy.name} redirects to ${redirectTo}`);
+                        request.url = redirectTo;
+                        continue retryRequest;
+                    }
+                }
+                if (responseError) {
+                    logger.info(`None of the retry strategies could work with the received error. Throwing it.`);
+                    throw responseError;
+                }
+                if (response) {
+                    logger.info(`None of the retry strategies could work with the received response. Returning it.`);
+                    return response;
+                }
+                // If all the retries skip and there's no response,
+                // we're still in the retry loop, so a new request will be sent
+                // until `maxRetries` is reached.
+            }
+        },
+    };
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+/**
+ * Name of the {@link defaultRetryPolicy}
+ */
+const defaultRetryPolicyName = "defaultRetryPolicy";
+/**
+ * A policy that retries according to three strategies:
+ * - When the server sends a 429 response with a Retry-After header.
+ * - When there are errors in the underlying transport layer (e.g. DNS lookup failures).
+ * - Or otherwise if the outgoing request fails, it will retry with an exponentially increasing delay.
+ */
+function defaultRetryPolicy$1(options = {}) {
+    return {
+        name: defaultRetryPolicyName,
+        sendRequest: retryPolicy([throttlingRetryStrategy(), exponentialRetryStrategy(options)], {
+            maxRetries: options.maxRetries ?? DEFAULT_RETRY_POLICY_COUNT,
+        }).sendRequest,
+    };
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+/**
+ * The programmatic identifier of the formDataPolicy.
+ */
+const formDataPolicyName = "formDataPolicy";
+function formDataToFormDataMap(formData) {
+    const formDataMap = {};
+    for (const [key, value] of formData.entries()) {
+        formDataMap[key] ??= [];
+        formDataMap[key].push(value);
+    }
+    return formDataMap;
+}
+/**
+ * A policy that encodes FormData on the request into the body.
+ */
+function formDataPolicy$1() {
+    return {
+        name: formDataPolicyName,
+        async sendRequest(request, next) {
+            if (isNodeLike$1 && typeof FormData !== "undefined" && request.body instanceof FormData) {
+                request.formData = formDataToFormDataMap(request.body);
+                request.body = undefined;
+            }
+            if (request.formData) {
+                const contentType = request.headers.get("Content-Type");
+                if (contentType && contentType.indexOf("application/x-www-form-urlencoded") !== -1) {
+                    request.body = wwwFormUrlEncode(request.formData);
+                }
+                else {
+                    await prepareFormData(request.formData, request);
+                }
+                request.formData = undefined;
+            }
+            return next(request);
+        },
+    };
+}
+function wwwFormUrlEncode(formData) {
+    const urlSearchParams = new URLSearchParams();
+    for (const [key, value] of Object.entries(formData)) {
+        if (Array.isArray(value)) {
+            for (const subValue of value) {
+                urlSearchParams.append(key, subValue.toString());
+            }
+        }
+        else {
+            urlSearchParams.append(key, value.toString());
+        }
+    }
+    return urlSearchParams.toString();
+}
+async function prepareFormData(formData, request) {
+    // validate content type (multipart/form-data)
+    const contentType = request.headers.get("Content-Type");
+    if (contentType && !contentType.startsWith("multipart/form-data")) {
+        // content type is specified and is not multipart/form-data. Exit.
+        return;
+    }
+    request.headers.set("Content-Type", contentType ?? "multipart/form-data");
+    // set body to MultipartRequestBody using content from FormDataMap
+    const parts = [];
+    for (const [fieldName, values] of Object.entries(formData)) {
+        for (const value of Array.isArray(values) ? values : [values]) {
+            if (typeof value === "string") {
+                parts.push({
+                    headers: createHttpHeaders$1({
+                        "Content-Disposition": `form-data; name="${fieldName}"`,
+                    }),
+                    body: stringToUint8Array(value, "utf-8"),
+                });
+            }
+            else if (value === undefined || value === null || typeof value !== "object") {
+                throw new Error(`Unexpected value for key ${fieldName}: ${value}. Value should be serialized to string first.`);
+            }
+            else {
+                // using || instead of ?? here since if value.name is empty we should create a file name
+                const fileName = value.name || "blob";
+                const headers = createHttpHeaders$1();
+                headers.set("Content-Disposition", `form-data; name="${fieldName}"; filename="${fileName}"`);
+                // again, || is used since an empty value.type means the content type is unset
+                headers.set("Content-Type", value.type || "application/octet-stream");
+                parts.push({
+                    headers,
+                    body: value,
+                });
+            }
+        }
+    }
+    request.multipartBody = { parts };
+}
+
+var dist$2 = {};
+
+var src = {exports: {}};
+
+var browser = {exports: {}};
+
+var common;
+var hasRequiredCommon;
+
+function requireCommon () {
+	if (hasRequiredCommon) return common;
+	hasRequiredCommon = 1;
+	/**
+	 * This is the common logic for both the Node.js and web browser
+	 * implementations of `debug()`.
+	 */
+
+	function setup(env) {
+		createDebug.debug = createDebug;
+		createDebug.default = createDebug;
+		createDebug.coerce = coerce;
+		createDebug.disable = disable;
+		createDebug.enable = enable;
+		createDebug.enabled = enabled;
+		createDebug.humanize = requireMs();
+		createDebug.destroy = destroy;
+
+		Object.keys(env).forEach(key => {
+			createDebug[key] = env[key];
+		});
+
+		/**
+		* The currently active debug mode names, and names to skip.
+		*/
+
+		createDebug.names = [];
+		createDebug.skips = [];
+
+		/**
+		* Map of special "%n" handling functions, for the debug "format" argument.
+		*
+		* Valid key names are a single, lower or upper-case letter, i.e. "n" and "N".
+		*/
+		createDebug.formatters = {};
+
+		/**
+		* Selects a color for a debug namespace
+		* @param {String} namespace The namespace string for the debug instance to be colored
+		* @return {Number|String} An ANSI color code for the given namespace
+		* @api private
+		*/
+		function selectColor(namespace) {
+			let hash = 0;
+
+			for (let i = 0; i < namespace.length; i++) {
+				hash = ((hash << 5) - hash) + namespace.charCodeAt(i);
+				hash |= 0; // Convert to 32bit integer
+			}
+
+			return createDebug.colors[Math.abs(hash) % createDebug.colors.length];
+		}
+		createDebug.selectColor = selectColor;
+
+		/**
+		* Create a debugger with the given `namespace`.
+		*
+		* @param {String} namespace
+		* @return {Function}
+		* @api public
+		*/
+		function createDebug(namespace) {
+			let prevTime;
+			let enableOverride = null;
+			let namespacesCache;
+			let enabledCache;
+
+			function debug(...args) {
+				// Disabled?
+				if (!debug.enabled) {
+					return;
+				}
+
+				const self = debug;
+
+				// Set `diff` timestamp
+				const curr = Number(new Date());
+				const ms = curr - (prevTime || curr);
+				self.diff = ms;
+				self.prev = prevTime;
+				self.curr = curr;
+				prevTime = curr;
+
+				args[0] = createDebug.coerce(args[0]);
+
+				if (typeof args[0] !== 'string') {
+					// Anything else let's inspect with %O
+					args.unshift('%O');
+				}
+
+				// Apply any `formatters` transformations
+				let index = 0;
+				args[0] = args[0].replace(/%([a-zA-Z%])/g, (match, format) => {
+					// If we encounter an escaped % then don't increase the array index
+					if (match === '%%') {
+						return '%';
+					}
+					index++;
+					const formatter = createDebug.formatters[format];
+					if (typeof formatter === 'function') {
+						const val = args[index];
+						match = formatter.call(self, val);
+
+						// Now we need to remove `args[index]` since it's inlined in the `format`
+						args.splice(index, 1);
+						index--;
+					}
+					return match;
+				});
+
+				// Apply env-specific formatting (colors, etc.)
+				createDebug.formatArgs.call(self, args);
+
+				const logFn = self.log || createDebug.log;
+				logFn.apply(self, args);
+			}
+
+			debug.namespace = namespace;
+			debug.useColors = createDebug.useColors();
+			debug.color = createDebug.selectColor(namespace);
+			debug.extend = extend;
+			debug.destroy = createDebug.destroy; // XXX Temporary. Will be removed in the next major release.
+
+			Object.defineProperty(debug, 'enabled', {
+				enumerable: true,
+				configurable: false,
+				get: () => {
+					if (enableOverride !== null) {
+						return enableOverride;
+					}
+					if (namespacesCache !== createDebug.namespaces) {
+						namespacesCache = createDebug.namespaces;
+						enabledCache = createDebug.enabled(namespace);
+					}
+
+					return enabledCache;
+				},
+				set: v => {
+					enableOverride = v;
+				}
+			});
+
+			// Env-specific initialization logic for debug instances
+			if (typeof createDebug.init === 'function') {
+				createDebug.init(debug);
+			}
+
+			return debug;
+		}
+
+		function extend(namespace, delimiter) {
+			const newDebug = createDebug(this.namespace + (typeof delimiter === 'undefined' ? ':' : delimiter) + namespace);
+			newDebug.log = this.log;
+			return newDebug;
+		}
+
+		/**
+		* Enables a debug mode by namespaces. This can include modes
+		* separated by a colon and wildcards.
+		*
+		* @param {String} namespaces
+		* @api public
+		*/
+		function enable(namespaces) {
+			createDebug.save(namespaces);
+			createDebug.namespaces = namespaces;
+
+			createDebug.names = [];
+			createDebug.skips = [];
+
+			const split = (typeof namespaces === 'string' ? namespaces : '')
+				.trim()
+				.replace(/\s+/g, ',')
+				.split(',')
+				.filter(Boolean);
+
+			for (const ns of split) {
+				if (ns[0] === '-') {
+					createDebug.skips.push(ns.slice(1));
+				} else {
+					createDebug.names.push(ns);
+				}
+			}
+		}
+
+		/**
+		 * Checks if the given string matches a namespace template, honoring
+		 * asterisks as wildcards.
+		 *
+		 * @param {String} search
+		 * @param {String} template
+		 * @return {Boolean}
+		 */
+		function matchesTemplate(search, template) {
+			let searchIndex = 0;
+			let templateIndex = 0;
+			let starIndex = -1;
+			let matchIndex = 0;
+
+			while (searchIndex < search.length) {
+				if (templateIndex < template.length && (template[templateIndex] === search[searchIndex] || template[templateIndex] === '*')) {
+					// Match character or proceed with wildcard
+					if (template[templateIndex] === '*') {
+						starIndex = templateIndex;
+						matchIndex = searchIndex;
+						templateIndex++; // Skip the '*'
+					} else {
+						searchIndex++;
+						templateIndex++;
+					}
+				} else if (starIndex !== -1) { // eslint-disable-line no-negated-condition
+					// Backtrack to the last '*' and try to match more characters
+					templateIndex = starIndex + 1;
+					matchIndex++;
+					searchIndex = matchIndex;
+				} else {
+					return false; // No match
+				}
+			}
+
+			// Handle trailing '*' in template
+			while (templateIndex < template.length && template[templateIndex] === '*') {
+				templateIndex++;
+			}
+
+			return templateIndex === template.length;
+		}
+
+		/**
+		* Disable debug output.
+		*
+		* @return {String} namespaces
+		* @api public
+		*/
+		function disable() {
+			const namespaces = [
+				...createDebug.names,
+				...createDebug.skips.map(namespace => '-' + namespace)
+			].join(',');
+			createDebug.enable('');
+			return namespaces;
+		}
+
+		/**
+		* Returns true if the given mode name is enabled, false otherwise.
+		*
+		* @param {String} name
+		* @return {Boolean}
+		* @api public
+		*/
+		function enabled(name) {
+			for (const skip of createDebug.skips) {
+				if (matchesTemplate(name, skip)) {
+					return false;
+				}
+			}
+
+			for (const ns of createDebug.names) {
+				if (matchesTemplate(name, ns)) {
+					return true;
+				}
+			}
+
+			return false;
+		}
+
+		/**
+		* Coerce `val`.
+		*
+		* @param {Mixed} val
+		* @return {Mixed}
+		* @api private
+		*/
+		function coerce(val) {
+			if (val instanceof Error) {
+				return val.stack || val.message;
+			}
+			return val;
+		}
+
+		/**
+		* XXX DO NOT USE. This is a temporary stub function.
+		* XXX It WILL be removed in the next major release.
+		*/
+		function destroy() {
+			console.warn('Instance method `debug.destroy()` is deprecated and no longer does anything. It will be removed in the next major version of `debug`.');
+		}
+
+		createDebug.enable(createDebug.load());
+
+		return createDebug;
+	}
+
+	common = setup;
+	return common;
+}
+
+/* eslint-env browser */
+
+var hasRequiredBrowser;
+
+function requireBrowser () {
+	if (hasRequiredBrowser) return browser.exports;
+	hasRequiredBrowser = 1;
+	(function (module, exports$1) {
+		/**
+		 * This is the web browser implementation of `debug()`.
+		 */
+
+		exports$1.formatArgs = formatArgs;
+		exports$1.save = save;
+		exports$1.load = load;
+		exports$1.useColors = useColors;
+		exports$1.storage = localstorage();
+		exports$1.destroy = (() => {
+			let warned = false;
+
+			return () => {
+				if (!warned) {
+					warned = true;
+					console.warn('Instance method `debug.destroy()` is deprecated and no longer does anything. It will be removed in the next major version of `debug`.');
+				}
+			};
+		})();
+
+		/**
+		 * Colors.
+		 */
+
+		exports$1.colors = [
+			'#0000CC',
+			'#0000FF',
+			'#0033CC',
+			'#0033FF',
+			'#0066CC',
+			'#0066FF',
+			'#0099CC',
+			'#0099FF',
+			'#00CC00',
+			'#00CC33',
+			'#00CC66',
+			'#00CC99',
+			'#00CCCC',
+			'#00CCFF',
+			'#3300CC',
+			'#3300FF',
+			'#3333CC',
+			'#3333FF',
+			'#3366CC',
+			'#3366FF',
+			'#3399CC',
+			'#3399FF',
+			'#33CC00',
+			'#33CC33',
+			'#33CC66',
+			'#33CC99',
+			'#33CCCC',
+			'#33CCFF',
+			'#6600CC',
+			'#6600FF',
+			'#6633CC',
+			'#6633FF',
+			'#66CC00',
+			'#66CC33',
+			'#9900CC',
+			'#9900FF',
+			'#9933CC',
+			'#9933FF',
+			'#99CC00',
+			'#99CC33',
+			'#CC0000',
+			'#CC0033',
+			'#CC0066',
+			'#CC0099',
+			'#CC00CC',
+			'#CC00FF',
+			'#CC3300',
+			'#CC3333',
+			'#CC3366',
+			'#CC3399',
+			'#CC33CC',
+			'#CC33FF',
+			'#CC6600',
+			'#CC6633',
+			'#CC9900',
+			'#CC9933',
+			'#CCCC00',
+			'#CCCC33',
+			'#FF0000',
+			'#FF0033',
+			'#FF0066',
+			'#FF0099',
+			'#FF00CC',
+			'#FF00FF',
+			'#FF3300',
+			'#FF3333',
+			'#FF3366',
+			'#FF3399',
+			'#FF33CC',
+			'#FF33FF',
+			'#FF6600',
+			'#FF6633',
+			'#FF9900',
+			'#FF9933',
+			'#FFCC00',
+			'#FFCC33'
+		];
+
+		/**
+		 * Currently only WebKit-based Web Inspectors, Firefox >= v31,
+		 * and the Firebug extension (any Firefox version) are known
+		 * to support "%c" CSS customizations.
+		 *
+		 * TODO: add a `localStorage` variable to explicitly enable/disable colors
+		 */
+
+		// eslint-disable-next-line complexity
+		function useColors() {
+			// NB: In an Electron preload script, document will be defined but not fully
+			// initialized. Since we know we're in Chrome, we'll just detect this case
+			// explicitly
+			if (typeof window !== 'undefined' && window.process && (window.process.type === 'renderer' || window.process.__nwjs)) {
+				return true;
+			}
+
+			// Internet Explorer and Edge do not support colors.
+			if (typeof navigator !== 'undefined' && navigator.userAgent && navigator.userAgent.toLowerCase().match(/(edge|trident)\/(\d+)/)) {
+				return false;
+			}
+
+			let m;
+
+			// Is webkit? http://stackoverflow.com/a/16459606/376773
+			// document is undefined in react-native: https://github.com/facebook/react-native/pull/1632
+			// eslint-disable-next-line no-return-assign
+			return (typeof document !== 'undefined' && document.documentElement && document.documentElement.style && document.documentElement.style.WebkitAppearance) ||
+				// Is firebug? http://stackoverflow.com/a/398120/376773
+				(typeof window !== 'undefined' && window.console && (window.console.firebug || (window.console.exception && window.console.table))) ||
+				// Is firefox >= v31?
+				// https://developer.mozilla.org/en-US/docs/Tools/Web_Console#Styling_messages
+				(typeof navigator !== 'undefined' && navigator.userAgent && (m = navigator.userAgent.toLowerCase().match(/firefox\/(\d+)/)) && parseInt(m[1], 10) >= 31) ||
+				// Double check webkit in userAgent just in case we are in a worker
+				(typeof navigator !== 'undefined' && navigator.userAgent && navigator.userAgent.toLowerCase().match(/applewebkit\/(\d+)/));
+		}
+
+		/**
+		 * Colorize log arguments if enabled.
+		 *
+		 * @api public
+		 */
+
+		function formatArgs(args) {
+			args[0] = (this.useColors ? '%c' : '') +
+				this.namespace +
+				(this.useColors ? ' %c' : ' ') +
+				args[0] +
+				(this.useColors ? '%c ' : ' ') +
+				'+' + module.exports.humanize(this.diff);
+
+			if (!this.useColors) {
+				return;
+			}
+
+			const c = 'color: ' + this.color;
+			args.splice(1, 0, c, 'color: inherit');
+
+			// The final "%c" is somewhat tricky, because there could be other
+			// arguments passed either before or after the %c, so we need to
+			// figure out the correct index to insert the CSS into
+			let index = 0;
+			let lastC = 0;
+			args[0].replace(/%[a-zA-Z%]/g, match => {
+				if (match === '%%') {
+					return;
+				}
+				index++;
+				if (match === '%c') {
+					// We only are interested in the *last* %c
+					// (the user may have provided their own)
+					lastC = index;
+				}
+			});
+
+			args.splice(lastC, 0, c);
+		}
+
+		/**
+		 * Invokes `console.debug()` when available.
+		 * No-op when `console.debug` is not a "function".
+		 * If `console.debug` is not available, falls back
+		 * to `console.log`.
+		 *
+		 * @api public
+		 */
+		exports$1.log = console.debug || console.log || (() => {});
+
+		/**
+		 * Save `namespaces`.
+		 *
+		 * @param {String} namespaces
+		 * @api private
+		 */
+		function save(namespaces) {
+			try {
+				if (namespaces) {
+					exports$1.storage.setItem('debug', namespaces);
+				} else {
+					exports$1.storage.removeItem('debug');
+				}
+			} catch (error) {
+				// Swallow
+				// XXX (@Qix-) should we be logging these?
+			}
+		}
+
+		/**
+		 * Load `namespaces`.
+		 *
+		 * @return {String} returns the previously persisted debug modes
+		 * @api private
+		 */
+		function load() {
+			let r;
+			try {
+				r = exports$1.storage.getItem('debug') || exports$1.storage.getItem('DEBUG') ;
+			} catch (error) {
+				// Swallow
+				// XXX (@Qix-) should we be logging these?
+			}
+
+			// If debug isn't set in LS, and we're in Electron, try to load $DEBUG
+			if (!r && typeof process !== 'undefined' && 'env' in process) {
+				r = process.env.DEBUG;
+			}
+
+			return r;
+		}
+
+		/**
+		 * Localstorage attempts to return the localstorage.
+		 *
+		 * This is necessary because safari throws
+		 * when a user disables cookies/localstorage
+		 * and you attempt to access it.
+		 *
+		 * @return {LocalStorage}
+		 * @api private
+		 */
+
+		function localstorage() {
+			try {
+				// TVMLKit (Apple TV JS Runtime) does not have a window object, just localStorage in the global context
+				// The Browser also has localStorage in the global context.
+				return localStorage;
+			} catch (error) {
+				// Swallow
+				// XXX (@Qix-) should we be logging these?
+			}
+		}
+
+		module.exports = requireCommon()(exports$1);
+
+		const {formatters} = module.exports;
+
+		/**
+		 * Map %j to `JSON.stringify()`, since no Web Inspectors do that by default.
+		 */
+
+		formatters.j = function (v) {
+			try {
+				return JSON.stringify(v);
+			} catch (error) {
+				return '[UnexpectedJSONParseError]: ' + error.message;
+			}
+		}; 
+	} (browser, browser.exports));
+	return browser.exports;
+}
+
+var node = {exports: {}};
+
+var hasFlag;
+var hasRequiredHasFlag;
+
+function requireHasFlag () {
+	if (hasRequiredHasFlag) return hasFlag;
+	hasRequiredHasFlag = 1;
+
+	hasFlag = (flag, argv = process.argv) => {
+		const prefix = flag.startsWith('-') ? '' : (flag.length === 1 ? '-' : '--');
+		const position = argv.indexOf(prefix + flag);
+		const terminatorPosition = argv.indexOf('--');
+		return position !== -1 && (terminatorPosition === -1 || position < terminatorPosition);
+	};
+	return hasFlag;
+}
+
+var supportsColor_1;
+var hasRequiredSupportsColor;
+
+function requireSupportsColor () {
+	if (hasRequiredSupportsColor) return supportsColor_1;
+	hasRequiredSupportsColor = 1;
+	const os = require$$0;
+	const tty = require$$1$5;
+	const hasFlag = requireHasFlag();
+
+	const {env} = process;
+
+	let forceColor;
+	if (hasFlag('no-color') ||
+		hasFlag('no-colors') ||
+		hasFlag('color=false') ||
+		hasFlag('color=never')) {
+		forceColor = 0;
+	} else if (hasFlag('color') ||
+		hasFlag('colors') ||
+		hasFlag('color=true') ||
+		hasFlag('color=always')) {
+		forceColor = 1;
+	}
+
+	if ('FORCE_COLOR' in env) {
+		if (env.FORCE_COLOR === 'true') {
+			forceColor = 1;
+		} else if (env.FORCE_COLOR === 'false') {
+			forceColor = 0;
+		} else {
+			forceColor = env.FORCE_COLOR.length === 0 ? 1 : Math.min(parseInt(env.FORCE_COLOR, 10), 3);
+		}
+	}
+
+	function translateLevel(level) {
+		if (level === 0) {
+			return false;
+		}
+
+		return {
+			level,
+			hasBasic: true,
+			has256: level >= 2,
+			has16m: level >= 3
+		};
+	}
+
+	function supportsColor(haveStream, streamIsTTY) {
+		if (forceColor === 0) {
+			return 0;
+		}
+
+		if (hasFlag('color=16m') ||
+			hasFlag('color=full') ||
+			hasFlag('color=truecolor')) {
+			return 3;
+		}
+
+		if (hasFlag('color=256')) {
+			return 2;
+		}
+
+		if (haveStream && !streamIsTTY && forceColor === undefined) {
+			return 0;
+		}
+
+		const min = forceColor || 0;
+
+		if (env.TERM === 'dumb') {
+			return min;
+		}
+
+		if (process.platform === 'win32') {
+			// Windows 10 build 10586 is the first Windows release that supports 256 colors.
+			// Windows 10 build 14931 is the first release that supports 16m/TrueColor.
+			const osRelease = os.release().split('.');
+			if (
+				Number(osRelease[0]) >= 10 &&
+				Number(osRelease[2]) >= 10586
+			) {
+				return Number(osRelease[2]) >= 14931 ? 3 : 2;
+			}
+
+			return 1;
+		}
+
+		if ('CI' in env) {
+			if (['TRAVIS', 'CIRCLECI', 'APPVEYOR', 'GITLAB_CI', 'GITHUB_ACTIONS', 'BUILDKITE'].some(sign => sign in env) || env.CI_NAME === 'codeship') {
+				return 1;
+			}
+
+			return min;
+		}
+
+		if ('TEAMCITY_VERSION' in env) {
+			return /^(9\.(0*[1-9]\d*)\.|\d{2,}\.)/.test(env.TEAMCITY_VERSION) ? 1 : 0;
+		}
+
+		if (env.COLORTERM === 'truecolor') {
+			return 3;
+		}
+
+		if ('TERM_PROGRAM' in env) {
+			const version = parseInt((env.TERM_PROGRAM_VERSION || '').split('.')[0], 10);
+
+			switch (env.TERM_PROGRAM) {
+				case 'iTerm.app':
+					return version >= 3 ? 3 : 2;
+				case 'Apple_Terminal':
+					return 2;
+				// No default
+			}
+		}
+
+		if (/-256(color)?$/i.test(env.TERM)) {
+			return 2;
+		}
+
+		if (/^screen|^xterm|^vt100|^vt220|^rxvt|color|ansi|cygwin|linux/i.test(env.TERM)) {
+			return 1;
+		}
+
+		if ('COLORTERM' in env) {
+			return 1;
+		}
+
+		return min;
+	}
+
+	function getSupportLevel(stream) {
+		const level = supportsColor(stream, stream && stream.isTTY);
+		return translateLevel(level);
+	}
+
+	supportsColor_1 = {
+		supportsColor: getSupportLevel,
+		stdout: translateLevel(supportsColor(true, tty.isatty(1))),
+		stderr: translateLevel(supportsColor(true, tty.isatty(2)))
+	};
+	return supportsColor_1;
+}
+
+/**
+ * Module dependencies.
+ */
+
+var hasRequiredNode;
+
+function requireNode () {
+	if (hasRequiredNode) return node.exports;
+	hasRequiredNode = 1;
+	(function (module, exports$1) {
+		const tty = require$$1$5;
+		const util = require$$0$1;
+
+		/**
+		 * This is the Node.js implementation of `debug()`.
+		 */
+
+		exports$1.init = init;
+		exports$1.log = log;
+		exports$1.formatArgs = formatArgs;
+		exports$1.save = save;
+		exports$1.load = load;
+		exports$1.useColors = useColors;
+		exports$1.destroy = util.deprecate(
+			() => {},
+			'Instance method `debug.destroy()` is deprecated and no longer does anything. It will be removed in the next major version of `debug`.'
+		);
+
+		/**
+		 * Colors.
+		 */
+
+		exports$1.colors = [6, 2, 3, 4, 5, 1];
+
+		try {
+			// Optional dependency (as in, doesn't need to be installed, NOT like optionalDependencies in package.json)
+			// eslint-disable-next-line import/no-extraneous-dependencies
+			const supportsColor = requireSupportsColor();
+
+			if (supportsColor && (supportsColor.stderr || supportsColor).level >= 2) {
+				exports$1.colors = [
+					20,
+					21,
+					26,
+					27,
+					32,
+					33,
+					38,
+					39,
+					40,
+					41,
+					42,
+					43,
+					44,
+					45,
+					56,
+					57,
+					62,
+					63,
+					68,
+					69,
+					74,
+					75,
+					76,
+					77,
+					78,
+					79,
+					80,
+					81,
+					92,
+					93,
+					98,
+					99,
+					112,
+					113,
+					128,
+					129,
+					134,
+					135,
+					148,
+					149,
+					160,
+					161,
+					162,
+					163,
+					164,
+					165,
+					166,
+					167,
+					168,
+					169,
+					170,
+					171,
+					172,
+					173,
+					178,
+					179,
+					184,
+					185,
+					196,
+					197,
+					198,
+					199,
+					200,
+					201,
+					202,
+					203,
+					204,
+					205,
+					206,
+					207,
+					208,
+					209,
+					214,
+					215,
+					220,
+					221
+				];
+			}
+		} catch (error) {
+			// Swallow - we only care if `supports-color` is available; it doesn't have to be.
+		}
+
+		/**
+		 * Build up the default `inspectOpts` object from the environment variables.
+		 *
+		 *   $ DEBUG_COLORS=no DEBUG_DEPTH=10 DEBUG_SHOW_HIDDEN=enabled node script.js
+		 */
+
+		exports$1.inspectOpts = Object.keys(process.env).filter(key => {
+			return /^debug_/i.test(key);
+		}).reduce((obj, key) => {
+			// Camel-case
+			const prop = key
+				.substring(6)
+				.toLowerCase()
+				.replace(/_([a-z])/g, (_, k) => {
+					return k.toUpperCase();
+				});
+
+			// Coerce string value into JS value
+			let val = process.env[key];
+			if (/^(yes|on|true|enabled)$/i.test(val)) {
+				val = true;
+			} else if (/^(no|off|false|disabled)$/i.test(val)) {
+				val = false;
+			} else if (val === 'null') {
+				val = null;
+			} else {
+				val = Number(val);
+			}
+
+			obj[prop] = val;
+			return obj;
+		}, {});
+
+		/**
+		 * Is stdout a TTY? Colored output is enabled when `true`.
+		 */
+
+		function useColors() {
+			return 'colors' in exports$1.inspectOpts ?
+				Boolean(exports$1.inspectOpts.colors) :
+				tty.isatty(process.stderr.fd);
+		}
+
+		/**
+		 * Adds ANSI color escape codes if enabled.
+		 *
+		 * @api public
+		 */
+
+		function formatArgs(args) {
+			const {namespace: name, useColors} = this;
+
+			if (useColors) {
+				const c = this.color;
+				const colorCode = '\u001B[3' + (c < 8 ? c : '8;5;' + c);
+				const prefix = `  ${colorCode};1m${name} \u001B[0m`;
+
+				args[0] = prefix + args[0].split('\n').join('\n' + prefix);
+				args.push(colorCode + 'm+' + module.exports.humanize(this.diff) + '\u001B[0m');
+			} else {
+				args[0] = getDate() + name + ' ' + args[0];
+			}
+		}
+
+		function getDate() {
+			if (exports$1.inspectOpts.hideDate) {
+				return '';
+			}
+			return new Date().toISOString() + ' ';
+		}
+
+		/**
+		 * Invokes `util.formatWithOptions()` with the specified arguments and writes to stderr.
+		 */
+
+		function log(...args) {
+			return process.stderr.write(util.formatWithOptions(exports$1.inspectOpts, ...args) + '\n');
+		}
+
+		/**
+		 * Save `namespaces`.
+		 *
+		 * @param {String} namespaces
+		 * @api private
+		 */
+		function save(namespaces) {
+			if (namespaces) {
+				process.env.DEBUG = namespaces;
+			} else {
+				// If you set a process.env field to null or undefined, it gets cast to the
+				// string 'null' or 'undefined'. Just delete instead.
+				delete process.env.DEBUG;
+			}
+		}
+
+		/**
+		 * Load `namespaces`.
+		 *
+		 * @return {String} returns the previously persisted debug modes
+		 * @api private
+		 */
+
+		function load() {
+			return process.env.DEBUG;
+		}
+
+		/**
+		 * Init logic for `debug` instances.
+		 *
+		 * Create a new `inspectOpts` object in case `useColors` is set
+		 * differently for a particular `debug` instance.
+		 */
+
+		function init(debug) {
+			debug.inspectOpts = {};
+
+			const keys = Object.keys(exports$1.inspectOpts);
+			for (let i = 0; i < keys.length; i++) {
+				debug.inspectOpts[keys[i]] = exports$1.inspectOpts[keys[i]];
+			}
+		}
+
+		module.exports = requireCommon()(exports$1);
+
+		const {formatters} = module.exports;
+
+		/**
+		 * Map %o to `util.inspect()`, all on a single line.
+		 */
+
+		formatters.o = function (v) {
+			this.inspectOpts.colors = this.useColors;
+			return util.inspect(v, this.inspectOpts)
+				.split('\n')
+				.map(str => str.trim())
+				.join(' ');
+		};
+
+		/**
+		 * Map %O to `util.inspect()`, allowing multiple lines if needed.
+		 */
+
+		formatters.O = function (v) {
+			this.inspectOpts.colors = this.useColors;
+			return util.inspect(v, this.inspectOpts);
+		}; 
+	} (node, node.exports));
+	return node.exports;
+}
+
+/**
+ * Detect Electron renderer / nwjs process, which is node, but we should
+ * treat as a browser.
+ */
+
+var hasRequiredSrc;
+
+function requireSrc () {
+	if (hasRequiredSrc) return src.exports;
+	hasRequiredSrc = 1;
+	if (typeof process === 'undefined' || process.type === 'renderer' || process.browser === true || process.__nwjs) {
+		src.exports = requireBrowser();
+	} else {
+		src.exports = requireNode();
+	}
+	return src.exports;
+}
+
+var dist$1 = {};
+
+var helpers = {};
+
+var hasRequiredHelpers;
+
+function requireHelpers () {
+	if (hasRequiredHelpers) return helpers;
+	hasRequiredHelpers = 1;
+	var __createBinding = (helpers && helpers.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+	    if (k2 === undefined) k2 = k;
+	    var desc = Object.getOwnPropertyDescriptor(m, k);
+	    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+	      desc = { enumerable: true, get: function() { return m[k]; } };
+	    }
+	    Object.defineProperty(o, k2, desc);
+	}) : (function(o, m, k, k2) {
+	    if (k2 === undefined) k2 = k;
+	    o[k2] = m[k];
+	}));
+	var __setModuleDefault = (helpers && helpers.__setModuleDefault) || (Object.create ? (function(o, v) {
+	    Object.defineProperty(o, "default", { enumerable: true, value: v });
+	}) : function(o, v) {
+	    o["default"] = v;
+	});
+	var __importStar = (helpers && helpers.__importStar) || function (mod) {
+	    if (mod && mod.__esModule) return mod;
+	    var result = {};
+	    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+	    __setModuleDefault(result, mod);
+	    return result;
+	};
+	Object.defineProperty(helpers, "__esModule", { value: true });
+	helpers.req = helpers.json = helpers.toBuffer = void 0;
+	const http$1 = __importStar(http);
+	const https$1 = __importStar(https);
+	async function toBuffer(stream) {
+	    let length = 0;
+	    const chunks = [];
+	    for await (const chunk of stream) {
+	        length += chunk.length;
+	        chunks.push(chunk);
+	    }
+	    return Buffer.concat(chunks, length);
+	}
+	helpers.toBuffer = toBuffer;
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	async function json(stream) {
+	    const buf = await toBuffer(stream);
+	    const str = buf.toString('utf8');
+	    try {
+	        return JSON.parse(str);
+	    }
+	    catch (_err) {
+	        const err = _err;
+	        err.message += ` (input: ${str})`;
+	        throw err;
+	    }
+	}
+	helpers.json = json;
+	function req(url, opts = {}) {
+	    const href = typeof url === 'string' ? url : url.href;
+	    const req = (href.startsWith('https:') ? https$1 : http$1).request(url, opts);
+	    const promise = new Promise((resolve, reject) => {
+	        req
+	            .once('response', resolve)
+	            .once('error', reject)
+	            .end();
+	    });
+	    req.then = promise.then.bind(promise);
+	    return req;
+	}
+	helpers.req = req;
+	
+	return helpers;
+}
+
+var hasRequiredDist$2;
+
+function requireDist$2 () {
+	if (hasRequiredDist$2) return dist$1;
+	hasRequiredDist$2 = 1;
+	(function (exports$1) {
+		var __createBinding = (dist$1 && dist$1.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+		    if (k2 === undefined) k2 = k;
+		    var desc = Object.getOwnPropertyDescriptor(m, k);
+		    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+		      desc = { enumerable: true, get: function() { return m[k]; } };
+		    }
+		    Object.defineProperty(o, k2, desc);
+		}) : (function(o, m, k, k2) {
+		    if (k2 === undefined) k2 = k;
+		    o[k2] = m[k];
+		}));
+		var __setModuleDefault = (dist$1 && dist$1.__setModuleDefault) || (Object.create ? (function(o, v) {
+		    Object.defineProperty(o, "default", { enumerable: true, value: v });
+		}) : function(o, v) {
+		    o["default"] = v;
+		});
+		var __importStar = (dist$1 && dist$1.__importStar) || function (mod) {
+		    if (mod && mod.__esModule) return mod;
+		    var result = {};
+		    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+		    __setModuleDefault(result, mod);
+		    return result;
+		};
+		var __exportStar = (dist$1 && dist$1.__exportStar) || function(m, exports$1) {
+		    for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports$1, p)) __createBinding(exports$1, m, p);
+		};
+		Object.defineProperty(exports$1, "__esModule", { value: true });
+		exports$1.Agent = void 0;
+		const net = __importStar(require$$0$4);
+		const http$1 = __importStar(http);
+		const https_1 = https;
+		__exportStar(requireHelpers(), exports$1);
+		const INTERNAL = Symbol('AgentBaseInternalState');
+		class Agent extends http$1.Agent {
+		    constructor(opts) {
+		        super(opts);
+		        this[INTERNAL] = {};
+		    }
+		    /**
+		     * Determine whether this is an `http` or `https` request.
+		     */
+		    isSecureEndpoint(options) {
+		        if (options) {
+		            // First check the `secureEndpoint` property explicitly, since this
+		            // means that a parent `Agent` is "passing through" to this instance.
+		            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+		            if (typeof options.secureEndpoint === 'boolean') {
+		                return options.secureEndpoint;
+		            }
+		            // If no explicit `secure` endpoint, check if `protocol` property is
+		            // set. This will usually be the case since using a full string URL
+		            // or `URL` instance should be the most common usage.
+		            if (typeof options.protocol === 'string') {
+		                return options.protocol === 'https:';
+		            }
+		        }
+		        // Finally, if no `protocol` property was set, then fall back to
+		        // checking the stack trace of the current call stack, and try to
+		        // detect the "https" module.
+		        const { stack } = new Error();
+		        if (typeof stack !== 'string')
+		            return false;
+		        return stack
+		            .split('\n')
+		            .some((l) => l.indexOf('(https.js:') !== -1 ||
+		            l.indexOf('node:https:') !== -1);
+		    }
+		    // In order to support async signatures in `connect()` and Node's native
+		    // connection pooling in `http.Agent`, the array of sockets for each origin
+		    // has to be updated synchronously. This is so the length of the array is
+		    // accurate when `addRequest()` is next called. We achieve this by creating a
+		    // fake socket and adding it to `sockets[origin]` and incrementing
+		    // `totalSocketCount`.
+		    incrementSockets(name) {
+		        // If `maxSockets` and `maxTotalSockets` are both Infinity then there is no
+		        // need to create a fake socket because Node.js native connection pooling
+		        // will never be invoked.
+		        if (this.maxSockets === Infinity && this.maxTotalSockets === Infinity) {
+		            return null;
+		        }
+		        // All instances of `sockets` are expected TypeScript errors. The
+		        // alternative is to add it as a private property of this class but that
+		        // will break TypeScript subclassing.
+		        if (!this.sockets[name]) {
+		            // @ts-expect-error `sockets` is readonly in `@types/node`
+		            this.sockets[name] = [];
+		        }
+		        const fakeSocket = new net.Socket({ writable: false });
+		        this.sockets[name].push(fakeSocket);
+		        // @ts-expect-error `totalSocketCount` isn't defined in `@types/node`
+		        this.totalSocketCount++;
+		        return fakeSocket;
+		    }
+		    decrementSockets(name, socket) {
+		        if (!this.sockets[name] || socket === null) {
+		            return;
+		        }
+		        const sockets = this.sockets[name];
+		        const index = sockets.indexOf(socket);
+		        if (index !== -1) {
+		            sockets.splice(index, 1);
+		            // @ts-expect-error  `totalSocketCount` isn't defined in `@types/node`
+		            this.totalSocketCount--;
+		            if (sockets.length === 0) {
+		                // @ts-expect-error `sockets` is readonly in `@types/node`
+		                delete this.sockets[name];
+		            }
+		        }
+		    }
+		    // In order to properly update the socket pool, we need to call `getName()` on
+		    // the core `https.Agent` if it is a secureEndpoint.
+		    getName(options) {
+		        const secureEndpoint = this.isSecureEndpoint(options);
+		        if (secureEndpoint) {
+		            // @ts-expect-error `getName()` isn't defined in `@types/node`
+		            return https_1.Agent.prototype.getName.call(this, options);
+		        }
+		        // @ts-expect-error `getName()` isn't defined in `@types/node`
+		        return super.getName(options);
+		    }
+		    createSocket(req, options, cb) {
+		        const connectOpts = {
+		            ...options,
+		            secureEndpoint: this.isSecureEndpoint(options),
+		        };
+		        const name = this.getName(connectOpts);
+		        const fakeSocket = this.incrementSockets(name);
+		        Promise.resolve()
+		            .then(() => this.connect(req, connectOpts))
+		            .then((socket) => {
+		            this.decrementSockets(name, fakeSocket);
+		            if (socket instanceof http$1.Agent) {
+		                try {
+		                    // @ts-expect-error `addRequest()` isn't defined in `@types/node`
+		                    return socket.addRequest(req, connectOpts);
+		                }
+		                catch (err) {
+		                    return cb(err);
+		                }
+		            }
+		            this[INTERNAL].currentSocket = socket;
+		            // @ts-expect-error `createSocket()` isn't defined in `@types/node`
+		            super.createSocket(req, options, cb);
+		        }, (err) => {
+		            this.decrementSockets(name, fakeSocket);
+		            cb(err);
+		        });
+		    }
+		    createConnection() {
+		        const socket = this[INTERNAL].currentSocket;
+		        this[INTERNAL].currentSocket = undefined;
+		        if (!socket) {
+		            throw new Error('No socket was returned in the `connect()` function');
+		        }
+		        return socket;
+		    }
+		    get defaultPort() {
+		        return (this[INTERNAL].defaultPort ??
+		            (this.protocol === 'https:' ? 443 : 80));
+		    }
+		    set defaultPort(v) {
+		        if (this[INTERNAL]) {
+		            this[INTERNAL].defaultPort = v;
+		        }
+		    }
+		    get protocol() {
+		        return (this[INTERNAL].protocol ??
+		            (this.isSecureEndpoint() ? 'https:' : 'http:'));
+		    }
+		    set protocol(v) {
+		        if (this[INTERNAL]) {
+		            this[INTERNAL].protocol = v;
+		        }
+		    }
+		}
+		exports$1.Agent = Agent;
+		
+	} (dist$1));
+	return dist$1;
+}
+
+var parseProxyResponse = {};
+
+var hasRequiredParseProxyResponse;
+
+function requireParseProxyResponse () {
+	if (hasRequiredParseProxyResponse) return parseProxyResponse;
+	hasRequiredParseProxyResponse = 1;
+	var __importDefault = (parseProxyResponse && parseProxyResponse.__importDefault) || function (mod) {
+	    return (mod && mod.__esModule) ? mod : { "default": mod };
+	};
+	Object.defineProperty(parseProxyResponse, "__esModule", { value: true });
+	parseProxyResponse.parseProxyResponse = void 0;
+	const debug_1 = __importDefault(requireSrc());
+	const debug = (0, debug_1.default)('https-proxy-agent:parse-proxy-response');
+	function parseProxyResponse$1(socket) {
+	    return new Promise((resolve, reject) => {
+	        // we need to buffer any HTTP traffic that happens with the proxy before we get
+	        // the CONNECT response, so that if the response is anything other than an "200"
+	        // response code, then we can re-play the "data" events on the socket once the
+	        // HTTP parser is hooked up...
+	        let buffersLength = 0;
+	        const buffers = [];
+	        function read() {
+	            const b = socket.read();
+	            if (b)
+	                ondata(b);
+	            else
+	                socket.once('readable', read);
+	        }
+	        function cleanup() {
+	            socket.removeListener('end', onend);
+	            socket.removeListener('error', onerror);
+	            socket.removeListener('readable', read);
+	        }
+	        function onend() {
+	            cleanup();
+	            debug('onend');
+	            reject(new Error('Proxy connection ended before receiving CONNECT response'));
+	        }
+	        function onerror(err) {
+	            cleanup();
+	            debug('onerror %o', err);
+	            reject(err);
+	        }
+	        function ondata(b) {
+	            buffers.push(b);
+	            buffersLength += b.length;
+	            const buffered = Buffer.concat(buffers, buffersLength);
+	            const endOfHeaders = buffered.indexOf('\r\n\r\n');
+	            if (endOfHeaders === -1) {
+	                // keep buffering
+	                debug('have not received end of HTTP headers yet...');
+	                read();
+	                return;
+	            }
+	            const headerParts = buffered
+	                .slice(0, endOfHeaders)
+	                .toString('ascii')
+	                .split('\r\n');
+	            const firstLine = headerParts.shift();
+	            if (!firstLine) {
+	                socket.destroy();
+	                return reject(new Error('No header received from proxy CONNECT response'));
+	            }
+	            const firstLineParts = firstLine.split(' ');
+	            const statusCode = +firstLineParts[1];
+	            const statusText = firstLineParts.slice(2).join(' ');
+	            const headers = {};
+	            for (const header of headerParts) {
+	                if (!header)
+	                    continue;
+	                const firstColon = header.indexOf(':');
+	                if (firstColon === -1) {
+	                    socket.destroy();
+	                    return reject(new Error(`Invalid header from proxy CONNECT response: "${header}"`));
+	                }
+	                const key = header.slice(0, firstColon).toLowerCase();
+	                const value = header.slice(firstColon + 1).trimStart();
+	                const current = headers[key];
+	                if (typeof current === 'string') {
+	                    headers[key] = [current, value];
+	                }
+	                else if (Array.isArray(current)) {
+	                    current.push(value);
+	                }
+	                else {
+	                    headers[key] = value;
+	                }
+	            }
+	            debug('got proxy server response: %o %o', firstLine, headers);
+	            cleanup();
+	            resolve({
+	                connect: {
+	                    statusCode,
+	                    statusText,
+	                    headers,
+	                },
+	                buffered,
+	            });
+	        }
+	        socket.on('error', onerror);
+	        socket.on('end', onend);
+	        read();
+	    });
+	}
+	parseProxyResponse.parseProxyResponse = parseProxyResponse$1;
+	
+	return parseProxyResponse;
+}
+
+var hasRequiredDist$1;
+
+function requireDist$1 () {
+	if (hasRequiredDist$1) return dist$2;
+	hasRequiredDist$1 = 1;
+	var __createBinding = (dist$2 && dist$2.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+	    if (k2 === undefined) k2 = k;
+	    var desc = Object.getOwnPropertyDescriptor(m, k);
+	    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+	      desc = { enumerable: true, get: function() { return m[k]; } };
+	    }
+	    Object.defineProperty(o, k2, desc);
+	}) : (function(o, m, k, k2) {
+	    if (k2 === undefined) k2 = k;
+	    o[k2] = m[k];
+	}));
+	var __setModuleDefault = (dist$2 && dist$2.__setModuleDefault) || (Object.create ? (function(o, v) {
+	    Object.defineProperty(o, "default", { enumerable: true, value: v });
+	}) : function(o, v) {
+	    o["default"] = v;
+	});
+	var __importStar = (dist$2 && dist$2.__importStar) || function (mod) {
+	    if (mod && mod.__esModule) return mod;
+	    var result = {};
+	    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+	    __setModuleDefault(result, mod);
+	    return result;
+	};
+	var __importDefault = (dist$2 && dist$2.__importDefault) || function (mod) {
+	    return (mod && mod.__esModule) ? mod : { "default": mod };
+	};
+	Object.defineProperty(dist$2, "__esModule", { value: true });
+	dist$2.HttpsProxyAgent = void 0;
+	const net = __importStar(require$$0$4);
+	const tls = __importStar(require$$1$1);
+	const assert_1 = __importDefault(require$$0$3);
+	const debug_1 = __importDefault(requireSrc());
+	const agent_base_1 = requireDist$2();
+	const url_1 = require$$5$1;
+	const parse_proxy_response_1 = requireParseProxyResponse();
+	const debug = (0, debug_1.default)('https-proxy-agent');
+	const setServernameFromNonIpHost = (options) => {
+	    if (options.servername === undefined &&
+	        options.host &&
+	        !net.isIP(options.host)) {
+	        return {
+	            ...options,
+	            servername: options.host,
+	        };
+	    }
+	    return options;
+	};
+	/**
+	 * The `HttpsProxyAgent` implements an HTTP Agent subclass that connects to
+	 * the specified "HTTP(s) proxy server" in order to proxy HTTPS requests.
+	 *
+	 * Outgoing HTTP requests are first tunneled through the proxy server using the
+	 * `CONNECT` HTTP request method to establish a connection to the proxy server,
+	 * and then the proxy server connects to the destination target and issues the
+	 * HTTP request from the proxy server.
+	 *
+	 * `https:` requests have their socket connection upgraded to TLS once
+	 * the connection to the proxy server has been established.
+	 */
+	class HttpsProxyAgent extends agent_base_1.Agent {
+	    constructor(proxy, opts) {
+	        super(opts);
+	        this.options = { path: undefined };
+	        this.proxy = typeof proxy === 'string' ? new url_1.URL(proxy) : proxy;
+	        this.proxyHeaders = opts?.headers ?? {};
+	        debug('Creating new HttpsProxyAgent instance: %o', this.proxy.href);
+	        // Trim off the brackets from IPv6 addresses
+	        const host = (this.proxy.hostname || this.proxy.host).replace(/^\[|\]$/g, '');
+	        const port = this.proxy.port
+	            ? parseInt(this.proxy.port, 10)
+	            : this.proxy.protocol === 'https:'
+	                ? 443
+	                : 80;
+	        this.connectOpts = {
+	            // Attempt to negotiate http/1.1 for proxy servers that support http/2
+	            ALPNProtocols: ['http/1.1'],
+	            ...(opts ? omit(opts, 'headers') : null),
+	            host,
+	            port,
+	        };
+	    }
+	    /**
+	     * Called when the node-core HTTP client library is creating a
+	     * new HTTP request.
+	     */
+	    async connect(req, opts) {
+	        const { proxy } = this;
+	        if (!opts.host) {
+	            throw new TypeError('No "host" provided');
+	        }
+	        // Create a socket connection to the proxy server.
+	        let socket;
+	        if (proxy.protocol === 'https:') {
+	            debug('Creating `tls.Socket`: %o', this.connectOpts);
+	            socket = tls.connect(setServernameFromNonIpHost(this.connectOpts));
+	        }
+	        else {
+	            debug('Creating `net.Socket`: %o', this.connectOpts);
+	            socket = net.connect(this.connectOpts);
+	        }
+	        const headers = typeof this.proxyHeaders === 'function'
+	            ? this.proxyHeaders()
+	            : { ...this.proxyHeaders };
+	        const host = net.isIPv6(opts.host) ? `[${opts.host}]` : opts.host;
+	        let payload = `CONNECT ${host}:${opts.port} HTTP/1.1\r\n`;
+	        // Inject the `Proxy-Authorization` header if necessary.
+	        if (proxy.username || proxy.password) {
+	            const auth = `${decodeURIComponent(proxy.username)}:${decodeURIComponent(proxy.password)}`;
+	            headers['Proxy-Authorization'] = `Basic ${Buffer.from(auth).toString('base64')}`;
+	        }
+	        headers.Host = `${host}:${opts.port}`;
+	        if (!headers['Proxy-Connection']) {
+	            headers['Proxy-Connection'] = this.keepAlive
+	                ? 'Keep-Alive'
+	                : 'close';
+	        }
+	        for (const name of Object.keys(headers)) {
+	            payload += `${name}: ${headers[name]}\r\n`;
+	        }
+	        const proxyResponsePromise = (0, parse_proxy_response_1.parseProxyResponse)(socket);
+	        socket.write(`${payload}\r\n`);
+	        const { connect, buffered } = await proxyResponsePromise;
+	        req.emit('proxyConnect', connect);
+	        this.emit('proxyConnect', connect, req);
+	        if (connect.statusCode === 200) {
+	            req.once('socket', resume);
+	            if (opts.secureEndpoint) {
+	                // The proxy is connecting to a TLS server, so upgrade
+	                // this socket connection to a TLS connection.
+	                debug('Upgrading socket connection to TLS');
+	                return tls.connect({
+	                    ...omit(setServernameFromNonIpHost(opts), 'host', 'path', 'port'),
+	                    socket,
+	                });
+	            }
+	            return socket;
+	        }
+	        // Some other status code that's not 200... need to re-play the HTTP
+	        // header "data" events onto the socket once the HTTP machinery is
+	        // attached so that the node core `http` can parse and handle the
+	        // error status code.
+	        // Close the original socket, and a new "fake" socket is returned
+	        // instead, so that the proxy doesn't get the HTTP request
+	        // written to it (which may contain `Authorization` headers or other
+	        // sensitive data).
+	        //
+	        // See: https://hackerone.com/reports/541502
+	        socket.destroy();
+	        const fakeSocket = new net.Socket({ writable: false });
+	        fakeSocket.readable = true;
+	        // Need to wait for the "socket" event to re-play the "data" events.
+	        req.once('socket', (s) => {
+	            debug('Replaying proxy buffer for failed request');
+	            (0, assert_1.default)(s.listenerCount('data') > 0);
+	            // Replay the "buffered" Buffer onto the fake `socket`, since at
+	            // this point the HTTP module machinery has been hooked up for
+	            // the user.
+	            s.push(buffered);
+	            s.push(null);
+	        });
+	        return fakeSocket;
+	    }
+	}
+	HttpsProxyAgent.protocols = ['http', 'https'];
+	dist$2.HttpsProxyAgent = HttpsProxyAgent;
+	function resume(socket) {
+	    socket.resume();
+	}
+	function omit(obj, ...keys) {
+	    const ret = {};
+	    let key;
+	    for (key in obj) {
+	        if (!keys.includes(key)) {
+	            ret[key] = obj[key];
+	        }
+	    }
+	    return ret;
+	}
+	
+	return dist$2;
+}
+
+var distExports$1 = requireDist$1();
+
+var dist = {};
+
+var hasRequiredDist;
+
+function requireDist () {
+	if (hasRequiredDist) return dist;
+	hasRequiredDist = 1;
+	var __createBinding = (dist && dist.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+	    if (k2 === undefined) k2 = k;
+	    var desc = Object.getOwnPropertyDescriptor(m, k);
+	    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+	      desc = { enumerable: true, get: function() { return m[k]; } };
+	    }
+	    Object.defineProperty(o, k2, desc);
+	}) : (function(o, m, k, k2) {
+	    if (k2 === undefined) k2 = k;
+	    o[k2] = m[k];
+	}));
+	var __setModuleDefault = (dist && dist.__setModuleDefault) || (Object.create ? (function(o, v) {
+	    Object.defineProperty(o, "default", { enumerable: true, value: v });
+	}) : function(o, v) {
+	    o["default"] = v;
+	});
+	var __importStar = (dist && dist.__importStar) || function (mod) {
+	    if (mod && mod.__esModule) return mod;
+	    var result = {};
+	    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+	    __setModuleDefault(result, mod);
+	    return result;
+	};
+	var __importDefault = (dist && dist.__importDefault) || function (mod) {
+	    return (mod && mod.__esModule) ? mod : { "default": mod };
+	};
+	Object.defineProperty(dist, "__esModule", { value: true });
+	dist.HttpProxyAgent = void 0;
+	const net = __importStar(require$$0$4);
+	const tls = __importStar(require$$1$1);
+	const debug_1 = __importDefault(requireSrc());
+	const events_1 = require$$4;
+	const agent_base_1 = requireDist$2();
+	const url_1 = require$$5$1;
+	const debug = (0, debug_1.default)('http-proxy-agent');
+	/**
+	 * The `HttpProxyAgent` implements an HTTP Agent subclass that connects
+	 * to the specified "HTTP proxy server" in order to proxy HTTP requests.
+	 */
+	class HttpProxyAgent extends agent_base_1.Agent {
+	    constructor(proxy, opts) {
+	        super(opts);
+	        this.proxy = typeof proxy === 'string' ? new url_1.URL(proxy) : proxy;
+	        this.proxyHeaders = opts?.headers ?? {};
+	        debug('Creating new HttpProxyAgent instance: %o', this.proxy.href);
+	        // Trim off the brackets from IPv6 addresses
+	        const host = (this.proxy.hostname || this.proxy.host).replace(/^\[|\]$/g, '');
+	        const port = this.proxy.port
+	            ? parseInt(this.proxy.port, 10)
+	            : this.proxy.protocol === 'https:'
+	                ? 443
+	                : 80;
+	        this.connectOpts = {
+	            ...(opts ? omit(opts, 'headers') : null),
+	            host,
+	            port,
+	        };
+	    }
+	    addRequest(req, opts) {
+	        req._header = null;
+	        this.setRequestProps(req, opts);
+	        // @ts-expect-error `addRequest()` isn't defined in `@types/node`
+	        super.addRequest(req, opts);
+	    }
+	    setRequestProps(req, opts) {
+	        const { proxy } = this;
+	        const protocol = opts.secureEndpoint ? 'https:' : 'http:';
+	        const hostname = req.getHeader('host') || 'localhost';
+	        const base = `${protocol}//${hostname}`;
+	        const url = new url_1.URL(req.path, base);
+	        if (opts.port !== 80) {
+	            url.port = String(opts.port);
+	        }
+	        // Change the `http.ClientRequest` instance's "path" field
+	        // to the absolute path of the URL that will be requested.
+	        req.path = String(url);
+	        // Inject the `Proxy-Authorization` header if necessary.
+	        const headers = typeof this.proxyHeaders === 'function'
+	            ? this.proxyHeaders()
+	            : { ...this.proxyHeaders };
+	        if (proxy.username || proxy.password) {
+	            const auth = `${decodeURIComponent(proxy.username)}:${decodeURIComponent(proxy.password)}`;
+	            headers['Proxy-Authorization'] = `Basic ${Buffer.from(auth).toString('base64')}`;
+	        }
+	        if (!headers['Proxy-Connection']) {
+	            headers['Proxy-Connection'] = this.keepAlive
+	                ? 'Keep-Alive'
+	                : 'close';
+	        }
+	        for (const name of Object.keys(headers)) {
+	            const value = headers[name];
+	            if (value) {
+	                req.setHeader(name, value);
+	            }
+	        }
+	    }
+	    async connect(req, opts) {
+	        req._header = null;
+	        if (!req.path.includes('://')) {
+	            this.setRequestProps(req, opts);
+	        }
+	        // At this point, the http ClientRequest's internal `_header` field
+	        // might have already been set. If this is the case then we'll need
+	        // to re-generate the string since we just changed the `req.path`.
+	        let first;
+	        let endOfHeaders;
+	        debug('Regenerating stored HTTP header string for request');
+	        req._implicitHeader();
+	        if (req.outputData && req.outputData.length > 0) {
+	            debug('Patching connection write() output buffer with updated header');
+	            first = req.outputData[0].data;
+	            endOfHeaders = first.indexOf('\r\n\r\n') + 4;
+	            req.outputData[0].data =
+	                req._header + first.substring(endOfHeaders);
+	            debug('Output buffer: %o', req.outputData[0].data);
+	        }
+	        // Create a socket connection to the proxy server.
+	        let socket;
+	        if (this.proxy.protocol === 'https:') {
+	            debug('Creating `tls.Socket`: %o', this.connectOpts);
+	            socket = tls.connect(this.connectOpts);
+	        }
+	        else {
+	            debug('Creating `net.Socket`: %o', this.connectOpts);
+	            socket = net.connect(this.connectOpts);
+	        }
+	        // Wait for the socket's `connect` event, so that this `callback()`
+	        // function throws instead of the `http` request machinery. This is
+	        // important for i.e. `PacProxyAgent` which determines a failed proxy
+	        // connection via the `callback()` function throwing.
+	        await (0, events_1.once)(socket, 'connect');
+	        return socket;
+	    }
+	}
+	HttpProxyAgent.protocols = ['http', 'https'];
+	dist.HttpProxyAgent = HttpProxyAgent;
+	function omit(obj, ...keys) {
+	    const ret = {};
+	    let key;
+	    for (key in obj) {
+	        if (!keys.includes(key)) {
+	            ret[key] = obj[key];
+	        }
+	    }
+	    return ret;
+	}
+	
+	return dist;
+}
+
+var distExports = requireDist();
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+const HTTPS_PROXY = "HTTPS_PROXY";
+const HTTP_PROXY = "HTTP_PROXY";
+const ALL_PROXY = "ALL_PROXY";
+const NO_PROXY = "NO_PROXY";
+/**
+ * The programmatic identifier of the proxyPolicy.
+ */
+const proxyPolicyName = "proxyPolicy";
+/**
+ * Stores the patterns specified in NO_PROXY environment variable.
+ * @internal
+ */
+const globalNoProxyList = [];
+let noProxyListLoaded = false;
+/** A cache of whether a host should bypass the proxy. */
+const globalBypassedMap = new Map();
+function getEnvironmentValue(name) {
+    if (process.env[name]) {
+        return process.env[name];
+    }
+    else if (process.env[name.toLowerCase()]) {
+        return process.env[name.toLowerCase()];
+    }
+    return undefined;
+}
+function loadEnvironmentProxyValue() {
+    if (!process) {
+        return undefined;
+    }
+    const httpsProxy = getEnvironmentValue(HTTPS_PROXY);
+    const allProxy = getEnvironmentValue(ALL_PROXY);
+    const httpProxy = getEnvironmentValue(HTTP_PROXY);
+    return httpsProxy || allProxy || httpProxy;
+}
+/**
+ * Check whether the host of a given `uri` matches any pattern in the no proxy list.
+ * If there's a match, any request sent to the same host shouldn't have the proxy settings set.
+ * This implementation is a port of https://github.com/Azure/azure-sdk-for-net/blob/8cca811371159e527159c7eb65602477898683e2/sdk/core/Azure.Core/src/Pipeline/Internal/HttpEnvironmentProxy.cs#L210
+ */
+function isBypassed(uri, noProxyList, bypassedMap) {
+    if (noProxyList.length === 0) {
+        return false;
+    }
+    const host = new URL(uri).hostname;
+    if (bypassedMap?.has(host)) {
+        return bypassedMap.get(host);
+    }
+    let isBypassedFlag = false;
+    for (const pattern of noProxyList) {
+        if (pattern[0] === ".") {
+            // This should match either domain it self or any subdomain or host
+            // .foo.com will match foo.com it self or *.foo.com
+            if (host.endsWith(pattern)) {
+                isBypassedFlag = true;
+            }
+            else {
+                if (host.length === pattern.length - 1 && host === pattern.slice(1)) {
+                    isBypassedFlag = true;
+                }
+            }
+        }
+        else {
+            if (host === pattern) {
+                isBypassedFlag = true;
+            }
+        }
+    }
+    bypassedMap?.set(host, isBypassedFlag);
+    return isBypassedFlag;
+}
+function loadNoProxy() {
+    const noProxy = getEnvironmentValue(NO_PROXY);
+    noProxyListLoaded = true;
+    if (noProxy) {
+        return noProxy
+            .split(",")
+            .map((item) => item.trim())
+            .filter((item) => item.length);
+    }
+    return [];
+}
+/**
+ * This method attempts to parse a proxy URL from the environment
+ * variables `HTTPS_PROXY` or `HTTP_PROXY`.
+ */
+function getDefaultProxySettingsInternal() {
+    const envProxy = loadEnvironmentProxyValue();
+    return envProxy ? new URL(envProxy) : undefined;
+}
+function getUrlFromProxySettings(settings) {
+    let parsedProxyUrl;
+    try {
+        parsedProxyUrl = new URL(settings.host);
+    }
+    catch {
+        throw new Error(`Expecting a valid host string in proxy settings, but found "${settings.host}".`);
+    }
+    parsedProxyUrl.port = String(settings.port);
+    if (settings.username) {
+        parsedProxyUrl.username = settings.username;
+    }
+    if (settings.password) {
+        parsedProxyUrl.password = settings.password;
+    }
+    return parsedProxyUrl;
+}
+function setProxyAgentOnRequest(request, cachedAgents, proxyUrl) {
+    // Custom Agent should take precedence so if one is present
+    // we should skip to avoid overwriting it.
+    if (request.agent) {
+        return;
+    }
+    const url = new URL(request.url);
+    const isInsecure = url.protocol !== "https:";
+    if (request.tlsSettings) {
+        logger$3.warning("TLS settings are not supported in combination with custom Proxy, certificates provided to the client will be ignored.");
+    }
+    const headers = request.headers.toJSON();
+    if (isInsecure) {
+        if (!cachedAgents.httpProxyAgent) {
+            cachedAgents.httpProxyAgent = new distExports.HttpProxyAgent(proxyUrl, { headers });
+        }
+        request.agent = cachedAgents.httpProxyAgent;
+    }
+    else {
+        if (!cachedAgents.httpsProxyAgent) {
+            cachedAgents.httpsProxyAgent = new distExports$1.HttpsProxyAgent(proxyUrl, { headers });
+        }
+        request.agent = cachedAgents.httpsProxyAgent;
+    }
+}
+/**
+ * A policy that allows one to apply proxy settings to all requests.
+ * If not passed static settings, they will be retrieved from the HTTPS_PROXY
+ * or HTTP_PROXY environment variables.
+ * @param proxySettings - ProxySettings to use on each request.
+ * @param options - additional settings, for example, custom NO_PROXY patterns
+ */
+function proxyPolicy$1(proxySettings, options) {
+    if (!noProxyListLoaded) {
+        globalNoProxyList.push(...loadNoProxy());
+    }
+    const defaultProxy = proxySettings
+        ? getUrlFromProxySettings(proxySettings)
+        : getDefaultProxySettingsInternal();
+    const cachedAgents = {};
+    return {
+        name: proxyPolicyName,
+        async sendRequest(request, next) {
+            if (!request.proxySettings &&
+                defaultProxy &&
+                !isBypassed(request.url, globalNoProxyList, globalBypassedMap)) {
+                setProxyAgentOnRequest(request, cachedAgents, defaultProxy);
+            }
+            else if (request.proxySettings) {
+                setProxyAgentOnRequest(request, cachedAgents, getUrlFromProxySettings(request.proxySettings));
+            }
+            return next(request);
+        },
+    };
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+/**
+ * Name of the Agent Policy
+ */
+const agentPolicyName = "agentPolicy";
+/**
+ * Gets a pipeline policy that sets http.agent
+ */
+function agentPolicy$1(agent) {
+    return {
+        name: agentPolicyName,
+        sendRequest: async (req, next) => {
+            // Users may define an agent on the request, honor it over the client level one
+            if (!req.agent) {
+                req.agent = agent;
+            }
+            return next(req);
+        },
+    };
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+/**
+ * Name of the TLS Policy
+ */
+const tlsPolicyName = "tlsPolicy";
+/**
+ * Gets a pipeline policy that adds the client certificate to the HttpClient agent for authentication.
+ */
+function tlsPolicy$1(tlsSettings) {
+    return {
+        name: tlsPolicyName,
+        sendRequest: async (req, next) => {
+            // Users may define a request tlsSettings, honor those over the client level one
+            if (!req.tlsSettings) {
+                req.tlsSettings = tlsSettings;
+            }
+            return next(req);
+        },
+    };
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+function isBlob(x) {
+    return typeof x.stream === "function";
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+async function* streamAsyncIterator() {
+    const reader = this.getReader();
+    try {
+        while (true) {
+            const { done, value } = await reader.read();
+            if (done) {
+                return;
+            }
+            yield value;
+        }
+    }
+    finally {
+        reader.releaseLock();
+    }
+}
+function makeAsyncIterable(webStream) {
+    if (!webStream[Symbol.asyncIterator]) {
+        webStream[Symbol.asyncIterator] = streamAsyncIterator.bind(webStream);
+    }
+    if (!webStream.values) {
+        webStream.values = streamAsyncIterator.bind(webStream);
+    }
+}
+function ensureNodeStream(stream) {
+    if (stream instanceof ReadableStream) {
+        makeAsyncIterable(stream);
+        return Readable.fromWeb(stream);
+    }
+    else {
+        return stream;
+    }
+}
+function toStream(source) {
+    if (source instanceof Uint8Array) {
+        return Readable.from(Buffer.from(source));
+    }
+    else if (isBlob(source)) {
+        return ensureNodeStream(source.stream());
+    }
+    else {
+        return ensureNodeStream(source);
+    }
+}
+/**
+ * Utility function that concatenates a set of binary inputs into one combined output.
+ *
+ * @param sources - array of sources for the concatenation
+ * @returns - in Node, a (() =\> NodeJS.ReadableStream) which, when read, produces a concatenation of all the inputs.
+ *           In browser, returns a `Blob` representing all the concatenated inputs.
+ *
+ * @internal
+ */
+async function concat(sources) {
+    return function () {
+        const streams = sources.map((x) => (typeof x === "function" ? x() : x)).map(toStream);
+        return Readable.from((async function* () {
+            for (const stream of streams) {
+                for await (const chunk of stream) {
+                    yield chunk;
+                }
+            }
+        })());
+    };
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+function generateBoundary() {
+    return `----AzSDKFormBoundary${randomUUID()}`;
+}
+function encodeHeaders(headers) {
+    let result = "";
+    for (const [key, value] of headers) {
+        result += `${key}: ${value}\r\n`;
+    }
+    return result;
+}
+function getLength(source) {
+    if (source instanceof Uint8Array) {
+        return source.byteLength;
+    }
+    else if (isBlob(source)) {
+        // if was created using createFile then -1 means we have an unknown size
+        return source.size === -1 ? undefined : source.size;
+    }
+    else {
+        return undefined;
+    }
+}
+function getTotalLength(sources) {
+    let total = 0;
+    for (const source of sources) {
+        const partLength = getLength(source);
+        if (partLength === undefined) {
+            return undefined;
+        }
+        else {
+            total += partLength;
+        }
+    }
+    return total;
+}
+async function buildRequestBody(request, parts, boundary) {
+    const sources = [
+        stringToUint8Array(`--${boundary}`, "utf-8"),
+        ...parts.flatMap((part) => [
+            stringToUint8Array("\r\n", "utf-8"),
+            stringToUint8Array(encodeHeaders(part.headers), "utf-8"),
+            stringToUint8Array("\r\n", "utf-8"),
+            part.body,
+            stringToUint8Array(`\r\n--${boundary}`, "utf-8"),
+        ]),
+        stringToUint8Array("--\r\n\r\n", "utf-8"),
+    ];
+    const contentLength = getTotalLength(sources);
+    if (contentLength) {
+        request.headers.set("Content-Length", contentLength);
+    }
+    request.body = await concat(sources);
+}
+/**
+ * Name of multipart policy
+ */
+const multipartPolicyName$1 = "multipartPolicy";
+const maxBoundaryLength = 70;
+const validBoundaryCharacters = new Set(`abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'()+,-./:=?`);
+function assertValidBoundary(boundary) {
+    if (boundary.length > maxBoundaryLength) {
+        throw new Error(`Multipart boundary "${boundary}" exceeds maximum length of 70 characters`);
+    }
+    if (Array.from(boundary).some((x) => !validBoundaryCharacters.has(x))) {
+        throw new Error(`Multipart boundary "${boundary}" contains invalid characters`);
+    }
+}
+/**
+ * Pipeline policy for multipart requests
+ */
+function multipartPolicy$1() {
+    return {
+        name: multipartPolicyName$1,
+        async sendRequest(request, next) {
+            if (!request.multipartBody) {
+                return next(request);
+            }
+            if (request.body) {
+                throw new Error("multipartBody and regular body cannot be set at the same time");
+            }
+            let boundary = request.multipartBody.boundary;
+            const contentTypeHeader = request.headers.get("Content-Type") ?? "multipart/mixed";
+            const parsedHeader = contentTypeHeader.match(/^(multipart\/[^ ;]+)(?:; *boundary=(.+))?$/);
+            if (!parsedHeader) {
+                throw new Error(`Got multipart request body, but content-type header was not multipart: ${contentTypeHeader}`);
+            }
+            const [, contentType, parsedBoundary] = parsedHeader;
+            if (parsedBoundary && boundary && parsedBoundary !== boundary) {
+                throw new Error(`Multipart boundary was specified as ${parsedBoundary} in the header, but got ${boundary} in the request body`);
+            }
+            boundary ??= parsedBoundary;
+            if (boundary) {
+                assertValidBoundary(boundary);
+            }
+            else {
+                boundary = generateBoundary();
+            }
+            request.headers.set("Content-Type", `${contentType}; boundary=${boundary}`);
+            await buildRequestBody(request, request.multipartBody.parts, boundary);
+            request.multipartBody = undefined;
+            return next(request);
+        },
+    };
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+/**
+ * Creates a totally empty pipeline.
+ * Useful for testing or creating a custom one.
+ */
+function createEmptyPipeline() {
+    return createEmptyPipeline$1();
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+const logger$2 = createClientLogger("core-rest-pipeline");
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+/**
+ * A policy that logs all requests and responses.
+ * @param options - Options to configure logPolicy.
+ */
+function logPolicy(options = {}) {
+    return logPolicy$1({
+        logger: logger$2.info,
+        ...options,
+    });
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+/**
+ * A policy to follow Location headers from the server in order
+ * to support server-side redirection.
+ * In the browser, this policy is not used.
+ * @param options - Options to control policy behavior.
+ */
+function redirectPolicy(options = {}) {
+    return redirectPolicy$1(options);
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+/**
+ * @internal
+ */
+function getHeaderName() {
+    return "User-Agent";
+}
+/**
+ * @internal
+ */
+async function setPlatformSpecificData(map) {
+    if (process$1 && process$1.versions) {
+        const osInfo = `${os.type()} ${os.release()}; ${os.arch()}`;
+        const versions = process$1.versions;
+        if (versions.bun) {
+            map.set("Bun", `${versions.bun} (${osInfo})`);
+        }
+        else if (versions.deno) {
+            map.set("Deno", `${versions.deno} (${osInfo})`);
+        }
+        else if (versions.node) {
+            map.set("Node", `${versions.node} (${osInfo})`);
+        }
+    }
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+const SDK_VERSION = "1.22.2";
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+function getUserAgentString(telemetryInfo) {
+    const parts = [];
+    for (const [key, value] of telemetryInfo) {
+        const token = value ? `${key}/${value}` : key;
+        parts.push(token);
+    }
+    return parts.join(" ");
+}
+/**
+ * @internal
+ */
+function getUserAgentHeaderName() {
+    return getHeaderName();
+}
+/**
+ * @internal
+ */
+async function getUserAgentValue(prefix) {
+    const runtimeInfo = new Map();
+    runtimeInfo.set("core-rest-pipeline", SDK_VERSION);
+    await setPlatformSpecificData(runtimeInfo);
+    const defaultAgent = getUserAgentString(runtimeInfo);
+    const userAgentValue = prefix ? `${prefix} ${defaultAgent}` : defaultAgent;
+    return userAgentValue;
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+const UserAgentHeaderName = getUserAgentHeaderName();
+/**
+ * The programmatic identifier of the userAgentPolicy.
+ */
+const userAgentPolicyName = "userAgentPolicy";
+/**
+ * A policy that sets the User-Agent header (or equivalent) to reflect
+ * the library version.
+ * @param options - Options to customize the user agent value.
+ */
+function userAgentPolicy(options = {}) {
+    const userAgentValue = getUserAgentValue(options.userAgentPrefix);
+    return {
+        name: userAgentPolicyName,
+        async sendRequest(request, next) {
+            if (!request.headers.has(UserAgentHeaderName)) {
+                request.headers.set(UserAgentHeaderName, await userAgentValue);
+            }
+            return next(request);
+        },
+    };
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+/**
+ * Private symbol used as key on objects created using createFile containing the
+ * original source of the file object.
+ *
+ * This is used in Node to access the original Node stream without using Blob#stream, which
+ * returns a web stream. This is done to avoid a couple of bugs to do with Blob#stream and
+ * Readable#to/fromWeb in Node versions we support:
+ * - https://github.com/nodejs/node/issues/42694 (fixed in Node 18.14)
+ * - https://github.com/nodejs/node/issues/48916 (fixed in Node 20.6)
+ *
+ * Once these versions are no longer supported, we may be able to stop doing this.
+ *
+ * @internal
+ */
+const rawContent = Symbol("rawContent");
+/**
+ * Type guard to check if a given object is a blob-like object with a raw content property.
+ */
+function hasRawContent(x) {
+    return typeof x[rawContent] === "function";
+}
+/**
+ * Extract the raw content from a given blob-like object. If the input was created using createFile
+ * or createFileFromStream, the exact content passed into createFile/createFileFromStream will be used.
+ * For true instances of Blob and File, returns the actual blob.
+ *
+ * @internal
+ */
+function getRawContent(blob) {
+    if (hasRawContent(blob)) {
+        return blob[rawContent]();
+    }
+    else {
+        return blob;
+    }
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+/**
+ * Name of multipart policy
+ */
+const multipartPolicyName = multipartPolicyName$1;
+/**
+ * Pipeline policy for multipart requests
+ */
+function multipartPolicy() {
+    const tspPolicy = multipartPolicy$1();
+    return {
+        name: multipartPolicyName,
+        sendRequest: async (request, next) => {
+            if (request.multipartBody) {
+                for (const part of request.multipartBody.parts) {
+                    if (hasRawContent(part.body)) {
+                        part.body = getRawContent(part.body);
+                    }
+                }
+            }
+            return tspPolicy.sendRequest(request, next);
+        },
+    };
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+/**
+ * A policy to enable response decompression according to Accept-Encoding header
+ * https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Accept-Encoding
+ */
+function decompressResponsePolicy() {
+    return decompressResponsePolicy$1();
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+/**
+ * A policy that retries according to three strategies:
+ * - When the server sends a 429 response with a Retry-After header.
+ * - When there are errors in the underlying transport layer (e.g. DNS lookup failures).
+ * - Or otherwise if the outgoing request fails, it will retry with an exponentially increasing delay.
+ */
+function defaultRetryPolicy(options = {}) {
+    return defaultRetryPolicy$1(options);
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+/**
+ * A policy that encodes FormData on the request into the body.
+ */
+function formDataPolicy() {
+    return formDataPolicy$1();
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+/**
+ * A policy that allows one to apply proxy settings to all requests.
+ * If not passed static settings, they will be retrieved from the HTTPS_PROXY
+ * or HTTP_PROXY environment variables.
+ * @param proxySettings - ProxySettings to use on each request.
+ * @param options - additional settings, for example, custom NO_PROXY patterns
+ */
+function proxyPolicy(proxySettings, options) {
+    return proxyPolicy$1(proxySettings);
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+/**
+ * The programmatic identifier of the setClientRequestIdPolicy.
+ */
+const setClientRequestIdPolicyName = "setClientRequestIdPolicy";
+/**
+ * Each PipelineRequest gets a unique id upon creation.
+ * This policy passes that unique id along via an HTTP header to enable better
+ * telemetry and tracing.
+ * @param requestIdHeaderName - The name of the header to pass the request ID to.
+ */
+function setClientRequestIdPolicy(requestIdHeaderName = "x-ms-client-request-id") {
+    return {
+        name: setClientRequestIdPolicyName,
+        async sendRequest(request, next) {
+            if (!request.headers.has(requestIdHeaderName)) {
+                request.headers.set(requestIdHeaderName, request.requestId);
+            }
+            return next(request);
+        },
+    };
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+/**
+ * Gets a pipeline policy that sets http.agent
+ */
+function agentPolicy(agent) {
+    return agentPolicy$1(agent);
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+/**
+ * Gets a pipeline policy that adds the client certificate to the HttpClient agent for authentication.
+ */
+function tlsPolicy(tlsSettings) {
+    return tlsPolicy$1(tlsSettings);
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+/**
+ * A custom error type for failed pipeline requests.
+ */
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+const RestError = RestError$1;
+/**
+ * Typeguard for RestError
+ * @param e - Something caught by a catch clause.
+ */
+function isRestError(e) {
+    return isRestError$1(e);
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+/**
+ * The programmatic identifier of the tracingPolicy.
+ */
+const tracingPolicyName = "tracingPolicy";
+/**
+ * A simple policy to create OpenTelemetry Spans for each request made by the pipeline
+ * that has SpanOptions with a parent.
+ * Requests made without a parent Span will not be recorded.
+ * @param options - Options to configure the telemetry logged by the tracing policy.
+ */
+function tracingPolicy(options = {}) {
+    const userAgentPromise = getUserAgentValue(options.userAgentPrefix);
+    const sanitizer = new Sanitizer({
+        additionalAllowedQueryParameters: options.additionalAllowedQueryParameters,
+    });
+    const tracingClient = tryCreateTracingClient();
+    return {
+        name: tracingPolicyName,
+        async sendRequest(request, next) {
+            if (!tracingClient) {
+                return next(request);
+            }
+            const userAgent = await userAgentPromise;
+            const spanAttributes = {
+                "http.url": sanitizer.sanitizeUrl(request.url),
+                "http.method": request.method,
+                "http.user_agent": userAgent,
+                requestId: request.requestId,
+            };
+            if (userAgent) {
+                spanAttributes["http.user_agent"] = userAgent;
+            }
+            const { span, tracingContext } = tryCreateSpan(tracingClient, request, spanAttributes) ?? {};
+            if (!span || !tracingContext) {
+                return next(request);
+            }
+            try {
+                const response = await tracingClient.withContext(tracingContext, next, request);
+                tryProcessResponse(span, response);
+                return response;
+            }
+            catch (err) {
+                tryProcessError(span, err);
+                throw err;
+            }
+        },
+    };
+}
+function tryCreateTracingClient() {
+    try {
+        return createTracingClient({
+            namespace: "",
+            packageName: "@azure/core-rest-pipeline",
+            packageVersion: SDK_VERSION,
+        });
+    }
+    catch (e) {
+        logger$2.warning(`Error when creating the TracingClient: ${getErrorMessage(e)}`);
+        return undefined;
+    }
+}
+function tryCreateSpan(tracingClient, request, spanAttributes) {
+    try {
+        // As per spec, we do not need to differentiate between HTTP and HTTPS in span name.
+        const { span, updatedOptions } = tracingClient.startSpan(`HTTP ${request.method}`, { tracingOptions: request.tracingOptions }, {
+            spanKind: "client",
+            spanAttributes,
+        });
+        // If the span is not recording, don't do any more work.
+        if (!span.isRecording()) {
+            span.end();
+            return undefined;
+        }
+        // set headers
+        const headers = tracingClient.createRequestHeaders(updatedOptions.tracingOptions.tracingContext);
+        for (const [key, value] of Object.entries(headers)) {
+            request.headers.set(key, value);
+        }
+        return { span, tracingContext: updatedOptions.tracingOptions.tracingContext };
+    }
+    catch (e) {
+        logger$2.warning(`Skipping creating a tracing span due to an error: ${getErrorMessage(e)}`);
+        return undefined;
+    }
+}
+function tryProcessError(span, error) {
+    try {
+        span.setStatus({
+            status: "error",
+            error: isError(error) ? error : undefined,
+        });
+        if (isRestError(error) && error.statusCode) {
+            span.setAttribute("http.status_code", error.statusCode);
+        }
+        span.end();
+    }
+    catch (e) {
+        logger$2.warning(`Skipping tracing span processing due to an error: ${getErrorMessage(e)}`);
+    }
+}
+function tryProcessResponse(span, response) {
+    try {
+        span.setAttribute("http.status_code", response.status);
+        const serviceRequestId = response.headers.get("x-ms-request-id");
+        if (serviceRequestId) {
+            span.setAttribute("serviceRequestId", serviceRequestId);
+        }
+        // Per semantic conventions, only set the status to error if the status code is 4xx or 5xx.
+        // Otherwise, the status MUST remain unset.
+        // https://opentelemetry.io/docs/specs/semconv/http/http-spans/#status
+        if (response.status >= 400) {
+            span.setStatus({
+                status: "error",
+            });
+        }
+        span.end();
+    }
+    catch (e) {
+        logger$2.warning(`Skipping tracing span processing due to an error: ${getErrorMessage(e)}`);
+    }
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+/**
+ * Creates a native AbortSignal which reflects the state of the provided AbortSignalLike.
+ * If the AbortSignalLike is already a native AbortSignal, it is returned as is.
+ * @param abortSignalLike - The AbortSignalLike to wrap.
+ * @returns - An object containing the native AbortSignal and an optional cleanup function. The cleanup function should be called when the AbortSignal is no longer needed.
+ */
+function wrapAbortSignalLike(abortSignalLike) {
+    if (abortSignalLike instanceof AbortSignal) {
+        return { abortSignal: abortSignalLike };
+    }
+    if (abortSignalLike.aborted) {
+        return { abortSignal: AbortSignal.abort(abortSignalLike.reason) };
+    }
+    const controller = new AbortController();
+    let needsCleanup = true;
+    function cleanup() {
+        if (needsCleanup) {
+            abortSignalLike.removeEventListener("abort", listener);
+            needsCleanup = false;
+        }
+    }
+    function listener() {
+        controller.abort(abortSignalLike.reason);
+        cleanup();
+    }
+    abortSignalLike.addEventListener("abort", listener);
+    return { abortSignal: controller.signal, cleanup };
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+const wrapAbortSignalLikePolicyName = "wrapAbortSignalLikePolicy";
+/**
+ * Policy that ensure that any AbortSignalLike is wrapped in a native AbortSignal for processing by the pipeline.
+ * Since the ts-http-runtime expects a native AbortSignal, this policy is used to ensure that any AbortSignalLike is wrapped in a native AbortSignal.
+ *
+ * @returns - created policy
+ */
+function wrapAbortSignalLikePolicy() {
+    return {
+        name: wrapAbortSignalLikePolicyName,
+        sendRequest: async (request, next) => {
+            if (!request.abortSignal) {
+                return next(request);
+            }
+            const { abortSignal, cleanup } = wrapAbortSignalLike(request.abortSignal);
+            request.abortSignal = abortSignal;
+            try {
+                return await next(request);
+            }
+            finally {
+                cleanup?.();
+            }
+        },
+    };
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+/**
+ * Create a new pipeline with a default set of customizable policies.
+ * @param options - Options to configure a custom pipeline.
+ */
+function createPipelineFromOptions(options) {
+    const pipeline = createEmptyPipeline();
+    if (isNodeLike) {
+        if (options.agent) {
+            pipeline.addPolicy(agentPolicy(options.agent));
+        }
+        if (options.tlsOptions) {
+            pipeline.addPolicy(tlsPolicy(options.tlsOptions));
+        }
+        pipeline.addPolicy(proxyPolicy(options.proxyOptions));
+        pipeline.addPolicy(decompressResponsePolicy());
+    }
+    pipeline.addPolicy(wrapAbortSignalLikePolicy());
+    pipeline.addPolicy(formDataPolicy(), { beforePolicies: [multipartPolicyName] });
+    pipeline.addPolicy(userAgentPolicy(options.userAgentOptions));
+    pipeline.addPolicy(setClientRequestIdPolicy(options.telemetryOptions?.clientRequestIdHeaderName));
+    // The multipart policy is added after policies with no phase, so that
+    // policies can be added between it and formDataPolicy to modify
+    // properties (e.g., making the boundary constant in recorded tests).
+    pipeline.addPolicy(multipartPolicy(), { afterPhase: "Deserialize" });
+    pipeline.addPolicy(defaultRetryPolicy(options.retryOptions), { phase: "Retry" });
+    pipeline.addPolicy(tracingPolicy({ ...options.userAgentOptions, ...options.loggingOptions }), {
+        afterPhase: "Retry",
+    });
+    if (isNodeLike) {
+        // Both XHR and Fetch expect to handle redirects automatically,
+        // so only include this policy when we're in Node.
+        pipeline.addPolicy(redirectPolicy(options.redirectOptions), { afterPhase: "Retry" });
+    }
+    pipeline.addPolicy(logPolicy(options.loggingOptions), { afterPhase: "Sign" });
+    return pipeline;
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+/**
+ * Create the correct HttpClient for the current environment.
+ */
+function createDefaultHttpClient() {
+    const client = createDefaultHttpClient$1();
+    return {
+        async sendRequest(request) {
+            // we wrap any AbortSignalLike here since the TypeSpec runtime expects a native AbortSignal.
+            // 99% of the time, this should be a no-op since a native AbortSignal is passed in.
+            const { abortSignal, cleanup } = request.abortSignal
+                ? wrapAbortSignalLike(request.abortSignal)
+                : {};
+            try {
+                request.abortSignal = abortSignal;
+                return await client.sendRequest(request);
+            }
+            finally {
+                cleanup?.();
+            }
+        },
+    };
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+/**
+ * Creates an object that satisfies the `HttpHeaders` interface.
+ * @param rawHeaders - A simple object representing initial headers
+ */
+function createHttpHeaders(rawHeaders) {
+    return createHttpHeaders$1(rawHeaders);
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+/**
+ * Creates a new pipeline request with the given options.
+ * This method is to allow for the easy setting of default values and not required.
+ * @param options - The options to create the request with.
+ */
+function createPipelineRequest(options) {
+    // Cast required due to difference between ts-http-runtime requiring AbortSignal while core-rest-pipeline allows
+    // the more generic AbortSignalLike. The wrapAbortSignalLike pipeline policy will take care of ensuring that any AbortSignalLike in the request
+    // is converted into a true AbortSignal.
+    return createPipelineRequest$1(options);
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+// Default options for the cycler if none are provided
+const DEFAULT_CYCLER_OPTIONS = {
+    forcedRefreshWindowInMs: 1000, // Force waiting for a refresh 1s before the token expires
+    retryIntervalInMs: 3000, // Allow refresh attempts every 3s
+    refreshWindowInMs: 1000 * 60 * 2, // Start refreshing 2m before expiry
+};
+/**
+ * Converts an an unreliable access token getter (which may resolve with null)
+ * into an AccessTokenGetter by retrying the unreliable getter in a regular
+ * interval.
+ *
+ * @param getAccessToken - A function that produces a promise of an access token that may fail by returning null.
+ * @param retryIntervalInMs - The time (in milliseconds) to wait between retry attempts.
+ * @param refreshTimeout - The timestamp after which the refresh attempt will fail, throwing an exception.
+ * @returns - A promise that, if it resolves, will resolve with an access token.
+ */
+async function beginRefresh(getAccessToken, retryIntervalInMs, refreshTimeout) {
+    // This wrapper handles exceptions gracefully as long as we haven't exceeded
+    // the timeout.
+    async function tryGetAccessToken() {
+        if (Date.now() < refreshTimeout) {
+            try {
+                return await getAccessToken();
+            }
+            catch {
+                return null;
+            }
+        }
+        else {
+            const finalToken = await getAccessToken();
+            // Timeout is up, so throw if it's still null
+            if (finalToken === null) {
+                throw new Error("Failed to refresh access token.");
+            }
+            return finalToken;
+        }
+    }
+    let token = await tryGetAccessToken();
+    while (token === null) {
+        await delay$1(retryIntervalInMs);
+        token = await tryGetAccessToken();
+    }
+    return token;
+}
+/**
+ * Creates a token cycler from a credential, scopes, and optional settings.
+ *
+ * A token cycler represents a way to reliably retrieve a valid access token
+ * from a TokenCredential. It will handle initializing the token, refreshing it
+ * when it nears expiration, and synchronizes refresh attempts to avoid
+ * concurrency hazards.
+ *
+ * @param credential - the underlying TokenCredential that provides the access
+ * token
+ * @param tokenCyclerOptions - optionally override default settings for the cycler
+ *
+ * @returns - a function that reliably produces a valid access token
+ */
+function createTokenCycler(credential, tokenCyclerOptions) {
+    let refreshWorker = null;
+    let token = null;
+    let tenantId;
+    const options = {
+        ...DEFAULT_CYCLER_OPTIONS,
+        ...tokenCyclerOptions,
+    };
+    /**
+     * This little holder defines several predicates that we use to construct
+     * the rules of refreshing the token.
+     */
+    const cycler = {
+        /**
+         * Produces true if a refresh job is currently in progress.
+         */
+        get isRefreshing() {
+            return refreshWorker !== null;
+        },
+        /**
+         * Produces true if the cycler SHOULD refresh (we are within the refresh
+         * window and not already refreshing)
+         */
+        get shouldRefresh() {
+            if (cycler.isRefreshing) {
+                return false;
+            }
+            if (token?.refreshAfterTimestamp && token.refreshAfterTimestamp < Date.now()) {
+                return true;
+            }
+            return (token?.expiresOnTimestamp ?? 0) - options.refreshWindowInMs < Date.now();
+        },
+        /**
+         * Produces true if the cycler MUST refresh (null or nearly-expired
+         * token).
+         */
+        get mustRefresh() {
+            return (token === null || token.expiresOnTimestamp - options.forcedRefreshWindowInMs < Date.now());
+        },
+    };
+    /**
+     * Starts a refresh job or returns the existing job if one is already
+     * running.
+     */
+    function refresh(scopes, getTokenOptions) {
+        if (!cycler.isRefreshing) {
+            // We bind `scopes` here to avoid passing it around a lot
+            const tryGetAccessToken = () => credential.getToken(scopes, getTokenOptions);
+            // Take advantage of promise chaining to insert an assignment to `token`
+            // before the refresh can be considered done.
+            refreshWorker = beginRefresh(tryGetAccessToken, options.retryIntervalInMs, 
+            // If we don't have a token, then we should timeout immediately
+            token?.expiresOnTimestamp ?? Date.now())
+                .then((_token) => {
+                refreshWorker = null;
+                token = _token;
+                tenantId = getTokenOptions.tenantId;
+                return token;
+            })
+                .catch((reason) => {
+                // We also should reset the refresher if we enter a failed state.  All
+                // existing awaiters will throw, but subsequent requests will start a
+                // new retry chain.
+                refreshWorker = null;
+                token = null;
+                tenantId = undefined;
+                throw reason;
+            });
+        }
+        return refreshWorker;
+    }
+    return async (scopes, tokenOptions) => {
+        //
+        // Simple rules:
+        // - If we MUST refresh, then return the refresh task, blocking
+        //   the pipeline until a token is available.
+        // - If we SHOULD refresh, then run refresh but don't return it
+        //   (we can still use the cached token).
+        // - Return the token, since it's fine if we didn't return in
+        //   step 1.
+        //
+        const hasClaimChallenge = Boolean(tokenOptions.claims);
+        const tenantIdChanged = tenantId !== tokenOptions.tenantId;
+        if (hasClaimChallenge) {
+            // If we've received a claim, we know the existing token isn't valid
+            // We want to clear it so that that refresh worker won't use the old expiration time as a timeout
+            token = null;
+        }
+        // If the tenantId passed in token options is different to the one we have
+        // Or if we are in claim challenge and the token was rejected and a new access token need to be issued, we need to
+        // refresh the token with the new tenantId or token.
+        const mustRefresh = tenantIdChanged || hasClaimChallenge || cycler.mustRefresh;
+        if (mustRefresh) {
+            return refresh(scopes, tokenOptions);
+        }
+        if (cycler.shouldRefresh) {
+            refresh(scopes, tokenOptions);
+        }
+        return token;
+    };
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+/**
+ * The programmatic identifier of the bearerTokenAuthenticationPolicy.
+ */
+const bearerTokenAuthenticationPolicyName = "bearerTokenAuthenticationPolicy";
+/**
+ * Try to send the given request.
+ *
+ * When a response is received, returns a tuple of the response received and, if the response was received
+ * inside a thrown RestError, the RestError that was thrown.
+ *
+ * Otherwise, if an error was thrown while sending the request that did not provide an underlying response, it
+ * will be rethrown.
+ */
+async function trySendRequest(request, next) {
+    try {
+        return [await next(request), undefined];
+    }
+    catch (e) {
+        if (isRestError(e) && e.response) {
+            return [e.response, e];
+        }
+        else {
+            throw e;
+        }
+    }
+}
+/**
+ * Default authorize request handler
+ */
+async function defaultAuthorizeRequest(options) {
+    const { scopes, getAccessToken, request } = options;
+    // Enable CAE true by default
+    const getTokenOptions = {
+        abortSignal: request.abortSignal,
+        tracingOptions: request.tracingOptions,
+        enableCae: true,
+    };
+    const accessToken = await getAccessToken(scopes, getTokenOptions);
+    if (accessToken) {
+        options.request.headers.set("Authorization", `Bearer ${accessToken.token}`);
+    }
+}
+/**
+ * We will retrieve the challenge only if the response status code was 401,
+ * and if the response contained the header "WWW-Authenticate" with a non-empty value.
+ */
+function isChallengeResponse(response) {
+    return response.status === 401 && response.headers.has("WWW-Authenticate");
+}
+/**
+ * Re-authorize the request for CAE challenge.
+ * The response containing the challenge is `options.response`.
+ * If this method returns true, the underlying request will be sent once again.
+ */
+async function authorizeRequestOnCaeChallenge(onChallengeOptions, caeClaims) {
+    const { scopes } = onChallengeOptions;
+    const accessToken = await onChallengeOptions.getAccessToken(scopes, {
+        enableCae: true,
+        claims: caeClaims,
+    });
+    if (!accessToken) {
+        return false;
+    }
+    onChallengeOptions.request.headers.set("Authorization", `${accessToken.tokenType ?? "Bearer"} ${accessToken.token}`);
+    return true;
+}
+/**
+ * A policy that can request a token from a TokenCredential implementation and
+ * then apply it to the Authorization header of a request as a Bearer token.
+ */
+function bearerTokenAuthenticationPolicy(options) {
+    const { credential, scopes, challengeCallbacks } = options;
+    const logger = options.logger || logger$2;
+    const callbacks = {
+        authorizeRequest: challengeCallbacks?.authorizeRequest?.bind(challengeCallbacks) ?? defaultAuthorizeRequest,
+        authorizeRequestOnChallenge: challengeCallbacks?.authorizeRequestOnChallenge?.bind(challengeCallbacks),
+    };
+    // This function encapsulates the entire process of reliably retrieving the token
+    // The options are left out of the public API until there's demand to configure this.
+    // Remember to extend `BearerTokenAuthenticationPolicyOptions` with `TokenCyclerOptions`
+    // in order to pass through the `options` object.
+    const getAccessToken = credential
+        ? createTokenCycler(credential /* , options */)
+        : () => Promise.resolve(null);
+    return {
+        name: bearerTokenAuthenticationPolicyName,
+        /**
+         * If there's no challenge parameter:
+         * - It will try to retrieve the token using the cache, or the credential's getToken.
+         * - Then it will try the next policy with or without the retrieved token.
+         *
+         * It uses the challenge parameters to:
+         * - Skip a first attempt to get the token from the credential if there's no cached token,
+         *   since it expects the token to be retrievable only after the challenge.
+         * - Prepare the outgoing request if the `prepareRequest` method has been provided.
+         * - Send an initial request to receive the challenge if it fails.
+         * - Process a challenge if the response contains it.
+         * - Retrieve a token with the challenge information, then re-send the request.
+         */
+        async sendRequest(request, next) {
+            if (!request.url.toLowerCase().startsWith("https://")) {
+                throw new Error("Bearer token authentication is not permitted for non-TLS protected (non-https) URLs.");
+            }
+            await callbacks.authorizeRequest({
+                scopes: Array.isArray(scopes) ? scopes : [scopes],
+                request,
+                getAccessToken,
+                logger,
+            });
+            let response;
+            let error;
+            let shouldSendRequest;
+            [response, error] = await trySendRequest(request, next);
+            if (isChallengeResponse(response)) {
+                let claims = getCaeChallengeClaims(response.headers.get("WWW-Authenticate"));
+                // Handle CAE by default when receive CAE claim
+                if (claims) {
+                    let parsedClaim;
+                    // Return the response immediately if claims is not a valid base64 encoded string
+                    try {
+                        parsedClaim = atob(claims);
+                    }
+                    catch (e) {
+                        logger.warning(`The WWW-Authenticate header contains "claims" that cannot be parsed. Unable to perform the Continuous Access Evaluation authentication flow. Unparsable claims: ${claims}`);
+                        return response;
+                    }
+                    shouldSendRequest = await authorizeRequestOnCaeChallenge({
+                        scopes: Array.isArray(scopes) ? scopes : [scopes],
+                        response,
+                        request,
+                        getAccessToken,
+                        logger,
+                    }, parsedClaim);
+                    // Send updated request and handle response for RestError
+                    if (shouldSendRequest) {
+                        [response, error] = await trySendRequest(request, next);
+                    }
+                }
+                else if (callbacks.authorizeRequestOnChallenge) {
+                    // Handle custom challenges when client provides custom callback
+                    shouldSendRequest = await callbacks.authorizeRequestOnChallenge({
+                        scopes: Array.isArray(scopes) ? scopes : [scopes],
+                        request,
+                        response,
+                        getAccessToken,
+                        logger,
+                    });
+                    // Send updated request and handle response for RestError
+                    if (shouldSendRequest) {
+                        [response, error] = await trySendRequest(request, next);
+                    }
+                    // If we get another CAE Claim, we will handle it by default and return whatever value we receive for this
+                    if (isChallengeResponse(response)) {
+                        claims = getCaeChallengeClaims(response.headers.get("WWW-Authenticate"));
+                        if (claims) {
+                            let parsedClaim;
+                            try {
+                                parsedClaim = atob(claims);
+                            }
+                            catch (e) {
+                                logger.warning(`The WWW-Authenticate header contains "claims" that cannot be parsed. Unable to perform the Continuous Access Evaluation authentication flow. Unparsable claims: ${claims}`);
+                                return response;
+                            }
+                            shouldSendRequest = await authorizeRequestOnCaeChallenge({
+                                scopes: Array.isArray(scopes) ? scopes : [scopes],
+                                response,
+                                request,
+                                getAccessToken,
+                                logger,
+                            }, parsedClaim);
+                            // Send updated request and handle response for RestError
+                            if (shouldSendRequest) {
+                                [response, error] = await trySendRequest(request, next);
+                            }
+                        }
+                    }
+                }
+            }
+            if (error) {
+                throw error;
+            }
+            else {
+                return response;
+            }
+        },
+    };
+}
+/**
+ * Converts: `Bearer a="b", c="d", Pop e="f", g="h"`.
+ * Into: `[ { scheme: 'Bearer', params: { a: 'b', c: 'd' } }, { scheme: 'Pop', params: { e: 'f', g: 'h' } } ]`.
+ *
+ * @internal
+ */
+function parseChallenges(challenges) {
+    // Challenge regex seperates the string to individual challenges with different schemes in the format `Scheme a="b", c=d`
+    // The challenge regex captures parameteres with either quotes values or unquoted values
+    const challengeRegex = /(\w+)\s+((?:\w+=(?:"[^"]*"|[^,]*),?\s*)+)/g;
+    // Parameter regex captures the claims group removed from the scheme in the format `a="b"` and `c="d"`
+    // CAE challenge always have quoted parameters. For more reference, https://learn.microsoft.com/entra/identity-platform/claims-challenge
+    const paramRegex = /(\w+)="([^"]*)"/g;
+    const parsedChallenges = [];
+    let match;
+    // Iterate over each challenge match
+    while ((match = challengeRegex.exec(challenges)) !== null) {
+        const scheme = match[1];
+        const paramsString = match[2];
+        const params = {};
+        let paramMatch;
+        // Iterate over each parameter match
+        while ((paramMatch = paramRegex.exec(paramsString)) !== null) {
+            params[paramMatch[1]] = paramMatch[2];
+        }
+        parsedChallenges.push({ scheme, params });
+    }
+    return parsedChallenges;
+}
+/**
+ * Parse a pipeline response and look for a CAE challenge with "Bearer" scheme
+ * Return the value in the header without parsing the challenge
+ * @internal
+ */
+function getCaeChallengeClaims(challenges) {
+    if (!challenges) {
+        return;
+    }
+    // Find all challenges present in the header
+    const parsedChallenges = parseChallenges(challenges);
+    return parsedChallenges.find((x) => x.scheme === "Bearer" && x.params.claims && x.params.error === "insufficient_claims")?.params.claims;
+}
+
+var state$1 = {};
+
+var hasRequiredState;
+
+function requireState () {
+	if (hasRequiredState) return state$1;
+	hasRequiredState = 1;
+	// Copyright (c) Microsoft Corporation.
+	// Licensed under the MIT License.
+	Object.defineProperty(state$1, "__esModule", { value: true });
+	state$1.state = void 0;
+	/**
+	 * Holds the singleton operationRequestMap, to be shared across CJS and ESM imports.
+	 */
+	state$1.state = {
+	    operationRequestMap: new WeakMap(),
+	};
+	
+	return state$1;
+}
+
+var stateExports = requireState();
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+// @ts-expect-error The recommended approach to sharing module state between ESM and CJS.
+// See https://github.com/isaacs/tshy/blob/main/README.md#module-local-state for additional information.
+/**
+ * Defines the shared state between CJS and ESM by re-exporting the CJS state.
+ */
+const state = stateExports.state;
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+/**
+ * @internal
+ * Retrieves the value to use for a given operation argument
+ * @param operationArguments - The arguments passed from the generated client
+ * @param parameter - The parameter description
+ * @param fallbackObject - If something isn't found in the arguments bag, look here.
+ *  Generally used to look at the service client properties.
+ */
+function getOperationArgumentValueFromParameter(operationArguments, parameter, fallbackObject) {
+    let parameterPath = parameter.parameterPath;
+    const parameterMapper = parameter.mapper;
+    let value;
+    if (typeof parameterPath === "string") {
+        parameterPath = [parameterPath];
+    }
+    if (Array.isArray(parameterPath)) {
+        if (parameterPath.length > 0) {
+            if (parameterMapper.isConstant) {
+                value = parameterMapper.defaultValue;
+            }
+            else {
+                let propertySearchResult = getPropertyFromParameterPath(operationArguments, parameterPath);
+                if (!propertySearchResult.propertyFound && fallbackObject) {
+                    propertySearchResult = getPropertyFromParameterPath(fallbackObject, parameterPath);
+                }
+                let useDefaultValue = false;
+                if (!propertySearchResult.propertyFound) {
+                    useDefaultValue =
+                        parameterMapper.required ||
+                            (parameterPath[0] === "options" && parameterPath.length === 2);
+                }
+                value = useDefaultValue ? parameterMapper.defaultValue : propertySearchResult.propertyValue;
+            }
+        }
+    }
+    else {
+        if (parameterMapper.required) {
+            value = {};
+        }
+        for (const propertyName in parameterPath) {
+            const propertyMapper = parameterMapper.type.modelProperties[propertyName];
+            const propertyPath = parameterPath[propertyName];
+            const propertyValue = getOperationArgumentValueFromParameter(operationArguments, {
+                parameterPath: propertyPath,
+                mapper: propertyMapper,
+            }, fallbackObject);
+            if (propertyValue !== undefined) {
+                if (!value) {
+                    value = {};
+                }
+                value[propertyName] = propertyValue;
+            }
+        }
+    }
+    return value;
+}
+function getPropertyFromParameterPath(parent, parameterPath) {
+    const result = { propertyFound: false };
+    let i = 0;
+    for (; i < parameterPath.length; ++i) {
+        const parameterPathPart = parameterPath[i];
+        // Make sure to check inherited properties too, so don't use hasOwnProperty().
+        if (parent && parameterPathPart in parent) {
+            parent = parent[parameterPathPart];
+        }
+        else {
+            break;
+        }
+    }
+    if (i === parameterPath.length) {
+        result.propertyValue = parent;
+        result.propertyFound = true;
+    }
+    return result;
+}
+const originalRequestSymbol = Symbol.for("@azure/core-client original request");
+function hasOriginalRequest(request) {
+    return originalRequestSymbol in request;
+}
+function getOperationRequestInfo(request) {
+    if (hasOriginalRequest(request)) {
+        return getOperationRequestInfo(request[originalRequestSymbol]);
+    }
+    let info = state.operationRequestMap.get(request);
+    if (!info) {
+        info = {};
+        state.operationRequestMap.set(request, info);
+    }
+    return info;
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+const defaultJsonContentTypes = ["application/json", "text/json"];
+const defaultXmlContentTypes = ["application/xml", "application/atom+xml"];
+/**
+ * The programmatic identifier of the deserializationPolicy.
+ */
+const deserializationPolicyName = "deserializationPolicy";
+/**
+ * This policy handles parsing out responses according to OperationSpecs on the request.
+ */
+function deserializationPolicy(options = {}) {
+    const jsonContentTypes = options.expectedContentTypes?.json ?? defaultJsonContentTypes;
+    const xmlContentTypes = options.expectedContentTypes?.xml ?? defaultXmlContentTypes;
+    const parseXML = options.parseXML;
+    const serializerOptions = options.serializerOptions;
+    const updatedOptions = {
+        xml: {
+            rootName: serializerOptions?.xml.rootName ?? "",
+            includeRoot: serializerOptions?.xml.includeRoot ?? false,
+            xmlCharKey: serializerOptions?.xml.xmlCharKey ?? XML_CHARKEY,
+        },
+    };
+    return {
+        name: deserializationPolicyName,
+        async sendRequest(request, next) {
+            const response = await next(request);
+            return deserializeResponseBody(jsonContentTypes, xmlContentTypes, response, updatedOptions, parseXML);
+        },
+    };
+}
+function getOperationResponseMap(parsedResponse) {
+    let result;
+    const request = parsedResponse.request;
+    const operationInfo = getOperationRequestInfo(request);
+    const operationSpec = operationInfo?.operationSpec;
+    if (operationSpec) {
+        if (!operationInfo?.operationResponseGetter) {
+            result = operationSpec.responses[parsedResponse.status];
+        }
+        else {
+            result = operationInfo?.operationResponseGetter(operationSpec, parsedResponse);
+        }
+    }
+    return result;
+}
+function shouldDeserializeResponse(parsedResponse) {
+    const request = parsedResponse.request;
+    const operationInfo = getOperationRequestInfo(request);
+    const shouldDeserialize = operationInfo?.shouldDeserialize;
+    let result;
+    if (shouldDeserialize === undefined) {
+        result = true;
+    }
+    else if (typeof shouldDeserialize === "boolean") {
+        result = shouldDeserialize;
+    }
+    else {
+        result = shouldDeserialize(parsedResponse);
+    }
+    return result;
+}
+async function deserializeResponseBody(jsonContentTypes, xmlContentTypes, response, options, parseXML) {
+    const parsedResponse = await parse(jsonContentTypes, xmlContentTypes, response, options, parseXML);
+    if (!shouldDeserializeResponse(parsedResponse)) {
+        return parsedResponse;
+    }
+    const operationInfo = getOperationRequestInfo(parsedResponse.request);
+    const operationSpec = operationInfo?.operationSpec;
+    if (!operationSpec || !operationSpec.responses) {
+        return parsedResponse;
+    }
+    const responseSpec = getOperationResponseMap(parsedResponse);
+    const { error, shouldReturnResponse } = handleErrorResponse(parsedResponse, operationSpec, responseSpec, options);
+    if (error) {
+        throw error;
+    }
+    else if (shouldReturnResponse) {
+        return parsedResponse;
+    }
+    // An operation response spec does exist for current status code, so
+    // use it to deserialize the response.
+    if (responseSpec) {
+        if (responseSpec.bodyMapper) {
+            let valueToDeserialize = parsedResponse.parsedBody;
+            if (operationSpec.isXML && responseSpec.bodyMapper.type.name === MapperTypeNames.Sequence) {
+                valueToDeserialize =
+                    typeof valueToDeserialize === "object"
+                        ? valueToDeserialize[responseSpec.bodyMapper.xmlElementName]
+                        : [];
+            }
+            try {
+                parsedResponse.parsedBody = operationSpec.serializer.deserialize(responseSpec.bodyMapper, valueToDeserialize, "operationRes.parsedBody", options);
+            }
+            catch (deserializeError) {
+                const restError = new RestError(`Error ${deserializeError} occurred in deserializing the responseBody - ${parsedResponse.bodyAsText}`, {
+                    statusCode: parsedResponse.status,
+                    request: parsedResponse.request,
+                    response: parsedResponse,
+                });
+                throw restError;
+            }
+        }
+        else if (operationSpec.httpMethod === "HEAD") {
+            // head methods never have a body, but we return a boolean to indicate presence/absence of the resource
+            parsedResponse.parsedBody = response.status >= 200 && response.status < 300;
+        }
+        if (responseSpec.headersMapper) {
+            parsedResponse.parsedHeaders = operationSpec.serializer.deserialize(responseSpec.headersMapper, parsedResponse.headers.toJSON(), "operationRes.parsedHeaders", { xml: {}, ignoreUnknownProperties: true });
+        }
+    }
+    return parsedResponse;
+}
+function isOperationSpecEmpty(operationSpec) {
+    const expectedStatusCodes = Object.keys(operationSpec.responses);
+    return (expectedStatusCodes.length === 0 ||
+        (expectedStatusCodes.length === 1 && expectedStatusCodes[0] === "default"));
+}
+function handleErrorResponse(parsedResponse, operationSpec, responseSpec, options) {
+    const isSuccessByStatus = 200 <= parsedResponse.status && parsedResponse.status < 300;
+    const isExpectedStatusCode = isOperationSpecEmpty(operationSpec)
+        ? isSuccessByStatus
+        : !!responseSpec;
+    if (isExpectedStatusCode) {
+        if (responseSpec) {
+            if (!responseSpec.isError) {
+                return { error: null, shouldReturnResponse: false };
+            }
+        }
+        else {
+            return { error: null, shouldReturnResponse: false };
+        }
+    }
+    const errorResponseSpec = responseSpec ?? operationSpec.responses.default;
+    const initialErrorMessage = parsedResponse.request.streamResponseStatusCodes?.has(parsedResponse.status)
+        ? `Unexpected status code: ${parsedResponse.status}`
+        : parsedResponse.bodyAsText;
+    const error = new RestError(initialErrorMessage, {
+        statusCode: parsedResponse.status,
+        request: parsedResponse.request,
+        response: parsedResponse,
+    });
+    // If the item failed but there's no error spec or default spec to deserialize the error,
+    // and the parsed body doesn't look like an error object,
+    // we should fail so we just throw the parsed response
+    if (!errorResponseSpec &&
+        !(parsedResponse.parsedBody?.error?.code && parsedResponse.parsedBody?.error?.message)) {
+        throw error;
+    }
+    const defaultBodyMapper = errorResponseSpec?.bodyMapper;
+    const defaultHeadersMapper = errorResponseSpec?.headersMapper;
+    try {
+        // If error response has a body, try to deserialize it using default body mapper.
+        // Then try to extract error code & message from it
+        if (parsedResponse.parsedBody) {
+            const parsedBody = parsedResponse.parsedBody;
+            let deserializedError;
+            if (defaultBodyMapper) {
+                let valueToDeserialize = parsedBody;
+                if (operationSpec.isXML && defaultBodyMapper.type.name === MapperTypeNames.Sequence) {
+                    valueToDeserialize = [];
+                    const elementName = defaultBodyMapper.xmlElementName;
+                    if (typeof parsedBody === "object" && elementName) {
+                        valueToDeserialize = parsedBody[elementName];
+                    }
+                }
+                deserializedError = operationSpec.serializer.deserialize(defaultBodyMapper, valueToDeserialize, "error.response.parsedBody", options);
+            }
+            const internalError = parsedBody.error || deserializedError || parsedBody;
+            error.code = internalError.code;
+            if (internalError.message) {
+                error.message = internalError.message;
+            }
+            if (defaultBodyMapper) {
+                error.response.parsedBody = deserializedError;
+            }
+        }
+        // If error response has headers, try to deserialize it using default header mapper
+        if (parsedResponse.headers && defaultHeadersMapper) {
+            error.response.parsedHeaders =
+                operationSpec.serializer.deserialize(defaultHeadersMapper, parsedResponse.headers.toJSON(), "operationRes.parsedHeaders");
+        }
+    }
+    catch (defaultError) {
+        error.message = `Error "${defaultError.message}" occurred in deserializing the responseBody - "${parsedResponse.bodyAsText}" for the default response.`;
+    }
+    return { error, shouldReturnResponse: false };
+}
+async function parse(jsonContentTypes, xmlContentTypes, operationResponse, opts, parseXML) {
+    if (!operationResponse.request.streamResponseStatusCodes?.has(operationResponse.status) &&
+        operationResponse.bodyAsText) {
+        const text = operationResponse.bodyAsText;
+        const contentType = operationResponse.headers.get("Content-Type") || "";
+        const contentComponents = !contentType
+            ? []
+            : contentType.split(";").map((component) => component.toLowerCase());
+        try {
+            if (contentComponents.length === 0 ||
+                contentComponents.some((component) => jsonContentTypes.indexOf(component) !== -1)) {
+                operationResponse.parsedBody = JSON.parse(text);
+                return operationResponse;
+            }
+            else if (contentComponents.some((component) => xmlContentTypes.indexOf(component) !== -1)) {
+                if (!parseXML) {
+                    throw new Error("Parsing XML not supported.");
+                }
+                const body = await parseXML(text, opts.xml);
+                operationResponse.parsedBody = body;
+                return operationResponse;
+            }
+        }
+        catch (err) {
+            const msg = `Error "${err}" occurred while parsing the response body - ${operationResponse.bodyAsText}.`;
+            const errCode = err.code || RestError.PARSE_ERROR;
+            const e = new RestError(msg, {
+                code: errCode,
+                statusCode: operationResponse.status,
+                request: operationResponse.request,
+                response: operationResponse,
+            });
+            throw e;
+        }
+    }
+    return operationResponse;
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+/**
+ * Gets the list of status codes for streaming responses.
+ * @internal
+ */
+function getStreamingResponseStatusCodes(operationSpec) {
+    const result = new Set();
+    for (const statusCode in operationSpec.responses) {
+        const operationResponse = operationSpec.responses[statusCode];
+        if (operationResponse.bodyMapper &&
+            operationResponse.bodyMapper.type.name === MapperTypeNames.Stream) {
+            result.add(Number(statusCode));
+        }
+    }
+    return result;
+}
+/**
+ * Get the path to this parameter's value as a dotted string (a.b.c).
+ * @param parameter - The parameter to get the path string for.
+ * @returns The path to this parameter's value as a dotted string.
+ * @internal
+ */
+function getPathStringFromParameter(parameter) {
+    const { parameterPath, mapper } = parameter;
+    let result;
+    if (typeof parameterPath === "string") {
+        result = parameterPath;
+    }
+    else if (Array.isArray(parameterPath)) {
+        result = parameterPath.join(".");
+    }
+    else {
+        result = mapper.serializedName;
+    }
+    return result;
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+/**
+ * The programmatic identifier of the serializationPolicy.
+ */
+const serializationPolicyName = "serializationPolicy";
+/**
+ * This policy handles assembling the request body and headers using
+ * an OperationSpec and OperationArguments on the request.
+ */
+function serializationPolicy(options = {}) {
+    const stringifyXML = options.stringifyXML;
+    return {
+        name: serializationPolicyName,
+        async sendRequest(request, next) {
+            const operationInfo = getOperationRequestInfo(request);
+            const operationSpec = operationInfo?.operationSpec;
+            const operationArguments = operationInfo?.operationArguments;
+            if (operationSpec && operationArguments) {
+                serializeHeaders(request, operationArguments, operationSpec);
+                serializeRequestBody(request, operationArguments, operationSpec, stringifyXML);
+            }
+            return next(request);
+        },
+    };
+}
+/**
+ * @internal
+ */
+function serializeHeaders(request, operationArguments, operationSpec) {
+    if (operationSpec.headerParameters) {
+        for (const headerParameter of operationSpec.headerParameters) {
+            let headerValue = getOperationArgumentValueFromParameter(operationArguments, headerParameter);
+            if ((headerValue !== null && headerValue !== undefined) || headerParameter.mapper.required) {
+                headerValue = operationSpec.serializer.serialize(headerParameter.mapper, headerValue, getPathStringFromParameter(headerParameter));
+                const headerCollectionPrefix = headerParameter.mapper
+                    .headerCollectionPrefix;
+                if (headerCollectionPrefix) {
+                    for (const key of Object.keys(headerValue)) {
+                        request.headers.set(headerCollectionPrefix + key, headerValue[key]);
+                    }
+                }
+                else {
+                    request.headers.set(headerParameter.mapper.serializedName || getPathStringFromParameter(headerParameter), headerValue);
+                }
+            }
+        }
+    }
+    const customHeaders = operationArguments.options?.requestOptions?.customHeaders;
+    if (customHeaders) {
+        for (const customHeaderName of Object.keys(customHeaders)) {
+            request.headers.set(customHeaderName, customHeaders[customHeaderName]);
+        }
+    }
+}
+/**
+ * @internal
+ */
+function serializeRequestBody(request, operationArguments, operationSpec, stringifyXML = function () {
+    throw new Error("XML serialization unsupported!");
+}) {
+    const serializerOptions = operationArguments.options?.serializerOptions;
+    const updatedOptions = {
+        xml: {
+            rootName: serializerOptions?.xml.rootName ?? "",
+            includeRoot: serializerOptions?.xml.includeRoot ?? false,
+            xmlCharKey: serializerOptions?.xml.xmlCharKey ?? XML_CHARKEY,
+        },
+    };
+    const xmlCharKey = updatedOptions.xml.xmlCharKey;
+    if (operationSpec.requestBody && operationSpec.requestBody.mapper) {
+        request.body = getOperationArgumentValueFromParameter(operationArguments, operationSpec.requestBody);
+        const bodyMapper = operationSpec.requestBody.mapper;
+        const { required, serializedName, xmlName, xmlElementName, xmlNamespace, xmlNamespacePrefix, nullable, } = bodyMapper;
+        const typeName = bodyMapper.type.name;
+        try {
+            if ((request.body !== undefined && request.body !== null) ||
+                (nullable && request.body === null) ||
+                required) {
+                const requestBodyParameterPathString = getPathStringFromParameter(operationSpec.requestBody);
+                request.body = operationSpec.serializer.serialize(bodyMapper, request.body, requestBodyParameterPathString, updatedOptions);
+                const isStream = typeName === MapperTypeNames.Stream;
+                if (operationSpec.isXML) {
+                    const xmlnsKey = xmlNamespacePrefix ? `xmlns:${xmlNamespacePrefix}` : "xmlns";
+                    const value = getXmlValueWithNamespace(xmlNamespace, xmlnsKey, typeName, request.body, updatedOptions);
+                    if (typeName === MapperTypeNames.Sequence) {
+                        request.body = stringifyXML(prepareXMLRootList(value, xmlElementName || xmlName || serializedName, xmlnsKey, xmlNamespace), { rootName: xmlName || serializedName, xmlCharKey });
+                    }
+                    else if (!isStream) {
+                        request.body = stringifyXML(value, {
+                            rootName: xmlName || serializedName,
+                            xmlCharKey,
+                        });
+                    }
+                }
+                else if (typeName === MapperTypeNames.String &&
+                    (operationSpec.contentType?.match("text/plain") || operationSpec.mediaType === "text")) {
+                    // the String serializer has validated that request body is a string
+                    // so just send the string.
+                    return;
+                }
+                else if (!isStream) {
+                    request.body = JSON.stringify(request.body);
+                }
+            }
+        }
+        catch (error) {
+            throw new Error(`Error "${error.message}" occurred in serializing the payload - ${JSON.stringify(serializedName, undefined, "  ")}.`);
+        }
+    }
+    else if (operationSpec.formDataParameters && operationSpec.formDataParameters.length > 0) {
+        request.formData = {};
+        for (const formDataParameter of operationSpec.formDataParameters) {
+            const formDataParameterValue = getOperationArgumentValueFromParameter(operationArguments, formDataParameter);
+            if (formDataParameterValue !== undefined && formDataParameterValue !== null) {
+                const formDataParameterPropertyName = formDataParameter.mapper.serializedName || getPathStringFromParameter(formDataParameter);
+                request.formData[formDataParameterPropertyName] = operationSpec.serializer.serialize(formDataParameter.mapper, formDataParameterValue, getPathStringFromParameter(formDataParameter), updatedOptions);
+            }
+        }
+    }
+}
+/**
+ * Adds an xml namespace to the xml serialized object if needed, otherwise it just returns the value itself
+ */
+function getXmlValueWithNamespace(xmlNamespace, xmlnsKey, typeName, serializedValue, options) {
+    // Composite and Sequence schemas already got their root namespace set during serialization
+    // We just need to add xmlns to the other schema types
+    if (xmlNamespace && !["Composite", "Sequence", "Dictionary"].includes(typeName)) {
+        const result = {};
+        result[options.xml.xmlCharKey] = serializedValue;
+        result[XML_ATTRKEY] = { [xmlnsKey]: xmlNamespace };
+        return result;
+    }
+    return serializedValue;
+}
+function prepareXMLRootList(obj, elementName, xmlNamespaceKey, xmlNamespace) {
+    if (!Array.isArray(obj)) {
+        obj = [obj];
+    }
+    if (!xmlNamespaceKey || !xmlNamespace) {
+        return { [elementName]: obj };
+    }
+    const result = { [elementName]: obj };
+    result[XML_ATTRKEY] = { [xmlNamespaceKey]: xmlNamespace };
+    return result;
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+/**
+ * Creates a new Pipeline for use with a Service Client.
+ * Adds in deserializationPolicy by default.
+ * Also adds in bearerTokenAuthenticationPolicy if passed a TokenCredential.
+ * @param options - Options to customize the created pipeline.
+ */
+function createClientPipeline(options = {}) {
+    const pipeline = createPipelineFromOptions(options ?? {});
+    if (options.credentialOptions) {
+        pipeline.addPolicy(bearerTokenAuthenticationPolicy({
+            credential: options.credentialOptions.credential,
+            scopes: options.credentialOptions.credentialScopes,
+        }));
+    }
+    pipeline.addPolicy(serializationPolicy(options.serializationOptions), { phase: "Serialize" });
+    pipeline.addPolicy(deserializationPolicy(options.deserializationOptions), {
+        phase: "Deserialize",
+    });
+    return pipeline;
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+let cachedHttpClient;
+function getCachedDefaultHttpClient() {
+    if (!cachedHttpClient) {
+        cachedHttpClient = createDefaultHttpClient();
+    }
+    return cachedHttpClient;
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+const CollectionFormatToDelimiterMap = {
+    CSV: ",",
+    SSV: " ",
+    Multi: "Multi",
+    TSV: "\t",
+    Pipes: "|",
+};
+function getRequestUrl(baseUri, operationSpec, operationArguments, fallbackObject) {
+    const urlReplacements = calculateUrlReplacements(operationSpec, operationArguments, fallbackObject);
+    let isAbsolutePath = false;
+    let requestUrl = replaceAll(baseUri, urlReplacements);
+    if (operationSpec.path) {
+        let path = replaceAll(operationSpec.path, urlReplacements);
+        // QUIRK: sometimes we get a path component like /{nextLink}
+        // which may be a fully formed URL with a leading /. In that case, we should
+        // remove the leading /
+        if (operationSpec.path === "/{nextLink}" && path.startsWith("/")) {
+            path = path.substring(1);
+        }
+        // QUIRK: sometimes we get a path component like {nextLink}
+        // which may be a fully formed URL. In that case, we should
+        // ignore the baseUri.
+        if (isAbsoluteUrl(path)) {
+            requestUrl = path;
+            isAbsolutePath = true;
+        }
+        else {
+            requestUrl = appendPath(requestUrl, path);
+        }
+    }
+    const { queryParams, sequenceParams } = calculateQueryParameters(operationSpec, operationArguments, fallbackObject);
+    /**
+     * Notice that this call sets the `noOverwrite` parameter to true if the `requestUrl`
+     * is an absolute path. This ensures that existing query parameter values in `requestUrl`
+     * do not get overwritten. On the other hand when `requestUrl` is not absolute path, it
+     * is still being built so there is nothing to overwrite.
+     */
+    requestUrl = appendQueryParams(requestUrl, queryParams, sequenceParams, isAbsolutePath);
+    return requestUrl;
+}
+function replaceAll(input, replacements) {
+    let result = input;
+    for (const [searchValue, replaceValue] of replacements) {
+        result = result.split(searchValue).join(replaceValue);
+    }
+    return result;
+}
+function calculateUrlReplacements(operationSpec, operationArguments, fallbackObject) {
+    const result = new Map();
+    if (operationSpec.urlParameters?.length) {
+        for (const urlParameter of operationSpec.urlParameters) {
+            let urlParameterValue = getOperationArgumentValueFromParameter(operationArguments, urlParameter, fallbackObject);
+            const parameterPathString = getPathStringFromParameter(urlParameter);
+            urlParameterValue = operationSpec.serializer.serialize(urlParameter.mapper, urlParameterValue, parameterPathString);
+            if (!urlParameter.skipEncoding) {
+                urlParameterValue = encodeURIComponent(urlParameterValue);
+            }
+            result.set(`{${urlParameter.mapper.serializedName || parameterPathString}}`, urlParameterValue);
+        }
+    }
+    return result;
+}
+function isAbsoluteUrl(url) {
+    return url.includes("://");
+}
+function appendPath(url, pathToAppend) {
+    if (!pathToAppend) {
+        return url;
+    }
+    const parsedUrl = new URL(url);
+    let newPath = parsedUrl.pathname;
+    if (!newPath.endsWith("/")) {
+        newPath = `${newPath}/`;
+    }
+    if (pathToAppend.startsWith("/")) {
+        pathToAppend = pathToAppend.substring(1);
+    }
+    const searchStart = pathToAppend.indexOf("?");
+    if (searchStart !== -1) {
+        const path = pathToAppend.substring(0, searchStart);
+        const search = pathToAppend.substring(searchStart + 1);
+        newPath = newPath + path;
+        if (search) {
+            parsedUrl.search = parsedUrl.search ? `${parsedUrl.search}&${search}` : search;
+        }
+    }
+    else {
+        newPath = newPath + pathToAppend;
+    }
+    parsedUrl.pathname = newPath;
+    return parsedUrl.toString();
+}
+function calculateQueryParameters(operationSpec, operationArguments, fallbackObject) {
+    const result = new Map();
+    const sequenceParams = new Set();
+    if (operationSpec.queryParameters?.length) {
+        for (const queryParameter of operationSpec.queryParameters) {
+            if (queryParameter.mapper.type.name === "Sequence" && queryParameter.mapper.serializedName) {
+                sequenceParams.add(queryParameter.mapper.serializedName);
+            }
+            let queryParameterValue = getOperationArgumentValueFromParameter(operationArguments, queryParameter, fallbackObject);
+            if ((queryParameterValue !== undefined && queryParameterValue !== null) ||
+                queryParameter.mapper.required) {
+                queryParameterValue = operationSpec.serializer.serialize(queryParameter.mapper, queryParameterValue, getPathStringFromParameter(queryParameter));
+                const delimiter = queryParameter.collectionFormat
+                    ? CollectionFormatToDelimiterMap[queryParameter.collectionFormat]
+                    : "";
+                if (Array.isArray(queryParameterValue)) {
+                    // replace null and undefined
+                    queryParameterValue = queryParameterValue.map((item) => {
+                        if (item === null || item === undefined) {
+                            return "";
+                        }
+                        return item;
+                    });
+                }
+                if (queryParameter.collectionFormat === "Multi" && queryParameterValue.length === 0) {
+                    continue;
+                }
+                else if (Array.isArray(queryParameterValue) &&
+                    (queryParameter.collectionFormat === "SSV" || queryParameter.collectionFormat === "TSV")) {
+                    queryParameterValue = queryParameterValue.join(delimiter);
+                }
+                if (!queryParameter.skipEncoding) {
+                    if (Array.isArray(queryParameterValue)) {
+                        queryParameterValue = queryParameterValue.map((item) => {
+                            return encodeURIComponent(item);
+                        });
+                    }
+                    else {
+                        queryParameterValue = encodeURIComponent(queryParameterValue);
+                    }
+                }
+                // Join pipes and CSV *after* encoding, or the server will be upset.
+                if (Array.isArray(queryParameterValue) &&
+                    (queryParameter.collectionFormat === "CSV" || queryParameter.collectionFormat === "Pipes")) {
+                    queryParameterValue = queryParameterValue.join(delimiter);
+                }
+                result.set(queryParameter.mapper.serializedName || getPathStringFromParameter(queryParameter), queryParameterValue);
+            }
+        }
+    }
+    return {
+        queryParams: result,
+        sequenceParams,
+    };
+}
+function simpleParseQueryParams(queryString) {
+    const result = new Map();
+    if (!queryString || queryString[0] !== "?") {
+        return result;
+    }
+    // remove the leading ?
+    queryString = queryString.slice(1);
+    const pairs = queryString.split("&");
+    for (const pair of pairs) {
+        const [name, value] = pair.split("=", 2);
+        const existingValue = result.get(name);
+        if (existingValue) {
+            if (Array.isArray(existingValue)) {
+                existingValue.push(value);
+            }
+            else {
+                result.set(name, [existingValue, value]);
+            }
+        }
+        else {
+            result.set(name, value);
+        }
+    }
+    return result;
+}
+/** @internal */
+function appendQueryParams(url, queryParams, sequenceParams, noOverwrite = false) {
+    if (queryParams.size === 0) {
+        return url;
+    }
+    const parsedUrl = new URL(url);
+    // QUIRK: parsedUrl.searchParams will have their name/value pairs decoded, which
+    // can change their meaning to the server, such as in the case of a SAS signature.
+    // To avoid accidentally un-encoding a query param, we parse the key/values ourselves
+    const combinedParams = simpleParseQueryParams(parsedUrl.search);
+    for (const [name, value] of queryParams) {
+        const existingValue = combinedParams.get(name);
+        if (Array.isArray(existingValue)) {
+            if (Array.isArray(value)) {
+                existingValue.push(...value);
+                const valueSet = new Set(existingValue);
+                combinedParams.set(name, Array.from(valueSet));
+            }
+            else {
+                existingValue.push(value);
+            }
+        }
+        else if (existingValue) {
+            if (Array.isArray(value)) {
+                value.unshift(existingValue);
+            }
+            else if (sequenceParams.has(name)) {
+                combinedParams.set(name, [existingValue, value]);
+            }
+            if (!noOverwrite) {
+                combinedParams.set(name, value);
+            }
+        }
+        else {
+            combinedParams.set(name, value);
+        }
+    }
+    const searchPieces = [];
+    for (const [name, value] of combinedParams) {
+        if (typeof value === "string") {
+            searchPieces.push(`${name}=${value}`);
+        }
+        else if (Array.isArray(value)) {
+            // QUIRK: If we get an array of values, include multiple key/value pairs
+            for (const subValue of value) {
+                searchPieces.push(`${name}=${subValue}`);
+            }
+        }
+        else {
+            searchPieces.push(`${name}=${value}`);
+        }
+    }
+    // QUIRK: we have to set search manually as searchParams will encode comma when it shouldn't.
+    parsedUrl.search = searchPieces.length ? `?${searchPieces.join("&")}` : "";
+    return parsedUrl.toString();
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+const logger$1 = createClientLogger("core-client");
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+/**
+ * Initializes a new instance of the ServiceClient.
+ */
+class ServiceClient {
+    /**
+     * If specified, this is the base URI that requests will be made against for this ServiceClient.
+     * If it is not specified, then all OperationSpecs must contain a baseUrl property.
+     */
+    _endpoint;
+    /**
+     * The default request content type for the service.
+     * Used if no requestContentType is present on an OperationSpec.
+     */
+    _requestContentType;
+    /**
+     * Set to true if the request is sent over HTTP instead of HTTPS
+     */
+    _allowInsecureConnection;
+    /**
+     * The HTTP client that will be used to send requests.
+     */
+    _httpClient;
+    /**
+     * The pipeline used by this client to make requests
+     */
+    pipeline;
+    /**
+     * The ServiceClient constructor
+     * @param options - The service client options that govern the behavior of the client.
+     */
+    constructor(options = {}) {
+        this._requestContentType = options.requestContentType;
+        this._endpoint = options.endpoint ?? options.baseUri;
+        if (options.baseUri) {
+            logger$1.warning("The baseUri option for SDK Clients has been deprecated, please use endpoint instead.");
+        }
+        this._allowInsecureConnection = options.allowInsecureConnection;
+        this._httpClient = options.httpClient || getCachedDefaultHttpClient();
+        this.pipeline = options.pipeline || createDefaultPipeline(options);
+        if (options.additionalPolicies?.length) {
+            for (const { policy, position } of options.additionalPolicies) {
+                // Sign happens after Retry and is commonly needed to occur
+                // before policies that intercept post-retry.
+                const afterPhase = position === "perRetry" ? "Sign" : undefined;
+                this.pipeline.addPolicy(policy, {
+                    afterPhase,
+                });
+            }
+        }
+    }
+    /**
+     * Send the provided httpRequest.
+     */
+    async sendRequest(request) {
+        return this.pipeline.sendRequest(this._httpClient, request);
+    }
+    /**
+     * Send an HTTP request that is populated using the provided OperationSpec.
+     * @typeParam T - The typed result of the request, based on the OperationSpec.
+     * @param operationArguments - The arguments that the HTTP request's templated values will be populated from.
+     * @param operationSpec - The OperationSpec to use to populate the httpRequest.
+     */
+    async sendOperationRequest(operationArguments, operationSpec) {
+        const endpoint = operationSpec.baseUrl || this._endpoint;
+        if (!endpoint) {
+            throw new Error("If operationSpec.baseUrl is not specified, then the ServiceClient must have a endpoint string property that contains the base URL to use.");
+        }
+        // Templatized URLs sometimes reference properties on the ServiceClient child class,
+        // so we have to pass `this` below in order to search these properties if they're
+        // not part of OperationArguments
+        const url = getRequestUrl(endpoint, operationSpec, operationArguments, this);
+        const request = createPipelineRequest({
+            url,
+        });
+        request.method = operationSpec.httpMethod;
+        const operationInfo = getOperationRequestInfo(request);
+        operationInfo.operationSpec = operationSpec;
+        operationInfo.operationArguments = operationArguments;
+        const contentType = operationSpec.contentType || this._requestContentType;
+        if (contentType && operationSpec.requestBody) {
+            request.headers.set("Content-Type", contentType);
+        }
+        const options = operationArguments.options;
+        if (options) {
+            const requestOptions = options.requestOptions;
+            if (requestOptions) {
+                if (requestOptions.timeout) {
+                    request.timeout = requestOptions.timeout;
+                }
+                if (requestOptions.onUploadProgress) {
+                    request.onUploadProgress = requestOptions.onUploadProgress;
+                }
+                if (requestOptions.onDownloadProgress) {
+                    request.onDownloadProgress = requestOptions.onDownloadProgress;
+                }
+                if (requestOptions.shouldDeserialize !== undefined) {
+                    operationInfo.shouldDeserialize = requestOptions.shouldDeserialize;
+                }
+                if (requestOptions.allowInsecureConnection) {
+                    request.allowInsecureConnection = true;
+                }
+            }
+            if (options.abortSignal) {
+                request.abortSignal = options.abortSignal;
+            }
+            if (options.tracingOptions) {
+                request.tracingOptions = options.tracingOptions;
+            }
+        }
+        if (this._allowInsecureConnection) {
+            request.allowInsecureConnection = true;
+        }
+        if (request.streamResponseStatusCodes === undefined) {
+            request.streamResponseStatusCodes = getStreamingResponseStatusCodes(operationSpec);
+        }
+        try {
+            const rawResponse = await this.sendRequest(request);
+            const flatResponse = flattenResponse(rawResponse, operationSpec.responses[rawResponse.status]);
+            if (options?.onResponse) {
+                options.onResponse(rawResponse, flatResponse);
+            }
+            return flatResponse;
+        }
+        catch (error) {
+            if (typeof error === "object" && error?.response) {
+                const rawResponse = error.response;
+                const flatResponse = flattenResponse(rawResponse, operationSpec.responses[error.statusCode] || operationSpec.responses["default"]);
+                error.details = flatResponse;
+                if (options?.onResponse) {
+                    options.onResponse(rawResponse, flatResponse, error);
+                }
+            }
+            throw error;
+        }
+    }
+}
+function createDefaultPipeline(options) {
+    const credentialScopes = getCredentialScopes(options);
+    const credentialOptions = options.credential && credentialScopes
+        ? { credentialScopes, credential: options.credential }
+        : undefined;
+    return createClientPipeline({
+        ...options,
+        credentialOptions,
+    });
+}
+function getCredentialScopes(options) {
+    if (options.credentialScopes) {
+        return options.credentialScopes;
+    }
+    if (options.endpoint) {
+        return `${options.endpoint}/.default`;
+    }
+    if (options.baseUri) {
+        return `${options.baseUri}/.default`;
+    }
+    if (options.credential && !options.credentialScopes) {
+        throw new Error(`When using credentials, the ServiceClientOptions must contain either a endpoint or a credentialScopes. Unable to create a bearerTokenAuthenticationPolicy`);
+    }
+    return undefined;
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+function getIdentityTokenEndpointSuffix(tenantId) {
+    if (tenantId === "adfs") {
+        return "oauth2/token";
+    }
+    else {
+        return "oauth2/v2.0/token";
+    }
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+/**
+ * Given a token response, return the expiration timestamp as the number of milliseconds from the Unix epoch.
+ * @param body - A parsed response body from the authentication endpoint.
+ */
+function parseExpirationTimestamp(body) {
+    if (typeof body.expires_on === "number") {
+        return body.expires_on * 1000;
+    }
+    if (typeof body.expires_on === "string") {
+        const asNumber = +body.expires_on;
+        if (!isNaN(asNumber)) {
+            return asNumber * 1000;
+        }
+        const asDate = Date.parse(body.expires_on);
+        if (!isNaN(asDate)) {
+            return asDate;
+        }
+    }
+    if (typeof body.expires_in === "number") {
+        return Date.now() + body.expires_in * 1000;
+    }
+    throw new Error(`Failed to parse token expiration from body. expires_in="${body.expires_in}", expires_on="${body.expires_on}"`);
+}
+/**
+ * Given a token response, return the expiration timestamp as the number of milliseconds from the Unix epoch.
+ * @param body - A parsed response body from the authentication endpoint.
+ */
+function parseRefreshTimestamp(body) {
+    if (body.refresh_on) {
+        if (typeof body.refresh_on === "number") {
+            return body.refresh_on * 1000;
+        }
+        if (typeof body.refresh_on === "string") {
+            const asNumber = +body.refresh_on;
+            if (!isNaN(asNumber)) {
+                return asNumber * 1000;
+            }
+            const asDate = Date.parse(body.refresh_on);
+            if (!isNaN(asDate)) {
+                return asDate;
+            }
+        }
+        throw new Error(`Failed to parse refresh_on from body. refresh_on="${body.refresh_on}"`);
+    }
+    else {
+        return undefined;
+    }
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+const noCorrelationId = "noCorrelationId";
+/**
+ * @internal
+ */
+function getIdentityClientAuthorityHost(options) {
+    // The authorityHost can come from options or from the AZURE_AUTHORITY_HOST environment variable.
+    let authorityHost = options?.authorityHost;
+    // The AZURE_AUTHORITY_HOST environment variable can only be provided in Node.js.
+    if (isNode) {
+        authorityHost = authorityHost ?? process.env.AZURE_AUTHORITY_HOST;
+    }
+    // If the authorityHost is not provided, we use the default one from the public cloud: https://login.microsoftonline.com
+    return authorityHost ?? DefaultAuthorityHost;
+}
+/**
+ * The network module used by the Identity credentials.
+ *
+ * It allows for credentials to abort any pending request independently of the MSAL flow,
+ * by calling to the `abortRequests()` method.
+ *
+ */
+class IdentityClient extends ServiceClient {
+    authorityHost;
+    allowLoggingAccountIdentifiers;
+    abortControllers;
+    allowInsecureConnection = false;
+    // used for WorkloadIdentity
+    tokenCredentialOptions;
+    constructor(options) {
+        const packageDetails = `azsdk-js-identity/${SDK_VERSION$1}`;
+        const userAgentPrefix = options?.userAgentOptions?.userAgentPrefix
+            ? `${options.userAgentOptions.userAgentPrefix} ${packageDetails}`
+            : `${packageDetails}`;
+        const baseUri = getIdentityClientAuthorityHost(options);
+        if (!baseUri.startsWith("https:")) {
+            throw new Error("The authorityHost address must use the 'https' protocol.");
+        }
+        super({
+            requestContentType: "application/json; charset=utf-8",
+            retryOptions: {
+                maxRetries: 3,
+            },
+            ...options,
+            userAgentOptions: {
+                userAgentPrefix,
+            },
+            baseUri,
+        });
+        this.authorityHost = baseUri;
+        this.abortControllers = new Map();
+        this.allowLoggingAccountIdentifiers = options?.loggingOptions?.allowLoggingAccountIdentifiers;
+        // used for WorkloadIdentity
+        this.tokenCredentialOptions = { ...options };
+        // used for ManagedIdentity
+        if (options?.allowInsecureConnection) {
+            this.allowInsecureConnection = options.allowInsecureConnection;
+        }
+    }
+    async sendTokenRequest(request) {
+        logger$5.info(`IdentityClient: sending token request to [${request.url}]`);
+        const response = await this.sendRequest(request);
+        if (response.bodyAsText && (response.status === 200 || response.status === 201)) {
+            const parsedBody = JSON.parse(response.bodyAsText);
+            if (!parsedBody.access_token) {
+                return null;
+            }
+            this.logIdentifiers(response);
+            const token = {
+                accessToken: {
+                    token: parsedBody.access_token,
+                    expiresOnTimestamp: parseExpirationTimestamp(parsedBody),
+                    refreshAfterTimestamp: parseRefreshTimestamp(parsedBody),
+                    tokenType: "Bearer",
+                },
+                refreshToken: parsedBody.refresh_token,
+            };
+            logger$5.info(`IdentityClient: [${request.url}] token acquired, expires on ${token.accessToken.expiresOnTimestamp}`);
+            return token;
+        }
+        else {
+            const error = new AuthenticationError(response.status, response.bodyAsText);
+            logger$5.warning(`IdentityClient: authentication error. HTTP status: ${response.status}, ${error.errorResponse.errorDescription}`);
+            throw error;
+        }
+    }
+    async refreshAccessToken(tenantId, clientId, scopes, refreshToken, clientSecret, options = {}) {
+        if (refreshToken === undefined) {
+            return null;
+        }
+        logger$5.info(`IdentityClient: refreshing access token with client ID: ${clientId}, scopes: ${scopes} started`);
+        const refreshParams = {
+            grant_type: "refresh_token",
+            client_id: clientId,
+            refresh_token: refreshToken,
+            scope: scopes,
+        };
+        if (clientSecret !== undefined) {
+            refreshParams.client_secret = clientSecret;
+        }
+        const query = new URLSearchParams(refreshParams);
+        return tracingClient.withSpan("IdentityClient.refreshAccessToken", options, async (updatedOptions) => {
+            try {
+                const urlSuffix = getIdentityTokenEndpointSuffix(tenantId);
+                const request = createPipelineRequest({
+                    url: `${this.authorityHost}/${tenantId}/${urlSuffix}`,
+                    method: "POST",
+                    body: query.toString(),
+                    abortSignal: options.abortSignal,
+                    headers: createHttpHeaders({
+                        Accept: "application/json",
+                        "Content-Type": "application/x-www-form-urlencoded",
+                    }),
+                    tracingOptions: updatedOptions.tracingOptions,
+                });
+                const response = await this.sendTokenRequest(request);
+                logger$5.info(`IdentityClient: refreshed token for client ID: ${clientId}`);
+                return response;
+            }
+            catch (err) {
+                if (err.name === AuthenticationErrorName &&
+                    err.errorResponse.error === "interaction_required") {
+                    // It's likely that the refresh token has expired, so
+                    // return null so that the credential implementation will
+                    // initiate the authentication flow again.
+                    logger$5.info(`IdentityClient: interaction required for client ID: ${clientId}`);
+                    return null;
+                }
+                else {
+                    logger$5.warning(`IdentityClient: failed refreshing token for client ID: ${clientId}: ${err}`);
+                    throw err;
+                }
+            }
+        });
+    }
+    // Here is a custom layer that allows us to abort requests that go through MSAL,
+    // since MSAL doesn't allow us to pass options all the way through.
+    generateAbortSignal(correlationId) {
+        const controller = new AbortController();
+        const controllers = this.abortControllers.get(correlationId) || [];
+        controllers.push(controller);
+        this.abortControllers.set(correlationId, controllers);
+        const existingOnAbort = controller.signal.onabort;
+        controller.signal.onabort = (...params) => {
+            this.abortControllers.set(correlationId, undefined);
+            if (existingOnAbort) {
+                existingOnAbort.apply(controller.signal, params);
+            }
+        };
+        return controller.signal;
+    }
+    abortRequests(correlationId) {
+        const key = correlationId || noCorrelationId;
+        const controllers = [
+            ...(this.abortControllers.get(key) || []),
+            // MSAL passes no correlation ID to the get requests...
+            ...(this.abortControllers.get(noCorrelationId) || []),
+        ];
+        if (!controllers.length) {
+            return;
+        }
+        for (const controller of controllers) {
+            controller.abort();
+        }
+        this.abortControllers.set(key, undefined);
+    }
+    getCorrelationId(options) {
+        const parameter = options?.body
+            ?.split("&")
+            .map((part) => part.split("="))
+            .find(([key]) => key === "client-request-id");
+        return parameter && parameter.length ? parameter[1] || noCorrelationId : noCorrelationId;
+    }
+    // The MSAL network module methods follow
+    async sendGetRequestAsync(url, options) {
+        const request = createPipelineRequest({
+            url,
+            method: "GET",
+            body: options?.body,
+            allowInsecureConnection: this.allowInsecureConnection,
+            headers: createHttpHeaders(options?.headers),
+            abortSignal: this.generateAbortSignal(noCorrelationId),
+        });
+        const response = await this.sendRequest(request);
+        this.logIdentifiers(response);
+        return {
+            body: response.bodyAsText ? JSON.parse(response.bodyAsText) : undefined,
+            headers: response.headers.toJSON(),
+            status: response.status,
+        };
+    }
+    async sendPostRequestAsync(url, options) {
+        const request = createPipelineRequest({
+            url,
+            method: "POST",
+            body: options?.body,
+            headers: createHttpHeaders(options?.headers),
+            allowInsecureConnection: this.allowInsecureConnection,
+            // MSAL doesn't send the correlation ID on the get requests.
+            abortSignal: this.generateAbortSignal(this.getCorrelationId(options)),
+        });
+        const response = await this.sendRequest(request);
+        this.logIdentifiers(response);
+        return {
+            body: response.bodyAsText ? JSON.parse(response.bodyAsText) : undefined,
+            headers: response.headers.toJSON(),
+            status: response.status,
+        };
+    }
+    /**
+     *
+     * @internal
+     */
+    getTokenCredentialOptions() {
+        return this.tokenCredentialOptions;
+    }
+    /**
+     * If allowLoggingAccountIdentifiers was set on the constructor options
+     * we try to log the account identifiers by parsing the received access token.
+     *
+     * The account identifiers we try to log are:
+     * - `appid`: The application or Client Identifier.
+     * - `upn`: User Principal Name.
+     *   - It might not be available in some authentication scenarios.
+     *   - If it's not available, we put a placeholder: "No User Principal Name available".
+     * - `tid`: Tenant Identifier.
+     * - `oid`: Object Identifier of the authenticated user.
+     */
+    logIdentifiers(response) {
+        if (!this.allowLoggingAccountIdentifiers || !response.bodyAsText) {
+            return;
+        }
+        const unavailableUpn = "No User Principal Name available";
+        try {
+            const parsed = response.parsedBody || JSON.parse(response.bodyAsText);
+            const accessToken = parsed.access_token;
+            if (!accessToken) {
+                // Without an access token allowLoggingAccountIdentifiers isn't useful.
+                return;
+            }
+            const base64Metadata = accessToken.split(".")[1];
+            const { appid, upn, tid, oid } = JSON.parse(Buffer.from(base64Metadata, "base64").toString("utf8"));
+            logger$5.info(`[Authenticated account] Client ID: ${appid}. Tenant ID: ${tid}. User Principal Name: ${upn || unavailableUpn}. Object ID (user): ${oid}`);
+        }
+        catch (e) {
+            logger$5.warning("allowLoggingAccountIdentifiers was set, but we couldn't log the account information. Error:", e.message);
+        }
+    }
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+/**
+ * Helps specify a regional authority, or "AutoDiscoverRegion" to auto-detect the region.
+ */
+var RegionalAuthority;
+(function (RegionalAuthority) {
+    /** Instructs MSAL to attempt to discover the region */
+    RegionalAuthority["AutoDiscoverRegion"] = "AutoDiscoverRegion";
+    /** Uses the {@link RegionalAuthority} for the Azure 'westus' region. */
+    RegionalAuthority["USWest"] = "westus";
+    /** Uses the {@link RegionalAuthority} for the Azure 'westus2' region. */
+    RegionalAuthority["USWest2"] = "westus2";
+    /** Uses the {@link RegionalAuthority} for the Azure 'centralus' region. */
+    RegionalAuthority["USCentral"] = "centralus";
+    /** Uses the {@link RegionalAuthority} for the Azure 'eastus' region. */
+    RegionalAuthority["USEast"] = "eastus";
+    /** Uses the {@link RegionalAuthority} for the Azure 'eastus2' region. */
+    RegionalAuthority["USEast2"] = "eastus2";
+    /** Uses the {@link RegionalAuthority} for the Azure 'northcentralus' region. */
+    RegionalAuthority["USNorthCentral"] = "northcentralus";
+    /** Uses the {@link RegionalAuthority} for the Azure 'southcentralus' region. */
+    RegionalAuthority["USSouthCentral"] = "southcentralus";
+    /** Uses the {@link RegionalAuthority} for the Azure 'westcentralus' region. */
+    RegionalAuthority["USWestCentral"] = "westcentralus";
+    /** Uses the {@link RegionalAuthority} for the Azure 'canadacentral' region. */
+    RegionalAuthority["CanadaCentral"] = "canadacentral";
+    /** Uses the {@link RegionalAuthority} for the Azure 'canadaeast' region. */
+    RegionalAuthority["CanadaEast"] = "canadaeast";
+    /** Uses the {@link RegionalAuthority} for the Azure 'brazilsouth' region. */
+    RegionalAuthority["BrazilSouth"] = "brazilsouth";
+    /** Uses the {@link RegionalAuthority} for the Azure 'northeurope' region. */
+    RegionalAuthority["EuropeNorth"] = "northeurope";
+    /** Uses the {@link RegionalAuthority} for the Azure 'westeurope' region. */
+    RegionalAuthority["EuropeWest"] = "westeurope";
+    /** Uses the {@link RegionalAuthority} for the Azure 'uksouth' region. */
+    RegionalAuthority["UKSouth"] = "uksouth";
+    /** Uses the {@link RegionalAuthority} for the Azure 'ukwest' region. */
+    RegionalAuthority["UKWest"] = "ukwest";
+    /** Uses the {@link RegionalAuthority} for the Azure 'francecentral' region. */
+    RegionalAuthority["FranceCentral"] = "francecentral";
+    /** Uses the {@link RegionalAuthority} for the Azure 'francesouth' region. */
+    RegionalAuthority["FranceSouth"] = "francesouth";
+    /** Uses the {@link RegionalAuthority} for the Azure 'switzerlandnorth' region. */
+    RegionalAuthority["SwitzerlandNorth"] = "switzerlandnorth";
+    /** Uses the {@link RegionalAuthority} for the Azure 'switzerlandwest' region. */
+    RegionalAuthority["SwitzerlandWest"] = "switzerlandwest";
+    /** Uses the {@link RegionalAuthority} for the Azure 'germanynorth' region. */
+    RegionalAuthority["GermanyNorth"] = "germanynorth";
+    /** Uses the {@link RegionalAuthority} for the Azure 'germanywestcentral' region. */
+    RegionalAuthority["GermanyWestCentral"] = "germanywestcentral";
+    /** Uses the {@link RegionalAuthority} for the Azure 'norwaywest' region. */
+    RegionalAuthority["NorwayWest"] = "norwaywest";
+    /** Uses the {@link RegionalAuthority} for the Azure 'norwayeast' region. */
+    RegionalAuthority["NorwayEast"] = "norwayeast";
+    /** Uses the {@link RegionalAuthority} for the Azure 'eastasia' region. */
+    RegionalAuthority["AsiaEast"] = "eastasia";
+    /** Uses the {@link RegionalAuthority} for the Azure 'southeastasia' region. */
+    RegionalAuthority["AsiaSouthEast"] = "southeastasia";
+    /** Uses the {@link RegionalAuthority} for the Azure 'japaneast' region. */
+    RegionalAuthority["JapanEast"] = "japaneast";
+    /** Uses the {@link RegionalAuthority} for the Azure 'japanwest' region. */
+    RegionalAuthority["JapanWest"] = "japanwest";
+    /** Uses the {@link RegionalAuthority} for the Azure 'australiaeast' region. */
+    RegionalAuthority["AustraliaEast"] = "australiaeast";
+    /** Uses the {@link RegionalAuthority} for the Azure 'australiasoutheast' region. */
+    RegionalAuthority["AustraliaSouthEast"] = "australiasoutheast";
+    /** Uses the {@link RegionalAuthority} for the Azure 'australiacentral' region. */
+    RegionalAuthority["AustraliaCentral"] = "australiacentral";
+    /** Uses the {@link RegionalAuthority} for the Azure 'australiacentral2' region. */
+    RegionalAuthority["AustraliaCentral2"] = "australiacentral2";
+    /** Uses the {@link RegionalAuthority} for the Azure 'centralindia' region. */
+    RegionalAuthority["IndiaCentral"] = "centralindia";
+    /** Uses the {@link RegionalAuthority} for the Azure 'southindia' region. */
+    RegionalAuthority["IndiaSouth"] = "southindia";
+    /** Uses the {@link RegionalAuthority} for the Azure 'westindia' region. */
+    RegionalAuthority["IndiaWest"] = "westindia";
+    /** Uses the {@link RegionalAuthority} for the Azure 'koreasouth' region. */
+    RegionalAuthority["KoreaSouth"] = "koreasouth";
+    /** Uses the {@link RegionalAuthority} for the Azure 'koreacentral' region. */
+    RegionalAuthority["KoreaCentral"] = "koreacentral";
+    /** Uses the {@link RegionalAuthority} for the Azure 'uaecentral' region. */
+    RegionalAuthority["UAECentral"] = "uaecentral";
+    /** Uses the {@link RegionalAuthority} for the Azure 'uaenorth' region. */
+    RegionalAuthority["UAENorth"] = "uaenorth";
+    /** Uses the {@link RegionalAuthority} for the Azure 'southafricanorth' region. */
+    RegionalAuthority["SouthAfricaNorth"] = "southafricanorth";
+    /** Uses the {@link RegionalAuthority} for the Azure 'southafricawest' region. */
+    RegionalAuthority["SouthAfricaWest"] = "southafricawest";
+    /** Uses the {@link RegionalAuthority} for the Azure 'chinanorth' region. */
+    RegionalAuthority["ChinaNorth"] = "chinanorth";
+    /** Uses the {@link RegionalAuthority} for the Azure 'chinaeast' region. */
+    RegionalAuthority["ChinaEast"] = "chinaeast";
+    /** Uses the {@link RegionalAuthority} for the Azure 'chinanorth2' region. */
+    RegionalAuthority["ChinaNorth2"] = "chinanorth2";
+    /** Uses the {@link RegionalAuthority} for the Azure 'chinaeast2' region. */
+    RegionalAuthority["ChinaEast2"] = "chinaeast2";
+    /** Uses the {@link RegionalAuthority} for the Azure 'germanycentral' region. */
+    RegionalAuthority["GermanyCentral"] = "germanycentral";
+    /** Uses the {@link RegionalAuthority} for the Azure 'germanynortheast' region. */
+    RegionalAuthority["GermanyNorthEast"] = "germanynortheast";
+    /** Uses the {@link RegionalAuthority} for the Azure 'usgovvirginia' region. */
+    RegionalAuthority["GovernmentUSVirginia"] = "usgovvirginia";
+    /** Uses the {@link RegionalAuthority} for the Azure 'usgoviowa' region. */
+    RegionalAuthority["GovernmentUSIowa"] = "usgoviowa";
+    /** Uses the {@link RegionalAuthority} for the Azure 'usgovarizona' region. */
+    RegionalAuthority["GovernmentUSArizona"] = "usgovarizona";
+    /** Uses the {@link RegionalAuthority} for the Azure 'usgovtexas' region. */
+    RegionalAuthority["GovernmentUSTexas"] = "usgovtexas";
+    /** Uses the {@link RegionalAuthority} for the Azure 'usdodeast' region. */
+    RegionalAuthority["GovernmentUSDodEast"] = "usdodeast";
+    /** Uses the {@link RegionalAuthority} for the Azure 'usdodcentral' region. */
+    RegionalAuthority["GovernmentUSDodCentral"] = "usdodcentral";
+})(RegionalAuthority || (RegionalAuthority = {}));
+/**
+ * Calculates the correct regional authority based on the supplied value
+ * and the AZURE_REGIONAL_AUTHORITY_NAME environment variable.
+ *
+ * Values will be returned verbatim, except for {@link RegionalAuthority.AutoDiscoverRegion}
+ * which is mapped to a value MSAL can understand.
+ *
+ * @internal
+ */
+function calculateRegionalAuthority(regionalAuthority) {
+    // Note: as of today only 3 credentials support regional authority, and the parameter
+    // is not exposed via the public API. Regional Authority is _only_ supported
+    // via the AZURE_REGIONAL_AUTHORITY_NAME env var and _only_ for: ClientSecretCredential, ClientCertificateCredential, and ClientAssertionCredential.
+    // Accepting the regionalAuthority parameter will allow us to support it in the future.
+    let azureRegion = regionalAuthority;
+    if (azureRegion === undefined &&
+        globalThis.process?.env?.AZURE_REGIONAL_AUTHORITY_NAME !== undefined) {
+        azureRegion = process.env.AZURE_REGIONAL_AUTHORITY_NAME;
+    }
+    if (azureRegion === RegionalAuthority.AutoDiscoverRegion) {
+        return "AUTO_DISCOVER";
+    }
+    return azureRegion;
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+function createConfigurationErrorMessage(tenantId) {
+    return `The current credential is not configured to acquire tokens for tenant ${tenantId}. To enable acquiring tokens for this tenant add it to the AdditionallyAllowedTenants on the credential options, or add "*" to AdditionallyAllowedTenants to allow acquiring tokens for any tenant.`;
+}
+/**
+ * Of getToken contains a tenantId, this functions allows picking this tenantId as the appropriate for authentication,
+ * unless multitenant authentication has been disabled through the AZURE_IDENTITY_DISABLE_MULTITENANTAUTH (on Node.js),
+ * or unless the original tenant Id is `adfs`.
+ * @internal
+ */
+function processMultiTenantRequest(tenantId, getTokenOptions, additionallyAllowedTenantIds = [], logger) {
+    let resolvedTenantId;
+    if (process.env.AZURE_IDENTITY_DISABLE_MULTITENANTAUTH) {
+        resolvedTenantId = tenantId;
+    }
+    else if (tenantId === "adfs") {
+        resolvedTenantId = tenantId;
+    }
+    else {
+        resolvedTenantId = getTokenOptions?.tenantId ?? tenantId;
+    }
+    if (tenantId &&
+        resolvedTenantId !== tenantId &&
+        !additionallyAllowedTenantIds.includes("*") &&
+        !additionallyAllowedTenantIds.some((t) => t.localeCompare(resolvedTenantId) === 0)) {
+        const message = createConfigurationErrorMessage(resolvedTenantId);
+        logger?.info(message);
+        throw new CredentialUnavailableError(message);
+    }
+    return resolvedTenantId;
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+/**
+ * @internal
+ */
+function checkTenantId(logger, tenantId) {
+    if (!tenantId.match(/^[0-9a-zA-Z-.]+$/)) {
+        const error = new Error("Invalid tenant id provided. You can locate your tenant id by following the instructions listed here: https://learn.microsoft.com/partner-center/find-ids-and-domain-names.");
+        logger.info(formatError("", error));
+        throw error;
+    }
+}
+/**
+ * @internal
+ */
+function resolveTenantId(logger, tenantId, clientId) {
+    if (tenantId) {
+        checkTenantId(logger, tenantId);
+        return tenantId;
+    }
+    if (!clientId) {
+        clientId = DeveloperSignOnClientId;
+    }
+    if (clientId !== DeveloperSignOnClientId) {
+        return "common";
+    }
+    return "organizations";
+}
+/**
+ * @internal
+ */
+function resolveAdditionallyAllowedTenantIds(additionallyAllowedTenants) {
+    if (!additionallyAllowedTenants || additionallyAllowedTenants.length === 0) {
+        return [];
+    }
+    if (additionallyAllowedTenants.includes("*")) {
+        return ALL_TENANTS;
+    }
+    return additionallyAllowedTenants;
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+/**
+ * The default logger used if no logger was passed in by the credential.
+ */
+const msalLogger = credentialLogger("MsalClient");
+/**
+ * Generates the configuration for MSAL (Microsoft Authentication Library).
+ *
+ * @param clientId - The client ID of the application.
+ * @param  tenantId - The tenant ID of the Azure Active Directory.
+ * @param  msalClientOptions - Optional. Additional options for creating the MSAL client.
+ * @returns  The MSAL configuration object.
+ */
+function generateMsalConfiguration(clientId, tenantId, msalClientOptions = {}) {
+    const resolvedTenant = resolveTenantId(msalClientOptions.logger ?? msalLogger, tenantId, clientId);
+    // TODO: move and reuse getIdentityClientAuthorityHost
+    const authority = getAuthority(resolvedTenant, getAuthorityHost(msalClientOptions));
+    const httpClient = new IdentityClient({
+        ...msalClientOptions.tokenCredentialOptions,
+        authorityHost: authority,
+        loggingOptions: msalClientOptions.loggingOptions,
+    });
+    const msalConfig = {
+        auth: {
+            clientId,
+            authority,
+            knownAuthorities: getKnownAuthorities(resolvedTenant, authority, msalClientOptions.disableInstanceDiscovery),
+        },
+        system: {
+            networkClient: httpClient,
+            loggerOptions: {
+                loggerCallback: defaultLoggerCallback(msalClientOptions.logger ?? msalLogger),
+                logLevel: getMSALLogLevel(getLogLevel()),
+                piiLoggingEnabled: msalClientOptions.loggingOptions?.enableUnsafeSupportLogging,
+            },
+        },
+    };
+    return msalConfig;
+}
+/**
+ * Creates an instance of the MSAL (Microsoft Authentication Library) client.
+ *
+ * @param clientId - The client ID of the application.
+ * @param tenantId - The tenant ID of the Azure Active Directory.
+ * @param createMsalClientOptions - Optional. Additional options for creating the MSAL client.
+ * @returns An instance of the MSAL client.
+ *
+ * @public
+ */
+function createMsalClient(clientId, tenantId, createMsalClientOptions = {}) {
+    const state = {
+        msalConfig: generateMsalConfiguration(clientId, tenantId, createMsalClientOptions),
+        cachedAccount: createMsalClientOptions.authenticationRecord
+            ? publicToMsal(createMsalClientOptions.authenticationRecord)
+            : null,
+        pluginConfiguration: msalPlugins.generatePluginConfiguration(createMsalClientOptions),
+        logger: createMsalClientOptions.logger ?? msalLogger,
+    };
+    const publicApps = new Map();
+    async function getPublicApp(options = {}) {
+        const appKey = options.enableCae ? "CAE" : "default";
+        let publicClientApp = publicApps.get(appKey);
+        if (publicClientApp) {
+            state.logger.getToken.info("Existing PublicClientApplication found in cache, returning it.");
+            return publicClientApp;
+        }
+        // Initialize a new app and cache it
+        state.logger.getToken.info(`Creating new PublicClientApplication with CAE ${options.enableCae ? "enabled" : "disabled"}.`);
+        const cachePlugin = options.enableCae
+            ? state.pluginConfiguration.cache.cachePluginCae
+            : state.pluginConfiguration.cache.cachePlugin;
+        state.msalConfig.auth.clientCapabilities = options.enableCae ? ["cp1"] : undefined;
+        publicClientApp = new PublicClientApplication({
+            ...state.msalConfig,
+            broker: { nativeBrokerPlugin: state.pluginConfiguration.broker.nativeBrokerPlugin },
+            cache: { cachePlugin: await cachePlugin },
+        });
+        publicApps.set(appKey, publicClientApp);
+        return publicClientApp;
+    }
+    const confidentialApps = new Map();
+    async function getConfidentialApp(options = {}) {
+        const appKey = options.enableCae ? "CAE" : "default";
+        let confidentialClientApp = confidentialApps.get(appKey);
+        if (confidentialClientApp) {
+            state.logger.getToken.info("Existing ConfidentialClientApplication found in cache, returning it.");
+            return confidentialClientApp;
+        }
+        // Initialize a new app and cache it
+        state.logger.getToken.info(`Creating new ConfidentialClientApplication with CAE ${options.enableCae ? "enabled" : "disabled"}.`);
+        const cachePlugin = options.enableCae
+            ? state.pluginConfiguration.cache.cachePluginCae
+            : state.pluginConfiguration.cache.cachePlugin;
+        state.msalConfig.auth.clientCapabilities = options.enableCae ? ["cp1"] : undefined;
+        confidentialClientApp = new ConfidentialClientApplication({
+            ...state.msalConfig,
+            broker: { nativeBrokerPlugin: state.pluginConfiguration.broker.nativeBrokerPlugin },
+            cache: { cachePlugin: await cachePlugin },
+        });
+        confidentialApps.set(appKey, confidentialClientApp);
+        return confidentialClientApp;
+    }
+    async function getTokenSilent(app, scopes, options = {}) {
+        if (state.cachedAccount === null) {
+            state.logger.getToken.info("No cached account found in local state.");
+            throw new AuthenticationRequiredError({ scopes });
+        }
+        // Keep track and reuse the claims we received across challenges
+        if (options.claims) {
+            state.cachedClaims = options.claims;
+        }
+        const silentRequest = {
+            account: state.cachedAccount,
+            scopes,
+            claims: state.cachedClaims,
+        };
+        if (state.pluginConfiguration.broker.isEnabled) {
+            silentRequest.tokenQueryParameters ||= {};
+            if (state.pluginConfiguration.broker.enableMsaPassthrough) {
+                silentRequest.tokenQueryParameters["msal_request_type"] = "consumer_passthrough";
+            }
+        }
+        if (options.proofOfPossessionOptions) {
+            silentRequest.shrNonce = options.proofOfPossessionOptions.nonce;
+            silentRequest.authenticationScheme = "pop";
+            silentRequest.resourceRequestMethod = options.proofOfPossessionOptions.resourceRequestMethod;
+            silentRequest.resourceRequestUri = options.proofOfPossessionOptions.resourceRequestUrl;
+        }
+        state.logger.getToken.info("Attempting to acquire token silently");
+        try {
+            return await app.acquireTokenSilent(silentRequest);
+        }
+        catch (err) {
+            throw handleMsalError(scopes, err, options);
+        }
+    }
+    /**
+     * Builds an authority URL for the given request. The authority may be different than the one used when creating the MSAL client
+     * if the user is creating cross-tenant requests
+     */
+    function calculateRequestAuthority(options) {
+        if (options?.tenantId) {
+            return getAuthority(options.tenantId, getAuthorityHost(createMsalClientOptions));
+        }
+        return state.msalConfig.auth.authority;
+    }
+    /**
+     * Performs silent authentication using MSAL to acquire an access token.
+     * If silent authentication fails, falls back to interactive authentication.
+     *
+     * @param msalApp - The MSAL application instance.
+     * @param scopes - The scopes for which to acquire the access token.
+     * @param options - The options for acquiring the access token.
+     * @param onAuthenticationRequired - A callback function to handle interactive authentication when silent authentication fails.
+     * @returns A promise that resolves to an AccessToken object containing the access token and its expiration timestamp.
+     */
+    async function withSilentAuthentication(msalApp, scopes, options, onAuthenticationRequired) {
+        let response = null;
+        try {
+            response = await getTokenSilent(msalApp, scopes, options);
+        }
+        catch (e) {
+            if (e.name !== "AuthenticationRequiredError") {
+                throw e;
+            }
+            if (options.disableAutomaticAuthentication) {
+                throw new AuthenticationRequiredError({
+                    scopes,
+                    getTokenOptions: options,
+                    message: "Automatic authentication has been disabled. You may call the authentication() method.",
+                });
+            }
+        }
+        // Silent authentication failed
+        if (response === null) {
+            try {
+                response = await onAuthenticationRequired();
+            }
+            catch (err) {
+                throw handleMsalError(scopes, err, options);
+            }
+        }
+        // At this point we should have a token, process it
+        ensureValidMsalToken(scopes, response, options);
+        state.cachedAccount = response?.account ?? null;
+        state.logger.getToken.info(formatSuccess(scopes));
+        return {
+            token: response.accessToken,
+            expiresOnTimestamp: response.expiresOn.getTime(),
+            refreshAfterTimestamp: response.refreshOn?.getTime(),
+            tokenType: response.tokenType,
+        };
+    }
+    async function getTokenByClientSecret(scopes, clientSecret, options = {}) {
+        state.logger.getToken.info(`Attempting to acquire token using client secret`);
+        state.msalConfig.auth.clientSecret = clientSecret;
+        const msalApp = await getConfidentialApp(options);
+        try {
+            const response = await msalApp.acquireTokenByClientCredential({
+                scopes,
+                authority: calculateRequestAuthority(options),
+                azureRegion: calculateRegionalAuthority(),
+                claims: options?.claims,
+            });
+            ensureValidMsalToken(scopes, response, options);
+            state.logger.getToken.info(formatSuccess(scopes));
+            return {
+                token: response.accessToken,
+                expiresOnTimestamp: response.expiresOn.getTime(),
+                refreshAfterTimestamp: response.refreshOn?.getTime(),
+                tokenType: response.tokenType,
+            };
+        }
+        catch (err) {
+            throw handleMsalError(scopes, err, options);
+        }
+    }
+    async function getTokenByClientAssertion(scopes, clientAssertion, options = {}) {
+        state.logger.getToken.info(`Attempting to acquire token using client assertion`);
+        state.msalConfig.auth.clientAssertion = clientAssertion;
+        const msalApp = await getConfidentialApp(options);
+        try {
+            const response = await msalApp.acquireTokenByClientCredential({
+                scopes,
+                authority: calculateRequestAuthority(options),
+                azureRegion: calculateRegionalAuthority(),
+                claims: options?.claims,
+                clientAssertion,
+            });
+            ensureValidMsalToken(scopes, response, options);
+            state.logger.getToken.info(formatSuccess(scopes));
+            return {
+                token: response.accessToken,
+                expiresOnTimestamp: response.expiresOn.getTime(),
+                refreshAfterTimestamp: response.refreshOn?.getTime(),
+                tokenType: response.tokenType,
+            };
+        }
+        catch (err) {
+            throw handleMsalError(scopes, err, options);
+        }
+    }
+    async function getTokenByClientCertificate(scopes, certificate, options = {}) {
+        state.logger.getToken.info(`Attempting to acquire token using client certificate`);
+        state.msalConfig.auth.clientCertificate = certificate;
+        const msalApp = await getConfidentialApp(options);
+        try {
+            const response = await msalApp.acquireTokenByClientCredential({
+                scopes,
+                authority: calculateRequestAuthority(options),
+                azureRegion: calculateRegionalAuthority(),
+                claims: options?.claims,
+            });
+            ensureValidMsalToken(scopes, response, options);
+            state.logger.getToken.info(formatSuccess(scopes));
+            return {
+                token: response.accessToken,
+                expiresOnTimestamp: response.expiresOn.getTime(),
+                refreshAfterTimestamp: response.refreshOn?.getTime(),
+                tokenType: response.tokenType,
+            };
+        }
+        catch (err) {
+            throw handleMsalError(scopes, err, options);
+        }
+    }
+    async function getTokenByDeviceCode(scopes, deviceCodeCallback, options = {}) {
+        state.logger.getToken.info(`Attempting to acquire token using device code`);
+        const msalApp = await getPublicApp(options);
+        return withSilentAuthentication(msalApp, scopes, options, () => {
+            const requestOptions = {
+                scopes,
+                cancel: options?.abortSignal?.aborted ?? false,
+                deviceCodeCallback,
+                authority: calculateRequestAuthority(options),
+                claims: options?.claims,
+            };
+            const deviceCodeRequest = msalApp.acquireTokenByDeviceCode(requestOptions);
+            if (options.abortSignal) {
+                options.abortSignal.addEventListener("abort", () => {
+                    requestOptions.cancel = true;
+                });
+            }
+            return deviceCodeRequest;
+        });
+    }
+    async function getTokenByUsernamePassword(scopes, username, password, options = {}) {
+        state.logger.getToken.info(`Attempting to acquire token using username and password`);
+        const msalApp = await getPublicApp(options);
+        return withSilentAuthentication(msalApp, scopes, options, () => {
+            const requestOptions = {
+                scopes,
+                username,
+                password,
+                authority: calculateRequestAuthority(options),
+                claims: options?.claims,
+            };
+            return msalApp.acquireTokenByUsernamePassword(requestOptions);
+        });
+    }
+    function getActiveAccount() {
+        if (!state.cachedAccount) {
+            return undefined;
+        }
+        return msalToPublic(clientId, state.cachedAccount);
+    }
+    async function getTokenByAuthorizationCode(scopes, redirectUri, authorizationCode, clientSecret, options = {}) {
+        state.logger.getToken.info(`Attempting to acquire token using authorization code`);
+        let msalApp;
+        if (clientSecret) {
+            // If a client secret is provided, we need to use a confidential client application
+            // See https://learn.microsoft.com/entra/identity-platform/v2-oauth2-auth-code-flow#request-an-access-token-with-a-client_secret
+            state.msalConfig.auth.clientSecret = clientSecret;
+            msalApp = await getConfidentialApp(options);
+        }
+        else {
+            msalApp = await getPublicApp(options);
+        }
+        return withSilentAuthentication(msalApp, scopes, options, () => {
+            return msalApp.acquireTokenByCode({
+                scopes,
+                redirectUri,
+                code: authorizationCode,
+                authority: calculateRequestAuthority(options),
+                claims: options?.claims,
+            });
+        });
+    }
+    async function getTokenOnBehalfOf(scopes, userAssertionToken, clientCredentials, options = {}) {
+        msalLogger.getToken.info(`Attempting to acquire token on behalf of another user`);
+        if (typeof clientCredentials === "string") {
+            // Client secret
+            msalLogger.getToken.info(`Using client secret for on behalf of flow`);
+            state.msalConfig.auth.clientSecret = clientCredentials;
+        }
+        else if (typeof clientCredentials === "function") {
+            // Client Assertion
+            msalLogger.getToken.info(`Using client assertion callback for on behalf of flow`);
+            state.msalConfig.auth.clientAssertion = clientCredentials;
+        }
+        else {
+            // Client certificate
+            msalLogger.getToken.info(`Using client certificate for on behalf of flow`);
+            state.msalConfig.auth.clientCertificate = clientCredentials;
+        }
+        const msalApp = await getConfidentialApp(options);
+        try {
+            const response = await msalApp.acquireTokenOnBehalfOf({
+                scopes,
+                authority: calculateRequestAuthority(options),
+                claims: options.claims,
+                oboAssertion: userAssertionToken,
+            });
+            ensureValidMsalToken(scopes, response, options);
+            msalLogger.getToken.info(formatSuccess(scopes));
+            return {
+                token: response.accessToken,
+                expiresOnTimestamp: response.expiresOn.getTime(),
+                refreshAfterTimestamp: response.refreshOn?.getTime(),
+                tokenType: response.tokenType,
+            };
+        }
+        catch (err) {
+            throw handleMsalError(scopes, err, options);
+        }
+    }
+    /**
+     * Creates a base interactive request configuration for MSAL interactive authentication.
+     * This is shared between interactive and brokered authentication flows.
+     */
+    function createBaseInteractiveRequest(scopes, options) {
+        return {
+            openBrowser: async (url) => {
+                const open = await import('./index-k7Vesebj.js');
+                await open.default(url, { newInstance: true });
+            },
+            scopes,
+            authority: calculateRequestAuthority(options),
+            claims: options?.claims,
+            loginHint: options?.loginHint,
+            errorTemplate: options?.browserCustomizationOptions?.errorMessage,
+            successTemplate: options?.browserCustomizationOptions?.successMessage,
+            prompt: options?.loginHint ? "login" : "select_account",
+        };
+    }
+    /**
+     * @internal
+     */
+    async function getBrokeredTokenInternal(scopes, useDefaultBrokerAccount, options = {}) {
+        msalLogger.verbose("Authentication will resume through the broker");
+        const app = await getPublicApp(options);
+        const interactiveRequest = createBaseInteractiveRequest(scopes, options);
+        if (state.pluginConfiguration.broker.parentWindowHandle) {
+            interactiveRequest.windowHandle = Buffer.from(state.pluginConfiguration.broker.parentWindowHandle);
+        }
+        else {
+            // this is a bug, as the pluginConfiguration handler should validate this case.
+            msalLogger.warning("Parent window handle is not specified for the broker. This may cause unexpected behavior. Please provide the parentWindowHandle.");
+        }
+        if (state.pluginConfiguration.broker.enableMsaPassthrough) {
+            (interactiveRequest.tokenQueryParameters ??= {})["msal_request_type"] =
+                "consumer_passthrough";
+        }
+        if (useDefaultBrokerAccount) {
+            interactiveRequest.prompt = "none";
+            msalLogger.verbose("Attempting broker authentication using the default broker account");
+        }
+        else {
+            msalLogger.verbose("Attempting broker authentication without the default broker account");
+        }
+        if (options.proofOfPossessionOptions) {
+            interactiveRequest.shrNonce = options.proofOfPossessionOptions.nonce;
+            interactiveRequest.authenticationScheme = "pop";
+            interactiveRequest.resourceRequestMethod =
+                options.proofOfPossessionOptions.resourceRequestMethod;
+            interactiveRequest.resourceRequestUri = options.proofOfPossessionOptions.resourceRequestUrl;
+        }
+        try {
+            return await app.acquireTokenInteractive(interactiveRequest);
+        }
+        catch (e) {
+            msalLogger.verbose(`Failed to authenticate through the broker: ${e.message}`);
+            if (options.disableAutomaticAuthentication) {
+                throw new AuthenticationRequiredError({
+                    scopes,
+                    getTokenOptions: options,
+                    message: "Cannot silently authenticate with default broker account.",
+                });
+            }
+            // If we tried to use the default broker account and failed, fall back to interactive authentication
+            if (useDefaultBrokerAccount) {
+                return getBrokeredTokenInternal(scopes, false, options);
+            }
+            else {
+                throw e;
+            }
+        }
+    }
+    /**
+     * A helper function that supports brokered authentication through the MSAL's public application.
+     *
+     * When useDefaultBrokerAccount is true, the method will attempt to authenticate using the default broker account.
+     * If the default broker account is not available, the method will fall back to interactive authentication.
+     */
+    async function getBrokeredToken(scopes, useDefaultBrokerAccount, options = {}) {
+        msalLogger.getToken.info(`Attempting to acquire token using brokered authentication with useDefaultBrokerAccount: ${useDefaultBrokerAccount}`);
+        const response = await getBrokeredTokenInternal(scopes, useDefaultBrokerAccount, options);
+        ensureValidMsalToken(scopes, response, options);
+        state.cachedAccount = response?.account ?? null;
+        state.logger.getToken.info(formatSuccess(scopes));
+        return {
+            token: response.accessToken,
+            expiresOnTimestamp: response.expiresOn.getTime(),
+            refreshAfterTimestamp: response.refreshOn?.getTime(),
+            tokenType: response.tokenType,
+        };
+    }
+    async function getTokenByInteractiveRequest(scopes, options = {}) {
+        msalLogger.getToken.info(`Attempting to acquire token interactively`);
+        const app = await getPublicApp(options);
+        return withSilentAuthentication(app, scopes, options, async () => {
+            const interactiveRequest = createBaseInteractiveRequest(scopes, options);
+            if (state.pluginConfiguration.broker.isEnabled) {
+                return getBrokeredTokenInternal(scopes, state.pluginConfiguration.broker.useDefaultBrokerAccount ?? false, options);
+            }
+            if (options.proofOfPossessionOptions) {
+                interactiveRequest.shrNonce = options.proofOfPossessionOptions.nonce;
+                interactiveRequest.authenticationScheme = "pop";
+                interactiveRequest.resourceRequestMethod =
+                    options.proofOfPossessionOptions.resourceRequestMethod;
+                interactiveRequest.resourceRequestUri = options.proofOfPossessionOptions.resourceRequestUrl;
+            }
+            return app.acquireTokenInteractive(interactiveRequest);
+        });
+    }
+    return {
+        getActiveAccount,
+        getBrokeredToken,
+        getTokenByClientSecret,
+        getTokenByClientAssertion,
+        getTokenByClientCertificate,
+        getTokenByDeviceCode,
+        getTokenByUsernamePassword,
+        getTokenByAuthorizationCode,
+        getTokenOnBehalfOf,
+        getTokenByInteractiveRequest,
+    };
+}
+
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+const logger = credentialLogger("ClientAssertionCredential");
+/**
+ * Authenticates a service principal with a JWT assertion.
+ */
+class ClientAssertionCredential {
+    msalClient;
+    tenantId;
+    additionallyAllowedTenantIds;
+    getAssertion;
+    options;
+    /**
+     * Creates an instance of the ClientAssertionCredential with the details
+     * needed to authenticate against Microsoft Entra ID with a client
+     * assertion provided by the developer through the `getAssertion` function parameter.
+     *
+     * @param tenantId - The Microsoft Entra tenant (directory) ID.
+     * @param clientId - The client (application) ID of an App Registration in the tenant.
+     * @param getAssertion - A function that retrieves the assertion for the credential to use.
+     * @param options - Options for configuring the client which makes the authentication request.
+     */
+    constructor(tenantId, clientId, getAssertion, options = {}) {
+        if (!tenantId) {
+            throw new CredentialUnavailableError("ClientAssertionCredential: tenantId is a required parameter.");
+        }
+        if (!clientId) {
+            throw new CredentialUnavailableError("ClientAssertionCredential: clientId is a required parameter.");
+        }
+        if (!getAssertion) {
+            throw new CredentialUnavailableError("ClientAssertionCredential: clientAssertion is a required parameter.");
+        }
+        this.tenantId = tenantId;
+        this.additionallyAllowedTenantIds = resolveAdditionallyAllowedTenantIds(options?.additionallyAllowedTenants);
+        this.options = options;
+        this.getAssertion = getAssertion;
+        this.msalClient = createMsalClient(clientId, tenantId, {
+            ...options,
+            logger,
+            tokenCredentialOptions: this.options,
+        });
+    }
+    /**
+     * Authenticates with Microsoft Entra ID and returns an access token if successful.
+     * If authentication fails, a {@link CredentialUnavailableError} will be thrown with the details of the failure.
+     *
+     * @param scopes - The list of scopes for which the token will have access.
+     * @param options - The options used to configure any requests this
+     *                TokenCredential implementation might make.
+     */
+    async getToken(scopes, options = {}) {
+        return tracingClient.withSpan(`${this.constructor.name}.getToken`, options, async (newOptions) => {
+            newOptions.tenantId = processMultiTenantRequest(this.tenantId, newOptions, this.additionallyAllowedTenantIds, logger);
+            const arrayScopes = Array.isArray(scopes) ? scopes : [scopes];
+            return this.msalClient.getTokenByClientAssertion(arrayScopes, this.getAssertion, newOptions);
+        });
+    }
+}
+
 const execAsync$1 = promisify(exec$1);
+const SCOPE = '499b84ac-1321-427f-aa17-267ca6975798/.default'; // this scope is for Azure DevOps and lets you do package operations
 async function getTokenFromAzTool() {
     coreExports.debug('Getting token from az tool');
-    const { stdout, stderr } = await execAsync$1("az account get-access-token --scope '499b84ac-1321-427f-aa17-267ca6975798/.default' -o json", {
+    const { stdout, stderr } = await execAsync$1(`az account get-access-token --scope '${SCOPE}' -o json`, {
         encoding: 'utf8',
     });
     try {
@@ -27274,6 +52905,24 @@ async function getTokenFromAzTool() {
         coreExports.debug(`az tool stderr: ${stderr}`);
         const errorMessage = error instanceof Error ? error.message : String(error);
         throw new Error(`Error parsing az tool output: ${errorMessage}. ${stderr}`, { cause: error });
+    }
+}
+async function getTokenFromDirectAssertion(tenantId, clientId) {
+    const cred = new ClientAssertionCredential(tenantId, clientId, async () => coreExports.getIDToken(coreExports.getInput('audience', { required: true })));
+    const { token } = await cred.getToken(SCOPE);
+    coreExports.setSecret(token);
+    return token;
+}
+async function getTokenFromAz() {
+    const tenantId = coreExports.getInput('tenant-id');
+    const clientId = coreExports.getInput('client-id');
+    if (tenantId && clientId) {
+        coreExports.debug('Getting token using direct client assertion method');
+        return getTokenFromDirectAssertion(tenantId, clientId);
+    }
+    else {
+        coreExports.debug('Getting token using az tool method');
+        return getTokenFromAzTool();
     }
 }
 
@@ -30063,7 +55712,7 @@ async function run() {
         const nugetList = splitListInput(coreExports.getInput('nuget'));
         const manualList = splitListInput(coreExports.getInput('login-urls'));
         if (manualList.length > 0) {
-            setVssCredentials(manualList, await getTokenFromAzTool());
+            setVssCredentials(manualList, await getTokenFromAz());
         }
         else {
             const adoFeedUrls = await readUrlsFromFiles(npmrcList, nugetList);
@@ -30071,7 +55720,7 @@ async function run() {
                 coreExports.info('No Azure DevOps feed URLs found in provided files. Skipping login and sending empty credentials.');
                 return;
             }
-            const token = await getTokenFromAzTool();
+            const token = await getTokenFromAz();
             setVssCredentials(adoFeedUrls.allNugetUrls, token);
             await Promise.all([
                 buildUserNpmrcContent(adoFeedUrls.npmFeeds, token),
