@@ -53297,8 +53297,11 @@ async function buildUserNpmrcContent(feeds, token) {
         existingConfigs[registryKey] = token;
     }
     const newNpmrcContent = iniExports.stringify(existingConfigs);
+    coreExports.debug('Writing updated .npmrc credentials file:');
+    coreExports.debug(newNpmrcContent);
     await writeFile(npmrcFile, newNpmrcContent, { encoding: 'utf8' });
     if (process.env.NPM_CONFIG_USERCONFIG !== npmrcFile) {
+        coreExports.debug(`Setting NPM_CONFIG_USERCONFIG to ${npmrcFile}`);
         coreExports.exportVariable('NPM_CONFIG_USERCONFIG', npmrcFile);
     }
 }
@@ -55615,6 +55618,8 @@ async function buildUserNugetContent(feeds, token) {
         const errorMessage = error instanceof Error ? error.message : String(error);
         coreExports.debug(`Error creating directory for nuget.config: ${errorMessage}`);
     }
+    coreExports.debug('Writing updated nuget.config credentials file:');
+    coreExports.debug(newCredentialContents);
     await writeFile(nugetCredentialFile, newCredentialContents, { encoding: 'utf8' });
 }
 function safeReadExistingNugetConfig(content) {

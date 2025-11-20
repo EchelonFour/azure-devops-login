@@ -106,6 +106,8 @@ export async function buildUserNugetContent(feeds: NugetAdoFeed[], token: string
     const errorMessage = error instanceof Error ? error.message : String(error)
     core.debug(`Error creating directory for nuget.config: ${errorMessage}`)
   }
+  core.debug('Writing updated nuget.config credentials file:')
+  core.debug(newCredentialContents)
   await writeFile(nugetCredentialFile, newCredentialContents, { encoding: 'utf8' })
 }
 
