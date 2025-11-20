@@ -29,7 +29,9 @@ import require$$2$2 from 'child_process';
 import require$$6$1 from 'timers';
 import { exec as exec$1 } from 'node:child_process';
 import * as fs from 'node:fs/promises';
-import { dirname, basename as basename$1, join } from 'node:path';
+import { readFile, writeFile, mkdir } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
+import path, { dirname, basename as basename$1, join } from 'node:path';
 
 var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
 
@@ -27593,18 +27595,63 @@ function loadExistingCredentials() {
     }
     return empty;
 }
+function setVssCredentials(urls, token) {
+    const endpoints = loadExistingCredentials();
+    // Debug logs are only output if the `ACTIONS_STEP_DEBUG` secret is true
+    coreExports.debug(`Building ${ENV_VAR_NAME} with URLs: ${urls.join(', ')}`);
+    const existingUrls = new Set(endpoints.endpointCredentials.map((x) => x.endpoint));
+    for (const url of urls) {
+        if (existingUrls.has(url)) {
+            coreExports.warning(`Not adding the url "${url}" to the credentials because it is already there. The existing value will be kept.`);
+        }
+        else {
+            endpoints.endpointCredentials.push({
+                endpoint: url,
+                username: 'github',
+                password: token,
+            });
+        }
+    }
+    coreExports.exportVariable(ENV_VAR_NAME, JSON.stringify(endpoints));
+}
 
 function parseNpmrcForADOFeeds(npmrcContent) {
     const contents = iniExports.parse(npmrcContent);
-    const feeds = Object.keys(contents)
-        .filter((key) => key.endsWith('registry'))
-        .map((key) => contents[key])
-        .filter((value) => typeof value === 'string')
-        .filter((value) => value.startsWith('http'))
-        .filter((value) => ADO_FEED_URLS.some((adoUrl) => value.includes(adoUrl)))
-        .filter((value) => value.includes('/npm/registry/'))
-        .map((registry) => registry.replace('/npm/registry/', '/nuget/v3/index.json'));
-    return [...new Set(feeds)];
+    const feeds = [
+        ...new Set(Object.keys(contents)
+            .filter((key) => key.endsWith('registry'))
+            .map((key) => contents[key])
+            .filter((value) => typeof value === 'string')
+            .filter((value) => value.startsWith('http'))
+            .filter((value) => ADO_FEED_URLS.some((adoUrl) => value.includes(adoUrl)))
+            .filter((value) => value.includes('/npm/registry/'))),
+    ];
+    return feeds.map((registry) => ({
+        npmUrl: registry,
+        nugetUrl: registry.replace('/npm/registry/', '/nuget/v3/index.json'),
+    }));
+}
+async function buildUserNpmrcContent(feeds, token) {
+    if (feeds.length === 0) {
+        coreExports.debug('No npm ADO feeds found, skipping writing to .npmrc');
+        return;
+    }
+    if (!coreExports.getBooleanInput('build-npmrc-credentials-file')) {
+        coreExports.debug('Skipping writing to .npmrc');
+        return;
+    }
+    const npmrcFile = process.env.NPM_CONFIG_USERCONFIG ?? path.resolve(process.env.RUNNER_TEMP ?? tmpdir(), '.npmrc');
+    const existingContent = await readFile(npmrcFile, { encoding: 'utf8' }).catch(() => undefined);
+    const existingConfigs = existingContent !== undefined ? iniExports.parse(existingContent) : {};
+    for (const feed of feeds) {
+        const registryKey = `${feed.npmUrl.replace(/^https?:/, '')}:_authToken`;
+        existingConfigs[registryKey] = token;
+    }
+    const newNpmrcContent = iniExports.stringify(existingConfigs);
+    await writeFile(npmrcFile, newNpmrcContent, { encoding: 'utf8' });
+    if (process.env.NPM_CONFIG_USERCONFIG !== npmrcFile) {
+        coreExports.exportVariable('NPM_CONFIG_USERCONFIG', npmrcFile);
+    }
 }
 
 const nameStartChar = ':A-Za-z_\\u00C0-\\u00D6\\u00D8-\\u00F6\\u00F8-\\u02FF\\u0370-\\u037D\\u037F-\\u1FFF\\u200C-\\u200D\\u2070-\\u218F\\u2C00-\\u2FEF\\u3001-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFFD';
@@ -27640,14 +27687,14 @@ function isExist(v) {
 // const fakeCall = function(a) {return a;};
 // const fakeCallNoReturn = function() {};
 
-const defaultOptions$1 = {
+const defaultOptions$2 = {
   allowBooleanAttributes: false, //A tag can have attributes without any value
   unpairedTags: []
 };
 
 //const tagsPattern = new RegExp("<\\/?([\\w:\\-_\.]+)\\s*\/?>","g");
 function validate(xmlData, options) {
-  options = Object.assign({}, defaultOptions$1, options);
+  options = Object.assign({}, defaultOptions$2, options);
 
   //xmlData = xmlData.replace(/(\r\n|\n|\r)/gm,"");//make it single line
   //xmlData = xmlData.replace(/(^\s*<\?xml.*?\?>)/g,"");//Remove XML starting tag
@@ -28057,7 +28104,7 @@ function getPositionFromMatch(match) {
   return match.startIndex + match[1].length;
 }
 
-const defaultOptions = {
+const defaultOptions$1 = {
     preserveOrder: false,
     attributeNamePrefix: '@_',
     attributesGroupName: false,
@@ -28100,7 +28147,7 @@ const defaultOptions = {
 };
    
 const buildOptions = function(options) {
-    return Object.assign({}, defaultOptions, options);
+    return Object.assign({}, defaultOptions$1, options);
 };
 
 let METADATA_SYMBOL$1;
@@ -28712,7 +28759,7 @@ class OrderedObjParser{
     this.resolveNameSpace = resolveNameSpace;
     this.buildAttributesMap = buildAttributesMap;
     this.isItStopNode = isItStopNode;
-    this.replaceEntitiesValue = replaceEntitiesValue;
+    this.replaceEntitiesValue = replaceEntitiesValue$1;
     this.readStopNodeData = readStopNodeData;
     this.saveTextToParentTag = saveTextToParentTag;
     this.addChild = addChild;
@@ -29083,7 +29130,7 @@ function addChild(currentNode, childNode, jPath, startIndex){
   }
 }
 
-const replaceEntitiesValue = function(val){
+const replaceEntitiesValue$1 = function(val){
 
   if(this.options.processEntities){
     for(let entityName in this.docTypeEntities){
@@ -29300,7 +29347,7 @@ function compress(arr, options, jPath){
   const compressedObj = {};
   for (let i = 0; i < arr.length; i++) {
     const tagObj = arr[i];
-    const property = propName(tagObj);
+    const property = propName$1(tagObj);
     let newJpath = "";
     if(jPath === undefined) newJpath = property;
     else newJpath = jPath + "." + property;
@@ -29351,7 +29398,7 @@ function compress(arr, options, jPath){
   return compressedObj;
 }
 
-function propName(obj){
+function propName$1(obj){
   const keys = Object.keys(obj);
   for (let i = 0; i < keys.length; i++) {
     const key = keys[i];
@@ -29458,26 +29505,482 @@ class XMLParser{
     }
 }
 
+const EOL = "\n";
+
+/**
+ * 
+ * @param {array} jArray 
+ * @param {any} options 
+ * @returns 
+ */
+function toXml(jArray, options) {
+    let indentation = "";
+    if (options.format && options.indentBy.length > 0) {
+        indentation = EOL;
+    }
+    return arrToStr(jArray, options, "", indentation);
+}
+
+function arrToStr(arr, options, jPath, indentation) {
+    let xmlStr = "";
+    let isPreviousElementTag = false;
+
+    for (let i = 0; i < arr.length; i++) {
+        const tagObj = arr[i];
+        const tagName = propName(tagObj);
+        if(tagName === undefined) continue;
+
+        let newJPath = "";
+        if (jPath.length === 0) newJPath = tagName;
+        else newJPath = `${jPath}.${tagName}`;
+
+        if (tagName === options.textNodeName) {
+            let tagText = tagObj[tagName];
+            if (!isStopNode(newJPath, options)) {
+                tagText = options.tagValueProcessor(tagName, tagText);
+                tagText = replaceEntitiesValue(tagText, options);
+            }
+            if (isPreviousElementTag) {
+                xmlStr += indentation;
+            }
+            xmlStr += tagText;
+            isPreviousElementTag = false;
+            continue;
+        } else if (tagName === options.cdataPropName) {
+            if (isPreviousElementTag) {
+                xmlStr += indentation;
+            }
+            xmlStr += `<![CDATA[${tagObj[tagName][0][options.textNodeName]}]]>`;
+            isPreviousElementTag = false;
+            continue;
+        } else if (tagName === options.commentPropName) {
+            xmlStr += indentation + `<!--${tagObj[tagName][0][options.textNodeName]}-->`;
+            isPreviousElementTag = true;
+            continue;
+        } else if (tagName[0] === "?") {
+            const attStr = attr_to_str(tagObj[":@"], options);
+            const tempInd = tagName === "?xml" ? "" : indentation;
+            let piTextNodeName = tagObj[tagName][0][options.textNodeName];
+            piTextNodeName = piTextNodeName.length !== 0 ? " " + piTextNodeName : ""; //remove extra spacing
+            xmlStr += tempInd + `<${tagName}${piTextNodeName}${attStr}?>`;
+            isPreviousElementTag = true;
+            continue;
+        }
+        let newIdentation = indentation;
+        if (newIdentation !== "") {
+            newIdentation += options.indentBy;
+        }
+        const attStr = attr_to_str(tagObj[":@"], options);
+        const tagStart = indentation + `<${tagName}${attStr}`;
+        const tagValue = arrToStr(tagObj[tagName], options, newJPath, newIdentation);
+        if (options.unpairedTags.indexOf(tagName) !== -1) {
+            if (options.suppressUnpairedNode) xmlStr += tagStart + ">";
+            else xmlStr += tagStart + "/>";
+        } else if ((!tagValue || tagValue.length === 0) && options.suppressEmptyNode) {
+            xmlStr += tagStart + "/>";
+        } else if (tagValue && tagValue.endsWith(">")) {
+            xmlStr += tagStart + `>${tagValue}${indentation}</${tagName}>`;
+        } else {
+            xmlStr += tagStart + ">";
+            if (tagValue && indentation !== "" && (tagValue.includes("/>") || tagValue.includes("</"))) {
+                xmlStr += indentation + options.indentBy + tagValue + indentation;
+            } else {
+                xmlStr += tagValue;
+            }
+            xmlStr += `</${tagName}>`;
+        }
+        isPreviousElementTag = true;
+    }
+
+    return xmlStr;
+}
+
+function propName(obj) {
+    const keys = Object.keys(obj);
+    for (let i = 0; i < keys.length; i++) {
+        const key = keys[i];
+        if(!obj.hasOwnProperty(key)) continue;
+        if (key !== ":@") return key;
+    }
+}
+
+function attr_to_str(attrMap, options) {
+    let attrStr = "";
+    if (attrMap && !options.ignoreAttributes) {
+        for (let attr in attrMap) {
+            if(!attrMap.hasOwnProperty(attr)) continue;
+            let attrVal = options.attributeValueProcessor(attr, attrMap[attr]);
+            attrVal = replaceEntitiesValue(attrVal, options);
+            if (attrVal === true && options.suppressBooleanAttributes) {
+                attrStr += ` ${attr.substr(options.attributeNamePrefix.length)}`;
+            } else {
+                attrStr += ` ${attr.substr(options.attributeNamePrefix.length)}="${attrVal}"`;
+            }
+        }
+    }
+    return attrStr;
+}
+
+function isStopNode(jPath, options) {
+    jPath = jPath.substr(0, jPath.length - options.textNodeName.length - 1);
+    let tagName = jPath.substr(jPath.lastIndexOf(".") + 1);
+    for (let index in options.stopNodes) {
+        if (options.stopNodes[index] === jPath || options.stopNodes[index] === "*." + tagName) return true;
+    }
+    return false;
+}
+
+function replaceEntitiesValue(textValue, options) {
+    if (textValue && textValue.length > 0 && options.processEntities) {
+        for (let i = 0; i < options.entities.length; i++) {
+            const entity = options.entities[i];
+            textValue = textValue.replace(entity.regex, entity.val);
+        }
+    }
+    return textValue;
+}
+
+const defaultOptions = {
+  attributeNamePrefix: '@_',
+  attributesGroupName: false,
+  textNodeName: '#text',
+  ignoreAttributes: true,
+  cdataPropName: false,
+  format: false,
+  indentBy: '  ',
+  suppressEmptyNode: false,
+  suppressUnpairedNode: true,
+  suppressBooleanAttributes: true,
+  tagValueProcessor: function(key, a) {
+    return a;
+  },
+  attributeValueProcessor: function(attrName, a) {
+    return a;
+  },
+  preserveOrder: false,
+  commentPropName: false,
+  unpairedTags: [],
+  entities: [
+    { regex: new RegExp("&", "g"), val: "&amp;" },//it must be on top
+    { regex: new RegExp(">", "g"), val: "&gt;" },
+    { regex: new RegExp("<", "g"), val: "&lt;" },
+    { regex: new RegExp("\'", "g"), val: "&apos;" },
+    { regex: new RegExp("\"", "g"), val: "&quot;" }
+  ],
+  processEntities: true,
+  stopNodes: [],
+  // transformTagName: false,
+  // transformAttributeName: false,
+  oneListGroup: false
+};
+
+function Builder(options) {
+  this.options = Object.assign({}, defaultOptions, options);
+  if (this.options.ignoreAttributes === true || this.options.attributesGroupName) {
+    this.isAttribute = function(/*a*/) {
+      return false;
+    };
+  } else {
+    this.ignoreAttributesFn = getIgnoreAttributesFn(this.options.ignoreAttributes);
+    this.attrPrefixLen = this.options.attributeNamePrefix.length;
+    this.isAttribute = isAttribute;
+  }
+
+  this.processTextOrObjNode = processTextOrObjNode;
+
+  if (this.options.format) {
+    this.indentate = indentate;
+    this.tagEndChar = '>\n';
+    this.newLine = '\n';
+  } else {
+    this.indentate = function() {
+      return '';
+    };
+    this.tagEndChar = '>';
+    this.newLine = '';
+  }
+}
+
+Builder.prototype.build = function(jObj) {
+  if(this.options.preserveOrder){
+    return toXml(jObj, this.options);
+  }else {
+    if(Array.isArray(jObj) && this.options.arrayNodeName && this.options.arrayNodeName.length > 1){
+      jObj = {
+        [this.options.arrayNodeName] : jObj
+      };
+    }
+    return this.j2x(jObj, 0, []).val;
+  }
+};
+
+Builder.prototype.j2x = function(jObj, level, ajPath) {
+  let attrStr = '';
+  let val = '';
+  const jPath = ajPath.join('.');
+  for (let key in jObj) {
+    if(!Object.prototype.hasOwnProperty.call(jObj, key)) continue;
+    if (typeof jObj[key] === 'undefined') {
+      // supress undefined node only if it is not an attribute
+      if (this.isAttribute(key)) {
+        val += '';
+      }
+    } else if (jObj[key] === null) {
+      // null attribute should be ignored by the attribute list, but should not cause the tag closing
+      if (this.isAttribute(key)) {
+        val += '';
+      } else if (key === this.options.cdataPropName) {
+        val += '';
+      } else if (key[0] === '?') {
+        val += this.indentate(level) + '<' + key + '?' + this.tagEndChar;
+      } else {
+        val += this.indentate(level) + '<' + key + '/' + this.tagEndChar;
+      }
+      // val += this.indentate(level) + '<' + key + '/' + this.tagEndChar;
+    } else if (jObj[key] instanceof Date) {
+      val += this.buildTextValNode(jObj[key], key, '', level);
+    } else if (typeof jObj[key] !== 'object') {
+      //premitive type
+      const attr = this.isAttribute(key);
+      if (attr && !this.ignoreAttributesFn(attr, jPath)) {
+        attrStr += this.buildAttrPairStr(attr, '' + jObj[key]);
+      } else if (!attr) {
+        //tag value
+        if (key === this.options.textNodeName) {
+          let newval = this.options.tagValueProcessor(key, '' + jObj[key]);
+          val += this.replaceEntitiesValue(newval);
+        } else {
+          val += this.buildTextValNode(jObj[key], key, '', level);
+        }
+      }
+    } else if (Array.isArray(jObj[key])) {
+      //repeated nodes
+      const arrLen = jObj[key].length;
+      let listTagVal = "";
+      let listTagAttr = "";
+      for (let j = 0; j < arrLen; j++) {
+        const item = jObj[key][j];
+        if (typeof item === 'undefined') ; else if (item === null) {
+          if(key[0] === "?") val += this.indentate(level) + '<' + key + '?' + this.tagEndChar;
+          else val += this.indentate(level) + '<' + key + '/' + this.tagEndChar;
+          // val += this.indentate(level) + '<' + key + '/' + this.tagEndChar;
+        } else if (typeof item === 'object') {
+          if(this.options.oneListGroup){
+            const result = this.j2x(item, level + 1, ajPath.concat(key));
+            listTagVal += result.val;
+            if (this.options.attributesGroupName && item.hasOwnProperty(this.options.attributesGroupName)) {
+              listTagAttr += result.attrStr;
+            }
+          }else {
+            listTagVal += this.processTextOrObjNode(item, key, level, ajPath);
+          }
+        } else {
+          if (this.options.oneListGroup) {
+            let textValue = this.options.tagValueProcessor(key, item);
+            textValue = this.replaceEntitiesValue(textValue);
+            listTagVal += textValue;
+          } else {
+            listTagVal += this.buildTextValNode(item, key, '', level);
+          }
+        }
+      }
+      if(this.options.oneListGroup){
+        listTagVal = this.buildObjectNode(listTagVal, key, listTagAttr, level);
+      }
+      val += listTagVal;
+    } else {
+      //nested node
+      if (this.options.attributesGroupName && key === this.options.attributesGroupName) {
+        const Ks = Object.keys(jObj[key]);
+        const L = Ks.length;
+        for (let j = 0; j < L; j++) {
+          attrStr += this.buildAttrPairStr(Ks[j], '' + jObj[key][Ks[j]]);
+        }
+      } else {
+        val += this.processTextOrObjNode(jObj[key], key, level, ajPath);
+      }
+    }
+  }
+  return {attrStr: attrStr, val: val};
+};
+
+Builder.prototype.buildAttrPairStr = function(attrName, val){
+  val = this.options.attributeValueProcessor(attrName, '' + val);
+  val = this.replaceEntitiesValue(val);
+  if (this.options.suppressBooleanAttributes && val === "true") {
+    return ' ' + attrName;
+  } else return ' ' + attrName + '="' + val + '"';
+};
+
+function processTextOrObjNode (object, key, level, ajPath) {
+  const result = this.j2x(object, level + 1, ajPath.concat(key));
+  if (object[this.options.textNodeName] !== undefined && Object.keys(object).length === 1) {
+    return this.buildTextValNode(object[this.options.textNodeName], key, result.attrStr, level);
+  } else {
+    return this.buildObjectNode(result.val, key, result.attrStr, level);
+  }
+}
+
+Builder.prototype.buildObjectNode = function(val, key, attrStr, level) {
+  if(val === ""){
+    if(key[0] === "?") return  this.indentate(level) + '<' + key + attrStr+ '?' + this.tagEndChar;
+    else {
+      return this.indentate(level) + '<' + key + attrStr + this.closeTag(key) + this.tagEndChar;
+    }
+  }else {
+
+    let tagEndExp = '</' + key + this.tagEndChar;
+    let piClosingChar = "";
+    
+    if(key[0] === "?") {
+      piClosingChar = "?";
+      tagEndExp = "";
+    }
+  
+    // attrStr is an empty string in case the attribute came as undefined or null
+    if ((attrStr || attrStr === '') && val.indexOf('<') === -1) {
+      return ( this.indentate(level) + '<' +  key + attrStr + piClosingChar + '>' + val + tagEndExp );
+    } else if (this.options.commentPropName !== false && key === this.options.commentPropName && piClosingChar.length === 0) {
+      return this.indentate(level) + `<!--${val}-->` + this.newLine;
+    }else {
+      return (
+        this.indentate(level) + '<' + key + attrStr + piClosingChar + this.tagEndChar +
+        val +
+        this.indentate(level) + tagEndExp    );
+    }
+  }
+};
+
+Builder.prototype.closeTag = function(key){
+  let closeTag = "";
+  if(this.options.unpairedTags.indexOf(key) !== -1){ //unpaired
+    if(!this.options.suppressUnpairedNode) closeTag = "/";
+  }else if(this.options.suppressEmptyNode){ //empty
+    closeTag = "/";
+  }else {
+    closeTag = `></${key}`;
+  }
+  return closeTag;
+};
+
+Builder.prototype.buildTextValNode = function(val, key, attrStr, level) {
+  if (this.options.cdataPropName !== false && key === this.options.cdataPropName) {
+    return this.indentate(level) + `<![CDATA[${val}]]>` +  this.newLine;
+  }else if (this.options.commentPropName !== false && key === this.options.commentPropName) {
+    return this.indentate(level) + `<!--${val}-->` +  this.newLine;
+  }else if(key[0] === "?") {//PI tag
+    return  this.indentate(level) + '<' + key + attrStr+ '?' + this.tagEndChar; 
+  }else {
+    let textValue = this.options.tagValueProcessor(key, val);
+    textValue = this.replaceEntitiesValue(textValue);
+  
+    if( textValue === ''){
+      return this.indentate(level) + '<' + key + attrStr + this.closeTag(key) + this.tagEndChar;
+    }else {
+      return this.indentate(level) + '<' + key + attrStr + '>' +
+         textValue +
+        '</' + key + this.tagEndChar;
+    }
+  }
+};
+
+Builder.prototype.replaceEntitiesValue = function(textValue){
+  if(textValue && textValue.length > 0 && this.options.processEntities){
+    for (let i=0; i<this.options.entities.length; i++) {
+      const entity = this.options.entities[i];
+      textValue = textValue.replace(entity.regex, entity.val);
+    }
+  }
+  return textValue;
+};
+
+function indentate(level) {
+  return this.options.indentBy.repeat(level);
+}
+
+function isAttribute(name /*, options*/) {
+  if (name.startsWith(this.options.attributeNamePrefix) && name !== this.options.textNodeName) {
+    return name.substr(this.attrPrefixLen);
+  } else {
+    return false;
+  }
+}
+
+const XML_CONFIG = {
+    ignoreAttributes: false,
+    allowBooleanAttributes: true,
+    suppressBooleanAttributes: true,
+    suppressEmptyNode: true,
+};
 function parseNugetForADOFeeds(configContent) {
-    const parser = new XMLParser({ ignoreAttributes: false });
-    const parsed = parser.parse(configContent);
+    const config = safeReadExistingNugetConfig(configContent);
+    if (!config) {
+        return [];
+    }
+    const packageSourcesAdd = config.configuration.packageSources?.add;
+    if (!packageSourcesAdd) {
+        return [];
+    }
+    const adds = Array.isArray(packageSourcesAdd) ? packageSourcesAdd : [packageSourcesAdd];
+    return adds
+        .filter((add) => typeof add['@_value'] === 'string')
+        .filter((add) => ADO_FEED_URLS.some((adoUrl) => add['@_value'].includes(adoUrl)))
+        .map((add) => ({ sourceName: add['@_key'], nugetUrl: add['@_value'] }));
+}
+async function buildUserNugetContent(feeds, token) {
+    if (feeds.length === 0) {
+        coreExports.debug('No nuget ADO feeds found, skipping writing to nuget.config');
+        return;
+    }
+    if (!coreExports.getBooleanInput('build-nuget-credentials-file')) {
+        coreExports.debug('Skipping writing to nuget.config');
+        return;
+    }
+    const nugetCredentialFile = path.resolve(process.env.GITHUB_WORKSPACE ?? process.cwd(), '../nuget.config');
+    const existingContent = await readFile(nugetCredentialFile, { encoding: 'utf8' }).catch(() => undefined);
+    const existingConfig = safeReadExistingNugetConfig(existingContent) ?? {
+        '?xml': { '@_version': '1.0', '@_encoding': 'utf-8' },
+        configuration: {},
+    };
+    existingConfig.configuration.packageSourceCredentials ??= {};
+    for (const feed of feeds) {
+        existingConfig.configuration.packageSourceCredentials[feed.sourceName.replaceAll(' ', '_x0020_')] = {
+            add: [
+                {
+                    '@_key': 'Username',
+                    '@_value': 'github',
+                },
+                {
+                    '@_key': 'ClearTextPassword',
+                    '@_value': token,
+                },
+            ],
+        };
+    }
+    const builder = new Builder({ ...XML_CONFIG, format: true });
+    const newCredentialContents = builder.build(existingConfig).trim();
+    try {
+        await mkdir(path.dirname(nugetCredentialFile), { recursive: true });
+    }
+    catch (error) {
+        const errorMessage = error instanceof Error ? error.message : String(error);
+        coreExports.debug(`Error creating directory for nuget.config: ${errorMessage}`);
+    }
+    await writeFile(nugetCredentialFile, newCredentialContents, { encoding: 'utf8' });
+}
+function safeReadExistingNugetConfig(content) {
+    if (content === undefined) {
+        return undefined;
+    }
+    const parser = new XMLParser(XML_CONFIG);
+    const parsed = parser.parse(content);
     if (typeof parsed !== 'object' || parsed == null) {
         throw new Error('Failed to parse nuget.config content as XML object');
     }
     if (!('configuration' in parsed) || typeof parsed.configuration !== 'object' || parsed.configuration == null) {
-        return [];
+        return undefined;
     }
-    const feeds = Object.values(parsed.configuration).flatMap((section) => {
-        if (!section.add) {
-            return [];
-        }
-        const adds = Array.isArray(section.add) ? section.add : [section.add];
-        return adds
-            .map((add) => add['@_value'])
-            .filter((value) => typeof value === 'string')
-            .filter((value) => ADO_FEED_URLS.some((adoUrl) => value.includes(adoUrl)));
-    });
-    return [...new Set(feeds)];
+    return parsed;
 }
 
 async function readFileContents(filePath, parse) {
@@ -29500,15 +30003,20 @@ async function readFileContents(filePath, parse) {
         return [];
     }
     const adoFeedUrls = parse(npmrcContent);
-    coreExports.debug(`Found ADO feed URLs: ${adoFeedUrls.join(', ')}`);
+    coreExports.debug(`Found ADO feed URLs: ${adoFeedUrls.map((x) => x.nugetUrl).join(', ')}`);
     return adoFeedUrls;
 }
 async function readUrlsFromFiles(npmrcList, nugetList) {
-    const adoFeedUrlsPromises = Promise.all(npmrcList
-        .map(async (filePath) => readFileContents(filePath, parseNpmrcForADOFeeds))
-        .concat(nugetList.map(async (filePath) => readFileContents(filePath, parseNugetForADOFeeds))));
-    const adoFeedUrls = await adoFeedUrlsPromises;
-    return [...new Set(adoFeedUrls.flat())];
+    const npmReads = npmrcList.map(async (filePath) => readFileContents(filePath, parseNpmrcForADOFeeds));
+    const nugetReads = nugetList.map(async (filePath) => readFileContents(filePath, parseNugetForADOFeeds));
+    const npmFeeds = (await Promise.all(npmReads)).flat();
+    const nugetFeeds = (await Promise.all(nugetReads)).flat();
+    const allNugetUrls = [...new Set([...npmFeeds, ...nugetFeeds].map((x) => x.nugetUrl))];
+    return {
+        npmFeeds,
+        nugetFeeds,
+        allNugetUrls,
+    };
 }
 
 const execAsync = promisify(exec$1);
@@ -29518,12 +30026,12 @@ async function installProviderIfNeeded() {
         coreExports.debug('Skipping provider installation as per input setting');
         return;
     }
-    const installCommand = process.platform === 'linux'
-        ? 'sh -c "$(curl -fsSL https://aka.ms/install-artifacts-credprovider.sh)"'
-        : 'iex "& { $(irm https://aka.ms/install-artifacts-credprovider.ps1) }"';
+    const installCommand = process.platform === 'win32'
+        ? 'iex "& { $(irm https://aka.ms/install-artifacts-credprovider.ps1) }"'
+        : 'sh -c "$(curl -fsSL https://aka.ms/install-artifacts-credprovider.sh)"';
     try {
         const results = await execAsync(installCommand, {
-            shell: process.platform === 'linux' ? '/bin/bash' : 'powershell.exe',
+            shell: process.platform === 'win32' ? 'powershell.exe' : '/bin/bash',
         });
         coreExports.debug(`Provider installation stdout: ${results.stdout}`);
         coreExports.debug(`Provider installation stderr: ${results.stderr}`);
@@ -29554,33 +30062,23 @@ async function run() {
         const npmrcList = splitListInput(coreExports.getInput('npmrc'));
         const nugetList = splitListInput(coreExports.getInput('nuget'));
         const manualList = splitListInput(coreExports.getInput('login-urls'));
-        const adoFeedUrls = manualList.length > 0 ? manualList : await readUrlsFromFiles(npmrcList, nugetList);
-        const endpoints = loadExistingCredentials();
-        if (adoFeedUrls.length === 0) {
-            coreExports.info('No Azure DevOps feed URLs found in provided files. Skipping login and sending empty credentials.');
+        if (manualList.length > 0) {
+            setVssCredentials(manualList, await getTokenFromAzTool());
         }
         else {
-            const token = await getTokenFromAzTool();
-            // Debug logs are only output if the `ACTIONS_STEP_DEBUG` secret is true
-            coreExports.debug(`Building ${ENV_VAR_NAME} with URLs: ${adoFeedUrls.join(', ')}`);
-            const existingUrls = new Set(endpoints.endpointCredentials.map((x) => x.endpoint));
-            for (const url of adoFeedUrls) {
-                if (existingUrls.has(url)) {
-                    coreExports.warning(`Not adding the url "${url}" to the credentials because it is already there. The existing value will be kept.`);
-                }
-                else {
-                    endpoints.endpointCredentials.push({
-                        endpoint: url,
-                        username: 'github',
-                        password: token,
-                    });
-                }
+            const adoFeedUrls = await readUrlsFromFiles(npmrcList, nugetList);
+            if (adoFeedUrls.allNugetUrls.length === 0) {
+                coreExports.info('No Azure DevOps feed URLs found in provided files. Skipping login and sending empty credentials.');
+                return;
             }
+            const token = await getTokenFromAzTool();
+            setVssCredentials(adoFeedUrls.allNugetUrls, token);
+            await Promise.all([
+                buildUserNpmrcContent(adoFeedUrls.npmFeeds, token),
+                buildUserNugetContent(adoFeedUrls.nugetFeeds, token),
+            ]);
         }
-        if (endpoints.endpointCredentials.length > 0) {
-            coreExports.exportVariable(ENV_VAR_NAME, JSON.stringify(endpoints));
-            await installProviderIfNeeded();
-        }
+        await installProviderIfNeeded();
     }
     catch (error) {
         // Fail the workflow run if an error occurs
