@@ -52913,7 +52913,7 @@ async function getTokenFromDirectAssertion(tenantId, clientId) {
     coreExports.setSecret(token);
     return token;
 }
-async function getTokenFromAz() {
+async function acquireToken() {
     const tenantId = coreExports.getInput('tenant-id');
     const clientId = coreExports.getInput('client-id');
     if (tenantId && clientId) {
@@ -52924,6 +52924,11 @@ async function getTokenFromAz() {
         coreExports.debug('Getting token using az tool method');
         return getTokenFromAzTool();
     }
+}
+async function getTokenFromAz() {
+    const token = await acquireToken();
+    coreExports.setOutput('token', token);
+    return token;
 }
 
 var ini;

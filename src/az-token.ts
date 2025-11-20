@@ -43,7 +43,7 @@ export async function getTokenFromDirectAssertion(tenantId: string, clientId: st
   return token
 }
 
-export async function getTokenFromAz(): Promise<string> {
+async function acquireToken(): Promise<string> {
   const tenantId = core.getInput('tenant-id')
   const clientId = core.getInput('client-id')
 
@@ -54,4 +54,10 @@ export async function getTokenFromAz(): Promise<string> {
     core.debug('Getting token using az tool method')
     return getTokenFromAzTool()
   }
+}
+
+export async function getTokenFromAz(): Promise<string> {
+  const token = await acquireToken()
+  core.setOutput('token', token)
+  return token
 }
