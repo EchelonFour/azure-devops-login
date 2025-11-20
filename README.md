@@ -26,6 +26,17 @@ This works by creating a managed user or entra application in azure that github 
 Follow the [github instructions for OIDC](https://docs.github.com/en/actions/how-tos/secure-your-work/security-harden-deployments/oidc-in-azure) for how this works.
 The managed identity must be given permission to read (or write if needed) packages in azure devops.
 
+You can also skip the azure/login step by running the action like this:
+
+```yaml
+- uses: EchelonFour/azure-devops-login@v1
+  with:
+    client-id: ${{ secrets.AZURE_CLIENT_ID }}
+    tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+```
+
+Running the task like this is helpful for speed because of the [az](https://github.com/Azure/login/issues/456) [login](https://github.com/Azure/login/issues/527) [performance](https://github.com/Azure/azure-cli/issues/31541) [issues](https://github.com/actions/runner-images/issues/10110);
+
 ## Advanced Usage
 
 All the options of the action can be seen here:
@@ -46,6 +57,12 @@ with:
   build-npmrc-credentials-file: true
   # whether to build the nuget credentials files for the given nuget config paths. Default: true.
   build-nuget-credentials-file: true
+  # the client if to use for authentication. If not set, will use the az cli logged in user. Same as used in azure/login action.
+  client-id: 00000000-0000-0000-0000-000000000000
+  # the tenant if to use for authentication. If not set, will use the az cli logged in user. Same as used in azure/login action.
+  tenant-id: 00000000-0000-0000-0000-000000000000
+  # the audience to use for authentication. Defaults to 'api://AzureADTokenExchange'. Same as used in azure/login action.
+  audience: 'api://AzureADTokenExchange'
 ```
 
-If you need to authenticate to different sources, you can call the action multiple times and the results will be merged. It will just use the default `az` cli login session, so you may have to change it by logging in between calls.
+If you need to authenticate to different sources, you can call the action multiple times and the results will be merged.
