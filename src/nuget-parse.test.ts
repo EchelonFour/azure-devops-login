@@ -116,7 +116,7 @@ describe('buildUserNugetContent', () => {
      <configuration>
        <packageSourceCredentials>
          <nuget-feed>
-           <add key="Username" value="github"/>
+           <add key="Username" value="VssSessionToken"/>
            <add key="ClearTextPassword" value="sometoken"/>
          </nuget-feed>
        </packageSourceCredentials>
@@ -167,7 +167,7 @@ describe('buildUserNugetContent', () => {
            <add key="ClearTextPassword" value="oldtoken"/>
          </existing-feed>
          <nuget-feed>
-           <add key="Username" value="github"/>
+           <add key="Username" value="VssSessionToken"/>
            <add key="ClearTextPassword" value="newtoken"/>
          </nuget-feed>
        </packageSourceCredentials>

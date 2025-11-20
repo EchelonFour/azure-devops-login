@@ -53256,7 +53256,7 @@ function setVssCredentials(urls, token) {
         else {
             endpoints.endpointCredentials.push({
                 endpoint: url,
-                username: 'github',
+                username: 'VssSessionToken',
                 password: token,
             });
         }

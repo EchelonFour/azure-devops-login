@@ -56,7 +56,7 @@ export function setVssCredentials(urls: string[], token: string): void {
     } else {
       endpoints.endpointCredentials.push({
         endpoint: url,
-        username: 'github',
+        username: 'VssSessionToken',
         password: token,
       })
     }

@@ -119,8 +119,8 @@ describe('setVssCredentials', () => {
       'VSS_NUGET_EXTERNAL_FEED_ENDPOINTS',
       JSON.stringify({
         endpointCredentials: [
-          { endpoint: 'https://test.com', username: 'github', password: 'test-token' },
-          { endpoint: 'https://example.com', username: 'github', password: 'test-token' },
+          { endpoint: 'https://test.com', username: 'VssSessionToken', password: 'test-token' },
+          { endpoint: 'https://example.com', username: 'VssSessionToken', password: 'test-token' },
         ],
       }),
     )
@@ -141,7 +141,7 @@ describe('setVssCredentials', () => {
       JSON.stringify({
         endpointCredentials: [
           { endpoint: 'https://existing.com', password: 'existing-pass' },
-          { endpoint: 'https://new.com', username: 'github', password: 'new-token' },
+          { endpoint: 'https://new.com', username: 'VssSessionToken', password: 'new-token' },
         ],
       }),
     )
