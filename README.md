@@ -1,7 +1,7 @@
 # Login to Azure DevOps from GitHub Actions
 
-This uses an authenticated az cli session to setup login to Azure DevOps when using the [Credential Provider](https://github.com/microsoft/artifacts-credprovider).
-This also works for npm, if you use the [ado-npm-auth](https://github.com/microsoft/ado-npm-auth) package (because it uses the dotnet credential provider in linux for its implementation).
+This uses an authenticated az cli session to setup login to Azure DevOps when using NPM and nuget.
+It will also set environment variables that the [Artifacts Credential Provider](https://github.com/microsoft/artifacts-credprovider) can use which can also be used by the the [ado-npm-auth](https://github.com/microsoft/ado-npm-auth) package on linux.
 
 ## Getting Started
 
@@ -18,9 +18,6 @@ steps:
   - uses: actions/setup-node@v6
   - uses: actions/setup-dotnet@v5
   - uses: EchelonFour/azure-devops-login@v1
-  - run: npm exec ado-npm-auth # or however you want to run it
-    env:
-      npm_config_registry: https://registry.npmjs.org
   - run: npm install # has been authenticated now
   - run: dotnet restore # also authenticated
 ```
@@ -36,13 +33,19 @@ All the options of the action can be seen here:
 ```yaml
 uses: EchelonFour/azure-devops-login@v1
 with:
-  npmrc: .npmrc,other-project/.npmrc # comma or new line separated paths to npmrc to check for registries. Default: .npmrc
-  nuget: | # comma or new line separated paths to nuget config to check for nuget feeds. Default: nuget.config
+  # comma or new line separated paths to npmrc to check for registries. Default: .npmrc
+  npmrc: .npmrc,other-project/.npmrc
+  # comma or new line separated paths to nuget config to check for nuget feeds. Default: nuget.config
+  nuget: |
     Nuget.config
     other-project/NuGet.config
-  login-urls:
-    | # comma or new line separated azure devops nuget feed urls to auth with. No default. If this value is set, no files are read for URLs. Even for npm, you must give nuget feed urls here.
+  # comma or new line separated azure devops nuget feed urls to auth with. No default. If this value is set, no files are read for URLs. Even for npm, you must give nuget feed urls here. This only sets the VSS_NUGET_EXTERNAL_FEED_ENDPOINTS for use by the credential provider.
+  login-urls: |
     https://pkgs.dev.azure.com/organisation/_packaging/nuget-feed/nuget/v3/index.json
+  # whether to build the .npmrc credentials files for the given npmrc paths. Default: true. Will also set the NPM_CONFIG_USERCONFIG environment variable to point to the created file.
+  build-npmrc-credentials-file: true
+  # whether to build the nuget credentials files for the given nuget config paths. Default: true.
+  build-nuget-credentials-file: true
 ```
 
 If you need to authenticate to different sources, you can call the action multiple times and the results will be merged. It will just use the default `az` cli login session, so you may have to change it by logging in between calls.
