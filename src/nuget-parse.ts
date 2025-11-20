@@ -89,7 +89,7 @@ export async function buildUserNugetContent(feeds: NugetAdoFeed[], token: string
       add: [
         {
           '@_key': 'Username',
-          '@_value': 'github',
+          '@_value': 'VssSessionToken',
         },
         {
           '@_key': 'ClearTextPassword',

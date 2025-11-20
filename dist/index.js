@@ -55600,7 +55600,7 @@ async function buildUserNugetContent(feeds, token) {
             add: [
                 {
                     '@_key': 'Username',
-                    '@_value': 'github',
+                    '@_value': 'VssSessionToken',
                 },
                 {
                     '@_key': 'ClearTextPassword',
