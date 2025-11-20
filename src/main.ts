@@ -2,9 +2,8 @@ import * as core from '@actions/core'
 
 import { getTokenFromAz } from './az-token.js'
 import { buildUserNpmrcContent } from './npmrc-parse.js'
-import { buildUserNugetContent } from './nuget-parse.js'
 import { readUrlsFromFiles } from './parse-urls-from-files.js'
-import { installProviderIfNeeded } from './provider-installer.js'
+import { installProvider } from './provider-installer.js'
 import { setVssCredentials } from './vss-credentials.js'
 
 function splitListInput(input: string | null | undefined): string[] {
@@ -30,6 +29,9 @@ export async function run(): Promise<void> {
 
     if (manualList.length > 0) {
       setVssCredentials(manualList, await getTokenFromAz())
+      if (core.getBooleanInput('force-install-provider')) {
+        await installProvider()
+      }
     } else {
       const adoFeedUrls = await readUrlsFromFiles(npmrcList, nugetList)
       if (adoFeedUrls.allNugetUrls.length === 0) {
@@ -38,12 +40,11 @@ export async function run(): Promise<void> {
       }
       const token = await getTokenFromAz()
       setVssCredentials(adoFeedUrls.allNugetUrls, token)
-      await Promise.all([
-        buildUserNpmrcContent(adoFeedUrls.npmFeeds, token),
-        buildUserNugetContent(adoFeedUrls.nugetFeeds, token),
-      ])
+      await buildUserNpmrcContent(adoFeedUrls.npmFeeds, token)
+      if (adoFeedUrls.nugetFeeds.length > 0 || core.getBooleanInput('force-install-provider')) {
+        await installProvider()
+      }
     }
-    await installProviderIfNeeded()
   } catch (error) {
     // Fail the workflow run if an error occurs
     if (error instanceof Error) {

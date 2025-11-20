@@ -23,8 +23,8 @@ inputs:
       Setting this overrides reading from npmrc and nuget files and will only output the VSS_NUGET_EXTERNAL_FEED_ENDPOINTS.
     required: false
     default: ''
-  install-provider:
-    description: Whether to install the Azure Artifacts Credential Provider (which appears to be ignored by default in GitHub-hosted runners)
+  force-install-provider:
+    description: Whether to force install the Azure Artifacts Credential Provider
     required: false
     default: false
   build-npmrc-credentials-file:
