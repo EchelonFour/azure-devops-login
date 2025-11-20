@@ -2,14 +2,16 @@ import type * as childProcess from 'node:child_process'
 
 import { jest } from '@jest/globals'
 
+import * as identity from '../__fixtures__/azure-identity.js'
 import * as core from '../__fixtures__/core.js'
 
 jest.unstable_mockModule('@actions/core', () => core)
 jest.unstable_mockModule('node:child_process', () => ({
   exec: jest.fn(),
 }))
+jest.unstable_mockModule('@azure/identity', () => identity)
 
-const { getTokenFromAzTool } = await import('./az-token.js')
+const { getTokenFromAzTool, getTokenFromDirectAssertion } = await import('./az-token.js')
 
 const mockExec = jest.mocked((await import('node:child_process')).exec)
 
@@ -60,5 +62,29 @@ describe('getTokenFromAzTool', () => {
     buildMockExec(invalidJson)
 
     await expect(getTokenFromAzTool()).rejects.toThrow()
+  })
+})
+
+describe('getTokenFromDirectAssertion', () => {
+  it('should return token when credential successfully gets token', async () => {
+    core.getInput.mockReturnValue('mock-audience')
+    core.getIDToken.mockResolvedValue('mock-id-token')
+
+    const result = await getTokenFromDirectAssertion('tenant-id', 'client-id')
+
+    expect(result).toBe('mock-token')
+    expect(core.setSecret).toHaveBeenCalledWith('mock-token')
+    expect(core.getIDToken).toHaveBeenCalledWith('mock-audience')
+    expect(identity.ClientAssertionCredential).toHaveBeenCalledWith('tenant-id', 'client-id', expect.any(Function))
+    expect(identity.mockGetToken).toHaveBeenCalledWith('499b84ac-1321-427f-aa17-267ca6975798/.default', undefined)
+  })
+
+  it('should throw error when credential fails to get token', async () => {
+    identity.mockGetToken.mockRejectedValue(new Error('Token acquisition failed'))
+
+    core.getInput.mockReturnValue('mock-audience')
+    core.getIDToken.mockResolvedValue('mock-id-token')
+
+    await expect(getTokenFromDirectAssertion('tenant-id', 'client-id')).rejects.toThrow()
   })
 })

@@ -35,6 +35,16 @@ inputs:
     description: Whether to build a nuget.config file with the credentials for use in later steps
     required: false
     default: true
+  client-id:
+    description: 'ClientId of the Azure Service principal created to act as. If not set, will use the az cli logged in user'
+    required: false
+  tenant-id:
+    description: 'TenantId of the Azure Service principal created to act as. If not set, will use the az cli logged in user'
+    required: false
+  audience:
+    description: 'Provide audience field for access-token. Default value is api://AzureADTokenExchange'
+    required: false
+    default: 'api://AzureADTokenExchange'
 
 runs:
   using: node24

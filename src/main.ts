@@ -1,6 +1,6 @@
 import * as core from '@actions/core'
 
-import { getTokenFromAzTool } from './az-token.js'
+import { getTokenFromAz } from './az-token.js'
 import { buildUserNpmrcContent } from './npmrc-parse.js'
 import { buildUserNugetContent } from './nuget-parse.js'
 import { readUrlsFromFiles } from './parse-urls-from-files.js'
@@ -29,14 +29,14 @@ export async function run(): Promise<void> {
     const manualList = splitListInput(core.getInput('login-urls'))
 
     if (manualList.length > 0) {
-      setVssCredentials(manualList, await getTokenFromAzTool())
+      setVssCredentials(manualList, await getTokenFromAz())
     } else {
       const adoFeedUrls = await readUrlsFromFiles(npmrcList, nugetList)
       if (adoFeedUrls.allNugetUrls.length === 0) {
         core.info('No Azure DevOps feed URLs found in provided files. Skipping login and sending empty credentials.')
         return
       }
-      const token = await getTokenFromAzTool()
+      const token = await getTokenFromAz()
       setVssCredentials(adoFeedUrls.allNugetUrls, token)
       await Promise.all([
         buildUserNpmrcContent(adoFeedUrls.npmFeeds, token),
