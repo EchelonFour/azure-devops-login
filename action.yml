@@ -18,11 +18,21 @@ inputs:
     required: true
     default: 'nuget.config'
   login-urls:
-    description: comma separated list of Azure DevOps organization URLs to login to. Setting this overrides reading from npmrc and nuget files.
+    description: |
+      comma separated list of Azure DevOps organization URLs to login to.
+      Setting this overrides reading from npmrc and nuget files and will only output the VSS_NUGET_EXTERNAL_FEED_ENDPOINTS.
     required: false
     default: ''
   install-provider:
-    description: Whether to install the Azure Artifacts Credential Provider
+    description: Whether to install the Azure Artifacts Credential Provider (which appears to be ignored by default in GitHub-hosted runners)
+    required: false
+    default: false
+  build-npmrc-credentials-file:
+    description: Whether to build an .npmrc file with the credentials for use in later steps
+    required: false
+    default: true
+  build-nuget-credentials-file:
+    description: Whether to build a nuget.config file with the credentials for use in later steps
     required: false
     default: true
 

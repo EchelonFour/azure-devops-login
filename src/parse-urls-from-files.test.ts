@@ -29,7 +29,11 @@ describe('readUrlsFromFiles', () => {
 
   it('should return empty array when no files are provided', async () => {
     const result = await readUrlsFromFiles([], [])
-    expect(result).toEqual([])
+    expect(result).toEqual({
+      allNugetUrls: [],
+      npmFeeds: [],
+      nugetFeeds: [],
+    })
   })
 
   it('should process npmrc files and return URLs', async () => {
@@ -38,13 +42,31 @@ describe('readUrlsFromFiles', () => {
       'package.json': '{}',
     })
 
-    mockParseNpmrc.mockReturnValue(['https://example.pkgs.visualstudio.com/'])
+    mockParseNpmrc.mockReturnValue([
+      {
+        npmUrl: 'https://example.pkgs.visualstudio.com/',
+        nugetUrl: 'https://example.pkgs.visualstudio.com/nuget/v3/index.json',
+      },
+    ])
 
     const result = await readUrlsFromFiles(['.npmrc'], [])
 
     mockFs.restore()
 
-    expect(result).toEqual(['https://example.pkgs.visualstudio.com/'])
+    expect(result).toMatchInlineSnapshot(`
+     {
+       "allNugetUrls": [
+         "https://example.pkgs.visualstudio.com/nuget/v3/index.json",
+       ],
+       "npmFeeds": [
+         {
+           "npmUrl": "https://example.pkgs.visualstudio.com/",
+           "nugetUrl": "https://example.pkgs.visualstudio.com/nuget/v3/index.json",
+         },
+       ],
+       "nugetFeeds": [],
+     }
+    `)
     expect(mockParseNpmrc).toHaveBeenCalledWith('contents')
   })
 
@@ -52,13 +74,26 @@ describe('readUrlsFromFiles', () => {
     mockFs({
       'nuget.config': 'contents',
     })
-    mockParseNuget.mockReturnValue(['https://example.pkgs.visualstudio.com/nuget/'])
+    mockParseNuget.mockReturnValue([{ nugetUrl: 'https://example.pkgs.visualstudio.com/nuget/', sourceName: 'feed' }])
 
     const result = await readUrlsFromFiles([], ['nuget.config'])
 
     mockFs.restore()
 
-    expect(result).toEqual(['https://example.pkgs.visualstudio.com/nuget/'])
+    expect(result).toMatchInlineSnapshot(`
+     {
+       "allNugetUrls": [
+         "https://example.pkgs.visualstudio.com/nuget/",
+       ],
+       "npmFeeds": [],
+       "nugetFeeds": [
+         {
+           "nugetUrl": "https://example.pkgs.visualstudio.com/nuget/",
+           "sourceName": "feed",
+         },
+       ],
+     }
+    `)
     expect(mockParseNuget).toHaveBeenCalledWith('contents')
   })
 
@@ -67,14 +102,47 @@ describe('readUrlsFromFiles', () => {
       '.npmrc': 'content',
       'other/.npmrc': 'content other',
     })
-    mockParseNpmrc.mockReturnValueOnce(['https://url1.com/', 'https://url2.com/'])
-    mockParseNpmrc.mockReturnValueOnce(['https://url2.com/', 'https://url3.com/'])
+    mockParseNpmrc.mockReturnValueOnce([
+      { npmUrl: '', nugetUrl: 'https://url1.com/' },
+      { npmUrl: '', nugetUrl: 'https://url2.com/' },
+    ])
+    mockParseNpmrc.mockReturnValueOnce([
+      { npmUrl: '', nugetUrl: 'https://url2.com/' },
+      { npmUrl: '', nugetUrl: 'https://url3.com/' },
+    ])
 
     const result = await readUrlsFromFiles(['.npmrc', 'other/.npmrc'], [])
 
     mockFs.restore()
 
-    expect(result).toEqual(['https://url1.com/', 'https://url2.com/', 'https://url3.com/'])
+    expect(result).toMatchInlineSnapshot(`
+     {
+       "allNugetUrls": [
+         "https://url1.com/",
+         "https://url2.com/",
+         "https://url3.com/",
+       ],
+       "npmFeeds": [
+         {
+           "npmUrl": "",
+           "nugetUrl": "https://url1.com/",
+         },
+         {
+           "npmUrl": "",
+           "nugetUrl": "https://url2.com/",
+         },
+         {
+           "npmUrl": "",
+           "nugetUrl": "https://url2.com/",
+         },
+         {
+           "npmUrl": "",
+           "nugetUrl": "https://url3.com/",
+         },
+       ],
+       "nugetFeeds": [],
+     }
+    `)
     expect(mockParseNpmrc).toHaveBeenCalledTimes(2)
     expect(mockParseNpmrc).toHaveBeenNthCalledWith(1, 'content')
     expect(mockParseNpmrc).toHaveBeenNthCalledWith(2, 'content other')
@@ -87,7 +155,13 @@ describe('readUrlsFromFiles', () => {
 
     mockFs.restore()
 
-    expect(result).toEqual([])
+    expect(result).toMatchInlineSnapshot(`
+     {
+       "allNugetUrls": [],
+       "npmFeeds": [],
+       "nugetFeeds": [],
+     }
+    `)
     expect(mockParseNpmrc).not.toHaveBeenCalled()
   })
 
@@ -100,7 +174,13 @@ describe('readUrlsFromFiles', () => {
 
     mockFs.restore()
 
-    expect(result).toEqual([])
+    expect(result).toMatchInlineSnapshot(`
+     {
+       "allNugetUrls": [],
+       "npmFeeds": [],
+       "nugetFeeds": [],
+     }
+    `)
     expect(mockParseNpmrc).not.toHaveBeenCalled()
   })
 
@@ -108,13 +188,28 @@ describe('readUrlsFromFiles', () => {
     mockFs({
       'NuGet.Config': 'nuget content',
     })
-    mockParseNuget.mockReturnValue(['https://caseinsensitive.pkgs.visualstudio.com/nuget/'])
+    mockParseNuget.mockReturnValue([
+      { nugetUrl: 'https://caseinsensitive.pkgs.visualstudio.com/nuget/', sourceName: 'feed' },
+    ])
 
     const result = await readUrlsFromFiles([], ['nuget.config'])
 
     mockFs.restore()
 
-    expect(result).toEqual(['https://caseinsensitive.pkgs.visualstudio.com/nuget/'])
+    expect(result).toMatchInlineSnapshot(`
+     {
+       "allNugetUrls": [
+         "https://caseinsensitive.pkgs.visualstudio.com/nuget/",
+       ],
+       "npmFeeds": [],
+       "nugetFeeds": [
+         {
+           "nugetUrl": "https://caseinsensitive.pkgs.visualstudio.com/nuget/",
+           "sourceName": "feed",
+         },
+       ],
+     }
+    `)
     expect(mockParseNuget).toHaveBeenCalledWith('nuget content')
   })
 })

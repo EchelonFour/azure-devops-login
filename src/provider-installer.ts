@@ -13,12 +13,13 @@ export async function installProviderIfNeeded(): Promise<void> {
     return
   }
   const installCommand =
-    process.platform === 'linux'
-      ? 'sh -c "$(curl -fsSL https://aka.ms/install-artifacts-credprovider.sh)"'
-      : 'iex "& { $(irm https://aka.ms/install-artifacts-credprovider.ps1) }"'
+    process.platform === 'win32'
+      ? 'iex "& { $(irm https://aka.ms/install-artifacts-credprovider.ps1) }"'
+      : 'sh -c "$(curl -fsSL https://aka.ms/install-artifacts-credprovider.sh)"'
+
   try {
     const results = await execAsync(installCommand, {
-      shell: process.platform === 'linux' ? '/bin/bash' : 'powershell.exe',
+      shell: process.platform === 'win32' ? 'powershell.exe' : '/bin/bash',
     })
     core.debug(`Provider installation stdout: ${results.stdout}`)
     core.debug(`Provider installation stderr: ${results.stderr}`)

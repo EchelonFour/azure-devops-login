@@ -4,23 +4,20 @@ import * as core from '../__fixtures__/core.js'
 
 jest.unstable_mockModule('@actions/core', () => core)
 
-const { loadExistingCredentials, ENV_VAR_NAME } = await import('./vss-credentials.js')
+const { loadExistingCredentials, setVssCredentials } = await import('./vss-credentials.js')
 
 describe('loadExistingCredentials', () => {
-  const originalEnv = process.env
-
   beforeEach(() => {
     jest.resetAllMocks()
-    process.env = { ...originalEnv }
+    delete process.env.VSS_NUGET_EXTERNAL_FEED_ENDPOINTS
   })
 
   afterAll(() => {
-    process.env = originalEnv
+    delete process.env.VSS_NUGET_EXTERNAL_FEED_ENDPOINTS
   })
 
   it('should return empty credentials when env var is not set', () => {
-    // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
-    delete process.env[ENV_VAR_NAME]
+    delete process.env.VSS_NUGET_EXTERNAL_FEED_ENDPOINTS
 
     const result = loadExistingCredentials()
 
@@ -31,15 +28,14 @@ describe('loadExistingCredentials', () => {
     const validCredentials = {
       endpointCredentials: [{ endpoint: 'https://test.com', password: 'pass123' }],
     }
-    process.env[ENV_VAR_NAME] = JSON.stringify(validCredentials)
-
+    process.env.VSS_NUGET_EXTERNAL_FEED_ENDPOINTS = JSON.stringify(validCredentials)
     const result = loadExistingCredentials()
 
     expect(result).toEqual(validCredentials)
   })
 
   it('should return empty and log error when JSON is invalid', () => {
-    process.env[ENV_VAR_NAME] = 'invalid json'
+    process.env.VSS_NUGET_EXTERNAL_FEED_ENDPOINTS = 'invalid json'
 
     const result = loadExistingCredentials()
 
@@ -47,7 +43,7 @@ describe('loadExistingCredentials', () => {
   })
 
   it('should throw error when parsed value is not an object', () => {
-    process.env[ENV_VAR_NAME] = JSON.stringify('string')
+    process.env.VSS_NUGET_EXTERNAL_FEED_ENDPOINTS = JSON.stringify('string')
 
     const result = loadExistingCredentials()
 
@@ -55,7 +51,7 @@ describe('loadExistingCredentials', () => {
   })
 
   it('should throw error when endpointCredentials is missing', () => {
-    process.env[ENV_VAR_NAME] = JSON.stringify({ other: 'field' })
+    process.env.VSS_NUGET_EXTERNAL_FEED_ENDPOINTS = JSON.stringify({ other: 'field' })
 
     const result = loadExistingCredentials()
 
@@ -63,7 +59,7 @@ describe('loadExistingCredentials', () => {
   })
 
   it('should throw error when endpointCredentials is not an array', () => {
-    process.env[ENV_VAR_NAME] = JSON.stringify({ endpointCredentials: 'not array' })
+    process.env.VSS_NUGET_EXTERNAL_FEED_ENDPOINTS = JSON.stringify({ endpointCredentials: 'not array' })
 
     const result = loadExistingCredentials()
 
@@ -71,7 +67,7 @@ describe('loadExistingCredentials', () => {
   })
 
   it('should throw error when endpoint item is not an object', () => {
-    process.env[ENV_VAR_NAME] = JSON.stringify({ endpointCredentials: ['string'] })
+    process.env.VSS_NUGET_EXTERNAL_FEED_ENDPOINTS = JSON.stringify({ endpointCredentials: ['string'] })
 
     const result = loadExistingCredentials()
 
@@ -79,7 +75,7 @@ describe('loadExistingCredentials', () => {
   })
 
   it('should throw error when endpoint item is null', () => {
-    process.env[ENV_VAR_NAME] = JSON.stringify({ endpointCredentials: [null] })
+    process.env.VSS_NUGET_EXTERNAL_FEED_ENDPOINTS = JSON.stringify({ endpointCredentials: [null] })
 
     const result = loadExistingCredentials()
 
@@ -87,7 +83,7 @@ describe('loadExistingCredentials', () => {
   })
 
   it('should throw error when endpoint item lacks endpoint property', () => {
-    process.env[ENV_VAR_NAME] = JSON.stringify({ endpointCredentials: [{ password: 'pass' }] })
+    process.env.VSS_NUGET_EXTERNAL_FEED_ENDPOINTS = JSON.stringify({ endpointCredentials: [{ password: 'pass' }] })
 
     const result = loadExistingCredentials()
 
@@ -95,10 +91,59 @@ describe('loadExistingCredentials', () => {
   })
 
   it('should throw error when endpoint property is not a string', () => {
-    process.env[ENV_VAR_NAME] = JSON.stringify({ endpointCredentials: [{ endpoint: 123, password: 'pass' }] })
+    process.env.VSS_NUGET_EXTERNAL_FEED_ENDPOINTS = JSON.stringify({
+      endpointCredentials: [{ endpoint: 123, password: 'pass' }],
+    })
 
     const result = loadExistingCredentials()
 
     expect(result).toEqual({ endpointCredentials: [] })
+  })
+})
+describe('setVssCredentials', () => {
+  beforeEach(() => {
+    jest.resetAllMocks()
+    delete process.env.VSS_NUGET_EXTERNAL_FEED_ENDPOINTS
+  })
+  afterAll(() => {
+    delete process.env.VSS_NUGET_EXTERNAL_FEED_ENDPOINTS
+  })
+
+  it('should add new credentials when no existing credentials', () => {
+    const urls = ['https://test.com', 'https://example.com']
+    const token = 'test-token'
+
+    setVssCredentials(urls, token)
+
+    expect(core.exportVariable).toHaveBeenCalledWith(
+      'VSS_NUGET_EXTERNAL_FEED_ENDPOINTS',
+      JSON.stringify({
+        endpointCredentials: [
+          { endpoint: 'https://test.com', username: 'github', password: 'test-token' },
+          { endpoint: 'https://example.com', username: 'github', password: 'test-token' },
+        ],
+      }),
+    )
+  })
+
+  it('should add new credentials to existing ones', () => {
+    const existingCredentials = {
+      endpointCredentials: [{ endpoint: 'https://existing.com', password: 'existing-pass' }],
+    }
+    process.env.VSS_NUGET_EXTERNAL_FEED_ENDPOINTS = JSON.stringify(existingCredentials)
+    const urls = ['https://new.com']
+    const token = 'new-token'
+
+    setVssCredentials(urls, token)
+
+    expect(core.exportVariable).toHaveBeenCalledWith(
+      'VSS_NUGET_EXTERNAL_FEED_ENDPOINTS',
+      JSON.stringify({
+        endpointCredentials: [
+          { endpoint: 'https://existing.com', password: 'existing-pass' },
+          { endpoint: 'https://new.com', username: 'github', password: 'new-token' },
+        ],
+      }),
+    )
   })
 })

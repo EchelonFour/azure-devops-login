@@ -41,3 +41,25 @@ export function loadExistingCredentials(): VssNugetExternalFeedEndpoints {
   }
   return empty
 }
+
+export function setVssCredentials(urls: string[], token: string): void {
+  const endpoints = loadExistingCredentials()
+
+  // Debug logs are only output if the `ACTIONS_STEP_DEBUG` secret is true
+  core.debug(`Building ${ENV_VAR_NAME} with URLs: ${urls.join(', ')}`)
+  const existingUrls = new Set(endpoints.endpointCredentials.map((x) => x.endpoint))
+  for (const url of urls) {
+    if (existingUrls.has(url)) {
+      core.warning(
+        `Not adding the url "${url}" to the credentials because it is already there. The existing value will be kept.`,
+      )
+    } else {
+      endpoints.endpointCredentials.push({
+        endpoint: url,
+        username: 'github',
+        password: token,
+      })
+    }
+  }
+  core.exportVariable(ENV_VAR_NAME, JSON.stringify(endpoints))
+}

@@ -3,10 +3,15 @@ import { dirname, basename, join } from 'node:path'
 
 import * as core from '@actions/core'
 
+import type { NpmrcAdoFeed } from './npmrc-parse.js'
 import { parseNpmrcForADOFeeds } from './npmrc-parse.js'
+import type { NugetAdoFeed } from './nuget-parse.js'
 import { parseNugetForADOFeeds } from './nuget-parse.js'
 
-async function readFileContents(filePath: string, parse: (content: string) => string[]): Promise<string[]> {
+async function readFileContents<TFeed extends { nugetUrl: string }>(
+  filePath: string,
+  parse: (content: string) => TFeed[],
+): Promise<TFeed[]> {
   core.debug(`Processing file: ${filePath}`)
   let npmrcContent: string = ''
   try {
@@ -25,17 +30,24 @@ async function readFileContents(filePath: string, parse: (content: string) => st
     return []
   }
   const adoFeedUrls = parse(npmrcContent)
-  core.debug(`Found ADO feed URLs: ${adoFeedUrls.join(', ')}`)
+  core.debug(`Found ADO feed URLs: ${adoFeedUrls.map((x) => x.nugetUrl).join(', ')}`)
   return adoFeedUrls
 }
 
-export async function readUrlsFromFiles(npmrcList: string[], nugetList: string[]): Promise<string[]> {
-  const adoFeedUrlsPromises = Promise.all(
-    npmrcList
-      .map(async (filePath) => readFileContents(filePath, parseNpmrcForADOFeeds))
-      .concat(nugetList.map(async (filePath) => readFileContents(filePath, parseNugetForADOFeeds))),
-  )
+export async function readUrlsFromFiles(
+  npmrcList: string[],
+  nugetList: string[],
+): Promise<{ npmFeeds: NpmrcAdoFeed[]; nugetFeeds: NugetAdoFeed[]; allNugetUrls: string[] }> {
+  const npmReads = npmrcList.map(async (filePath) => readFileContents(filePath, parseNpmrcForADOFeeds))
+  const nugetReads = nugetList.map(async (filePath) => readFileContents(filePath, parseNugetForADOFeeds))
 
-  const adoFeedUrls = await adoFeedUrlsPromises
-  return [...new Set(adoFeedUrls.flat())]
+  const npmFeeds = (await Promise.all(npmReads)).flat()
+  const nugetFeeds = (await Promise.all(nugetReads)).flat()
+
+  const allNugetUrls = [...new Set([...npmFeeds, ...nugetFeeds].map((x) => x.nugetUrl))]
+  return {
+    npmFeeds,
+    nugetFeeds,
+    allNugetUrls,
+  }
 }
