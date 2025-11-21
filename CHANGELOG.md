@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://github.com/EchelonFour/azure-devops-login/compare/v1.0.0...v1.1.0) (2025-11-21)
+
+
+### Features
+
+* ✨ Add credential file location output ([d54f918](https://github.com/EchelonFour/azure-devops-login/commit/d54f9189c2942396a7d34c0c46eece7547230d37))
+
 ## 1.0.0 (2025-11-21)
 
 
