@@ -158,6 +158,7 @@ describe('buildUserNpmrcContent', () => {
       .then(() => true)
       .catch(() => false)
     expect(exists).toBe(false)
+    expect(core.setOutput).not.toHaveBeenCalled()
   })
 
   it('should skip when build-npmrc-credentials-file is false', async () => {
@@ -169,6 +170,7 @@ describe('buildUserNpmrcContent', () => {
       .then(() => true)
       .catch(() => false)
     expect(exists).toBe(false)
+    expect(core.setOutput).not.toHaveBeenCalled()
   })
 
   it('should create new npmrc file when it does not exist', async () => {
@@ -181,6 +183,7 @@ describe('buildUserNpmrcContent', () => {
      "//pkgs.dev.azure.com/myorg/_packaging/myfeed/npm/registry/:_authToken=test-token
      "
     `)
+    expect(core.setOutput).toHaveBeenCalledWith('npmrc-credential-file', tmpNpmrcLocation)
   })
 
   it('should merge with existing npmrc content', async () => {
@@ -201,6 +204,7 @@ describe('buildUserNpmrcContent', () => {
      //pkgs.dev.azure.com/myorg/_packaging/myfeed/npm/registry/:_authToken=test-token
      "
     `)
+    expect(core.setOutput).toHaveBeenCalledWith('npmrc-credential-file', '/some/custom/.npmrc')
   })
 
   it('should handle multiple feeds', async () => {
@@ -221,5 +225,6 @@ describe('buildUserNpmrcContent', () => {
      //myorg.pkgs.visualstudio.com/_packaging/anotherfeed/npm/registry/:_authToken=test-token
      "
     `)
+    expect(core.setOutput).toHaveBeenCalledWith('npmrc-credential-file', tmpNpmrcLocation)
   })
 })

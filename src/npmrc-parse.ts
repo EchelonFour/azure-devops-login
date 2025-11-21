@@ -53,7 +53,7 @@ export async function buildUserNpmrcContent(feeds: NpmrcAdoFeed[], token: string
   core.debug('Writing updated .npmrc credentials file:')
   core.debug(newNpmrcContent)
   await writeFile(npmrcFile, newNpmrcContent, { encoding: 'utf8' })
-
+  core.setOutput('npmrc-credential-file', npmrcFile)
   if (process.env.NPM_CONFIG_USERCONFIG !== npmrcFile) {
     core.debug(`Setting NPM_CONFIG_USERCONFIG to ${npmrcFile}`)
     core.exportVariable('NPM_CONFIG_USERCONFIG', npmrcFile)

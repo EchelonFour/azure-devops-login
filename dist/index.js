@@ -53305,6 +53305,7 @@ async function buildUserNpmrcContent(feeds, token) {
     coreExports.debug('Writing updated .npmrc credentials file:');
     coreExports.debug(newNpmrcContent);
     await writeFile(npmrcFile, newNpmrcContent, { encoding: 'utf8' });
+    coreExports.setOutput('npmrc-credential-file', npmrcFile);
     if (process.env.NPM_CONFIG_USERCONFIG !== npmrcFile) {
         coreExports.debug(`Setting NPM_CONFIG_USERCONFIG to ${npmrcFile}`);
         coreExports.exportVariable('NPM_CONFIG_USERCONFIG', npmrcFile);
@@ -55626,6 +55627,7 @@ async function buildUserNugetContent(feeds, token) {
     coreExports.debug('Writing updated nuget.config credentials file:');
     coreExports.debug(newCredentialContents);
     await writeFile(nugetCredentialFile, newCredentialContents, { encoding: 'utf8' });
+    coreExports.setOutput('nuget-credential-file', nugetCredentialFile);
 }
 function safeReadExistingNugetConfig(content) {
     if (content === undefined) {

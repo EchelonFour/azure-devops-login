@@ -48,6 +48,10 @@ inputs:
 outputs:
   token:
     description: The Azure DevOps access token retrieved
+  npmrc-credential-file:
+    description: The path to the generated .npmrc file with credentials, if one was made
+  nuget-credential-file:
+    description: The path to the generated nuget.config file with credentials, if one was made
 runs:
   using: node24
   main: dist/index.js

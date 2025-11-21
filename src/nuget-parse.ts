@@ -109,6 +109,7 @@ export async function buildUserNugetContent(feeds: NugetAdoFeed[], token: string
   core.debug('Writing updated nuget.config credentials file:')
   core.debug(newCredentialContents)
   await writeFile(nugetCredentialFile, newCredentialContents, { encoding: 'utf8' })
+  core.setOutput('nuget-credential-file', nugetCredentialFile)
 }
 
 function safeReadExistingNugetConfig(content: string | undefined): NugetConfig | undefined {

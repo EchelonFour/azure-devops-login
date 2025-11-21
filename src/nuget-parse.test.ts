@@ -122,6 +122,7 @@ describe('buildUserNugetContent', () => {
        </packageSourceCredentials>
      </configuration>"
     `)
+    expect(core.setOutput).toHaveBeenCalledWith('nuget-credential-file', '/home/runner/workspace/nuget.config')
   })
   it('should merge with existing nuget.config content', async () => {
     mockFs({
@@ -173,6 +174,7 @@ describe('buildUserNugetContent', () => {
        </packageSourceCredentials>
      </configuration>"
     `)
+    expect(core.setOutput).toHaveBeenCalledWith('nuget-credential-file', '/home/runner/workspace/nuget.config')
   })
   it('should skip writing nuget.config if no feeds are provided', async () => {
     mockFs({})
@@ -182,6 +184,7 @@ describe('buildUserNugetContent', () => {
       .catch(() => false)
     mockFs.restore()
     expect(fileExists).toBe(false)
+    expect(core.setOutput).not.toHaveBeenCalled()
   })
   it('should skip writing nuget.config if input is false', async () => {
     mockFs({})
@@ -200,5 +203,6 @@ describe('buildUserNugetContent', () => {
       .catch(() => false)
     mockFs.restore()
     expect(fileExists).toBe(false)
+    expect(core.setOutput).not.toHaveBeenCalled()
   })
 })
