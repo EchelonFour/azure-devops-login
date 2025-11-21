@@ -1,7 +1,7 @@
 {
   "name": "azure-devops-login",
   "description": "Uses the az tool to login provide Azure DevOps authentication in GitHub Actions",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "author": "EchelonFour",
   "type": "module",
   "private": true,
