@@ -39,7 +39,7 @@ jobs:
         if: github.event_name == 'pull_request'
         run: pnpm format
 
-      - uses: reviewdog/action-setup@v1.4
+      - uses: reviewdog/action-setup@v1.5
         with:
           reviewdog_version: v0.21.0
 
